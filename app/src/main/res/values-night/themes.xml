@@ -1,0 +1,16 @@
+<resources>
+    <style name="Theme.Mogle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/sky</item>
+
+        <item name="android:colorBackground">@color/dark_gray</item>
+        <item name="colorOnBackground">@color/light_gray</item>
+
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/light_gray</item>
+
+        <item name="android:statusBarColor">?android:colorBackground</item>
+    </style>
+</resources>
