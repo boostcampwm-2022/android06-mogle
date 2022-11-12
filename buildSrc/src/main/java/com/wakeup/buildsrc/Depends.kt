@@ -21,6 +21,7 @@ object Depends {
         const val application = "7.3.1"
         const val library = "7.3.1"
         const val kotlinGradlePluginVersion = "1.7.20"
+        const val googleServicesVersion = "4.3.10"
 
         const val navigationVersion = "2.5.2"
         const val hiltVersion = "2.40.1"
@@ -34,6 +35,7 @@ object Depends {
         const val glideVersion = "4.13.0"
         const val timberVersion = "5.0.1"
         const val pagingVersion = "3.1.1"
+        const val firebaseBomVersion = "31.0.3"
     }
 
     object ClassPaths {
@@ -46,6 +48,8 @@ object Depends {
             "com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltVersion}"
         const val kotlinx_serialization =
             "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlinGradlePluginVersion}"
+        const val google_services =
+            "com.google.gms:google-services:${Versions.googleServicesVersion}"
     }
 
     object Libraries {
@@ -104,6 +108,10 @@ object Depends {
         // Paging3
         const val paging_runtime_ktx = "androidx.paging:paging-runtime-ktx:${Versions.pagingVersion}"
         const val paging_common = "androidx.paging:paging-common:${Versions.pagingVersion}"
+
+        // Firebase
+        const val firebase_bom = "com.google.firebase:firebase-bom:${Versions.firebaseBomVersion}"
+        const val firebase_analytics = "com.google.firebase:firebase-analytics-ktx"
     }
 
     fun generateVersionName(): String {
