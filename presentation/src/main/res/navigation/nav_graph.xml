@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/main_activity">
+    app:startDestination="@id/map_fragment">
 
-    <activity
-        android:id="@+id/main_activity"
-        android:name="com.wakeup.presentation.ui.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/map_fragment"
+        android:name="com.wakeup.presentation.ui.map.MapFragment"
+        android:label="지도"
+        tools:layout="@layout/fragment_map" />
 </navigation>
