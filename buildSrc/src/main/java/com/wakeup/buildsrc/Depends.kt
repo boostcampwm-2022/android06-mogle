@@ -21,7 +21,7 @@ object Depends {
         const val application = "7.3.1"
         const val library = "7.3.1"
         const val kotlinGradlePluginVersion = "1.7.20"
-        const val googleServicesVersion = "4.3.10"
+        const val googleServicesVersion = "4.3.14"
 
         const val navigationVersion = "2.5.2"
         const val hiltVersion = "2.40.1"
