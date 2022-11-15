@@ -39,7 +39,7 @@ jobs:
         appId: ${{secrets.FIREBASE_APP_ID}}
         serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
         groups: mogle-testers
-        file: app/build/outputs/apk/release/app-release.abb
+        file: app/build/outputs/apk/release/app-release.aab
     
     - name: action-slack
       uses: 8398a7/action-slack@v3.14.0
