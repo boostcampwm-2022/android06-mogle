@@ -63,6 +63,6 @@ dependencies {
     implementation(Depends.Libraries.timber)
 
     // Firebase
-    implementation(Depends.Libraries.firebase_bom)
+    implementation(platform(Depends.Libraries.firebase_bom))
     implementation(Depends.Libraries.firebase_analytics)
 }
