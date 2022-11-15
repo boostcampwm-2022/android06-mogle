@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "location")
 data class LocationEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "main_address") val mainAddress: String,
     @ColumnInfo(name = "detail_address") val detailAddress: String,
     @ColumnInfo(name = "latitude") val latitude: Double,

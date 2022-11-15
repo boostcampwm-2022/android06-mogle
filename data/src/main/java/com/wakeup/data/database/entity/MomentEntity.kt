@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class MomentEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "location_id", index = true) val locationId: Int,
     @ColumnInfo(name = "thumbnail_id", index = true) val thumbnailId: Int,
     @ColumnInfo(name = "content") val content: String,
