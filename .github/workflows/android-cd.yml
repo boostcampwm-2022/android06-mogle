@@ -30,8 +30,8 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
-    - name: build release 
-      run: ./gradlew bundleRelease
+    - name: build release
+      run: ./gradlew assembleRelease
           
     - name: upload artifact to Firebase App Distribution
       uses: wzieba/Firebase-Distribution-Github-Action@v1.4.0
@@ -39,7 +39,7 @@ jobs:
         appId: ${{secrets.FIREBASE_APP_ID}}
         serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
         groups: mogle-testers
-        file: app/build/outputs/apk/release/app-release.aab
+        file: app/build/outputs/apk/release/app-release-unsigned.apk
     
     - name: action-slack
       uses: 8398a7/action-slack@v3.14.0
