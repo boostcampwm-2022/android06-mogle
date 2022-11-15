@@ -15,14 +15,18 @@ interface MomentDao {
     fun getMoments(): Flow<List<MomentEntity>>
 
     @Query("SELECT * FROM location WHERE id = :locationId")
-    fun getLocation(locationId: Int): LocationEntity
+    fun getLocation(locationId: Int): Flow<LocationEntity>
 
-    @Query("SELECT * FROM picture WHERE id IN" +
-            "(SELECT picture_id FROM moment_picture WHERE moment_id = :momentId)")
-    fun getPictures(momentId: Int): List<PictureEntity>
+    @Query(
+        "SELECT * FROM picture WHERE id IN" +
+                "(SELECT picture_id FROM moment_picture WHERE moment_id = :momentId)"
+    )
+    fun getPictures(momentId: Int): Flow<List<PictureEntity>>
 
-    @Query("SELECT * FROM globe WHERE id IN " +
-            "(SELECT globe_id FROM moment_globe WHERE moment_id = :momentId)")
-    fun getGlobes(momentId: Int): List<GlobeEntity>
+    @Query(
+        "SELECT * FROM globe WHERE id IN " +
+                "(SELECT globe_id FROM moment_globe WHERE moment_id = :momentId)"
+    )
+    fun getGlobes(momentId: Int): Flow<List<GlobeEntity>>
 
 }
