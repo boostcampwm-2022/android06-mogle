@@ -1,4 +1,4 @@
-name: Android CI
+name: Android CD
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
       run: ./gradlew bundleRelease
           
     - name: upload debug artifact to Firebase App Distribution
-      run: firebase appdistribution:distribute app/build/outputs/bundle/release/app-release.aab --token ${{secrets.FIREBASE_TOKEN}} --app ${{secrets.FIREBASE_APP_ID}} --testers "kbg0412@gmail.com" --release-notes "Test Distribution"
+      run: firebase appdistribution:distribute app/build/outputs/bundle/release/app-release.aab --token ${{secrets.FIREBASE_TOKEN}} --app ${{secrets.FIREBASE_APP_ID}} --groups "mogle-testers" --release-notes "Test Distribution"
     
     - name: action-slack
       uses: 8398a7/action-slack@v3.14.0
