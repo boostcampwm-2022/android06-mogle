@@ -10,4 +10,10 @@
         android:name="com.wakeup.presentation.ui.map.MapFragment"
         android:label="지도"
         tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/globe_fragment"
+        android:name="com.wakeup.presentation.ui.globe.GlobeFragment"
+        android:label="글로브"
+        tools:layout="@layout/fragment_globe" />
 </navigation>
