@@ -7,6 +7,7 @@ import com.wakeup.domain.repository.MomentRepository
 class SaveMomentUseCase(
     private val localRepository: MomentRepository
 ) {
-    fun invoke(moment: Moment, location: Location, pictures: List<String>) =
+    fun invoke(moment: Moment, location: Location, pictures: List<String>) {
         localRepository.saveMoment(moment, location, pictures)
+    }
 }

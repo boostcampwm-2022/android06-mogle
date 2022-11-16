@@ -12,12 +12,6 @@ import com.wakeup.data.model.LocationEntity
     tableName = "moment",
     foreignKeys = [
         ForeignKey(
-            entity = LocationEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["location_id"],
-            onDelete = CASCADE
-        ),
-        ForeignKey(
             entity = PictureEntity::class,
             parentColumns = ["id"],
             childColumns = ["thumbnail_id"],
@@ -27,8 +21,8 @@ import com.wakeup.data.model.LocationEntity
 )
 data class MomentEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
-    @Embedded @ColumnInfo val location: LocationEntity,
-    @ColumnInfo(name = "thumbnail_id") val thumbnailId: Int,
+    @Embedded val location: LocationEntity,
+    @ColumnInfo(name = "thumbnail_id") val thumbnailId: Long,
     @ColumnInfo(name = "content") val content: String,
     @ColumnInfo(name = "date") val date: String,
 )

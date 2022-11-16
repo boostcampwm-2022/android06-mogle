@@ -1,7 +1,7 @@
 package com.wakeup.presentation.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.wakeup.presentation.R
 
 class MainActivity : AppCompatActivity() {
