@@ -31,7 +31,7 @@
             android:layout_width="@dimen/normal_125"
             android:layout_height="@dimen/normal_125"
             android:layout_gravity="end"
-            android:background="@drawable/btn_round"
+            android:background="@drawable/bg_round"
             android:contentDescription="@string/item_picture_remove_picture_description"
             android:src="@drawable/ic_close_24" />
 

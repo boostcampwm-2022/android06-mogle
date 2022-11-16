@@ -57,6 +57,10 @@ class AddMomentFragment : Fragment() {
             viewModel.setSelectedGlobe(position)
         }
 
+        binding.tvDateValue.setOnClickListener {
+            viewModel.datePicker.show(childFragmentManager, "datePicker")
+        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 }

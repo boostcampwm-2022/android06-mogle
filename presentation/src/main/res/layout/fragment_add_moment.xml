@@ -121,5 +121,32 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_100"
+            android:text="@string/date"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/til_globe"
+            tools:text="날짜" />
+
+        <TextView
+            android:id="@+id/tv_date_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_100"
+            android:background="@drawable/bg_corner_8"
+            android:elevation="@dimen/small_150"
+            android:padding="@dimen/normal_100"
+            android:text="@{vm.selectedDate}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/tv_date"
+            tools:text="2022년 11월 16일" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
