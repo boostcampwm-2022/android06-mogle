@@ -1,23 +1,23 @@
 package com.wakeup.data.source.local.moment
 
 import com.wakeup.data.database.dao.MomentDao
-import com.wakeup.data.source.toDomain
-import com.wakeup.domain.model.Moment
+import com.wakeup.data.database.entity.GlobeEntity
+import com.wakeup.data.model.LocationEntity
+import com.wakeup.data.database.entity.MomentEntity
+import com.wakeup.data.database.entity.PictureEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class MomentLocalDataSourceImpl(
     private val momentDao: MomentDao
 ): MomentLocalDataSource {
 
-    override fun getMoments(): Flow<List<Moment>> =
-        momentDao.getMoments().map { moments ->
-            moments.map { moment ->
-                moment.toDomain(
-                    momentDao.getLocation(moment.locationId),
-                    momentDao.getPictures(moment.id),
-                    momentDao.getGlobes(moment.id)
-                )
-            }
-        }
+    override fun getMoments(): Flow<List<MomentEntity>> =
+        momentDao.getMoments()
+
+    override fun getPictures(momentId: Int): Flow<List<PictureEntity>> =
+        momentDao.getPictures(momentId)
+
+    override fun getGlobes(momentId: Int): Flow<List<GlobeEntity>> =
+        momentDao.getGlobes(momentId)
+
 }
