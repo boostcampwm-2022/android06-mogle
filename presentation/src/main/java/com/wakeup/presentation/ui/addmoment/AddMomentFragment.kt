@@ -53,6 +53,10 @@ class AddMomentFragment : Fragment() {
             getPicture.launch(viewModel.getPictureIntent())
         }
 
+        binding.actGlobe.setOnItemClickListener { _, _, position, _ ->
+            viewModel.setSelectedGlobe(position)
+        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 }

@@ -14,6 +14,10 @@ class AddMomentViewModel : ViewModel() {
         }
     }
 
+    val globes = arrayOf("globe 1", "globe 2", "globe 3")
+
+    private var selectedGlobe = globes.first()
+
     private val _pictures = MutableStateFlow<List<Bitmap>>(emptyList())
     val pictures: StateFlow<List<Bitmap>> = _pictures
 
@@ -29,5 +33,9 @@ class AddMomentViewModel : ViewModel() {
     fun removePicture(picture: Bitmap) {
         _pictures.value = pictures.value - picture
         _isPictureMax.value = pictures.value.size >= 5
+    }
+
+    fun setSelectedGlobe(position: Int) {
+        selectedGlobe = globes[position]
     }
 }

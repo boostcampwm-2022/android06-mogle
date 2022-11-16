@@ -89,6 +89,37 @@
             app:submitList="@{vm.pictures}"
             tools:listitem="@layout/item_picture" />
 
+        <TextView
+            android:id="@+id/tv_globe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_100"
+            android:text="@string/globe"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/v_line"
+            tools:text="글로브" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_globe"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_100"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/tv_globe">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/act_globe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:text="@{vm.globes[0]}"
+                app:simpleItems="@{vm.globes}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,6 +1,7 @@
 <resources>
     <string name="item_picture_description">This is the picture you added.</string>
     <string name="moment">모먼트</string>
+    <string name="globe">글로브</string>
     <string name="date">날짜</string>
     <string name="addMoment_picture_title">사진 (%d/5)</string>
     <string name="item_picture_remove_picture_description">remove picture</string>
