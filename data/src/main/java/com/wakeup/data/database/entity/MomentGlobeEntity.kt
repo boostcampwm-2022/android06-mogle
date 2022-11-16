@@ -23,7 +23,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class MomentGlobeEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
     @ColumnInfo(name = "moment_id", index = true) val momentId: Int,
     @ColumnInfo(name = "globe_id", index = true) val globeId: Int,
 )
