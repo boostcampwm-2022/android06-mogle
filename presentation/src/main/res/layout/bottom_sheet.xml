@@ -25,7 +25,8 @@
                 android:src="@drawable/ic_dragger"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/dragger" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_field"
@@ -41,7 +42,7 @@
                     android:id="@+id/sort_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/date_sort_asc"
+                    android:text="@string/date_sort_desc"
                     android:textSize="14sp"
                     android:inputType="none"
                     tools:ignore="LabelFor" />
