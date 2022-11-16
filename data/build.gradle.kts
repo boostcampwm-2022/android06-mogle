@@ -43,8 +43,16 @@ android {
 dependencies {
     implementation(project(":domain"))
 
+    // Junit4 test
+    androidTestImplementation(Depends.Libraries.test_core_ktx)
+    androidTestImplementation(Depends.Libraries.test_ext_junit_ktx)
+    androidTestImplementation(Depends.Libraries.test_runner)
+    androidTestImplementation(Depends.Libraries.coroutines_test)
+    androidTestImplementation(Depends.Libraries.junit)
+
     // Hilt
     implementation(Depends.Libraries.hilt_android)
+
     kapt(Depends.Libraries.hilt_android_compiler)
 
     // Room
@@ -65,5 +73,7 @@ dependencies {
     implementation(Depends.Libraries.timber)
 
     // Paging
-    implementation(Depends.Libraries.paging_runtime_ktx)
+    implementation(Depends.Libraries.paging_runtime_ktx) {
+        exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel-ktx")
+    }
 }

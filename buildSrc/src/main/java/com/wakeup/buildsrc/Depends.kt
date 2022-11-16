@@ -36,6 +36,10 @@ object Depends {
         const val timberVersion = "5.0.1"
         const val pagingVersion = "3.1.1"
         const val firebaseBomVersion = "31.0.3"
+
+        const val testCoreKtxVersion = "1.5.0"
+        const val testJunitKtxVersion = "1.1.4"
+        const val testRunnerVersion = "1.5.1"
     }
 
     object ClassPaths {
@@ -59,9 +63,15 @@ object Depends {
         const val material = "com.google.android.material:material:${Versions.materialVersion}"
         const val constraintlayout =
             "androidx.constraintlayout:constraintlayout:${Versions.constraintLayoutVersion}"
-        const val junit = "junit:junit:${Versions.junitVersion}"
         const val test_ext_junit = "androidx.test.ext:junit:${Versions.testExtJunitVersion}"
         const val espresso_core = "androidx.test.espresso:espresso-core:${Versions.espressoVersion}"
+
+        // Junit4 test
+        const val junit = "junit:junit:${Versions.junitVersion}"
+        const val test_core_ktx = "androidx.test:core-ktx:${Versions.testCoreKtxVersion}"
+        const val test_ext_junit_ktx = "androidx.test.ext:junit-ktx:${Versions.testJunitKtxVersion}"
+        const val test_runner = "androidx.test:runner:${Versions.testRunnerVersion}"
+        const val coroutines_test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.testCoreKtxVersion}"
 
         // Navigation
         const val navigation_fragment_ktx =
