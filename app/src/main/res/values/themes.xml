@@ -4,6 +4,7 @@
         <item name="colorOnPrimary">@color/white</item>
 
         <item name="colorSecondary">@color/sky</item>
+        <item name="colorSurface">@color/white</item>
 
         <item name="android:colorBackground">@color/white</item>
         <item name="colorOnBackground">@color/light_gray</item>

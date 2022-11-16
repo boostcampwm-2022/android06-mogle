@@ -1,4 +1,7 @@
 <resources>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sort_date">날짜순</string>
+    <string name="moment_picture">모먼트 사진</string>
+    <string name="add_button">추가 버튼</string>
 </resources>

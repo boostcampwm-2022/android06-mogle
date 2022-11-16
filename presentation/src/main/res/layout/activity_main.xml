@@ -23,7 +23,7 @@
             android:layout_gravity="bottom"
             android:background="?attr/colorPrimary"
             app:fabCradleMargin="10dp"
-            app:fabCradleRoundedCornerRadius="10dp"
+            app:fabCradleRoundedCornerRadius="50dp"
             app:fabCradleVerticalOffset="10dp">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add"
             app:layout_anchor="@id/bottom_app_bar"
-            android:contentDescription="TODO" />
+            android:contentDescription="@string/add_button" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
