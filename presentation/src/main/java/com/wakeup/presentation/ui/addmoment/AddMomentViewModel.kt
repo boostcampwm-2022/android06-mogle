@@ -30,6 +30,7 @@ class AddMomentViewModel : ViewModel() {
     private val _selectedDate = MutableStateFlow(DateUtil.getToday())
     val selectedDate: MutableStateFlow<String> = _selectedDate
 
+    val content = MutableStateFlow("")
 
     fun getPictureIntent(): Intent {
         return Intent(Intent.ACTION_PICK).apply {
