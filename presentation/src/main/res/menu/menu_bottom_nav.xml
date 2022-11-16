@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/map_fragment"
         android:icon="@drawable/ic_home"
-        android:title="홈" />
+        android:title="@string/home" />
 
     <item
         android:id="@+id/add"
@@ -13,6 +14,6 @@
     <item
         android:id="@+id/globe_fragment"
         android:icon="@drawable/ic_globe"
-        android:title="글로브" />
+        android:title="@string/globe" />
 
 </menu>

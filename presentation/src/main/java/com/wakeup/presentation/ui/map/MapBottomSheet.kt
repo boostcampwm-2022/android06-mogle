@@ -1,40 +1,29 @@
 package com.wakeup.presentation.ui.map
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.MapBottomSheetBinding
-import kotlinx.coroutines.launch
 
 class MapBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var binding: MapBottomSheetBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = MapBottomSheetBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = viewLifecycleOwner
-
+    private fun setAdapter() {
         val adapter = MomentPagingAdapter()
         binding.rvMoments.adapter = adapter
+    }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                
-            }
+    private fun setMenus() {
+        val items = listOf(getString(R.string.date_sort_asc), getString(R.string.date_sort_desc))
+        val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_sort_menu, items)
+        (binding.textField.editText as? AutoCompleteTextView)?.setAdapter(menuAdapter)
+
+        binding.sortMenu.setOnItemClickListener { _, _, _, _ ->
+            val sortType = binding.sortMenu.text.toString()
+            // TODO: 리스트 정렬
         }
     }
 }
