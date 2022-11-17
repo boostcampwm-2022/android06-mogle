@@ -7,8 +7,8 @@ object Depends {
     object Versions {
         const val appVersionCode = 1_000_000
         const val gradleVersion = "7.3.1"
-        const val androidCompileSdkVersion = 32
-        const val targetSdkVersion = 32
+        const val androidCompileSdkVersion = 31
+        const val targetSdkVersion = 31
         const val minSdkVersion = 23
         const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         const val constraintLayoutVersion = "2.1.4"
