@@ -102,8 +102,7 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/v_line"
-                tools:text="글로브" />
+                app:layout_constraintTop_toBottomOf="@id/v_line" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_globe"
@@ -134,8 +133,7 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/til_globe"
-                tools:text="날짜" />
+                app:layout_constraintTop_toBottomOf="@id/til_globe" />
 
             <TextView
                 android:id="@+id/tv_date_value"
@@ -152,6 +150,30 @@
                 tools:text="2022년 11월 16일" />
 
             <TextView
+                android:id="@+id/tv_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_100"
+                android:text="@string/place"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_date_value" />
+
+            <TextView
+                android:id="@+id/tv_place_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_100"
+                android:background="@drawable/bg_corner_8"
+                android:elevation="@dimen/small_150"
+                android:padding="@dimen/normal_100"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_place"
+                tools:text="우리집" />
+
+            <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -160,11 +182,10 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_date_value"
-                tools:text="내용" />
+                app:layout_constraintTop_toBottomOf="@id/tv_place_value" />
 
             <EditText
-                android:id="@+id/tv_content_value"
+                android:id="@+id/et_content_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_100"
@@ -187,13 +208,33 @@
                 android:id="@+id/tv_content_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_100"
+                android:textSize="12sp"
+                android:layout_marginTop="@dimen/small_150"
                 android:layout_marginEnd="@dimen/normal_100"
                 android:text="@{@string/addMoment_content_length(vm.content.length())}"
                 android:textColor="@android:color/darker_gray"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintTop_toBottomOf="@id/tv_content_value"
+                app:layout_constraintTop_toBottomOf="@id/et_content_value"
                 tools:text="0/500자" />
+
+            <TextView
+                android:id="@+id/tv_save"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_200"
+                android:background="@drawable/bg_corner_8"
+                android:elevation="@dimen/small_150"
+                android:gravity="center"
+                android:padding="@dimen/normal_100"
+                android:text="@string/addMoment_save"
+                android:textColor="?attr/colorOnPrimary"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_content_length"
+                tools:text="남기기"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

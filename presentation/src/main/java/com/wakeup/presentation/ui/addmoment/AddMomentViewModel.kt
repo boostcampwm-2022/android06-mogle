@@ -4,31 +4,35 @@ import android.content.Intent
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.wakeup.presentation.model.PlaceModel
 import com.wakeup.presentation.util.DateUtil
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class AddMomentViewModel : ViewModel() {
 
     // mock data
     val globes = arrayOf("globe 1", "globe 2", "globe 3")
 
+    // mock data
+    val place = PlaceModel("우리집", "안동시 옥동")
+
     private var selectedGlobe = globes.first()
 
     val datePicker = MaterialDatePicker.Builder.datePicker().build().apply {
         addOnPositiveButtonClickListener { date ->
-            selectedDate.value = DateUtil.getDateByTime(date)
+            _selectedDate.value = DateUtil.getDateByTime(date)
         }
     }
 
     private val _pictures = MutableStateFlow<List<Bitmap>>(emptyList())
-    val pictures: StateFlow<List<Bitmap>> = _pictures
+    val pictures = _pictures.asStateFlow()
 
     private val _isPictureMax = MutableStateFlow(false)
-    val isPictureMax: StateFlow<Boolean> = _isPictureMax
+    val isPictureMax = _isPictureMax.asStateFlow()
 
     private val _selectedDate = MutableStateFlow(DateUtil.getToday())
-    val selectedDate: MutableStateFlow<String> = _selectedDate
+    val selectedDate = _selectedDate.asStateFlow()
 
     val content = MutableStateFlow("")
 
