@@ -23,7 +23,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class MomentPictureEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "moment_id", index = true) val momentId: Int,
-    @ColumnInfo(name = "picture_id", index = true) val pictureId: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
+    @ColumnInfo(name = "moment_id", index = true) val momentId: Long,
+    @ColumnInfo(name = "picture_id", index = true) val pictureId: Long,
 )

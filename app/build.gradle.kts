@@ -5,12 +5,15 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
-    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.wakeup.mogle"
     compileSdk = Depends.Versions.androidCompileSdkVersion
+
+    buildFeatures {
+        dataBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.wakeup.mogle"
