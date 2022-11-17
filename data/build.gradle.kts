@@ -42,6 +42,8 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    
+    testImplementation(Depends.Libraries.junit)
 
     testImplementation(Depends.Libraries.junit)
 
