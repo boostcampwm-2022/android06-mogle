@@ -208,11 +208,11 @@
                 android:id="@+id/tv_content_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
                 android:layout_marginTop="@dimen/small_150"
                 android:layout_marginEnd="@dimen/normal_100"
                 android:text="@{@string/addMoment_content_length(vm.content.length())}"
                 android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintTop_toBottomOf="@id/et_content_value"
                 tools:text="0/500자" />
@@ -222,18 +222,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_200"
+                android:layout_marginBottom="@dimen/normal_150"
                 android:background="@drawable/bg_corner_8"
+                android:backgroundTint="?attr/colorPrimary"
                 android:elevation="@dimen/small_150"
                 android:gravity="center"
                 android:padding="@dimen/normal_100"
                 android:text="@string/addMoment_save"
                 android:textColor="?attr/colorOnPrimary"
-                android:backgroundTint="?attr/colorPrimary"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_content_length"
-                tools:text="남기기"/>
+                tools:text="남기기" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
