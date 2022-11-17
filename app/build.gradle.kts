@@ -12,6 +12,10 @@ android {
     namespace = "com.wakeup.mogle"
     compileSdk = Depends.Versions.androidCompileSdkVersion
 
+    buildFeatures {
+        dataBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.wakeup.mogle"
         minSdk = Depends.Versions.minSdkVersion
