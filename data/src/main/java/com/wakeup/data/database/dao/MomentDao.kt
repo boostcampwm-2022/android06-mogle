@@ -29,11 +29,11 @@ interface MomentDao {
     fun getGlobes(momentId: Long): Flow<List<GlobeEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveMoment(moment: MomentEntity): Long
+    suspend fun saveMoment(moment: MomentEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun savePicture(picture: List<PictureEntity>): List<Long>
+    suspend fun savePicture(picture: List<PictureEntity>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveMomentPicture(momentPictures: List<MomentPictureEntity>)
+    suspend fun saveMomentPicture(momentPictures: List<MomentPictureEntity>)
 }

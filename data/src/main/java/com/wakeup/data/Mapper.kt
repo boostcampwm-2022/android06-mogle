@@ -2,20 +2,20 @@ package com.wakeup.data
 
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentPictureEntity
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.data.model.LocationEntity
 import com.wakeup.domain.model.Location
 import com.wakeup.domain.model.Moment
+import com.wakeup.domain.model.Picture
 
 fun MomentEntity.toDomain(pictures: List<PictureEntity>, globes: List<GlobeEntity>): Moment =
     Moment(
-        this.location.mainAddress,
-        this.location.detailAddress,
-        pictures.map { it.bitmap },
-        this.content,
-        globes.map { it.name },
-        this.date
+        mainAddress = this.location.mainAddress,
+        detailAddress = this.location.detailAddress,
+        images = pictures.map { it.bitmap },
+        content = this.content,
+        globe = globes.map { it.name },
+        date = this.date
     )
 
 fun Moment.toEntity(location: Location, thumbnailId: Long): MomentEntity =
@@ -31,12 +31,12 @@ fun Moment.toEntity(location: Location, thumbnailId: Long): MomentEntity =
         date = this.date
     )
 
-fun String.toEntity(): PictureEntity =
+fun Picture.toEntity(): PictureEntity =
     PictureEntity(
-        bitmap = this
+        bitmap = this.bitmap
     )
 
-fun toMomentPictureEntity(momentId: Long, pictureIds :List<Long>): List<MomentPictureEntity> =
-    pictureIds.map { pictureId ->
-        MomentPictureEntity(momentId = momentId, pictureId = pictureId)
-    }
+fun PictureEntity.toDomain(): Picture =
+    Picture(
+        bitmap = this.bitmap
+    )

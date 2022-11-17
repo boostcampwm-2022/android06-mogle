@@ -13,9 +13,9 @@ interface MomentLocalDataSource {
 
     fun getGlobes(momentId: Long): Flow<List<GlobeEntity>>
 
-    fun saveMoment(moment: MomentEntity): Long
+    suspend fun saveMoment(moment: MomentEntity): Long
 
-    fun savePicture(picture: List<PictureEntity>): List<Long>
+    suspend fun savePicture(picture: List<PictureEntity>): List<Long>
 
-    fun saveMomentPicture(MomentPictures :List<MomentPictureEntity>)
+    suspend fun saveMomentPicture(MomentPictures :List<MomentPictureEntity>)
 }

@@ -20,13 +20,13 @@ class MomentLocalDataSourceImpl(
     override fun getGlobes(momentId: Long): Flow<List<GlobeEntity>> =
         momentDao.getGlobes(momentId)
 
-    override fun saveMoment(moment: MomentEntity): Long =
+    override suspend fun saveMoment(moment: MomentEntity): Long =
         momentDao.saveMoment(moment)
 
-    override fun savePicture(picture: List<PictureEntity>): List<Long> =
+    override suspend fun savePicture(picture: List<PictureEntity>): List<Long> =
         momentDao.savePicture(picture)
 
-    override fun saveMomentPicture(MomentPictures: List<MomentPictureEntity>) {
+    override suspend fun saveMomentPicture(MomentPictures: List<MomentPictureEntity>) {
         momentDao.saveMomentPicture(MomentPictures)
     }
 

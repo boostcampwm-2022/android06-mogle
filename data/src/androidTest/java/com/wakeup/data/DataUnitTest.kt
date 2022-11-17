@@ -7,14 +7,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.wakeup.data.database.MogleDatabase
 import com.wakeup.data.database.dao.MomentDao
-import com.wakeup.data.repository.moment.MomentRepositoryImpl
-import com.wakeup.data.source.local.moment.MomentLocalDataSourceImpl
-import com.wakeup.domain.model.Location
-import com.wakeup.domain.model.Moment
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runTest
+import com.wakeup.data.database.entity.MomentEntity
+import com.wakeup.data.database.entity.MomentPictureEntity
+import com.wakeup.data.database.entity.PictureEntity
+import com.wakeup.data.model.LocationEntity
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -25,8 +23,6 @@ import org.junit.runner.RunWith
 class DataUnitTest {
     private lateinit var testDatabase: MogleDatabase
     private lateinit var momentDao: MomentDao
-    private lateinit var momentLocalDataSourceImpl: MomentLocalDataSourceImpl
-    private lateinit var momentRepositoryImpl: MomentRepositoryImpl
 
     @Before
     fun createDb() {
@@ -35,9 +31,6 @@ class DataUnitTest {
             context, MogleDatabase::class.java
         ).build()
         momentDao = testDatabase.momentDao()
-
-        momentLocalDataSourceImpl = MomentLocalDataSourceImpl(momentDao)
-        momentRepositoryImpl = MomentRepositoryImpl(momentLocalDataSourceImpl)
     }
 
     @After
@@ -45,39 +38,73 @@ class DataUnitTest {
         testDatabase.close()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun saveMomentAndGetMoments() = runTest(UnconfinedTestDispatcher()) {
-        momentRepositoryImpl.saveMoment(
-            Moment(
-                "우리집", "쌍문동", listOf("image", "image2", "image3"),
-                "우리집 강아지는 복스러운 강아지", listOf("default"), "2022-01-30"
+    fun saveMomentAndGetMoments(): Unit = runBlocking {
+        val pictureId = momentDao.savePicture(listOf(
+            PictureEntity(
+                bitmap = "picture1".toByteArray()
             ),
-            Location(
-                "우리집", "쌍문동", 37.0, 37.0
+            PictureEntity(
+                bitmap = "picture2".toByteArray()
             ),
-            listOf("image", "image2", "image3"),
-        )
-        momentRepositoryImpl.saveMoment(
-            Moment(
-                "우리집2", "쌍문동2", listOf("image2", "image22", "image23"),
-                "우리집 강아지는 복스러운 강아지2", listOf("default"), "2022-01-30"
+            PictureEntity(
+                bitmap = "picture3".toByteArray()
+            )
+        ))
+        val momentId1 = momentDao.saveMoment(MomentEntity(
+            location = LocationEntity(
+                mainAddress = "우리집",
+                detailAddress = "쌍문동",
+                latitude = 37.5,
+                longitude = 36.5
             ),
-            Location(
-                "우리집", "쌍문동", 37.0, 37.0
+            thumbnailId = pictureId[0],
+            content = "안녕하세요 우리들",
+            date = "2022-07-18"
+        ))
+
+        val momentId2 = momentDao.saveMoment(MomentEntity(
+            location = LocationEntity(
+                mainAddress = "우리집zzz",
+                detailAddress = "쌍문동zzz",
+                latitude = 37.53,
+                longitude = 332.5
             ),
-            listOf("image", "image22", "image33"),
-        )
-        momentRepositoryImpl.saveMoment(
-            Moment(
-                "우리집", "쌍문동3", listOf("image", "image23", "image3"),
-                "우리집 강아지는 복스러운 강아지3", listOf("default"), "2022-01-30"
+            thumbnailId = pictureId[1],
+            content = "steadfastness",
+            date = "2022-07-22"
+        ))
+
+        momentDao.saveMomentPicture(listOf(
+            MomentPictureEntity(
+                momentId = momentId1,
+                pictureId = pictureId[0]
             ),
-            Location(
-                "우리집", "쌍문동3", 37.0, 37.0
+            MomentPictureEntity(
+                momentId = momentId1,
+                pictureId = pictureId[1]
             ),
-            listOf("image", "image23", "image3"),
-        )
-        println(momentRepositoryImpl.getMoments().last())
+            MomentPictureEntity(
+                momentId = momentId1,
+                pictureId = pictureId[2]
+            )
+        ))
+
+        momentDao.saveMomentPicture(listOf(
+            MomentPictureEntity(
+                momentId = momentId2,
+                pictureId = pictureId[0]
+            ),
+            MomentPictureEntity(
+                momentId = momentId2,
+                pictureId = pictureId[1]
+            ),
+            MomentPictureEntity(
+                momentId = momentId2,
+                pictureId = pictureId[2]
+            )
+        ))
+
+        println(momentDao.getMoments().first())
     }
 }
