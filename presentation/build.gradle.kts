@@ -41,6 +41,9 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+    lint {
+        ignoreWarnings = true
+    }
 }
 
 dependencies {
@@ -50,9 +53,6 @@ dependencies {
     implementation(Depends.Libraries.appcompat)
     implementation(Depends.Libraries.material)
     implementation(Depends.Libraries.constraintlayout)
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     androidTestImplementation(Depends.Libraries.test_ext_junit)
     androidTestImplementation(Depends.Libraries.espresso_core)
     testImplementation(Depends.Libraries.junit)
