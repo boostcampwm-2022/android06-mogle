@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ItemMomentBinding
 import com.wakeup.presentation.model.MomentModel
+import timber.log.Timber
 
 class MomentPagingAdapter :
     PagingDataAdapter<MomentModel, MomentPagingAdapter.MomentViewHolder>(MomentDiffCallback()) {
@@ -37,6 +39,7 @@ class MomentPagingAdapter :
         init {
             itemView.setOnClickListener {
                 // TODO: 모먼트 페이지 이동
+                Timber.d("모먼트 클릭")
             }
         }
 

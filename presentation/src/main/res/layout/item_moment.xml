@@ -13,6 +13,8 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/normal_100"
+        android:layout_marginVertical="@dimen/small_100"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Mogle.LargeComponent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,12 +26,12 @@
                 android:id="@+id/iv_moment"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@color/gray"
                 android:contentDescription="@string/moment_picture"
                 app:imageFromBitmap="@{moment.thumbnailBitmap}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@color/gray" />
 
             <TextView
                 android:id="@+id/tv_main_address"
@@ -56,7 +58,7 @@
                 android:layout_marginBottom="@dimen/small_150"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@{moment.detailAddress}"
+                android:text="@{moment.content}"
                 app:layout_constraintBottom_toTopOf="@id/tv_date"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_moment"

@@ -2,7 +2,7 @@ package com.wakeup.presentation.ui.map
 
 import androidx.lifecycle.ViewModel
 
-class BottomSheetViewModel : ViewModel() {
+class MapViewModel : ViewModel() {
 
 
 }
