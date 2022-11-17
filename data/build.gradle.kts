@@ -43,6 +43,8 @@ android {
 dependencies {
     implementation(project(":domain"))
 
+    testImplementation(Depends.Libraries.junit)
+
     // Hilt
     implementation(Depends.Libraries.hilt_android)
     kapt(Depends.Libraries.hilt_android_compiler)
