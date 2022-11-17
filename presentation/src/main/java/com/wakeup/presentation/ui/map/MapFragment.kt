@@ -65,4 +65,9 @@ class MapFragment : Fragment() {
     private fun setAdapter(binding: BottomSheetBinding) {
         binding.rvMoments.adapter = momentAdapter
     }
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
 }
