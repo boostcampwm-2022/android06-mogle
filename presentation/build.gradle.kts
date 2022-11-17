@@ -55,6 +55,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     androidTestImplementation(Depends.Libraries.test_ext_junit)
     androidTestImplementation(Depends.Libraries.espresso_core)
+    testImplementation(Depends.Libraries.junit)
 
     // Navigation component
     implementation(Depends.Libraries.navigation_ui_ktx)

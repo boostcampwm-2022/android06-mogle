@@ -42,6 +42,8 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    
+    testImplementation(Depends.Libraries.junit)
 
     // Junit4 test
     androidTestImplementation(Depends.Libraries.test_core_ktx)
