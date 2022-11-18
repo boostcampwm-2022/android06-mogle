@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -17,12 +18,16 @@ import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
 import com.wakeup.presentation.model.MomentModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@AndroidEntryPoint
 class MapFragment : Fragment() {
 
     private lateinit var binding: FragmentMapBinding
+    private val viewModel: MapViewModel by viewModels()
     private val momentAdapter = MomentPagingAdapter()
 
     override fun onCreateView(
@@ -35,10 +40,19 @@ class MapFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
 
         with(binding.bottomSheet) {
             setMenus(this)
             setAdapter(this)
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.moments.collectLatest {
+                    momentAdapter.submitData(it)
+                }
+            }
         }
     }
 

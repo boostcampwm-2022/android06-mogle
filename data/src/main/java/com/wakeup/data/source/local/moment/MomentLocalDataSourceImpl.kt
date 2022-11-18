@@ -11,9 +11,6 @@ class MomentLocalDataSourceImpl(
     private val momentDao: MomentDao
 ): MomentLocalDataSource {
 
-    override fun getMoments(): Flow<List<MomentEntity>> =
-        momentDao.getMoments()
-
     override fun getPictures(momentId: Long): Flow<List<PictureEntity>> =
         momentDao.getPictures(momentId)
 

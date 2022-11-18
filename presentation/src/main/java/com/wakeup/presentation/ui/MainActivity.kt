@@ -6,8 +6,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
