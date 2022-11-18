@@ -20,7 +20,6 @@ object BitmapUtil {
             ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(90f)
             ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(180f)
             ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(270f)
-            ExifInterface.ORIENTATION_NORMAL -> this
             else -> this
         }
     }

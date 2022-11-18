@@ -1,5 +1,7 @@
 package com.wakeup.presentation.adapter
 
+import android.graphics.Bitmap
+import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +18,7 @@ object BindingAdapters {
 
     @JvmStatic
     @BindingAdapter("imageBitmap")
-    fun bindImageBitmap(view: android.widget.ImageView, bitmap: android.graphics.Bitmap?) {
+    fun bindImageBitmap(view: ImageView, bitmap: Bitmap?) {
         view.setImageBitmap(bitmap)
     }
 }

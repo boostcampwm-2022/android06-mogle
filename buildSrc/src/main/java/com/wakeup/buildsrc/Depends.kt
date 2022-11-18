@@ -24,7 +24,7 @@ object Depends {
         const val googleServicesVersion = "4.3.14"
 
         const val navigationVersion = "2.5.2"
-        const val hiltVersion = "2.40.1"
+        const val hiltVersion = "2.44"
         const val roomVersion = "2.4.3"
         const val coroutinesCoreVersion = "1.5.0"
         const val coroutinesAndroidVersion = "1.6.0"

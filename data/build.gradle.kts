@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.wakeup.buildsrc.Depends
 
 plugins {
@@ -18,6 +19,13 @@ android {
 
         testInstrumentationRunner = Depends.Versions.testInstrumentationRunner
         consumerProguardFiles("consumer-rules.pro")
+
+
+        buildConfigField(
+            type = "String",
+            name = "KAKAO_REST_API_KEY",
+            value = gradleLocalProperties(rootDir).getProperty("KAKAO_REST_API_KEY")
+        )
     }
 
     buildTypes {
