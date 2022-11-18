@@ -84,6 +84,3 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-
-# workflow, template
-.github/
