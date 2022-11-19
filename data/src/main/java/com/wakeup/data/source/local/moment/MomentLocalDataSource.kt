@@ -7,7 +7,6 @@ import com.wakeup.data.database.entity.PictureEntity
 import kotlinx.coroutines.flow.Flow
 
 interface MomentLocalDataSource {
-    fun getMoments(): Flow<List<MomentEntity>>
 
     fun getPictures(momentId: Long): Flow<List<PictureEntity>>
 
