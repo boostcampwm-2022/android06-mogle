@@ -5,6 +5,13 @@
     <string name="date">날짜</string>
     <string name="content">내용</string>
     <string name="place">장소</string>
+    <string name="date_sort_asc">오래된순</string>
+    <string name="date_sort_desc">최신순</string>
+    <string name="moment_picture">모먼트 사진</string>
+    <string name="add_button">추가 버튼</string>
+    <string name="home">홈</string>
+    <string name="dragger">드래거</string>
+
 
     <string name="addMoment_picture_title">사진 (%d/5)</string>
     <string name="addMoment_content_hint">내용을 입력해주세요</string>
@@ -15,5 +22,8 @@
 
     <string name="item_picture_description">This is the picture you added.</string>
     <string name="item_picture_remove_picture_description">remove picture</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
