@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="bitmap"
+            type="android.graphics.Bitmap" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/small_100"
+        android:layout_marginEnd="@dimen/normal_100"
+        app:cardCornerRadius="@dimen/small_100"
+        app:cardElevation="@dimen/small_100">
+
+        <ImageView
+            android:id="@+id/iv_picture"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:contentDescription="@string/item_picture_description"
+            android:scaleType="centerCrop"
+            app:imageBitmap="@{bitmap}" />
+
+        <ImageView
+            android:id="@+id/tv_remove"
+            android:layout_width="@dimen/normal_125"
+            android:layout_height="@dimen/normal_125"
+            android:layout_gravity="end"
+            android:background="@drawable/bg_round"
+            android:contentDescription="@string/item_picture_remove_picture_description"
+            android:src="@drawable/ic_close_24" />
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
