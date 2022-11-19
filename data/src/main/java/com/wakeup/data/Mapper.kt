@@ -10,12 +10,13 @@ import com.wakeup.domain.model.Picture
 
 fun MomentEntity.toDomain(pictures: List<PictureEntity>, globes: List<GlobeEntity>): Moment =
     Moment(
-        mainAddress = this.location.mainAddress,
-        detailAddress = this.location.detailAddress,
+        id = id,
+        mainAddress = location.mainAddress,
+        detailAddress = location.detailAddress,
         images = pictures.map { it.bitmap },
-        content = this.content,
-        globe = globes.map { it.name },
-        date = this.date
+        content = content,
+        globes = globes.map { it.name },
+        date = date
     )
 
 fun Moment.toEntity(location: Location, thumbnailId: Long): MomentEntity =

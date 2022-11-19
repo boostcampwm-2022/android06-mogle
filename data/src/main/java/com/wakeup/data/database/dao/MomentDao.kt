@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MomentDao {
     @Query("SELECT * FROM moment")
-    fun getMoments(): Flow<List<MomentEntity>>
+    fun getMoments(): List<MomentEntity>
 
     @Query(
         "SELECT * FROM picture WHERE id IN" +
