@@ -14,11 +14,16 @@ class PictureAdapter(private val onClickRemovePicture: (bitmap: Bitmap) -> Unit)
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
+        init {
+            binding.tvRemove.setOnClickListener {
+                binding.bitmap?.let { bitmap ->
+                    onClickRemovePicture(bitmap)
+                }
+            }
+        }
+
         fun bind(bitmap: Bitmap) {
             binding.bitmap = bitmap
-            binding.tvRemove.setOnClickListener {
-                onClickRemovePicture(bitmap)
-            }
         }
 
         companion object {
