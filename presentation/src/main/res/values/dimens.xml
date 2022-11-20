@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- standard by 100 % -->
 
     <dimen name="small_50">4dp</dimen>
@@ -20,4 +21,31 @@
     <dimen name="large_150">48dp</dimen>
     <dimen name="large_175">56dp</dimen>
     <dimen name="large_200">64dp</dimen>
+
+    <dimen name="big_padding">@dimen/normal_225</dimen>
+    <dimen name="normal_padding">@dimen/normal_150</dimen>
+
+
+    <!-- standard by 100 % -->
+
+    <dimen name="small_50_tv">4sp</dimen>
+    <dimen name="small_100_tv">8sp</dimen>
+    <dimen name="small_150_tv">12sp</dimen>
+
+    <dimen name="normal_100_tv">16sp</dimen>   <!-- small_100 * 2 -->
+    <dimen name="normal_125_tv">20sp</dimen>
+    <dimen name="normal_150_tv">24sp</dimen>
+    <dimen name="normal_175_tv">28sp</dimen>
+    <dimen name="normal_200_tv">32sp</dimen>
+    <dimen name="normal_225_tv">36sp</dimen>
+    <dimen name="normal_250_tv">40sp</dimen>
+    <dimen name="normal_275_tv">44sp</dimen>
+
+    <dimen name="large_100_tv">32sp</dimen>    <!-- normal_100 * 2 -->
+    <dimen name="large_125_tv">40sp</dimen>
+    <dimen name="large_150_tv">48sp</dimen>
+    <dimen name="large_175_tv">56sp</dimen>
+    <dimen name="large_200_tv">64sp</dimen>
+
+
 </resources>

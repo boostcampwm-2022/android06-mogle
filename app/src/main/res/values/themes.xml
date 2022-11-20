@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.Mogle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Mogle" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/blue</item>
         <item name="colorOnPrimary">@color/white</item>
 
