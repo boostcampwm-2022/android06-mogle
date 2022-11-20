@@ -1,17 +1,21 @@
 package com.wakeup.data
 
 import android.content.Context
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.LargeTest
+import androidx.test.filters.SmallTest
 import com.wakeup.data.database.MogleDatabase
 import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureEntity
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.data.model.LocationEntity
-import kotlinx.coroutines.flow.first
+import com.wakeup.data.source.local.moment.MomentLocalDataSourceImpl
+import junit.framework.Assert.assertEquals
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -19,7 +23,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-@LargeTest
+@SmallTest
 class DataUnitTest {
     private lateinit var testDatabase: MogleDatabase
     private lateinit var momentDao: MomentDao
@@ -105,6 +109,16 @@ class DataUnitTest {
             )
         ))
 
-        println(momentDao.getMoments().first())
+        val result = Pager(
+            config = PagingConfig(
+                pageSize = MomentLocalDataSourceImpl.ITEMS_PER_PAGE,
+                enablePlaceholders = false,
+                initialLoadSize = 10,
+                prefetchDistance = 2
+            ),
+            pagingSourceFactory = { momentDao.getMoments("") }
+        ).flow.firstOrNull()
+
+        assertEquals(result.toString(), "androidx.paging.PagingData@28c0368")
     }
 }
