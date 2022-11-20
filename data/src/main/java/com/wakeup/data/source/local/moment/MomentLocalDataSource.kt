@@ -1,5 +1,6 @@
 package com.wakeup.data.source.local.moment
 
+import androidx.paging.PagingData
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureEntity
@@ -7,6 +8,8 @@ import com.wakeup.data.database.entity.PictureEntity
 import kotlinx.coroutines.flow.Flow
 
 interface MomentLocalDataSource {
+
+    fun getMoments(query: String, sort: String): Flow<PagingData<MomentEntity>>
 
     fun getPictures(momentId: Long): Flow<List<PictureEntity>>
 

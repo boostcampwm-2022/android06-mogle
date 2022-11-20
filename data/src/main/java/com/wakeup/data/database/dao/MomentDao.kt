@@ -1,5 +1,6 @@
 package com.wakeup.data.database.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -13,8 +14,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MomentDao {
-    @Query("SELECT * FROM moment")
-    fun getMoments(): List<MomentEntity>
+    @Query("SELECT * FROM moment " +
+            "WHERE mainAddress LIKE '%' || :query || '%' " +
+            "or detailAddress LIKE '%' || :query || '%' " +
+            "or content LIKE '%' || :query || '%'")
+    fun getMoments(query: String): PagingSource<Int, MomentEntity>
 
     @Query(
         "SELECT * FROM picture WHERE id IN" +
