@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.wakeup.buildsrc.Depends
 
 plugins {
@@ -6,6 +7,8 @@ plugins {
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
 }
+
+fun getApiKey(property: String): String = gradleLocalProperties(rootDir).getProperty(property)
 
 android {
     namespace = "com.wakeup.mogle"
@@ -23,6 +26,8 @@ android {
         versionName = Depends.generateVersionName()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders["naverMapClientId"] = getApiKey("NAVER_MAP_CLIENT_ID")
     }
 
     buildTypes {

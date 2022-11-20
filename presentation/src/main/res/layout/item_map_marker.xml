@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:background="@drawable/bg_marker_pink"
+        android:padding="6dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_thumbnail"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            tools:src="@drawable/bg_sunny" />
+    </FrameLayout>
+</layout>
