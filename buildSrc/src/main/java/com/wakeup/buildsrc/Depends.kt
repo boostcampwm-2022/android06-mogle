@@ -40,6 +40,8 @@ object Depends {
         const val testCoreKtxVersion = "1.5.0"
         const val testJunitKtxVersion = "1.1.4"
         const val testRunnerVersion = "1.5.1"
+
+        const val stethoVersion = "1.6.0"
     }
 
     object ClassPaths {
@@ -122,6 +124,10 @@ object Depends {
         // Firebase
         const val firebase_bom = "com.google.firebase:firebase-bom:${Versions.firebaseBomVersion}"
         const val firebase_analytics = "com.google.firebase:firebase-analytics-ktx"
+
+        // Stetho
+        const val stetho = "com.facebook.stetho:stetho:${Versions.stethoVersion}"
+        const val stetho_okhttp3 = "com.facebook.stetho:stetho:${Versions.stethoVersion}"
     }
 
     fun generateVersionName(): String {
