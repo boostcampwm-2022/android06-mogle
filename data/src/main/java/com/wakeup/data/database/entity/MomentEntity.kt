@@ -22,7 +22,7 @@ import com.wakeup.data.model.LocationEntity
 data class MomentEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
     @Embedded val location: LocationEntity,
-    @ColumnInfo(name = "thumbnail_id") val thumbnailId: Long,
+    @ColumnInfo(name = "thumbnail_id") val thumbnailId: Long?,
     @ColumnInfo(name = "content") val content: String,
     @ColumnInfo(name = "date") val date: String,
 )

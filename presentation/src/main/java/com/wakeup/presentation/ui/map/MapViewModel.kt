@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    private val getMomentListUseCase: GetMomentListUseCase
+    private val getMomentListUseCase: GetMomentListUseCase,
 ) : ViewModel() {
 
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())

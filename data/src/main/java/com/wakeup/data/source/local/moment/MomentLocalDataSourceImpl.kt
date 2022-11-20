@@ -24,10 +24,10 @@ class MomentLocalDataSourceImpl(
             pagingSourceFactory = { momentDao.getMoments(query) }
         ).flow
 
-    override fun getPictures(momentId: Long): Flow<List<PictureEntity>> =
+    override suspend fun getPictures(momentId: Long): List<PictureEntity> =
         momentDao.getPictures(momentId)
 
-    override fun getGlobes(momentId: Long): Flow<List<GlobeEntity>> =
+    override suspend fun getGlobes(momentId: Long): List<GlobeEntity> =
         momentDao.getGlobes(momentId)
 
     override suspend fun saveMoment(moment: MomentEntity): Long =

@@ -9,7 +9,7 @@ import javax.inject.Inject
 class SaveMomentUseCase @Inject constructor(
     private val localRepository: MomentRepository
 ) {
-    suspend fun invoke(moment: Moment, location: Location, pictures: List<Picture>) {
+    suspend operator fun invoke(moment: Moment, location: Location, pictures: List<Picture>?) {
         localRepository.saveMoment(moment, location, pictures)
     }
 }

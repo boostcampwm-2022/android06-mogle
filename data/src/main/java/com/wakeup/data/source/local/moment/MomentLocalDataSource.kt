@@ -11,9 +11,9 @@ interface MomentLocalDataSource {
 
     fun getMoments(query: String, sort: String): Flow<PagingData<MomentEntity>>
 
-    fun getPictures(momentId: Long): Flow<List<PictureEntity>>
+    suspend fun getPictures(momentId: Long): List<PictureEntity>
 
-    fun getGlobes(momentId: Long): Flow<List<GlobeEntity>>
+    suspend fun getGlobes(momentId: Long): List<GlobeEntity>
 
     suspend fun saveMoment(moment: MomentEntity): Long
 

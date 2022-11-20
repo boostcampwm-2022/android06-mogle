@@ -19,7 +19,7 @@ fun MomentEntity.toDomain(pictures: List<PictureEntity>, globes: List<GlobeEntit
         date = date
     )
 
-fun Moment.toEntity(location: Location, thumbnailId: Long): MomentEntity =
+fun Moment.toEntity(location: Location, thumbnailId: Long?): MomentEntity =
     MomentEntity(
         location = LocationEntity(
             mainAddress = location.mainAddress,

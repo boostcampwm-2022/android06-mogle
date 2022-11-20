@@ -11,7 +11,6 @@ import com.wakeup.domain.model.Moment
 import com.wakeup.domain.model.Picture
 import com.wakeup.domain.repository.MomentRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -26,20 +25,24 @@ class MomentRepositoryImpl @Inject constructor(
         localDataSource.getMoments(query, sort).map { pagingData ->
             pagingData.map { momentEntity ->
                 momentEntity.toDomain(
-                    localDataSource.getPictures(momentEntity.id).last(),
-                    localDataSource.getGlobes(momentEntity.id).last()
+                    localDataSource.getPictures(momentEntity.id),
+                    localDataSource.getGlobes(momentEntity.id)
                 )
             }
         }
 
-    override suspend fun saveMoment(moment: Moment, location: Location, pictures: List<Picture>) {
-        val pictureIndexes = localDataSource.savePicture(pictures.map { it.toEntity() })
-        val momentIndex = localDataSource.saveMoment(moment.toEntity(location, pictureIndexes[0]))
+    override suspend fun saveMoment(moment: Moment, location: Location, pictures: List<Picture>?) {
+        if (pictures == null) {
+            localDataSource.saveMoment(moment.toEntity(location, null))
+        } else {
+            val pictureIndexes = localDataSource.savePicture(pictures.map { it.toEntity() })
+            val momentIndex = localDataSource.saveMoment(moment.toEntity(location, pictureIndexes[0]))
 
-        localDataSource.saveMomentPicture(
-            pictureIndexes.map { pictureId ->
-                MomentPictureEntity(momentId = momentIndex, pictureId = pictureId)
-            }
-        )
+            localDataSource.saveMomentPicture(
+                pictureIndexes.map { pictureId ->
+                    MomentPictureEntity(momentId = momentIndex, pictureId = pictureId)
+                }
+            )
+        }
     }
 }
