@@ -3,7 +3,6 @@ package com.wakeup.presentation.ui.addmoment
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.wakeup.presentation.model.PlaceModel
 import com.wakeup.presentation.util.DateUtil
 import kotlinx.coroutines.flow.MutableStateFlow

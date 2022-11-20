@@ -8,6 +8,7 @@ import com.wakeup.presentation.model.toPresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -20,12 +21,15 @@ class PlaceSearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     val searchText = MutableStateFlow("")
-    private val searchResult = MutableStateFlow<List<PlaceModel>>(emptyList())
+
+    private val _searchResult = MutableStateFlow<List<PlaceModel>>(emptyList())
+    val searchResult = _searchResult.asStateFlow()
 
     init {
         viewModelScope.launch {
             searchText.debounce(500).collect {
-                searchResult.value = placeSearchUseCase(it).map { place ->
+                if (it.isEmpty()) return@collect
+                _searchResult.value = placeSearchUseCase(it).map { place ->
                     place.toPresentation()
                 }
             }
