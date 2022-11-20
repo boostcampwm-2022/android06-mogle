@@ -14,7 +14,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_sunny">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -43,7 +44,7 @@
                 android:layout_marginTop="@dimen/normal_200"
                 android:text="@{@string/addMoment_picture_title(vm.pictures.size())}"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="사진 (1/5)" />
@@ -52,7 +53,7 @@
                 android:id="@+id/v_line"
                 android:layout_width="1dp"
                 android:layout_height="90dp"
-                android:layout_marginTop="@dimen/normal_150"
+                android:layout_marginTop="@dimen/small_150"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_picture" />
 
@@ -60,10 +61,10 @@
                 android:id="@+id/cv_add_picture"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:layout_marginTop="@dimen/normal_150"
-                android:visibility="@{vm.isPictureMax() ? View.GONE : View.VISIBLE}"
+                android:layout_marginTop="@dimen/small_150"
                 app:cardCornerRadius="@dimen/small_100"
                 app:cardElevation="@dimen/small_100"
+                app:gone="@{vm.isPictureMax()}"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_picture">
 
@@ -83,7 +84,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/normal_100"
-                android:layout_marginTop="@dimen/normal_100"
+                android:layout_marginTop="@dimen/small_50"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
@@ -100,7 +101,7 @@
                 android:layout_marginTop="@dimen/normal_100"
                 android:text="@string/globe"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/v_line" />
 
@@ -109,7 +110,7 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_100"
+                android:layout_marginTop="@dimen/small_100"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_globe">
@@ -131,7 +132,7 @@
                 android:layout_marginTop="@dimen/normal_100"
                 android:text="@string/date"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/til_globe" />
 
@@ -139,7 +140,7 @@
                 android:id="@+id/tv_date_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_100"
+                android:layout_marginTop="@dimen/small_100"
                 android:background="@drawable/bg_corner_8"
                 android:elevation="@dimen/small_150"
                 android:padding="@dimen/normal_100"
@@ -156,7 +157,7 @@
                 android:layout_marginTop="@dimen/normal_100"
                 android:text="@string/place"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_date_value" />
 
@@ -164,7 +165,7 @@
                 android:id="@+id/tv_place_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_100"
+                android:layout_marginTop="@dimen/small_100"
                 android:background="@drawable/bg_corner_8"
                 android:elevation="@dimen/small_150"
                 android:padding="@dimen/normal_100"
@@ -180,7 +181,7 @@
                 android:layout_marginTop="@dimen/normal_100"
                 android:text="@string/content"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_place_value" />
 
@@ -188,7 +189,7 @@
                 android:id="@+id/et_content_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_100"
+                android:layout_marginTop="@dimen/small_100"
                 android:background="@drawable/bg_corner_8"
                 android:elevation="@dimen/small_150"
                 android:gravity="start|top"
@@ -199,7 +200,7 @@
                 android:minLines="5"
                 android:padding="@dimen/normal_100"
                 android:text="@={vm.content}"
-                android:textSize="14sp"
+                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_content" />
@@ -208,11 +209,10 @@
                 android:id="@+id/tv_content_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_150"
-                android:layout_marginEnd="@dimen/normal_100"
+                android:layout_marginTop="@dimen/small_100"
                 android:text="@{@string/addMoment_content_length(vm.content.length())}"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="12sp"
+                android:textSize="@dimen/small_150_tv"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintTop_toBottomOf="@id/et_content_value"
                 tools:text="0/500자" />
@@ -230,7 +230,7 @@
                 android:padding="@dimen/normal_100"
                 android:text="@string/addMoment_save"
                 android:textColor="?attr/colorOnPrimary"
-                android:textSize="16sp"
+                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"

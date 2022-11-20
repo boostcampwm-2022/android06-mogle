@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.wakeup.presentation.adapter.PictureAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentBinding
 import com.wakeup.presentation.util.BitmapUtil.fixRotation
+import com.wakeup.presentation.util.DateUtil
 import timber.log.Timber
 
 
@@ -33,6 +35,12 @@ class AddMomentFragment : Fragment() {
                 Timber.e(it)
             }
         }
+
+    val datePicker = MaterialDatePicker.Builder.datePicker().build().apply {
+        addOnPositiveButtonClickListener { date ->
+            viewModel.setSelectedDate(DateUtil.getDateByTime(date))
+        }
+    }
 
 
     override fun onCreateView(
@@ -58,7 +66,7 @@ class AddMomentFragment : Fragment() {
         }
 
         binding.tvDateValue.setOnClickListener {
-            viewModel.datePicker.show(childFragmentManager, "datePicker")
+            datePicker.show(childFragmentManager, "datePicker")
         }
 
         super.onViewCreated(view, savedInstanceState)

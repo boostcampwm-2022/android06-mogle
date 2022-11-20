@@ -19,12 +19,6 @@ class AddMomentViewModel : ViewModel() {
 
     private var selectedGlobe = globes.first()
 
-    val datePicker = MaterialDatePicker.Builder.datePicker().build().apply {
-        addOnPositiveButtonClickListener { date ->
-            _selectedDate.value = DateUtil.getDateByTime(date)
-        }
-    }
-
     private val _pictures = MutableStateFlow<List<Bitmap>>(emptyList())
     val pictures = _pictures.asStateFlow()
 
@@ -50,6 +44,10 @@ class AddMomentViewModel : ViewModel() {
     fun removePicture(picture: Bitmap) {
         _pictures.value = pictures.value - picture
         _isPictureMax.value = pictures.value.size >= 5
+    }
+
+    fun setSelectedDate(date: String) {
+        _selectedDate.value = date
     }
 
     fun setSelectedGlobe(position: Int) {
