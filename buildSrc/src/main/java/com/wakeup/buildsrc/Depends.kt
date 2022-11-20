@@ -88,6 +88,7 @@ object Depends {
         // Room
         const val room_runtime = "androidx.room:room-runtime:${Versions.roomVersion}"
         const val room_compiler = "androidx.room:room-compiler:${Versions.roomVersion}"
+        const val room_paging = "androidx.room:room-paging:${Versions.roomVersion}"
         const val room_ktx = "androidx.room:room-ktx:${Versions.roomVersion}"
 
         // Coroutines
