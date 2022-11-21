@@ -1,7 +1,7 @@
 package com.wakeup.domain.model
 
 data class Picture(
-    val bitmap: ByteArray
+    val bitmap: ByteArray,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

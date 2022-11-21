@@ -12,9 +12,9 @@ import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureEntity
 import com.wakeup.data.database.entity.PictureEntity
-import com.wakeup.data.model.LocationEntity
+import com.wakeup.data.model.PlaceEntity
 import com.wakeup.data.source.local.moment.MomentLocalDataSourceImpl
-import junit.framework.Assert.assertEquals
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -56,7 +56,7 @@ class DataUnitTest {
             )
         ))
         val momentId1 = momentDao.saveMoment(MomentEntity(
-            location = LocationEntity(
+            place = PlaceEntity(
                 mainAddress = "우리집",
                 detailAddress = "쌍문동",
                 latitude = 37.5,
@@ -68,7 +68,7 @@ class DataUnitTest {
         ))
 
         val momentId2 = momentDao.saveMoment(MomentEntity(
-            location = LocationEntity(
+            place = PlaceEntity(
                 mainAddress = "우리집zzz",
                 detailAddress = "쌍문동zzz",
                 latitude = 37.53,
