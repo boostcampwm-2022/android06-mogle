@@ -18,10 +18,7 @@ class MomentRepositoryImpl @Inject constructor(
     private val localDataSource: MomentLocalDataSource,
 ) : MomentRepository {
 
-    override fun getMoments(
-        query: String,
-        sort: String,
-    ): Flow<PagingData<Moment>> =
+    override fun getMoments(query: String, sort: String): Flow<PagingData<Moment>> =
         localDataSource.getMoments(query, sort).map { pagingData ->
             pagingData.map { momentEntity ->
                 momentEntity.toDomain(
@@ -35,8 +32,10 @@ class MomentRepositoryImpl @Inject constructor(
         if (pictures == null) {
             localDataSource.saveMoment(moment.toEntity(location, null))
         } else {
-            val pictureIndexes = localDataSource.savePicture(pictures.map { it.toEntity() })
-            val momentIndex = localDataSource.saveMoment(moment.toEntity(location, pictureIndexes[0]))
+            val pictureIndexes =
+                localDataSource.savePicture(pictures.map { it.toEntity() })
+            val momentIndex = 
+                localDataSource.saveMoment(moment.toEntity(location, pictureIndexes[0]))
 
             localDataSource.saveMomentPicture(
                 pictureIndexes.map { pictureId ->

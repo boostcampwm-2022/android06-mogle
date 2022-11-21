@@ -9,8 +9,9 @@ import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureEntity
 import com.wakeup.data.database.entity.PictureEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class MomentLocalDataSourceImpl(
+class MomentLocalDataSourceImpl @Inject constructor(
     private val momentDao: MomentDao,
 ) : MomentLocalDataSource {
     override fun getMoments(query: String, sort: String): Flow<PagingData<MomentEntity>> =
