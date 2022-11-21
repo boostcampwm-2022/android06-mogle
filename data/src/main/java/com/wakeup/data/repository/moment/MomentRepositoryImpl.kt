@@ -31,6 +31,7 @@ class MomentRepositoryImpl @Inject constructor(
     override suspend fun saveMoment(moment: Moment, location: Place, pictures: List<Picture>?) {
         if (pictures == null) {
             localDataSource.saveMoment(moment.toEntity(location, null))
+            return
         } else {
             val pictureIndexes =
                 localDataSource.savePicture(pictures.map { it.toEntity() })
