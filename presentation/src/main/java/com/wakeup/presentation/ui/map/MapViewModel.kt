@@ -12,6 +12,7 @@ import com.wakeup.presentation.factory.MomentFactory
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.mapper.toPresentation
+import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.model.PlaceModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,13 +32,19 @@ class MapViewModel @Inject constructor(
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
     val moments: Flow<PagingData<MomentModel>> = _moments
 
+    private val searchQuery = MutableStateFlow("")
+
     init {
         fetchMoments(SortType.MOST_RECENT)
     }
 
-    fun fetchMoments(sortType: SortType, query: String = "") {
+    fun fetchMoments(sortType: SortType, location: LocationModel? = null) {
         viewModelScope.launch {
-            _moments.value = getMomentListUseCase(sortType, query).map { pagingMoments ->
+            _moments.value = getMomentListUseCase(
+                sortType = sortType,
+                query = searchQuery.value,
+                myLocation = location?.toDomain()
+            ).map { pagingMoments ->
                 pagingMoments.map { moment ->
                     moment.toPresentation()
                 }
@@ -49,12 +56,14 @@ class MapViewModel @Inject constructor(
 
     fun test() {
         viewModelScope.launch {
+            var i = 0
             MomentFactory.createMoments(10).map { moment ->
                 saveMomentUseCase(
                     moment.toDomain(),
-                    MomentFactory.createPlace(0).toDomain(),
+                    MomentFactory.createPlace(i).toDomain(),
                     null
                 )
+                i += 1
             }
         }
     }

@@ -5,12 +5,13 @@ import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureEntity
 import com.wakeup.data.database.entity.PictureEntity
+import com.wakeup.data.model.LocationEntity
 import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
 
 interface MomentLocalDataSource {
 
-    fun getMoments(sortType: SortType, query: String): Flow<PagingData<MomentEntity>>
+    fun getMoments(sortType: SortType, query: String, myLocation: LocationEntity?): Flow<PagingData<MomentEntity>>
 
     suspend fun getPictures(momentId: Long): List<PictureEntity>
 

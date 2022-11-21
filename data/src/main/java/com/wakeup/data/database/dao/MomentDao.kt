@@ -29,13 +29,17 @@ interface MomentDao {
 
     @Query(
         """
-            SELECT * FROM moment
+            SELECT *, 
+                (latitude - :lat) * (latitude - :lat) +
+                (longitude - :lng) * (longitude - :lng) AS distance
+            FROM moment
             WHERE mainAddress LIKE '%' || :query || '%' 
             OR detailAddress LIKE '%' || :query || '%'
             OR content LIKE '%' || :query || '%'
+            ORDER BY distance
         """
     )
-    fun getMomentsSortByCloset(query: String): PagingSource<Int, MomentEntity>
+    fun getMomentsSortByCloset(query: String, lat: Double?, lng: Double?): PagingSource<Int, MomentEntity>
 
     @Query(
         "SELECT * FROM picture WHERE id IN" +

@@ -30,6 +30,7 @@ import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
 import com.wakeup.presentation.databinding.ItemMapMarkerBinding
+import com.wakeup.presentation.model.LocationModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -80,18 +81,28 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setMenus(binding: BottomSheetBinding) {
-        val items = listOf(getString(R.string.date_sort_desc), getString(R.string.date_sort_asc), getString(R.string.location_sort))
+        val items = listOf(
+            getString(R.string.date_sort_desc),
+            getString(R.string.date_sort_asc),
+            getString(R.string.location_sort)
+        )
         val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_sort_menu, items)
         (binding.textField.editText as? AutoCompleteTextView)?.setAdapter(menuAdapter)
 
         binding.sortMenu.setOnItemClickListener { _, _, position, _ ->
             expandBottomSheet(binding.bottomSheet)
-            val sortType = when (position) {
-                0 -> SortType.MOST_RECENT
-                1 -> SortType.OLDEST
-                else -> SortType.CLOSET
+
+            Timber.d("${locationSource.lastLocation?.latitude} ${locationSource.lastLocation?.longitude}")
+            when (position) {
+                0 -> viewModel.fetchMoments(SortType.MOST_RECENT)
+                1 -> viewModel.fetchMoments(SortType.OLDEST)
+                else -> locationSource.lastLocation?.apply {
+                    viewModel.fetchMoments(
+                        sortType = SortType.CLOSET,
+                        location = LocationModel(latitude, longitude)
+                    )
+                }
             }
-            viewModel.fetchMoments(sortType)
         }
     }
 
