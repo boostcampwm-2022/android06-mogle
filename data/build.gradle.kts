@@ -87,4 +87,7 @@ dependencies {
     implementation(Depends.Libraries.paging_runtime_ktx) {
         exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel-ktx")
     }
+
+    // Sandwich
+    implementation(Depends.Libraries.sandwich)
 }

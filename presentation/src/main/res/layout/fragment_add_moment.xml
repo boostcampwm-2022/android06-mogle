@@ -5,8 +5,6 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
             name="vm"
             type="com.wakeup.presentation.ui.addmoment.AddMomentViewModel" />
@@ -125,8 +123,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:text="@{vm.globes[0]}"
-                    app:simpleItems="@{vm.globes}" />
+                    android:text="@{vm.globes[0].name}"
+                    app:simpleItems="@{vm.tmpGlobes}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -173,11 +171,11 @@
                 android:layout_marginTop="@dimen/small_100"
                 android:background="@drawable/bg_corner_8"
                 android:elevation="@dimen/small_150"
+                android:hint="터치하여 장소를 검색해 주세요"
                 android:padding="@dimen/normal_100"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_place"
-                tools:text="우리집" />
+                app:layout_constraintTop_toBottomOf="@id/tv_place" />
 
             <TextView
                 android:id="@+id/tv_content"
@@ -222,7 +220,7 @@
                 app:layout_constraintTop_toBottomOf="@id/et_content_value"
                 tools:text="0/500자" />
 
-            <TextView
+            <Button
                 android:id="@+id/tv_save"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -231,7 +229,9 @@
                 android:background="@drawable/bg_corner_8"
                 android:backgroundTint="?attr/colorPrimary"
                 android:elevation="@dimen/small_150"
+                android:enabled="@{vm.isSaveButtonEnabled()}"
                 android:gravity="center"
+                android:onClick="@{() -> vm.saveMoment()}"
                 android:padding="@dimen/normal_100"
                 android:text="@string/addMoment_save"
                 android:textColor="?attr/colorOnPrimary"

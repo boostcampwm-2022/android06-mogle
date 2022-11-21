@@ -88,4 +88,7 @@ dependencies {
 
     // Circle Image View
     implementation(Depends.Libraries.circle_image_view)
+
+    // Sandwich
+    implementation(Depends.Libraries.sandwich)
 }

@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        setBottomNav()
+        setBottomNav()
         binding.fab.setOnClickListener {
             Timber.d("모먼트 남기기 페이지 이동")
         }

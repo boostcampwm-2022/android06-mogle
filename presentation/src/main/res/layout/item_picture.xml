@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="bitmap"
-            type="android.graphics.Bitmap" />
+            name="picture"
+            type="com.wakeup.presentation.model.PictureModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -25,7 +25,7 @@
             android:layout_height="90dp"
             android:contentDescription="@string/item_picture_description"
             android:scaleType="centerCrop"
-            app:imageBitmap="@{bitmap}" />
+            app:imageBitmap="@{picture.bitmap}" />
 
         <ImageView
             android:id="@+id/tv_remove"

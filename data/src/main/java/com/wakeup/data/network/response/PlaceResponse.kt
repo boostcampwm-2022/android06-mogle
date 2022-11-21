@@ -28,7 +28,9 @@ data class PlaceResponseItem(
 fun PlaceResponseItem.toDomain(): Place {
     return Place(
         mainAddress = place_name,
-        detailAddress = address_name
+        detailAddress = road_address_name,
+        latitude = y.toDouble(),
+        longitude = x.toDouble()
     )
 }
 
