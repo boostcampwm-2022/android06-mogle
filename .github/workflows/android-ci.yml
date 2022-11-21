@@ -37,7 +37,7 @@ jobs:
 
     - name: Add Kakao Rest Api Key into local properties
       env:
-        NAVER_MAP_CLIENT_ID: ${{ secrets.KAKAO_REST_API_KEY }}
+        KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
       run: echo KAKAO_REST_API_KEY="$KAKAO_REST_API_KEY" >> ./local.properties
 
     - name: Build with Gradle
