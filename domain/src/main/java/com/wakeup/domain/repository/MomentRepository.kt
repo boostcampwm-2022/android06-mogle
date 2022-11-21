@@ -8,7 +8,7 @@ import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
 
 interface MomentRepository {
-    fun getMoments(query: String, sort: SortType): Flow<PagingData<Moment>>
+    fun getMoments(sort: SortType, query: String): Flow<PagingData<Moment>>
 
     suspend fun saveMoment(moment: Moment, location: Place, pictures: List<Picture>?)
 }

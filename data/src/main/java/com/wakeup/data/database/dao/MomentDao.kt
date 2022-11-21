@@ -25,7 +25,7 @@ interface MomentDao {
             CASE WHEN :sortType = 1 THEN date END ASC
         """
     )
-    fun getMoments(query: String, sortType: Int = 0): PagingSource<Int, MomentEntity>
+    fun getMoments(sortType: Int = 0, query: String): PagingSource<Int, MomentEntity>
 
     @Query(
         """

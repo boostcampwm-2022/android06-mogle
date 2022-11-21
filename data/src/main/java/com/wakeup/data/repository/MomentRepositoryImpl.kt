@@ -19,8 +19,8 @@ class MomentRepositoryImpl @Inject constructor(
     private val localDataSource: MomentLocalDataSource,
 ) : MomentRepository {
 
-    override fun getMoments(query: String, sort: SortType): Flow<PagingData<Moment>> =
-        localDataSource.getMoments(query, sort).map { pagingData ->
+    override fun getMoments(sort: SortType, query: String): Flow<PagingData<Moment>> =
+        localDataSource.getMoments(sort, query).map { pagingData ->
             pagingData.map { momentEntity ->
                 momentEntity.toDomain(
                     localDataSource.getPictures(momentEntity.id),

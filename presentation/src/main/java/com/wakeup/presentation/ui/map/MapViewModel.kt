@@ -35,9 +35,9 @@ class MapViewModel @Inject constructor(
         fetchMoments(SortType.MOST_RECENT)
     }
 
-    fun fetchMoments(sortType: SortType) {
+    fun fetchMoments(sortType: SortType, query: String = "") {
         viewModelScope.launch {
-            _moments.value = getMomentListUseCase("", sortType).map { pagingMoments ->
+            _moments.value = getMomentListUseCase(sortType, query).map { pagingMoments ->
                 pagingMoments.map { moment ->
                     moment.toPresentation()
                 }

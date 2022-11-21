@@ -15,7 +15,7 @@ import javax.inject.Inject
 class MomentLocalDataSourceImpl @Inject constructor(
     private val momentDao: MomentDao,
 ) : MomentLocalDataSource {
-    override fun getMoments(query: String, sortType: SortType): Flow<PagingData<MomentEntity>> =
+    override fun getMoments(sortType: SortType, query: String): Flow<PagingData<MomentEntity>> =
         Pager(
             config = PagingConfig(
                 pageSize = ITEMS_PER_PAGE,
@@ -25,8 +25,8 @@ class MomentLocalDataSourceImpl @Inject constructor(
             ),
             pagingSourceFactory = {
                 when (sortType) {
-                    SortType.MOST_RECENT -> momentDao.getMoments(query, 0)
-                    SortType.OLDEST -> momentDao.getMoments(query, 1)
+                    SortType.MOST_RECENT -> momentDao.getMoments(0, query)
+                    SortType.OLDEST -> momentDao.getMoments(1, query)
                     SortType.CLOSET -> momentDao.getMomentsSortByCloset(query)
                 }
             }

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MomentLocalDataSource {
 
-    fun getMoments(query: String, sortType: SortType): Flow<PagingData<MomentEntity>>
+    fun getMoments(sortType: SortType, query: String): Flow<PagingData<MomentEntity>>
 
     suspend fun getPictures(momentId: Long): List<PictureEntity>
 
