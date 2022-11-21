@@ -12,7 +12,7 @@ import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureEntity
 import com.wakeup.data.database.entity.PictureEntity
-import com.wakeup.data.model.PlaceEntity
+import com.wakeup.data.database.entity.PlaceEntity
 import com.wakeup.data.source.local.moment.MomentLocalDataSourceImpl
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.firstOrNull

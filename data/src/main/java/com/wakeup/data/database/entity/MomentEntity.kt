@@ -1,12 +1,7 @@
 package com.wakeup.data.database.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
-import com.wakeup.data.model.PlaceEntity
 
 @Entity(
     tableName = "moment",

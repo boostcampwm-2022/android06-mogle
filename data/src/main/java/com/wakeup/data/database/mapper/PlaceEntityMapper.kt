@@ -1,6 +1,6 @@
 package com.wakeup.data.database.mapper
 
-import com.wakeup.data.model.PlaceEntity
+import com.wakeup.data.database.entity.PlaceEntity
 import com.wakeup.domain.model.Place
 
 fun PlaceEntity.toDomain(): Place {
