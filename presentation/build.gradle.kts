@@ -79,4 +79,13 @@ dependencies {
 
     // Paging
     implementation(Depends.Libraries.paging_runtime_ktx)
+
+    // Naver Map
+    implementation(Depends.Libraries.naverMap)
+
+    // Google Play Location
+    implementation(Depends.Libraries.play_service_location)
+
+    // Circle Image View
+    implementation(Depends.Libraries.circle_image_view)
 }

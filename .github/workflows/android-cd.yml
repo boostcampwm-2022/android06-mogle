@@ -27,6 +27,11 @@ jobs:
       - name: Create google-services.json
         run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
 
+      - name: Add Naver Map Key into local properties
+        env:
+            NAVER_MAP_CLIENT_ID: ${{ secrets.NAVER_MAP_CLIENT_ID }}
+        run: echo NAVER_MAP_CLIENT_ID="$NAVER_MAP_CLIENT_ID" > ./local.properties
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
