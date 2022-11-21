@@ -19,8 +19,8 @@ class MomentLocalDataSourceImpl @Inject constructor(
             config = PagingConfig(
                 pageSize = ITEMS_PER_PAGE,
                 enablePlaceholders = false,
-                initialLoadSize = 10,
-                prefetchDistance = 2
+                initialLoadSize = ITEMS_PER_PAGE,
+                prefetchDistance = PREFETCH_PAGE
             ),
             pagingSourceFactory = { momentDao.getMoments(query) }
         ).flow
@@ -42,6 +42,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
     }
 
     companion object {
+        const val PREFETCH_PAGE = 2
         const val ITEMS_PER_PAGE = 10
     }
 }
