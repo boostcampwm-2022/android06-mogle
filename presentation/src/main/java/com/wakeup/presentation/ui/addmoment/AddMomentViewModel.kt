@@ -3,7 +3,6 @@ package com.wakeup.presentation.ui.addmoment
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.wakeup.presentation.model.PlaceModel
 import com.wakeup.presentation.util.DateUtil
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +14,7 @@ class AddMomentViewModel : ViewModel() {
     val globes = arrayOf("globe 1", "globe 2", "globe 3")
 
     // mock data
-    val place = PlaceModel("우리집", "안동시 옥동")
+    val place = PlaceModel("우리집", "안동시 옥동", 37.6, 104.4)
 
     private var selectedGlobe = globes.first()
 

@@ -1,20 +1,34 @@
 package com.wakeup.data.source.local.moment
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureEntity
 import com.wakeup.data.database.entity.PictureEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class MomentLocalDataSourceImpl(
-    private val momentDao: MomentDao
-): MomentLocalDataSource {
+class MomentLocalDataSourceImpl @Inject constructor(
+    private val momentDao: MomentDao,
+) : MomentLocalDataSource {
+    override fun getMoments(query: String, sort: String): Flow<PagingData<MomentEntity>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = ITEMS_PER_PAGE,
+                enablePlaceholders = false,
+                initialLoadSize = ITEMS_PER_PAGE,
+                prefetchDistance = PREFETCH_PAGE
+            ),
+            pagingSourceFactory = { momentDao.getMoments(query) }
+        ).flow
 
-    override fun getPictures(momentId: Long): Flow<List<PictureEntity>> =
+    override suspend fun getPictures(momentId: Long): List<PictureEntity> =
         momentDao.getPictures(momentId)
 
-    override fun getGlobes(momentId: Long): Flow<List<GlobeEntity>> =
+    override suspend fun getGlobes(momentId: Long): List<GlobeEntity> =
         momentDao.getGlobes(momentId)
 
     override suspend fun saveMoment(moment: MomentEntity): Long =
@@ -27,4 +41,8 @@ class MomentLocalDataSourceImpl(
         momentDao.saveMomentPicture(MomentPictures)
     }
 
+    companion object {
+        const val PREFETCH_PAGE = 2
+        const val ITEMS_PER_PAGE = 10
+    }
 }

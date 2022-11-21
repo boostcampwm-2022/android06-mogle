@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
-import com.wakeup.data.model.LocationEntity
+import com.wakeup.data.model.PlaceEntity
 
 @Entity(
     tableName = "moment",
@@ -21,8 +21,8 @@ import com.wakeup.data.model.LocationEntity
 )
 data class MomentEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
-    @Embedded val location: LocationEntity,
-    @ColumnInfo(name = "thumbnail_id") val thumbnailId: Long,
+    @Embedded val place: PlaceEntity,
+    @ColumnInfo(name = "thumbnail_id") val thumbnailId: Long?,
     @ColumnInfo(name = "content") val content: String,
     @ColumnInfo(name = "date") val date: String,
 )

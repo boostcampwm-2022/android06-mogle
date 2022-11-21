@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.wakeup.domain.usecase.GetMomentListUseCase
 import com.wakeup.presentation.model.MomentModel
-import com.wakeup.presentation.model.toPresentation
+import com.wakeup.presentation.mapper.toPresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +26,7 @@ class MapViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+
             _moments.value = getMomentListUseCase("", "").map { pagingMoments ->
                 pagingMoments.map { moment ->
                     moment.toPresentation()
