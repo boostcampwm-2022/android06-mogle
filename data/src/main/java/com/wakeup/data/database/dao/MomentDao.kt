@@ -9,14 +9,33 @@ import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureEntity
 import com.wakeup.data.database.entity.PictureEntity
+import com.wakeup.domain.model.SortType
 
 @Dao
 interface MomentDao {
-    @Query("SELECT * FROM moment " +
-            "WHERE mainAddress LIKE '%' || :query || '%' " +
-            "or detailAddress LIKE '%' || :query || '%' " +
-            "or content LIKE '%' || :query || '%'")
-    fun getMoments(query: String): PagingSource<Int, MomentEntity>
+
+    @Query(
+        """
+            SELECT * FROM moment
+            WHERE mainAddress LIKE '%' || :query || '%' 
+            OR detailAddress LIKE '%' || :query || '%'
+            OR content LIKE '%' || :query || '%'
+            ORDER BY
+            CASE WHEN :sortType = 0 THEN date END DESC,
+            CASE WHEN :sortType = 1 THEN date END ASC
+        """
+    )
+    fun getMoments(query: String, sortType: Int = 0): PagingSource<Int, MomentEntity>
+
+    @Query(
+        """
+            SELECT * FROM moment
+            WHERE mainAddress LIKE '%' || :query || '%' 
+            OR detailAddress LIKE '%' || :query || '%'
+            OR content LIKE '%' || :query || '%'
+        """
+    )
+    fun getMomentsSortByCloset(query: String): PagingSource<Int, MomentEntity>
 
     @Query(
         "SELECT * FROM picture WHERE id IN" +

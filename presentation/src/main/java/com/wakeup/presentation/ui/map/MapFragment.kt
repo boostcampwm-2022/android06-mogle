@@ -89,7 +89,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             val sortType = when (position) {
                 0 -> SortType.MOST_RECENT
                 1 -> SortType.OLDEST
-                else -> SortType.DEFAULT
+                else -> SortType.CLOSET
             }
             viewModel.fetchMoments(sortType)
         }

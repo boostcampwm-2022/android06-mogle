@@ -32,7 +32,7 @@ class MapViewModel @Inject constructor(
     val moments: Flow<PagingData<MomentModel>> = _moments
 
     init {
-        fetchMoments(SortType.DEFAULT)
+        fetchMoments(SortType.MOST_RECENT)
     }
 
     fun fetchMoments(sortType: SortType) {

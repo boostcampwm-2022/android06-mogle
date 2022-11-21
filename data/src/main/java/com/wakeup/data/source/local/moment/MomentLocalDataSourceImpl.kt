@@ -15,7 +15,7 @@ import javax.inject.Inject
 class MomentLocalDataSourceImpl @Inject constructor(
     private val momentDao: MomentDao,
 ) : MomentLocalDataSource {
-    override fun getMoments(query: String, sort: SortType): Flow<PagingData<MomentEntity>> =
+    override fun getMoments(query: String, sortType: SortType): Flow<PagingData<MomentEntity>> =
         Pager(
             config = PagingConfig(
                 pageSize = ITEMS_PER_PAGE,
@@ -23,7 +23,13 @@ class MomentLocalDataSourceImpl @Inject constructor(
                 initialLoadSize = ITEMS_PER_PAGE,
                 prefetchDistance = PREFETCH_PAGE
             ),
-            pagingSourceFactory = { momentDao.getMoments(query) }
+            pagingSourceFactory = {
+                when (sortType) {
+                    SortType.MOST_RECENT -> momentDao.getMoments(query, 0)
+                    SortType.OLDEST -> momentDao.getMoments(query, 1)
+                    SortType.CLOSET -> momentDao.getMomentsSortByCloset(query)
+                }
+            }
         ).flow
 
     override suspend fun getPictures(momentId: Long): List<PictureEntity> =

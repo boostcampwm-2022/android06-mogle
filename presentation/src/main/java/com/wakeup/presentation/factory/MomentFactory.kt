@@ -14,7 +14,7 @@ object MomentFactory {
                 1L,
                 createPlace(it),
                 null,
-                "내용${it}",
+                "재민${it}",
                 listOf(GlobeModel("default")),
                 System.currentTimeMillis() + (it * ONE_DAY)
             )
