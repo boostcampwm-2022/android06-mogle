@@ -23,7 +23,6 @@
             android:layout_gravity="bottom"
             android:background="?attr/colorPrimary"
             app:fabCradleMargin="10dp"
-            android:visibility="gone"
             app:fabCradleRoundedCornerRadius="50dp"
             app:fabCradleVerticalOffset="10dp">
 
@@ -33,7 +32,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="16dp"
                 android:background="@{null}"
-                android:visibility="gone"
                 app:labelVisibilityMode="unlabeled"
                 app:menu="@menu/menu_bottom_nav" />
 
@@ -45,7 +43,6 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/add_button"
             android:src="@drawable/ic_add"
-            android:visibility="gone"
             app:layout_anchor="@id/bottom_app_bar" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
