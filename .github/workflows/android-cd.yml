@@ -30,7 +30,7 @@ jobs:
       - name: Add Naver Map Key into local properties
         env:
             NAVER_MAP_CLIENT_ID: ${{ secrets.NAVER_MAP_CLIENT_ID }}
-        run: echo NAVER_MAP_CLIENT_ID="$NAVER_MAP_CLIENT_ID" >> ./local.properties
+        run: echo NAVER_MAP_CLIENT_ID="$NAVER_MAP_CLIENT_ID" > ./local.properties
 
       - name: Add Kakao Rest Api Key into local properties
         env:
