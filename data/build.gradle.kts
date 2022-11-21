@@ -68,6 +68,7 @@ dependencies {
     // Room
     implementation(Depends.Libraries.room_runtime)
     implementation(Depends.Libraries.room_ktx)
+    implementation(Depends.Libraries.room_paging)
     kapt(Depends.Libraries.room_compiler)
 
     // Network

@@ -14,7 +14,7 @@ class AddMomentViewModel : ViewModel() {
     val globes = arrayOf("globe 1", "globe 2", "globe 3")
 
     // mock data
-    val place = PlaceModel("우리집", "안동시 옥동")
+    val place = PlaceModel("우리집", "안동시 옥동", 37.6, 104.4)
 
     private var selectedGlobe = globes.first()
 

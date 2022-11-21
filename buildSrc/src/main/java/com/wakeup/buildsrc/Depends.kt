@@ -40,6 +40,13 @@ object Depends {
         const val testCoreKtxVersion = "1.5.0"
         const val testJunitKtxVersion = "1.1.4"
         const val testRunnerVersion = "1.5.1"
+
+        const val playServiceLocationVersion = "20.0.0"
+        const val naverMapVersion = "3.16.0"
+
+        const val circleImageViewVersion = "3.1.0"
+
+        const val stethoVersion = "1.6.0"
     }
 
     object ClassPaths {
@@ -88,6 +95,7 @@ object Depends {
         // Room
         const val room_runtime = "androidx.room:room-runtime:${Versions.roomVersion}"
         const val room_compiler = "androidx.room:room-compiler:${Versions.roomVersion}"
+        const val room_paging = "androidx.room:room-paging:${Versions.roomVersion}"
         const val room_ktx = "androidx.room:room-ktx:${Versions.roomVersion}"
 
         // Coroutines
@@ -122,6 +130,19 @@ object Depends {
         // Firebase
         const val firebase_bom = "com.google.firebase:firebase-bom:${Versions.firebaseBomVersion}"
         const val firebase_analytics = "com.google.firebase:firebase-analytics-ktx"
+
+        // Google Play Service Location
+        const val play_service_location = "com.google.android.gms:play-services-location:${Versions.playServiceLocationVersion}"
+
+        // Naver Map
+        const val naverMap = "com.naver.maps:map-sdk:${Versions.naverMapVersion}"
+
+        // Circle Image View
+        const val circle_image_view = "de.hdodenhof:circleimageview:${Versions.circleImageViewVersion}"
+
+        // Stetho
+        const val stetho = "com.facebook.stetho:stetho:${Versions.stethoVersion}"
+        const val stetho_okhttp3 = "com.facebook.stetho:stetho:${Versions.stethoVersion}"
     }
 
     fun generateVersionName(): String {

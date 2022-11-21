@@ -7,11 +7,10 @@
         android:layout_height="match_parent"
         tools:context=".ui.map.MapFragment">
 
-        <TextView
+        <FrameLayout
+            android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="지도" />
+            android:layout_height="match_parent"/>
 
         <include
             android:id="@+id/bottom_sheet"
