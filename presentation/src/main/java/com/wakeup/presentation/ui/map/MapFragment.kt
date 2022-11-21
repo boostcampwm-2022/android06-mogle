@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.map
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
@@ -23,6 +24,7 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
+import com.wakeup.domain.model.SortType
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.BottomSheetBinding
@@ -57,10 +59,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         initLocation()
         initBottomSheet()
 
-        fetchMoments()
+        collectMoments()
     }
 
-    private fun fetchMoments() {
+    private fun collectMoments() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.moments.collectLatest {
@@ -78,15 +80,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setMenus(binding: BottomSheetBinding) {
-        val items = listOf(getString(R.string.date_sort_desc), getString(R.string.date_sort_asc))
+        val items = listOf(getString(R.string.date_sort_desc), getString(R.string.date_sort_asc), getString(R.string.location_sort))
         val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_sort_menu, items)
         (binding.textField.editText as? AutoCompleteTextView)?.setAdapter(menuAdapter)
 
-        binding.sortMenu.setOnItemClickListener { _, _, _, _ ->
+        binding.sortMenu.setOnItemClickListener { _, _, position, _ ->
             expandBottomSheet(binding.bottomSheet)
-            val sortType = binding.sortMenu.text.toString()
-            Timber.d(sortType)
-            // TODO: 리스트 정렬
+            val sortType = when (position) {
+                0 -> SortType.MOST_RECENT
+                1 -> SortType.OLDEST
+                else -> SortType.DEFAULT
+            }
+            viewModel.fetchMoments(sortType)
         }
     }
 

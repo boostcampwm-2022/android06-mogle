@@ -8,13 +8,14 @@ import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureEntity
 import com.wakeup.data.database.entity.PictureEntity
+import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MomentLocalDataSourceImpl @Inject constructor(
     private val momentDao: MomentDao,
 ) : MomentLocalDataSource {
-    override fun getMoments(query: String, sort: String): Flow<PagingData<MomentEntity>> =
+    override fun getMoments(query: String, sort: SortType): Flow<PagingData<MomentEntity>> =
         Pager(
             config = PagingConfig(
                 pageSize = ITEMS_PER_PAGE,

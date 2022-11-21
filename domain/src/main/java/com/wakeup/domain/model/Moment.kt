@@ -6,5 +6,5 @@ data class Moment(
     val pictures: List<Picture>?,
     val content: String,
     val globes: List<Globe>,
-    val date: String,
+    val date: Long,
 )

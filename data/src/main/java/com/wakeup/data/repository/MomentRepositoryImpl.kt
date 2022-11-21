@@ -1,4 +1,4 @@
-package com.wakeup.data.repository.moment
+package com.wakeup.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
@@ -9,6 +9,7 @@ import com.wakeup.data.source.local.moment.MomentLocalDataSource
 import com.wakeup.domain.model.Moment
 import com.wakeup.domain.model.Picture
 import com.wakeup.domain.model.Place
+import com.wakeup.domain.model.SortType
 import com.wakeup.domain.repository.MomentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -18,7 +19,7 @@ class MomentRepositoryImpl @Inject constructor(
     private val localDataSource: MomentLocalDataSource,
 ) : MomentRepository {
 
-    override fun getMoments(query: String, sort: String): Flow<PagingData<Moment>> =
+    override fun getMoments(query: String, sort: SortType): Flow<PagingData<Moment>> =
         localDataSource.getMoments(query, sort).map { pagingData ->
             pagingData.map { momentEntity ->
                 momentEntity.toDomain(
