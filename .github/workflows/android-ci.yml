@@ -26,7 +26,9 @@ jobs:
       run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
 
     - name: Create Local Properties
-      run: echo '${{ secrets.LOCAL_PROPERTIES }}' > ./local.properties
+      env:
+        LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
+      run: echo "$LOCAL_PROPERTIES" > ./local.properties
 
     - name: Build with Gradle
       run: ./gradlew build
