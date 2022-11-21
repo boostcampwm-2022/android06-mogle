@@ -73,4 +73,8 @@ dependencies {
     // Firebase
     implementation(platform(Depends.Libraries.firebase_bom))
     implementation(Depends.Libraries.firebase_analytics)
+
+    // Stetho
+    implementation(Depends.Libraries.stetho)
+    implementation(Depends.Libraries.stetho_okhttp3)
 }

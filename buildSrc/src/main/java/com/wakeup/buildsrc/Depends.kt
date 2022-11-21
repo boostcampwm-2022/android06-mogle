@@ -45,6 +45,8 @@ object Depends {
         const val naverMapVersion = "3.16.0"
 
         const val circleImageViewVersion = "3.1.0"
+
+        const val stethoVersion = "1.6.0"
     }
 
     object ClassPaths {
@@ -136,6 +138,10 @@ object Depends {
 
         // Circle Image View
         const val circle_image_view = "de.hdodenhof:circleimageview:${Versions.circleImageViewVersion}"
+
+        // Stetho
+        const val stetho = "com.facebook.stetho:stetho:${Versions.stethoVersion}"
+        const val stetho_okhttp3 = "com.facebook.stetho:stetho:${Versions.stethoVersion}"
     }
 
     fun generateVersionName(): String {
