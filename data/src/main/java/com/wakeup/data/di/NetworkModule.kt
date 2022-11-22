@@ -13,6 +13,7 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Converter
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -22,10 +23,13 @@ object NetworkModule {
 
     private const val KAKAO_BASE_URL = "https://dapi.kakao.com/"
 
-    private val loggingInterceptor = HttpLoggingInterceptor()
-        .apply {
-            level = HttpLoggingInterceptor.Level.BODY
+    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+        level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
         }
+    }
 
     private val kakaoHeaderInterceptor = Interceptor { chain ->
         chain.proceed(
@@ -37,23 +41,31 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideKAKAOOkHttpClient(): OkHttpClient {
+    fun provideKakaoOkHttpClient(): OkHttpClient {
         return OkHttpClient().newBuilder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(kakaoHeaderInterceptor)
             .build()
     }
 
-    private val json = Json { ignoreUnknownKeys = true }
-
     @OptIn(ExperimentalSerializationApi::class)
     @Provides
     @Singleton
-    fun provideKakaoRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideKakaoConverterFactory(): Converter.Factory {
+        val json = Json { ignoreUnknownKeys = true }
+        return json.asConverterFactory("application/json".toMediaType())
+    }
+
+    @Provides
+    @Singleton
+    fun provideKakaoRetrofit(
+        okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(KAKAO_BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(converterFactory)
             .build()
     }
 

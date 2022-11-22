@@ -1,7 +1,6 @@
 package com.wakeup.presentation.ui.addmoment
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wakeup.domain.usecase.SaveMomentUseCase
@@ -30,6 +29,8 @@ class AddMomentViewModel @Inject constructor(
         GlobeModel("globe 2"),
         GlobeModel("globe 3"),
     )
+
+    val thumbnail = globes.first()
 
     val tmpGlobes = arrayOf(
         ("globe 1"),

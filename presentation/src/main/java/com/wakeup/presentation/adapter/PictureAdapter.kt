@@ -24,6 +24,7 @@ class PictureAdapter(private val onClickRemovePicture: (picture: PictureModel) -
 
         fun bind(picture: PictureModel) {
             binding.picture = picture
+            binding.executePendingBindings()
         }
 
         companion object {
