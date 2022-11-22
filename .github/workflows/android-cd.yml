@@ -24,18 +24,11 @@ jobs:
           # Firebase token you can get by running `firebase login:ci`
           firebase-token: ${{secrets.FIREBASE_TOKEN}}
 
-      - name: Create google-services.json
+      - name: Create google-service
         run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
 
-      - name: Add Naver Map Key into local properties
-        env:
-            NAVER_MAP_CLIENT_ID: ${{ secrets.NAVER_MAP_CLIENT_ID }}
-        run: echo NAVER_MAP_CLIENT_ID="$NAVER_MAP_CLIENT_ID" > ./local.properties
-
-      - name: Add Kakao Rest Api Key into local properties
-        env:
-          NAVER_MAP_CLIENT_ID: ${{ secrets.KAKAO_REST_API_KEY }}
-        run: echo KAKAO_REST_API_KEY="$KAKAO_REST_API_KEY" > ./local.properties
+      - name: Create Local Properties
+        run: echo '${{ secrets.LOCAL_PROPERTIES }}' > ./local.properties
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew

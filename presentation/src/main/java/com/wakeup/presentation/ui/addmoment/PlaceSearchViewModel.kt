@@ -27,13 +27,12 @@ class PlaceSearchViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             searchText.debounce(500).collect {
-                if (it.isEmpty()) return@collect
-                _searchResult.value = placeSearchUseCase(it).map { place ->
-                    place.toPresentation()
+                _searchResult.value = if (it.isEmpty()) {
+                    emptyList()
+                } else {
+                    placeSearchUseCase(it).map { place -> place.toPresentation() }
                 }
             }
         }
     }
 }
-
-
