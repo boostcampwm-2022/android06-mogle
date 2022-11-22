@@ -1,4 +1,4 @@
-package com.wakeup.data.source.remote.PlaceSearch
+package com.wakeup.data.source.remote.placeSearch
 
 import com.wakeup.data.network.response.PlaceResponse
 import com.wakeup.data.network.service.PlaceSearchService

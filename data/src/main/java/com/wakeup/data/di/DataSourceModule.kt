@@ -2,8 +2,8 @@ package com.wakeup.data.di
 
 import com.wakeup.data.source.local.moment.MomentLocalDataSource
 import com.wakeup.data.source.local.moment.MomentLocalDataSourceImpl
-import com.wakeup.data.source.remote.PlaceSearch.PlaceSearchRemoteDataSource
-import com.wakeup.data.source.remote.PlaceSearch.PlaceSearchRemoteDataSourceImpl
+import com.wakeup.data.source.remote.placeSearch.PlaceSearchRemoteDataSource
+import com.wakeup.data.source.remote.placeSearch.PlaceSearchRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.wakeup.data.repository.moment
+package com.wakeup.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
@@ -30,14 +30,13 @@ class MomentRepositoryImpl @Inject constructor(
         }
 
     override suspend fun saveMoment(moment: Moment, place: Place, pictures: List<Picture>) {
-        Timber.d("asdsadsa: ${pictures.first().bitmap.size}")
         if (pictures.isEmpty()) {
             localDataSource.saveMoment(moment.toEntity(place, null))
             return
         } else {
             val pictureIndexes =
                 localDataSource.savePicture(pictures.map { it.toEntity() })
-            val momentIndex = 
+            val momentIndex =
                 localDataSource.saveMoment(moment.toEntity(place, pictureIndexes[0]))
 
             localDataSource.saveMomentPicture(
