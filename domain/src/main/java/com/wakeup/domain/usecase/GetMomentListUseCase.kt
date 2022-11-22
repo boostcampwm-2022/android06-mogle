@@ -1,15 +1,17 @@
 package com.wakeup.domain.usecase
 
 import androidx.paging.PagingData
+import com.wakeup.domain.model.Location
 import com.wakeup.domain.model.Moment
+import com.wakeup.domain.model.SortType
 import com.wakeup.domain.repository.MomentRepository
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class GetMomentListUseCase @Inject constructor(
     private val momentRepository: MomentRepository
 ) {
-    operator fun invoke(query: String, sort: String): Flow<PagingData<Moment>>{
-        return momentRepository.getMoments(query, sort)
+    operator fun invoke(sortType: SortType, query: String, myLocation: Location?): Flow<PagingData<Moment>>{
+        return momentRepository.getMoments(sortType, query, myLocation)
     }
 }

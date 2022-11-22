@@ -12,11 +12,33 @@ import com.wakeup.data.database.entity.PictureEntity
 
 @Dao
 interface MomentDao {
-    @Query("SELECT * FROM moment " +
-            "WHERE mainAddress LIKE '%' || :query || '%' " +
-            "or detailAddress LIKE '%' || :query || '%' " +
-            "or content LIKE '%' || :query || '%'")
-    fun getMoments(query: String): PagingSource<Int, MomentEntity>
+
+    @Query(
+        """
+            SELECT * FROM moment
+            WHERE mainAddress LIKE '%' || :query || '%' 
+            OR detailAddress LIKE '%' || :query || '%'
+            OR content LIKE '%' || :query || '%'
+            ORDER BY
+            CASE WHEN :sortType = 0 THEN date END DESC,
+            CASE WHEN :sortType = 1 THEN date END ASC
+        """
+    )
+    fun getMoments(sortType: Int = 0, query: String): PagingSource<Int, MomentEntity>
+
+    @Query(
+        """
+            SELECT *, 
+                (latitude - :lat) * (latitude - :lat) +
+                (longitude - :lng) * (longitude - :lng) AS distance
+            FROM moment
+            WHERE mainAddress LIKE '%' || :query || '%' 
+            OR detailAddress LIKE '%' || :query || '%'
+            OR content LIKE '%' || :query || '%'
+            ORDER BY distance
+        """
+    )
+    fun getMomentsByNearestDistance(query: String, lat: Double?, lng: Double?): PagingSource<Int, MomentEntity>
 
     @Query(
         "SELECT * FROM picture WHERE id IN" +

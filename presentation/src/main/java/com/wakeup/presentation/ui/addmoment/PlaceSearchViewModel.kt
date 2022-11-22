@@ -2,7 +2,7 @@ package com.wakeup.presentation.ui.addmoment
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wakeup.domain.usecase.PlaceSearchUseCase
+import com.wakeup.domain.usecase.SearchPlaceUseCase
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.PlaceModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class PlaceSearchViewModel @Inject constructor(
-    placeSearchUseCase: PlaceSearchUseCase
+    searchPlaceUseCase: SearchPlaceUseCase
 ) : ViewModel() {
 
     val searchText = MutableStateFlow("")
@@ -30,7 +30,7 @@ class PlaceSearchViewModel @Inject constructor(
                 _searchResult.value = if (it.isEmpty()) {
                     emptyList()
                 } else {
-                    placeSearchUseCase(it).map { place -> place.toPresentation() }
+                    searchPlaceUseCase(it).map { place -> place.toPresentation() }
                 }
             }
         }

@@ -42,7 +42,7 @@ class AddMomentFragment : Fragment() {
 
     private val datePicker = MaterialDatePicker.Builder.datePicker().build().apply {
         addOnPositiveButtonClickListener { date ->
-            viewModel.setSelectedDate(DateUtil.getDateByTime(date))
+            viewModel.setSelectedDate(date)
         }
     }
 
