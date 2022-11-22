@@ -98,7 +98,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 1 -> viewModel.fetchMoments(SortType.OLDEST)
                 else -> locationSource.lastLocation?.apply {
                     viewModel.fetchMoments(
-                        sortType = SortType.CLOSET,
+                        sortType = SortType.NEAREST,
                         location = LocationModel(latitude, longitude)
                     )
                 }

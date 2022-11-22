@@ -38,7 +38,7 @@ interface MomentDao {
             ORDER BY distance
         """
     )
-    fun getSortedMomentsByCloset(query: String, lat: Double?, lng: Double?): PagingSource<Int, MomentEntity>
+    fun getMomentsByNearestDistance(query: String, lat: Double?, lng: Double?): PagingSource<Int, MomentEntity>
 
     @Query(
         "SELECT * FROM picture WHERE id IN" +

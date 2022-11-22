@@ -26,7 +26,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
             ),
             pagingSourceFactory = {
                 when (sortType) {
-                    SortType.CLOSET -> momentDao.getSortedMomentsByCloset(query, myLocation?.latitude, myLocation?.longitude)
+                    SortType.NEAREST -> momentDao.getMomentsByNearestDistance(query, myLocation?.latitude, myLocation?.longitude)
                     else -> momentDao.getMoments(sortType.ordinal, query)
                 }
             }
