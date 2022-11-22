@@ -1,11 +1,10 @@
 package com.wakeup.presentation.ui.globe
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.wakeup.presentation.R
+import androidx.fragment.app.Fragment
 import com.wakeup.presentation.databinding.FragmentGlobeBinding
 
 class GlobeFragment : Fragment() {

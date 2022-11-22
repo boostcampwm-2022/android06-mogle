@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/map_fragment">
+    app:startDestination="@id/add_moment_fragment">
 
     <fragment
         android:id="@+id/map_fragment"
@@ -16,4 +16,21 @@
         android:name="com.wakeup.presentation.ui.globe.GlobeFragment"
         android:label="글로브"
         tools:layout="@layout/fragment_globe" />
+
+    <fragment
+        android:id="@+id/add_moment_fragment"
+        android:name="com.wakeup.presentation.ui.addmoment.AddMomentFragment"
+        android:label="AddMomentFragment"
+        tools:layout="@layout/fragment_add_moment">
+        <action
+            android:id="@+id/action_addMoment_to_placeSearch"
+            app:destination="@id/place_search_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/place_search_fragment"
+        android:name="com.wakeup.presentation.ui.addmoment.PlaceSearchFragment"
+        android:label="PlaceSearchFragment"
+        tools:layout="@layout/fragment_place_search" />
+
 </navigation>

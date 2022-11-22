@@ -5,8 +5,6 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
             name="vm"
             type="com.wakeup.presentation.ui.addmoment.AddMomentViewModel" />
@@ -42,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_200"
-                android:text="@{@string/addMoment_picture_title(vm.pictures.size())}"
+                android:text="@{@string/add_moment_picture_title(vm.pictures.size())}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -66,7 +64,8 @@
                 app:cardElevation="@dimen/small_100"
                 app:gone="@{vm.isPictureMax()}"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_picture">
+                app:layout_constraintTop_toBottomOf="@id/tv_picture"
+                app:strokeWidth="0dp">
 
                 <ImageView
                     android:id="@+id/iv_picture"
@@ -111,6 +110,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_100"
+                android:background="@drawable/bg_corner_8"
+                android:elevation="@dimen/small_100"
+                app:boxStrokeWidth="0dp"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_globe">
@@ -120,8 +123,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:text="@{vm.globes[0]}"
-                    app:simpleItems="@{vm.globes}" />
+                    android:text="@{vm.defaultGlobe.name}"
+                    app:simpleItems="@{vm.tmpGlobes}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -168,11 +171,11 @@
                 android:layout_marginTop="@dimen/small_100"
                 android:background="@drawable/bg_corner_8"
                 android:elevation="@dimen/small_150"
+                android:hint="@string/add_moment_place_hint"
                 android:padding="@dimen/normal_100"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_place"
-                tools:text="우리집" />
+                app:layout_constraintTop_toBottomOf="@id/tv_place" />
 
             <TextView
                 android:id="@+id/tv_content"
@@ -193,7 +196,7 @@
                 android:background="@drawable/bg_corner_8"
                 android:elevation="@dimen/small_150"
                 android:gravity="start|top"
-                android:hint="@string/addMoment_content_hint"
+                android:hint="@string/add_moment_content_hint"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine"
                 android:maxLength="500"
@@ -210,14 +213,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_100"
-                android:text="@{@string/addMoment_content_length(vm.content.length())}"
+                android:text="@{@string/add_moment_content_length(vm.content.length())}"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/small_150_tv"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintTop_toBottomOf="@id/et_content_value"
                 tools:text="0/500자" />
 
-            <TextView
+            <Button
                 android:id="@+id/tv_save"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -226,9 +229,11 @@
                 android:background="@drawable/bg_corner_8"
                 android:backgroundTint="?attr/colorPrimary"
                 android:elevation="@dimen/small_150"
+                android:enabled="@{vm.isSaveButtonEnabled()}"
                 android:gravity="center"
+                android:onClick="@{() -> vm.saveMoment()}"
                 android:padding="@dimen/normal_100"
-                android:text="@string/addMoment_save"
+                android:text="@string/add_moment_save"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintBottom_toBottomOf="parent"

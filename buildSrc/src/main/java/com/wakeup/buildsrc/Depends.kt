@@ -36,6 +36,7 @@ object Depends {
         const val timberVersion = "5.0.1"
         const val pagingVersion = "3.1.1"
         const val firebaseBomVersion = "31.0.3"
+        const val sandwichVersion = "1.3.2"
 
         const val testCoreKtxVersion = "1.5.0"
         const val testJunitKtxVersion = "1.1.4"
@@ -131,6 +132,9 @@ object Depends {
         const val firebase_bom = "com.google.firebase:firebase-bom:${Versions.firebaseBomVersion}"
         const val firebase_analytics = "com.google.firebase:firebase-analytics-ktx"
 
+        // Sandwich
+        const val sandwich = "com.github.skydoves:sandwich:${Versions.sandwichVersion}"
+
         // Google Play Service Location
         const val play_service_location = "com.google.android.gms:play-services-location:${Versions.playServiceLocationVersion}"
 
@@ -142,7 +146,7 @@ object Depends {
 
         // Stetho
         const val stetho = "com.facebook.stetho:stetho:${Versions.stethoVersion}"
-        const val stetho_okhttp3 = "com.facebook.stetho:stetho:${Versions.stethoVersion}"
+        const val stetho_okhttp3 = "com.facebook.stetho:stetho-okhttp3:${Versions.stethoVersion}"
     }
 
     fun generateVersionName(): String {

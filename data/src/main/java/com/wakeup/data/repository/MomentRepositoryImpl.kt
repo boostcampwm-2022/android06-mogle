@@ -1,4 +1,4 @@
-package com.wakeup.data.repository.moment
+package com.wakeup.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
@@ -12,6 +12,7 @@ import com.wakeup.domain.model.Place
 import com.wakeup.domain.repository.MomentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 class MomentRepositoryImpl @Inject constructor(
@@ -28,15 +29,15 @@ class MomentRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun saveMoment(moment: Moment, location: Place, pictures: List<Picture>?) {
-        if (pictures == null) {
-            localDataSource.saveMoment(moment.toEntity(location, null))
+    override suspend fun saveMoment(moment: Moment, place: Place, pictures: List<Picture>) {
+        if (pictures.isEmpty()) {
+            localDataSource.saveMoment(moment.toEntity(place, null))
             return
         } else {
             val pictureIndexes =
                 localDataSource.savePicture(pictures.map { it.toEntity() })
-            val momentIndex = 
-                localDataSource.saveMoment(moment.toEntity(location, pictureIndexes[0]))
+            val momentIndex =
+                localDataSource.saveMoment(moment.toEntity(place, pictureIndexes[0]))
 
             localDataSource.saveMomentPicture(
                 pictureIndexes.map { pictureId ->

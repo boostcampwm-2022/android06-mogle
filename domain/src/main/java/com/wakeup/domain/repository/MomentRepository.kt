@@ -9,5 +9,5 @@ import kotlinx.coroutines.flow.Flow
 interface MomentRepository {
     fun getMoments(query: String, sort: String): Flow<PagingData<Moment>>
 
-    suspend fun saveMoment(moment: Moment, location: Place, pictures: List<Picture>?)
+    suspend fun saveMoment(moment: Moment, place: Place, pictures: List<Picture>)
 }
