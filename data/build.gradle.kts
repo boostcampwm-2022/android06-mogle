@@ -88,6 +88,7 @@ dependencies {
         exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel-ktx")
     }
 
-    // Sandwich
-    implementation(Depends.Libraries.sandwich)
+    // Stetho
+    implementation(Depends.Libraries.stetho)
+    implementation(Depends.Libraries.stetho_okhttp3)
 }
