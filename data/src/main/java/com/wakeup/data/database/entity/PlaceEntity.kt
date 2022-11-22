@@ -1,4 +1,4 @@
-package com.wakeup.data.model
+package com.wakeup.data.database.entity
 
 data class PlaceEntity(
     val mainAddress: String,

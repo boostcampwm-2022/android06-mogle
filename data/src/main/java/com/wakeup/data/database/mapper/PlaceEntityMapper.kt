@@ -1,8 +1,8 @@
 package com.wakeup.data.database.mapper
 
-import com.wakeup.data.model.LocationEntity
-import com.wakeup.data.model.PlaceEntity
+import com.wakeup.data.database.entity.LocationEntity
 import com.wakeup.domain.model.Location
+import com.wakeup.data.database.entity.PlaceEntity
 import com.wakeup.domain.model.Place
 
 fun PlaceEntity.toDomain(): Place {
@@ -24,6 +24,13 @@ fun Place.toEntity(): PlaceEntity {
 
 fun Location.toEntity(): LocationEntity {
     return LocationEntity(
+        latitude = latitude,
+        longitude = longitude,
+    )
+}
+
+fun LocationEntity.toDomain(): Location {
+    return Location(
         latitude = latitude,
         longitude = longitude,
     )

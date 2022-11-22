@@ -1,35 +1,36 @@
 package com.wakeup.presentation.adapter
 
-import android.graphics.Bitmap
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.databinding.ItemPictureBinding
+import com.wakeup.presentation.model.PictureModel
 
-class PictureAdapter(private val onClickRemovePicture: (bitmap: Bitmap) -> Unit) :
-    ListAdapter<Bitmap, PictureAdapter.ViewHolder>(diffCallback) {
+class PictureAdapter(private val onClickRemovePicture: (picture: PictureModel) -> Unit) :
+    ListAdapter<PictureModel, PictureAdapter.ViewHolder>(diffCallback) {
 
     class ViewHolder private constructor(
         private val binding: ItemPictureBinding,
-        private val onClickRemovePicture: (bitmap: Bitmap) -> Unit
+        private val onClickRemovePicture: (picture: PictureModel) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.tvRemove.setOnClickListener {
-                binding.bitmap?.let { bitmap ->
-                    onClickRemovePicture(bitmap)
+                binding.picture?.let { picture ->
+                    onClickRemovePicture(picture)
                 }
             }
         }
 
-        fun bind(bitmap: Bitmap) {
-            binding.bitmap = bitmap
+        fun bind(picture: PictureModel) {
+            binding.picture = picture
+            binding.executePendingBindings()
         }
 
         companion object {
             fun from(
                 parent: android.view.ViewGroup,
-                onClickRemovePicture: (bitmap: Bitmap) -> Unit
+                onClickRemovePicture: (picture: PictureModel) -> Unit
             ) = ViewHolder(
                 ItemPictureBinding.inflate(
                     android.view.LayoutInflater.from(
@@ -52,12 +53,12 @@ class PictureAdapter(private val onClickRemovePicture: (bitmap: Bitmap) -> Unit)
 
     companion object {
         private val diffCallback =
-            object : androidx.recyclerview.widget.DiffUtil.ItemCallback<Bitmap>() {
-                override fun areItemsTheSame(oldItem: Bitmap, newItem: Bitmap) =
-                    oldItem.generationId == newItem.generationId
+            object : androidx.recyclerview.widget.DiffUtil.ItemCallback<PictureModel>() {
+                override fun areItemsTheSame(oldItem: PictureModel, newItem: PictureModel) =
+                    oldItem.bitmap == newItem.bitmap
 
-                override fun areContentsTheSame(oldItem: Bitmap, newItem: Bitmap) =
-                    oldItem.sameAs(newItem)
+                override fun areContentsTheSame(oldItem: PictureModel, newItem: PictureModel) =
+                    oldItem == newItem
             }
     }
 }

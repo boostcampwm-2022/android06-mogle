@@ -10,7 +10,7 @@ fun MomentModel.toDomain(): Moment {
         id = id,
         content = content,
         place = place.toDomain(),
-        pictures = pictures?.map { it.toDomain() },
+        pictures = pictures.map { it.toDomain() },
         date = date,
         globes = globes.map { it.toDomain() }
     )
@@ -21,7 +21,7 @@ fun Moment.toPresentation(): MomentModel {
         id = id,
         content = content,
         place = place.toPresentation(),
-        pictures = pictures?.map { it.toPresentation() },
+        pictures = pictures.map { it.toPresentation() },
         date = date,
         globes = globes.map { it.toPresentation() }
     )

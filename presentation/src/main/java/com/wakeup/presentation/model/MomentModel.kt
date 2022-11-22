@@ -5,9 +5,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 data class MomentModel(
-    val id: Long,
+    val id: Long = 0,
     val place: PlaceModel,
-    val pictures: List<PictureModel>?,
+    val pictures: List<PictureModel>,
     val content: String,
     val globes: List<GlobeModel>,
     val date: Long,

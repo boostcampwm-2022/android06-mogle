@@ -15,5 +15,5 @@ interface MomentRepository {
         myLocation: Location? = null
     ): Flow<PagingData<Moment>>
 
-    suspend fun saveMoment(moment: Moment, location: Place, pictures: List<Picture>?)
+    suspend fun saveMoment(moment: Moment)
 }

@@ -4,8 +4,8 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -88,4 +88,7 @@ dependencies {
 
     // Circle Image View
     implementation(Depends.Libraries.circle_image_view)
+
+    // Sandwich
+    implementation(Depends.Libraries.sandwich)
 }

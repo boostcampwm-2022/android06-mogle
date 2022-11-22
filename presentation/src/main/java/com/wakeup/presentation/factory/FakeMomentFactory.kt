@@ -14,14 +14,14 @@ object FakeMomentFactory {
             MomentModel(
                 id = 1L,
                 place = createPlace(it),
-                pictures = null,
+                pictures = emptyList(),
                 content = "재민${it}",
                 globes = listOf(GlobeModel("default")),
                 date = System.currentTimeMillis() + (it * ONE_DAY)
             )
         }
 
-    fun createPlace(count: Int): PlaceModel = PlaceModel(
+    private fun createPlace(count: Int): PlaceModel = PlaceModel(
         mainAddress = "메인 장소${count}",
         detailAddress = "상세 주소${count}",
         location = LocationModel(37.0 + count, 128.0 + count)

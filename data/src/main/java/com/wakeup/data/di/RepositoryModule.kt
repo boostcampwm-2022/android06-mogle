@@ -1,7 +1,9 @@
 package com.wakeup.data.di
 
+import com.wakeup.data.repository.PlaceSearchRepositoryImpl
 import com.wakeup.data.repository.MomentRepositoryImpl
 import com.wakeup.domain.repository.MomentRepository
+import com.wakeup.domain.repository.PlaceSearchRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,4 +17,9 @@ interface RepositoryModule {
     fun bindMomentRepository(
         momentRepositoryImpl: MomentRepositoryImpl
     ): MomentRepository
+
+    @Binds
+    fun bindPlaceSearchRepository(
+        placeSearchRepositoryImpl: PlaceSearchRepositoryImpl
+    ): PlaceSearchRepository
 }
