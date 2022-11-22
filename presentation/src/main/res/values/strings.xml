@@ -19,6 +19,8 @@
     <string name="place_search_hint">모먼트를 남길 장소를 검색해보세요</string>
     <string name="place_search_result">검색결과 %d</string>
     <string name="addMoment_save">남기기</string>
+    <string name="network_error">네트워크 연결을 확인해 주세요.</string>
+
 
     <string name="item_picture_description">This is the picture you added.</string>
     <string name="item_picture_remove_picture_description">remove picture</string>

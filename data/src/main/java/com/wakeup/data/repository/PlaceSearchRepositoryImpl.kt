@@ -10,9 +10,9 @@ class PlaceSearchRepositoryImpl @Inject constructor(
     private val placeSearchRemoteDataSource: PlaceSearchRemoteDataSource
 ) : PlaceSearchRepository {
 
-    override suspend fun search(keyword: String): List<Place> {
-        return placeSearchRemoteDataSource.search(keyword).documents.map {
-            it.toDomain()
+    override suspend fun search(keyword: String): Result<List<Place>> {
+        return placeSearchRemoteDataSource.search(keyword).mapCatching {
+            it.documents.map { item -> item.toDomain() }
         }
     }
 }

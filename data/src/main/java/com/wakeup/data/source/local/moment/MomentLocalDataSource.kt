@@ -19,5 +19,5 @@ interface MomentLocalDataSource {
 
     suspend fun savePicture(picture: List<PictureEntity>): List<Long>
 
-    suspend fun saveMomentPicture(MomentPictures :List<MomentPictureEntity>)
+    suspend fun saveMomentPicture(MomentPictures: List<MomentPictureEntity>)
 }
