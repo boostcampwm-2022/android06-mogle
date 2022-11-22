@@ -9,7 +9,6 @@ import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureEntity
 import com.wakeup.data.database.entity.PictureEntity
-import com.wakeup.domain.model.SortType
 
 @Dao
 interface MomentDao {
@@ -39,7 +38,7 @@ interface MomentDao {
             ORDER BY distance
         """
     )
-    fun getMomentsSortByCloset(query: String, lat: Double?, lng: Double?): PagingSource<Int, MomentEntity>
+    fun getSortedMomentsByCloset(query: String, lat: Double?, lng: Double?): PagingSource<Int, MomentEntity>
 
     @Query(
         "SELECT * FROM picture WHERE id IN" +

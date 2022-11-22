@@ -12,18 +12,18 @@ object FakeMomentFactory {
     fun createMoments(count: Int): List<MomentModel> =
         (1..count).map {
             MomentModel(
-                1L,
-                createPlace(it),
-                null,
-                "재민${it}",
-                listOf(GlobeModel("default")),
-                System.currentTimeMillis() + (it * ONE_DAY)
+                id = 1L,
+                place = createPlace(it),
+                pictures = null,
+                content = "재민${it}",
+                globes = listOf(GlobeModel("default")),
+                date = System.currentTimeMillis() + (it * ONE_DAY)
             )
         }
 
     fun createPlace(count: Int): PlaceModel = PlaceModel(
-        "메인 장소${count}",
-        "상세 주소${count}",
-        LocationModel(37.0 + count, 128.0 + count)
+        mainAddress = "메인 장소${count}",
+        detailAddress = "상세 주소${count}",
+        location = LocationModel(37.0 + count, 128.0 + count)
     )
 }

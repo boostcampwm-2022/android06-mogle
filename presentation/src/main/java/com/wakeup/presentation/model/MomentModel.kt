@@ -1,5 +1,6 @@
 package com.wakeup.presentation.model
 
+import com.wakeup.presentation.util.DateUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -11,7 +12,6 @@ data class MomentModel(
     val globes: List<GlobeModel>,
     val date: Long,
 ) {
-    private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
-    fun getFormattedDate(): String = sdf.format(date)
+    fun getFormattedDate(): String = DateUtil.getFormattedDate(date)
 }
