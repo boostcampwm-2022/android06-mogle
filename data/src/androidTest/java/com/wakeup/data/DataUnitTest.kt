@@ -64,7 +64,7 @@ class DataUnitTest {
             ),
             thumbnailId = pictureId[0],
             content = "안녕하세요 우리들",
-            date = "2022-07-18"
+            date = System.currentTimeMillis()
         ))
 
         val momentId2 = momentDao.saveMoment(MomentEntity(
@@ -76,7 +76,7 @@ class DataUnitTest {
             ),
             thumbnailId = pictureId[1],
             content = "steadfastness",
-            date = "2022-07-22"
+            date = System.currentTimeMillis()
         ))
 
         momentDao.saveMomentPicture(listOf(
@@ -116,7 +116,7 @@ class DataUnitTest {
                 initialLoadSize = 10,
                 prefetchDistance = 2
             ),
-            pagingSourceFactory = { momentDao.getMoments("") }
+            pagingSourceFactory = { momentDao.getMoments(0, "") }
         ).flow.firstOrNull()
 
         assertEquals(result.toString(), "androidx.paging.PagingData@28c0368")

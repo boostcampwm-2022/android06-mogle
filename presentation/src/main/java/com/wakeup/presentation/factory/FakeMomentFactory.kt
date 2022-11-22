@@ -5,7 +5,7 @@ import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.PlaceModel
 
-object MomentFactory {
+object FakeMomentFactory {
 
     private const val ONE_DAY = 86400000
 
