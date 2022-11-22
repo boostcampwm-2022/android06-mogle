@@ -31,6 +31,8 @@ class AddMomentViewModel @Inject constructor(
         GlobeModel("globe 3"),
     )
 
+    val thumbnail = globes.first()
+
     val tmpGlobes = arrayOf(
         ("globe 1"),
         ("globe 2"),

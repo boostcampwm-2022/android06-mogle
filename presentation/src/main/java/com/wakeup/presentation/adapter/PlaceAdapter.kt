@@ -24,6 +24,7 @@ class PlaceAdapter(private val onClick: (place: PlaceModel) -> Unit) :
 
         fun bind(place: PlaceModel) {
             binding.place = place
+            binding.executePendingBindings()
         }
 
         companion object {

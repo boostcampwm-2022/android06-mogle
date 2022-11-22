@@ -13,17 +13,19 @@
     <string name="dragger">드래거</string>
 
 
-    <string name="addMoment_picture_title">사진 (%d/5)</string>
-    <string name="addMoment_content_hint">내용을 입력해주세요</string>
-    <string name="addMoment_content_length">%d/500자</string>
+    <string name="add_moment_picture_title">사진 (%d/5)</string>
+    <string name="add_moment_content_length">%d/500자</string>
+    <string name="add_moment_content_hint">내용을 입력해주세요</string>
+    <string name="add_moment_place_hint">터치하여 장소를 검색해 주세요</string>
+    <string name="add_moment_save">남기기</string>
+
     <string name="place_search_hint">모먼트를 남길 장소를 검색해보세요</string>
     <string name="place_search_result">검색결과 %d</string>
-    <string name="addMoment_save">남기기</string>
-    <string name="network_error">네트워크 연결을 확인해 주세요.</string>
-
 
     <string name="item_picture_description">This is the picture you added.</string>
     <string name="item_picture_remove_picture_description">remove picture</string>
+
+    <string name="network_error">네트워크 연결을 확인해 주세요.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
