@@ -1,13 +1,10 @@
 package com.wakeup.domain.usecase
 
 import androidx.paging.PagingData
-import androidx.paging.map
 import com.wakeup.domain.model.Location
 import com.wakeup.domain.model.Moment
-import com.wakeup.domain.model.Place
 import com.wakeup.domain.model.SortType
 import com.wakeup.domain.repository.MomentRepository
-import com.wakeup.domain.util.LocationUtil.distanceTo
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
