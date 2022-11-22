@@ -146,7 +146,7 @@ object Depends {
 
         // Stetho
         const val stetho = "com.facebook.stetho:stetho:${Versions.stethoVersion}"
-        const val stetho_okhttp3 = "com.facebook.stetho:stetho:${Versions.stethoVersion}"
+        const val stetho_okhttp3 = "com.facebook.stetho:stetho-okhttp3:${Versions.stethoVersion}"
     }
 
     fun generateVersionName(): String {

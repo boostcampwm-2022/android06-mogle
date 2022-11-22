@@ -1,5 +1,6 @@
 package com.wakeup.data.di
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.wakeup.data.BuildConfig
 import com.wakeup.data.network.service.PlaceSearchService
@@ -45,6 +46,7 @@ object NetworkModule {
         return OkHttpClient().newBuilder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(kakaoHeaderInterceptor)
+            .addNetworkInterceptor(StethoInterceptor())
             .build()
     }
 

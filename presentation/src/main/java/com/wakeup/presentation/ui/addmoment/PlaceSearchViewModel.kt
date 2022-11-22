@@ -16,7 +16,7 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class PlaceSearchViewModel @Inject constructor(
-    placeSearchUseCase: PlaceSearchUseCase
+    searchPlaceUseCase: SearchPlaceUseCase
 ) : ViewModel() {
 
     val searchText = MutableStateFlow("")
@@ -34,7 +34,7 @@ class PlaceSearchViewModel @Inject constructor(
                 if (it.isEmpty()) {
                     _searchResult.value = emptyList()
                 } else {
-                    placeSearchUseCase(it)
+                    searchPlaceUseCase(it)
                         .onSuccess { places ->
                             _searchResult.value = places.map { place -> place.toPresentation() }
                         }.onFailure {

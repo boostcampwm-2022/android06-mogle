@@ -1,15 +1,13 @@
 package com.wakeup.domain.usecase
 
-import com.wakeup.domain.model.Place
 import com.wakeup.domain.model.Moment
-import com.wakeup.domain.model.Picture
 import com.wakeup.domain.repository.MomentRepository
 import javax.inject.Inject
 
 class SaveMomentUseCase @Inject constructor(
     private val localRepository: MomentRepository
 ) {
-    suspend operator fun invoke(moment: Moment, place: Place, pictures: List<Picture>) {
-        localRepository.saveMoment(moment, place, pictures)
+    suspend operator fun invoke(moment: Moment) {
+        localRepository.saveMoment(moment)
     }
 }

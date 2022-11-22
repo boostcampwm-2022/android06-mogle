@@ -87,4 +87,8 @@ dependencies {
     implementation(Depends.Libraries.paging_runtime_ktx) {
         exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel-ktx")
     }
+
+    // Stetho
+    implementation(Depends.Libraries.stetho)
+    implementation(Depends.Libraries.stetho_okhttp3)
 }

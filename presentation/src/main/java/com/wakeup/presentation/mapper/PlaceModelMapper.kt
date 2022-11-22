@@ -7,8 +7,7 @@ fun PlaceModel.toDomain(): Place {
     return Place(
         mainAddress = mainAddress,
         detailAddress = detailAddress,
-        latitude = latitude,
-        longitude = longitude
+        location = location.toDomain()
     )
 }
 
@@ -16,7 +15,6 @@ fun Place.toPresentation(): PlaceModel {
     return PlaceModel(
         mainAddress = mainAddress,
         detailAddress = detailAddress,
-        latitude = latitude,
-        longitude = longitude
+        location = location.toPresentation()
     )
 }

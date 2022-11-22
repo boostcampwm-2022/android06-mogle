@@ -1,8 +1,8 @@
 package com.wakeup.presentation.ui.addmoment
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.wakeup.presentation.model.LocationModel
 import androidx.lifecycle.viewModelScope
 import com.wakeup.domain.usecase.SaveMomentUseCase
 import com.wakeup.presentation.mapper.toDomain
@@ -31,7 +31,7 @@ class AddMomentViewModel @Inject constructor(
         GlobeModel("globe 3"),
     )
 
-    val thumbnail = globes.first()
+    val defaultGlobe = globes.first()
 
     val tmpGlobes = arrayOf(
         ("globe 1"),
@@ -44,8 +44,7 @@ class AddMomentViewModel @Inject constructor(
         PlaceModel(
             mainAddress = "우리집",
             detailAddress = "안동시 옥동",
-            latitude = 36.567,
-            longitude = 127.456,
+            location = LocationModel(36.567, 127.456)
         )
     )
 
@@ -57,7 +56,7 @@ class AddMomentViewModel @Inject constructor(
     private val _isPictureMax = MutableStateFlow(false)
     val isPictureMax = _isPictureMax.asStateFlow()
 
-    private val _selectedDate = MutableStateFlow(DateUtil.getToday())
+    private val _selectedDate = MutableStateFlow(System.currentTimeMillis())
     val selectedDate = _selectedDate.asStateFlow()
 
     val content = MutableStateFlow("")
@@ -67,12 +66,10 @@ class AddMomentViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            combine(place, selectedGlobe, content, selectedDate)
-            { place, selectedGlobe, content, selectedDate ->
+            combine(place, content)
+            { place, content ->
                 place.mainAddress.isNotEmpty() &&
-                        selectedGlobe.name.isNotEmpty() &&
-                        content.isNotEmpty() &&
-                        selectedDate.isNotEmpty()
+                        content.isNotEmpty()
             }.collect {
                 Timber.d("isSaveButtonEnabled: $it")
                 _isSaveButtonEnabled.value = it
@@ -96,12 +93,14 @@ class AddMomentViewModel @Inject constructor(
         _isPictureMax.value = pictures.value.size >= 5
     }
 
-    fun setSelectedDate(date: String) {
-        _selectedDate.value = date
-    }
-
     fun setSelectedGlobe(position: Int) {
         selectedGlobe.value = globes[position]
+    }
+
+    fun getSelectedDateByTime(): String = DateUtil.getDateByTime(selectedDate.value)
+
+    fun setSelectedDate(date: Long) {
+        _selectedDate.value = date
     }
 
     fun saveMoment() {
@@ -113,9 +112,7 @@ class AddMomentViewModel @Inject constructor(
                     content = content.value,
                     globes = listOf(selectedGlobe.value),
                     date = selectedDate.value
-                ).toDomain(),
-                place = place.value.toDomain(),
-                pictures = pictures.value.map { it.toDomain() },
+                ).toDomain()
             )
             Timber.d("${pictures.value[0]}")
         }
