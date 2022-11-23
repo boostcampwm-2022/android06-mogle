@@ -13,6 +13,10 @@
     <string name="home">홈</string>
     <string name="dragger">드래거</string>
 
+    <string name="add_moment">모먼트 남기기</string>
+    <string name="place_search">장소 선택</string>
+    <string name="place_check">장소 확인</string>
+
 
     <string name="add_moment_picture_title">사진 (%d/5)</string>
     <string name="add_moment_content_length">%d/500자</string>

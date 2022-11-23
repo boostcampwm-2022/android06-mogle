@@ -16,6 +16,7 @@ import com.wakeup.presentation.adapter.PictureAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentBinding
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.util.BitmapUtil.fixRotation
+import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -63,6 +64,8 @@ class AddMomentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        initToolbar()
+
         binding.cvAddPicture.setOnClickListener {
             getPicture.launch(viewModel.getPictureIntent())
         }
@@ -89,5 +92,13 @@ class AddMomentFragment : Fragment() {
         }
 
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun initToolbar() {
+        setToolbar(
+            toolbar = binding.tbAddMoment,
+            titleId = R.string.add_moment,
+            onBackClick = { findNavController().navigateUp() }
+        )
     }
 }

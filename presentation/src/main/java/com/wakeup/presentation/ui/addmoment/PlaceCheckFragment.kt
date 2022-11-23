@@ -16,6 +16,7 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentPlaceCheckBinding
+import com.wakeup.presentation.util.setToolbar
 
 
 class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
@@ -40,6 +41,8 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
 
         initMap()
         initDialog()
+        initToolbar()
+
     }
 
     private fun initMap() {
@@ -85,6 +88,14 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+
+    private fun initToolbar() {
+        setToolbar(
+            toolbar = binding.tbPlaceCheck,
+            titleId = R.string.place_check,
+            onBackClick = { findNavController().navigateUp() }
+        )
+    }
 
     override fun onMapReady(naverMap: NaverMap) {
         initCameraUpdate(naverMap)
