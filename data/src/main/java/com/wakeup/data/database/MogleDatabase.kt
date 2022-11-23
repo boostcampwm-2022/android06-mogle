@@ -5,21 +5,21 @@ import androidx.room.RoomDatabase
 import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentGlobeEntity
-import com.wakeup.data.database.entity.MomentPictureEntity
+import com.wakeup.data.database.entity.MomentGlobeXRef
+import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.PictureEntity
 
 @Database(
     entities = [
         MomentEntity::class,
         GlobeEntity::class,
-        MomentGlobeEntity::class,
-        MomentPictureEntity::class,
+        MomentGlobeXRef::class,
+        MomentPictureXRef::class,
         PictureEntity::class
     ],
     version = 1,
     exportSchema = false
 )
-abstract class MogleDatabase: RoomDatabase() {
+abstract class MogleDatabase : RoomDatabase() {
     abstract fun momentDao(): MomentDao
 }

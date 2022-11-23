@@ -10,7 +10,7 @@ import androidx.test.filters.SmallTest
 import com.wakeup.data.database.MogleDatabase
 import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentPictureEntity
+import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.data.database.entity.PlaceEntity
 import com.wakeup.data.source.local.moment.MomentLocalDataSourceImpl
@@ -44,7 +44,7 @@ class DataUnitTest {
 
     @Test
     fun saveMomentAndGetMoments(): Unit = runBlocking {
-        val pictureId = momentDao.savePicture(listOf(
+        val pictureId = momentDao.savePictures(listOf(
             PictureEntity(
                 bitmap = "picture1".toByteArray()
             ),
@@ -79,31 +79,31 @@ class DataUnitTest {
             date = System.currentTimeMillis()
         ))
 
-        momentDao.saveMomentPicture(listOf(
-            MomentPictureEntity(
+        momentDao.saveMomentPictureXRefs(listOf(
+            MomentPictureXRef(
                 momentId = momentId1,
                 pictureId = pictureId[0]
             ),
-            MomentPictureEntity(
+            MomentPictureXRef(
                 momentId = momentId1,
                 pictureId = pictureId[1]
             ),
-            MomentPictureEntity(
+            MomentPictureXRef(
                 momentId = momentId1,
                 pictureId = pictureId[2]
             )
         ))
 
-        momentDao.saveMomentPicture(listOf(
-            MomentPictureEntity(
+        momentDao.saveMomentPictureXRefs(listOf(
+            MomentPictureXRef(
                 momentId = momentId2,
                 pictureId = pictureId[0]
             ),
-            MomentPictureEntity(
+            MomentPictureXRef(
                 momentId = momentId2,
                 pictureId = pictureId[1]
             ),
-            MomentPictureEntity(
+            MomentPictureXRef(
                 momentId = momentId2,
                 pictureId = pictureId[2]
             )
