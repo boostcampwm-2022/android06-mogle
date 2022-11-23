@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.PictureAdapter
@@ -21,7 +21,9 @@ import timber.log.Timber
 @AndroidEntryPoint
 class AddMomentFragment : Fragment() {
 
-    private val viewModel: AddMomentViewModel by viewModels()
+    private val viewModel: AddMomentViewModel by navGraphViewModels(R.id.add_moment_navigation) {
+        defaultViewModelProviderFactory
+    }
     private val adapter = PictureAdapter { viewModel.removePicture(it) }
     private lateinit var binding: FragmentAddMomentBinding
     private val getPicture =

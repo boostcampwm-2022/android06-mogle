@@ -84,7 +84,7 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
             .setCanceledOnTouchOutside(false)
             .setOnPositive(R.id.tv_positive) {
                 findNavController().navigate(
-                    PlaceCheckFragmentDirections.actionPlaceCheckToAddMoment(args.place)
+                    PlaceCheckFragmentDirections.actionPlaceCheckToAddMoment()
                 )
             }
             .setOnNegative(R.id.tv_negative) {
