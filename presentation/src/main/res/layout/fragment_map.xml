@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -8,14 +10,56 @@
         tools:context=".ui.map.MapFragment">
 
         <FrameLayout
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:layout_marginLeft="@dimen/normal_100"
+                android:layout_marginBottom="@dimen/location_btn_margin">
+
+                <com.naver.maps.map.widget.LocationButtonView
+                    android:id="@+id/lbv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/lv_logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.naver.maps.map.widget.ScaleBarView
+                    android:id="@+id/sbv_scale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/normal_100"
+                    android:layout_marginTop="@dimen/small_100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/lv_logo"
+                    app:layout_constraintTop_toBottomOf="@id/lbv_location" />
+
+                <com.naver.maps.map.widget.LogoView
+                    android:id="@+id/lv_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_100"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/lbv_location"
+                    app:layout_constraintTop_toBottomOf="@id/lbv_location" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
 
         <include
             android:id="@+id/bottom_sheet"
             layout="@layout/bottom_sheet" />
-
     </FrameLayout>
+
 
 </layout>
