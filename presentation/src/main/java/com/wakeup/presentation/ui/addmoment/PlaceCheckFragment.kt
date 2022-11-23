@@ -1,7 +1,6 @@
 package com.wakeup.presentation.ui.addmoment
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentPlaceCheckBinding
-import com.wakeup.presentation.lib.MogleDialog
 
 
 class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
@@ -31,6 +29,7 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
     ): View {
         binding = FragmentPlaceCheckBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
+            place = args.place
         }
 
         return binding.root
@@ -75,23 +74,17 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initDialog() {
-        MogleDialog
-            .with(requireContext(), R.layout.dialog_place)
-            .setPlace(args.place)
-            .setMargin(0, 0, 0, 100)
-            .setGravity(Gravity.BOTTOM)
-            .setBackgroundTransParent(true)
-            .setCanceledOnTouchOutside(false)
-            .setOnPositive(R.id.tv_positive) {
-                findNavController().navigate(
-                    PlaceCheckFragmentDirections.actionPlaceCheckToAddMoment(args.place)
-                )
-            }
-            .setOnNegative(R.id.tv_negative) {
-                findNavController().navigateUp()
-            }
-            .show()
+        binding.tvPositive.setOnClickListener {
+            findNavController().navigate(
+                PlaceCheckFragmentDirections.actionPlaceCheckToAddMoment(args.place)
+            )
+        }
+
+        binding.tvNegative.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
+
 
     override fun onMapReady(naverMap: NaverMap) {
         initCameraUpdate(naverMap)

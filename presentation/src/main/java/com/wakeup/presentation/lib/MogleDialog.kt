@@ -9,8 +9,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import com.wakeup.presentation.databinding.DialogPlaceBinding
-import com.wakeup.presentation.model.PlaceModel
 
 /**
  *
@@ -122,13 +120,4 @@ class MogleDialog private constructor() {
         dialog.show()
     }
 
-
-    /**
-     * placeSearchDialog 를 위한겁니다.
-     */
-    fun setPlace(place: PlaceModel): MogleDialog {
-        val binding = DialogPlaceBinding.bind(dialogView)
-        binding.place = place
-        return this
-    }
 }

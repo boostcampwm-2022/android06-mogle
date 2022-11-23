@@ -122,7 +122,7 @@ class AddMomentViewModel @Inject constructor(
                     content = content.value,
                     globes = listOf(selectedGlobe.value),
                     date = _selectedDate.value
-                ).toDomain()
+                ).apply { Timber.d("$this") }.toDomain()
             )
         }
     }

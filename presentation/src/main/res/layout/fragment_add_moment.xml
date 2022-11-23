@@ -232,7 +232,6 @@
                 android:elevation="@dimen/small_150"
                 android:enabled="@{vm.isSaveButtonEnabled()}"
                 android:gravity="center"
-                android:onClick="@{() -> vm.saveMoment()}"
                 android:padding="@dimen/normal_100"
                 android:text="@string/add_moment_save"
                 android:textColor="?attr/colorOnPrimary"
