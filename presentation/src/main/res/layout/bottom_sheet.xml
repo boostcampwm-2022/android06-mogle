@@ -38,13 +38,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_dragger">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/sort_menu"
                     style="@style/TextAppearance.Mogle.SubTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:text="@string/date_sort_desc"
+                    android:text="@string/most_recent"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>

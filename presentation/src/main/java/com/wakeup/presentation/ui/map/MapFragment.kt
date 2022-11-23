@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -50,6 +51,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.d("test!!")
         initMapHelper()
         initMap()
         initLocation()
@@ -77,12 +79,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun setMenus(binding: BottomSheetBinding) {
         val items = listOf(
-            getString(R.string.date_sort_desc),
-            getString(R.string.date_sort_asc),
-            getString(R.string.location_sort)
+            getString(R.string.most_recent),
+            getString(R.string.oldest),
+            getString(R.string.nearest)
         )
         val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_sort_menu, items)
-        (binding.textField.editText as? AutoCompleteTextView)?.setAdapter(menuAdapter)
+        binding.textField.viewTreeObserver.addOnGlobalLayoutListener {
+            (binding.textField.editText as? MaterialAutoCompleteTextView)?.setAdapter(menuAdapter)
+        }
 
         binding.sortMenu.setOnItemClickListener { _, _, position, _ ->
             expandBottomSheet(binding.bottomSheet)
