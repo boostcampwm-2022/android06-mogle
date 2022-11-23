@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.wakeup.presentation.R
@@ -24,6 +25,7 @@ class AddMomentFragment : Fragment() {
     private val viewModel: AddMomentViewModel by navGraphViewModels(R.id.add_moment_navigation) {
         defaultViewModelProviderFactory
     }
+    private val args: AddMomentFragmentArgs by navArgs()
     private val adapter = PictureAdapter { viewModel.removePicture(it) }
     private lateinit var binding: FragmentAddMomentBinding
     private val getPicture =
@@ -75,6 +77,10 @@ class AddMomentFragment : Fragment() {
 
         binding.tvPlaceValue.setOnClickListener {
             findNavController().navigate(R.id.action_addMoment_to_placeSearch)
+        }
+
+        args.place?.let {
+            viewModel.setPlace(it)
         }
 
         super.onViewCreated(view, savedInstanceState)

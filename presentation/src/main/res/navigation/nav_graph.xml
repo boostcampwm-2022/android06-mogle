@@ -31,6 +31,11 @@
             android:name="com.wakeup.presentation.ui.addmoment.AddMomentFragment"
             android:label="AddMomentFragment"
             tools:layout="@layout/fragment_add_moment">
+            <argument
+                android:name="place"
+                android:defaultValue="@null"
+                app:argType="com.wakeup.presentation.model.PlaceModel"
+                app:nullable="true" />
             <action
                 android:id="@+id/action_addMoment_to_placeSearch"
                 app:destination="@id/place_search_fragment" />
