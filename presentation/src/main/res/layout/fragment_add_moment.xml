@@ -12,8 +12,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_sunny">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -37,12 +36,11 @@
 
             <TextView
                 android:id="@+id/tv_picture"
+                style="@style/TextAppearance.Mogle.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_200"
                 android:text="@{@string/add_moment_picture_title(vm.pictures.size())}"
-                android:textColor="@color/black"
-                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="사진 (1/5)" />
@@ -74,7 +72,7 @@
                     android:layout_gravity="center"
                     android:contentDescription="@string/item_picture_description"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_add_24" />
+                    android:src="@drawable/ic_add" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -95,12 +93,11 @@
 
             <TextView
                 android:id="@+id/tv_globe"
+                style="@style/TextAppearance.Mogle.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_100"
                 android:text="@string/globe"
-                android:textColor="@color/black"
-                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/v_line" />
 
@@ -120,6 +117,7 @@
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/act_globe"
+                    style="@style/TextAppearance.Mogle.SubTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
@@ -130,17 +128,17 @@
 
             <TextView
                 android:id="@+id/tv_date"
+                style="@style/TextAppearance.Mogle.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_100"
                 android:text="@string/date"
-                android:textColor="@color/black"
-                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/til_globe" />
 
             <TextView
                 android:id="@+id/tv_date_value"
+                style="@style/TextAppearance.Mogle.SubTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_100"
@@ -155,17 +153,17 @@
 
             <TextView
                 android:id="@+id/tv_place"
+                style="@style/TextAppearance.Mogle.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_100"
                 android:text="@string/place"
-                android:textColor="@color/black"
-                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_date_value" />
 
             <TextView
                 android:id="@+id/tv_place_value"
+                style="@style/TextAppearance.Mogle.SubTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_100"
@@ -179,17 +177,17 @@
 
             <TextView
                 android:id="@+id/tv_content"
+                style="@style/TextAppearance.Mogle.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_100"
                 android:text="@string/content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_place_value" />
 
             <EditText
                 android:id="@+id/et_content_value"
+                style="@style/TextAppearance.Mogle.SubTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_100"
@@ -203,19 +201,17 @@
                 android:minLines="5"
                 android:padding="@dimen/normal_100"
                 android:text="@={vm.content}"
-                android:textSize="@dimen/normal_100_tv"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_content" />
 
             <TextView
                 android:id="@+id/tv_content_length"
+                style="@style/TextAppearance.Mogle.Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_100"
                 android:text="@{@string/add_moment_content_length(vm.content.length())}"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/small_150_tv"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintTop_toBottomOf="@id/et_content_value"
                 tools:text="0/500자" />

@@ -21,11 +21,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_100"
+                android:contentDescription="@string/dragger"
                 android:src="@drawable/ic_dragger"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/dragger" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_field"
@@ -40,11 +40,11 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/sort_menu"
+                    style="@style/TextAppearance.Mogle.SubTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/date_sort_desc"
-                    android:textSize="14sp"
                     android:inputType="none"
+                    android:text="@string/date_sort_desc"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -55,8 +55,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_100"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_field"
                 tools:listitem="@layout/item_moment" />
 

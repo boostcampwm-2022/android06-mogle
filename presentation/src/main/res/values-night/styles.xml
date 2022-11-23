@@ -12,32 +12,26 @@
 
     <style name="TextAppearance.Mogle.Headline1" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextAppearance.Mogle.Headline2" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextAppearance.Mogle.Title" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextAppearance.Mogle.SubTitle" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="TextAppearance.Mogle.Body" parent="TextAppearance.MaterialComponents.Body1">
+    <style name="TextAppearance.Mogle.Body" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/gray</item>
     </style>
 
     <style name="TextAppearance.Mogle.SubBody" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/gray</item>
     </style>
 </resources>

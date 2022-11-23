@@ -1,10 +1,13 @@
 <resources>
     <style name="Theme.Mogle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimary">@color/blue_green</item>
         <item name="colorOnPrimary">@color/white</item>
 
-        <item name="colorSecondary">@color/sky</item>
+        <item name="colorSecondary">@color/pink</item>
+        <item name="colorOnSecondary">@color/white</item>
+
         <item name="colorSurface">@color/white</item>
+        <item name="colorSurfaceInverse">@color/black</item>
 
         <item name="android:colorBackground">@color/white</item>
         <item name="colorOnBackground">@color/light_gray</item>
@@ -12,6 +15,7 @@
         <item name="android:textColorPrimary">@color/black</item>
         <item name="android:textColorSecondary">@color/light_gray</item>
 
-        <item name="android:statusBarColor">?android:colorBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>
