@@ -26,6 +26,11 @@
     <string name="item_picture_description">This is the picture you added.</string>
     <string name="item_picture_remove_picture_description">remove picture</string>
 
+    <string name="moment_detail_globes">%s 글로브 +%d</string>
+    <string name="moment_detail_no_globe" />
+
+    <string name="text_indicator">%d/%d</string>
+
     <string name="network_error">네트워크 연결을 확인해 주세요.</string>
 
     <!-- TODO: Remove or change this placeholder text -->

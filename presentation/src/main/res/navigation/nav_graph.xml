@@ -9,7 +9,11 @@
         android:id="@+id/map_fragment"
         android:name="com.wakeup.presentation.ui.map.MapFragment"
         android:label="지도"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_map_fragment_to_momentDetailFragment"
+            app:destination="@id/momentDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/globe_fragment"
@@ -32,5 +36,14 @@
         android:name="com.wakeup.presentation.ui.addmoment.PlaceSearchFragment"
         android:label="PlaceSearchFragment"
         tools:layout="@layout/fragment_place_search" />
+    <fragment
+        android:id="@+id/momentDetailFragment"
+        android:name="com.wakeup.presentation.ui.detail.MomentDetailFragment"
+        android:label="MomentDetailFragment"
+        tools:layout="@layout/fragment_moment_detail">
+        <argument
+            android:name="momentModel"
+            app:argType="com.wakeup.presentation.model.MomentModel" />
+    </fragment>
 
 </navigation>

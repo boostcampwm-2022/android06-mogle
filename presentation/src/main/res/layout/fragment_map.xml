@@ -25,6 +25,15 @@
                 android:layout_marginLeft="@dimen/normal_100"
                 android:layout_marginBottom="@dimen/location_btn_margin">
 
+                <Button
+                    android:id="@+id/btn_test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="테스트"
+                    app:layout_constraintBottom_toTopOf="@id/lbv_location"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <com.naver.maps.map.widget.LocationButtonView
                     android:id="@+id/lbv_location"
                     android:layout_width="wrap_content"
@@ -50,8 +59,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_100"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/lbv_location"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/lbv_location" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>
