@@ -15,11 +15,11 @@ interface DataSourceModule {
 
     @Binds
     fun bindMomentLocalDataSource(
-        momentLocalDataSourceImpl: MomentLocalDataSourceImpl
+        momentLocalDataSourceImpl: MomentLocalDataSourceImpl,
     ): MomentLocalDataSource
 
     @Binds
     fun bindPlaceSearchRemoteDataSource(
-        placeSearchRemoteDataSourceImpl: PlaceSearchRemoteDataSourceImpl
+        placeSearchRemoteDataSourceImpl: PlaceSearchRemoteDataSourceImpl,
     ): PlaceSearchRemoteDataSource
 }
