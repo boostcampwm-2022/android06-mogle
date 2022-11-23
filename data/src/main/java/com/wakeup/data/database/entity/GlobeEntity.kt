@@ -10,6 +10,6 @@ import androidx.room.PrimaryKey
     indices = [Index(value = ["name"], unique = true)]
 )
 data class GlobeEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "globe_id") val id: Long = 0L,
     @ColumnInfo(name = "name") val name: String,
 )

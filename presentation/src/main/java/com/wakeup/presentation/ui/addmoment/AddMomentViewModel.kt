@@ -2,11 +2,11 @@ package com.wakeup.presentation.ui.addmoment
 
 import android.content.Intent
 import androidx.lifecycle.ViewModel
-import com.wakeup.presentation.model.LocationModel
 import androidx.lifecycle.viewModelScope
 import com.wakeup.domain.usecase.SaveMomentUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.model.GlobeModel
+import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.model.PlaceModel
@@ -114,7 +114,7 @@ class AddMomentViewModel @Inject constructor(
                     date = selectedDate.value
                 ).toDomain()
             )
-            Timber.d("${pictures.value[0]}")
+            //Timber.d("${pictures.value[0]}")
         }
     }
 }
