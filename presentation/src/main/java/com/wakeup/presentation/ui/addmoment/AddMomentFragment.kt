@@ -76,6 +76,11 @@ class AddMomentFragment : Fragment() {
             findNavController().navigate(R.id.action_addMoment_to_placeSearch)
         }
 
+        binding.tvSave.setOnClickListener {
+            viewModel.saveMoment()
+            findNavController().popBackStack()
+        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 }

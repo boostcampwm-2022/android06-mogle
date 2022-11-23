@@ -24,13 +24,21 @@
         tools:layout="@layout/fragment_add_moment">
         <action
             android:id="@+id/action_addMoment_to_placeSearch"
-            app:destination="@id/place_search_fragment" />
+            app:destination="@id/place_search_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
         android:id="@+id/place_search_fragment"
         android:name="com.wakeup.presentation.ui.addmoment.PlaceSearchFragment"
         android:label="PlaceSearchFragment"
-        tools:layout="@layout/fragment_place_search" />
+        tools:layout="@layout/fragment_place_search"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
 
 </navigation>
