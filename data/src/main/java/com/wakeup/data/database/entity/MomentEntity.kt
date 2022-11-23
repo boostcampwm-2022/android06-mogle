@@ -12,16 +12,16 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = PictureEntity::class,
-            parentColumns = ["picture_entity_id"],
+            parentColumns = ["picture_id"],
             childColumns = ["thumbnail_id"],
             onUpdate = CASCADE
         )
     ]
 )
 data class MomentEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "moment_entity_id") val id: Long = 0L,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "moment_id") val id: Long = 0L,
     @Embedded val place: PlaceEntity,
-    @ColumnInfo(name = "thumbnail_id") val thumbnailId: Long?,
+    @ColumnInfo(name = "thumbnail_id", index = true) val thumbnailId: Long?,
     @ColumnInfo(name = "content") val content: String,
     @ColumnInfo(name = "date") val date: Long,
 )

@@ -4,8 +4,8 @@ import androidx.paging.PagingData
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.LocationEntity
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentGlobeEntity
-import com.wakeup.data.database.entity.MomentPictureEntity
+import com.wakeup.data.database.entity.MomentGlobeXRef
+import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.domain.model.SortType
@@ -25,9 +25,9 @@ interface MomentLocalDataSource {
 
     suspend fun savePictures(pictures: List<PictureEntity>): List<Long>
 
-    suspend fun saveMomentPictures(momentPictures :List<MomentPictureEntity>)
+    suspend fun saveMomentPictures(momentPictures :List<MomentPictureXRef>)
 
     suspend fun saveGlobes(globes: List<GlobeEntity>): List<Long>
 
-    suspend fun saveMomentGlobe(momentGlobe :MomentGlobeEntity)
+    suspend fun saveMomentGlobe(momentGlobe :MomentGlobeXRef)
 }

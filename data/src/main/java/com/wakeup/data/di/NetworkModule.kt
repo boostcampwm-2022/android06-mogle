@@ -62,7 +62,7 @@ object NetworkModule {
     @Singleton
     fun provideKakaoRetrofit(
         okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory
+        converterFactory: Converter.Factory,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(KAKAO_BASE_URL)
@@ -76,5 +76,4 @@ object NetworkModule {
     fun providePlaceSearchService(retrofit: Retrofit): PlaceSearchService {
         return retrofit.create(PlaceSearchService::class.java)
     }
-
 }

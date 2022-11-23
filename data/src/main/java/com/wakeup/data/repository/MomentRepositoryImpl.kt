@@ -3,8 +3,8 @@ package com.wakeup.data.repository
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.wakeup.data.database.entity.GlobeEntity
-import com.wakeup.data.database.entity.MomentGlobeEntity
-import com.wakeup.data.database.entity.MomentPictureEntity
+import com.wakeup.data.database.entity.MomentGlobeXRef
+import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.mapper.toDomain
 import com.wakeup.data.database.mapper.toEntity
 import com.wakeup.data.source.local.moment.MomentLocalDataSource
@@ -50,22 +50,21 @@ class MomentRepositoryImpl @Inject constructor(
         if (moment.pictures.isEmpty()) {
             localDataSource.saveMoment(moment.toEntity(moment.place, null))
             return
-        } else {
-            val pictureIndexes =
-                localDataSource.savePictures(moment.pictures.map { it.toEntity() })
-            // 정책: moment 추가할 때 항상 globe 하나 선택해서 추가(default 도 하나 선택해서 추가 임).
-            val globeIndex = localDataSource.getGlobeId(moment.globes[0].name)
-            val momentIndex =
-                localDataSource.saveMoment(moment.toEntity(moment.place, pictureIndexes[0]))
-
-            localDataSource.saveMomentPictures(
-                pictureIndexes.map { pictureId ->
-                    MomentPictureEntity(momentId = momentIndex, pictureId = pictureId)
-                }
-            )
-            localDataSource.saveMomentGlobe(
-                MomentGlobeEntity(momentId = momentIndex, globeId = globeIndex)
-            )
         }
+        val pictureIndexes =
+            localDataSource.savePictures(moment.pictures.map { it.toEntity() })
+        // 정책: moment 추가할 때 항상 globe 하나 선택해서 추가(default 도 하나 선택해서 추가 임).
+        val globeIndex = localDataSource.getGlobeId(moment.globes[0].name)
+        val momentIndex =
+            localDataSource.saveMoment(moment.toEntity(moment.place, pictureIndexes[0]))
+
+        localDataSource.saveMomentPictures(
+            pictureIndexes.map { pictureId ->
+                MomentPictureXRef(momentId = momentIndex, pictureId = pictureId)
+            }
+        )
+        localDataSource.saveMomentGlobe(
+            MomentGlobeXRef(momentId = momentIndex, globeId = globeIndex)
+        )
     }
 }

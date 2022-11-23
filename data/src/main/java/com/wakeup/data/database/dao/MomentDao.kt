@@ -8,8 +8,8 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentGlobeEntity
-import com.wakeup.data.database.entity.MomentPictureEntity
+import com.wakeup.data.database.entity.MomentGlobeXRef
+import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
 
@@ -49,24 +49,24 @@ interface MomentDao {
         lng: Double?,
     ): PagingSource<Int, MomentWithGlobesAndPictures>
 
-    @Query("SELECT globe_entity_id FROM globe WHERE name = :globeName")
+    @Query("SELECT globe_id FROM globe WHERE name = :globeName")
     suspend fun getGlobeIdByName(globeName: String): Long
 
-    @Query("SELECT picture_entity_id FROM picture WHERE bitmap = :bitmap")
+    @Query("SELECT picture_id FROM picture WHERE bitmap = :bitmap")
     suspend fun getPictureIdByByteArray(bitmap: ByteArray): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMoment(moment: MomentEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun savePicture(picture: List<PictureEntity>): List<Long>
+    suspend fun savePictures(pictures: List<PictureEntity>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveMomentPicture(momentPictures: List<MomentPictureEntity>)
+    suspend fun saveMomentPictureXRefs(momentPictures: List<MomentPictureXRef>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun saveGlobes(globes: List<GlobeEntity>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveMomentGlobe(momentGlobe: MomentGlobeEntity)
+    suspend fun saveMomentGlobeXRef(momentGlobe: MomentGlobeXRef)
 }

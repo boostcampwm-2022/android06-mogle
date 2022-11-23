@@ -7,17 +7,17 @@ import androidx.room.Relation
 data class MomentWithGlobesAndPictures(
     @Embedded val moment: MomentEntity,
     @Relation(
-        parentColumn = "moment_entity_id",
+        parentColumn = "moment_id",
         entity = GlobeEntity::class,
-        entityColumn = "globe_entity_id",
-        associateBy = Junction(MomentGlobeEntity::class)
+        entityColumn = "globe_id",
+        associateBy = Junction(MomentGlobeXRef::class)
     )
     val globeList: List<GlobeEntity>,
     @Relation(
-        parentColumn = "moment_entity_id",
+        parentColumn = "moment_id",
         entity = PictureEntity::class,
-        entityColumn = "picture_entity_id",
-        associateBy = Junction(MomentPictureEntity::class)
+        entityColumn = "picture_id",
+        associateBy = Junction(MomentPictureXRef::class)
     )
     val pictureList: List<PictureEntity>,
 )

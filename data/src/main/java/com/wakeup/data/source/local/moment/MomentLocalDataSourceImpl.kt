@@ -7,8 +7,8 @@ import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.LocationEntity
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentGlobeEntity
-import com.wakeup.data.database.entity.MomentPictureEntity
+import com.wakeup.data.database.entity.MomentGlobeXRef
+import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.domain.model.SortType
@@ -49,7 +49,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun savePictures(pictures: List<PictureEntity>): List<Long> {
-        val indexResult = momentDao.savePicture(pictures).toMutableList()
+        val indexResult = momentDao.savePictures(pictures).toMutableList()
         indexResult.forEachIndexed { pictureIndex, id ->
             if (id == EXIST_INSERT_ERROR_CODE) {
                 indexResult[pictureIndex] = momentDao.getPictureIdByByteArray(pictures[pictureIndex].bitmap)
@@ -58,16 +58,16 @@ class MomentLocalDataSourceImpl @Inject constructor(
         return indexResult.toList()
     }
 
-    override suspend fun saveMomentPictures(momentPictures: List<MomentPictureEntity>) {
-        momentDao.saveMomentPicture(momentPictures)
+    override suspend fun saveMomentPictures(momentPictures: List<MomentPictureXRef>) {
+        momentDao.saveMomentPictureXRefs(momentPictures)
     }
 
     override suspend fun saveGlobes(globes: List<GlobeEntity>): List<Long> {
         return momentDao.saveGlobes(globes)
     }
 
-    override suspend fun saveMomentGlobe(momentGlobe: MomentGlobeEntity) {
-        momentDao.saveMomentGlobe(momentGlobe)
+    override suspend fun saveMomentGlobe(momentGlobe: MomentGlobeXRef) {
+        momentDao.saveMomentGlobeXRef(momentGlobe)
     }
 
     companion object {
