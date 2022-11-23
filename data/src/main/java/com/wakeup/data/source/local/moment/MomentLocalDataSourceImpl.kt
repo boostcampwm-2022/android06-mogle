@@ -5,10 +5,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.database.entity.GlobeEntity
-import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentPictureEntity
-import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.data.database.entity.LocationEntity
+import com.wakeup.data.database.entity.MomentEntity
+import com.wakeup.data.database.entity.MomentGlobeEntity
+import com.wakeup.data.database.entity.MomentPictureEntity
+import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
+import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -16,7 +18,11 @@ import javax.inject.Inject
 class MomentLocalDataSourceImpl @Inject constructor(
     private val momentDao: MomentDao,
 ) : MomentLocalDataSource {
-    override fun getMoments(sortType: SortType, query: String, myLocation: LocationEntity?): Flow<PagingData<MomentEntity>> =
+    override fun getMoments(
+        sortType: SortType,
+        query: String,
+        myLocation: LocationEntity?,
+    ): Flow<PagingData<MomentWithGlobesAndPictures>> =
         Pager(
             config = PagingConfig(
                 pageSize = ITEMS_PER_PAGE,
@@ -26,30 +32,47 @@ class MomentLocalDataSourceImpl @Inject constructor(
             ),
             pagingSourceFactory = {
                 when (sortType) {
-                    SortType.NEAREST -> momentDao.getMomentsByNearestDistance(query, myLocation?.latitude, myLocation?.longitude)
+                    SortType.NEAREST -> momentDao.getMomentsByNearestDistance(query,
+                        myLocation?.latitude,
+                        myLocation?.longitude)
                     else -> momentDao.getMoments(sortType.ordinal, query)
                 }
             }
         ).flow
 
-    override suspend fun getPictures(momentId: Long): List<PictureEntity> =
-        momentDao.getPictures(momentId)
+    override suspend fun getGlobeId(globeName: String): Long {
+        return momentDao.getGlobeId(globeName)
+    }
 
-    override suspend fun getGlobes(momentId: Long): List<GlobeEntity> =
-        momentDao.getGlobes(momentId)
+    override suspend fun saveMoment(moment: MomentEntity): Long {
+        return momentDao.saveMoment(moment)
+    }
 
-    override suspend fun saveMoment(moment: MomentEntity): Long =
-        momentDao.saveMoment(moment)
+    override suspend fun savePictures(pictures: List<PictureEntity>): List<Long> {
+        val indexResult = momentDao.savePicture(pictures).toMutableList()
+        indexResult.forEachIndexed { pictureIndex, id ->
+            if (id == EXIST_INSERT_ERROR_CODE) {
+                indexResult[pictureIndex] = momentDao.getPictureByByteArray(pictures[pictureIndex].bitmap)
+            }
+        }
+        return indexResult.toList()
+    }
 
-    override suspend fun savePicture(picture: List<PictureEntity>): List<Long> =
-        momentDao.savePicture(picture)
+    override suspend fun saveMomentPictures(momentPictures: List<MomentPictureEntity>) {
+        momentDao.saveMomentPicture(momentPictures)
+    }
 
-    override suspend fun saveMomentPicture(MomentPictures: List<MomentPictureEntity>) {
-        momentDao.saveMomentPicture(MomentPictures)
+    override suspend fun saveGlobes(globes: List<GlobeEntity>): List<Long> {
+        return momentDao.saveGlobes(globes)
+    }
+
+    override suspend fun saveMomentGlobe(momentGlobe: MomentGlobeEntity) {
+        momentDao.saveMomentGlobe(momentGlobe)
     }
 
     companion object {
         const val PREFETCH_PAGE = 2
         const val ITEMS_PER_PAGE = 10
+        const val EXIST_INSERT_ERROR_CODE = -1L
     }
 }

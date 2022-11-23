@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
     indices = [Index(value = ["bitmap"], unique = true)]
 )
 data class PictureEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "picture_entity_id") val id: Long = 0L,
     @ColumnInfo(name = "bitmap") val bitmap: ByteArray,
 ) {
     override fun equals(other: Any?): Boolean {
@@ -30,4 +30,5 @@ data class PictureEntity(
         result = 31 * result + bitmap.contentHashCode()
         return result
     }
+
 }
