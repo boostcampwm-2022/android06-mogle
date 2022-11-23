@@ -129,13 +129,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
-        this.naverMap = naverMap.also {
-            // 위치 설정
-            it.locationSource = locationSource
-            it.locationTrackingMode = LocationTrackingMode.Follow
+        this.naverMap = naverMap
+
+        // 위치 관련 설정
+        mapHelper.apply {
+            setCurrentLocation(naverMap, locationSource)
+            setLocationButtonView(naverMap, binding.lbvLocation)
+            setScaleBarView(naverMap, binding.sbvScale)
+            setLogoView(naverMap, binding.lvLogo)
         }
 
-        // 테스트 마커
+        // 테스트 마커 설정
         mapHelper.setTestMarker(naverMap) {
             Snackbar.make(binding.root, "${it.tag}번째 마커", Snackbar.LENGTH_SHORT).show()
             mapHelper.setDarkMode(naverMap)

@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentManager
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMapOptions
@@ -11,6 +13,10 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.Overlay.OnClickListener
 import com.naver.maps.map.overlay.OverlayImage
+import com.naver.maps.map.util.FusedLocationSource
+import com.naver.maps.map.widget.LocationButtonView
+import com.naver.maps.map.widget.LogoView
+import com.naver.maps.map.widget.ScaleBarView
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ItemMapMarkerBinding
 import com.wakeup.presentation.model.MomentModel
@@ -25,10 +31,14 @@ class MapHelper(private val context: Context) {
     fun initMap(fm: FragmentManager, callback: OnMapReadyCallback) {
         // 지도 옵션
         val options = NaverMapOptions()
+            .camera(CameraPosition(LatLng(INITIAL_LAT, INITIAL_LONG), MIN_ZOOM))
+            .minZoom(MIN_ZOOM)
             .locationButtonEnabled(true)
             .tiltGesturesEnabled(true)
             .indoorEnabled(true)
             .zoomControlEnabled(false)
+            .logoClickEnabled(true)
+
 
         // 지도 생성
         val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
@@ -37,6 +47,25 @@ class MapHelper(private val context: Context) {
             }
 
         mapFragment.getMapAsync(callback)
+    }
+
+    fun setCurrentLocation(map: NaverMap, _locationSource: FusedLocationSource) {
+        map.apply {
+            locationSource = _locationSource
+            locationTrackingMode = LocationTrackingMode.Follow
+        }
+    }
+
+    fun setLocationButtonView(map: NaverMap, locationButtonView: LocationButtonView) {
+        locationButtonView.map = map
+    }
+
+    fun setScaleBarView(map: NaverMap, scaleBarView: ScaleBarView) {
+        scaleBarView.map = map
+    }
+
+    fun setLogoView(map: NaverMap, logoView: LogoView) {
+        logoView.setMap(map)
     }
 
     /**
@@ -69,5 +98,11 @@ class MapHelper(private val context: Context) {
                 onClickListener = clickListener
             }
         }
+    }
+
+    companion object {
+        const val INITIAL_LAT = 35.95
+        const val INITIAL_LONG = 128.25
+        const val MIN_ZOOM = 5.0
     }
 }
