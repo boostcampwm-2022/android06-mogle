@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -51,13 +52,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.d("test!!")
         initMapHelper()
         initMap()
         initLocation()
         initBottomSheet()
 
         collectMoments()
+        updateMoments()
+    }
+
+    private fun updateMoments() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("isUpdated")
+            ?.observe(viewLifecycleOwner) { isUpdated ->
+                if (isUpdated) {
+                    viewModel.fetchMoments()
+                }
+            }
     }
 
     private fun collectMoments() {
@@ -90,18 +100,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         binding.sortMenu.setOnItemClickListener { _, _, position, _ ->
             expandBottomSheet(binding.bottomSheet)
-
-            Timber.d("${locationSource.lastLocation?.latitude} ${locationSource.lastLocation?.longitude}")
-            when (position) {
-                0 -> viewModel.fetchMoments(SortType.MOST_RECENT)
-                1 -> viewModel.fetchMoments(SortType.OLDEST)
-                else -> locationSource.lastLocation?.apply {
-                    viewModel.fetchMoments(
-                        sortType = SortType.NEAREST,
-                        location = LocationModel(latitude, longitude)
-                    )
+            viewModel.location.value = null
+            viewModel.sortType.value = when (position) {
+                0 -> SortType.MOST_RECENT
+                1 -> SortType.OLDEST
+                else -> {
+                    locationSource.lastLocation?.apply {
+                        viewModel.location.value = LocationModel(latitude, longitude)
+                    }
+                    SortType.NEAREST
                 }
             }
+            viewModel.fetchMoments()
         }
     }
 

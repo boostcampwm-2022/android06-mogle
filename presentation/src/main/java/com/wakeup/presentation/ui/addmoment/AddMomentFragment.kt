@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -59,6 +60,7 @@ class AddMomentFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.cvAddPicture.setOnClickListener {
             getPicture.launch(viewModel.getPictureIntent())
@@ -78,9 +80,11 @@ class AddMomentFragment : Fragment() {
 
         binding.tvSave.setOnClickListener {
             viewModel.saveMoment()
-            findNavController().popBackStack()
-        }
+            Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
 
-        super.onViewCreated(view, savedInstanceState)
+            val navController = findNavController()
+            navController.previousBackStackEntry?.savedStateHandle?.set("isUpdated", true)
+            navController.popBackStack()
+        }
     }
 }

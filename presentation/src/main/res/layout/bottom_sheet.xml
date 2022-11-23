@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:behavior_hideable="false"
-            app:behavior_peekHeight="156dp"
+            app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <ImageView
@@ -52,12 +52,13 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_moments"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="@dimen/normal_100"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_field"
+                app:layout_constraintBottom_toBottomOf="parent"
                 tools:listitem="@layout/item_moment" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
