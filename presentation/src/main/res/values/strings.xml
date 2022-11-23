@@ -26,9 +26,13 @@
     <string name="item_picture_description">This is the picture you added.</string>
     <string name="item_picture_remove_picture_description">remove picture</string>
 
+    <string name="dialog_place_positive">여기가 맞는 것 같아요!</string>
+    <string name="dialog_place_negative">여기가 아닌 것 같아요..</string>
+
     <string name="network_error">네트워크 연결을 확인해 주세요.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>
