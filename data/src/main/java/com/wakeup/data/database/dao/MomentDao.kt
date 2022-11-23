@@ -50,10 +50,10 @@ interface MomentDao {
     ): PagingSource<Int, MomentWithGlobesAndPictures>
 
     @Query("SELECT globe_entity_id FROM globe WHERE name = :globeName")
-    suspend fun getGlobeId(globeName: String): Long
+    suspend fun getGlobeIdByName(globeName: String): Long
 
     @Query("SELECT picture_entity_id FROM picture WHERE bitmap = :bitmap")
-    suspend fun getPictureByByteArray(bitmap: ByteArray): Long
+    suspend fun getPictureIdByByteArray(bitmap: ByteArray): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMoment(moment: MomentEntity): Long

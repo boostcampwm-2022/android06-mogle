@@ -41,7 +41,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
         ).flow
 
     override suspend fun getGlobeId(globeName: String): Long {
-        return momentDao.getGlobeId(globeName)
+        return momentDao.getGlobeIdByName(globeName)
     }
 
     override suspend fun saveMoment(moment: MomentEntity): Long {
@@ -52,7 +52,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
         val indexResult = momentDao.savePicture(pictures).toMutableList()
         indexResult.forEachIndexed { pictureIndex, id ->
             if (id == EXIST_INSERT_ERROR_CODE) {
-                indexResult[pictureIndex] = momentDao.getPictureByByteArray(pictures[pictureIndex].bitmap)
+                indexResult[pictureIndex] = momentDao.getPictureIdByByteArray(pictures[pictureIndex].bitmap)
             }
         }
         return indexResult.toList()
