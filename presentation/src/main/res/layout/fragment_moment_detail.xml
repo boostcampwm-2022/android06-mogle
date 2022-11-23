@@ -9,7 +9,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -39,7 +40,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/rectangle_96" />
+                tools:src="@drawable/bg_sunny_header" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -95,9 +96,9 @@
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/cv_image_container"
                 tools:text="오늘은 집에서 뒹굴거렸다. 요몇일 계속 일찍 일어났더
-            니 일어나기 싫더라...  가나다라마바사아가나다라마바
-            가나다라마바사아 가나다라마바 사아가나다라마바사
-            가나 다라마 바사아 호호 이이 아아 리어이러" />
+                니 일어나기 싫더라...  가나다라마바사아가나다라마바
+                가나다라마바사아 가나다라마바 사아가나다라마바사
+                가나 다라마 바사아 호호 이이 아아 리어이러" />
 
             <TextView
                 android:id="@+id/tv_globe"
