@@ -24,7 +24,7 @@
 
     <dimen name="big_padding">@dimen/normal_225</dimen>
     <dimen name="normal_padding">@dimen/normal_150</dimen>
-
+    <dimen name="location_btn_margin">168dp</dimen>
 
     <!-- standard by 100 % -->
 
@@ -47,5 +47,6 @@
     <dimen name="large_175_tv">56sp</dimen>
     <dimen name="large_200_tv">64sp</dimen>
 
+    <dimen name="bottom_sheet_peek_height">156dp</dimen>
 
 </resources>

@@ -15,11 +15,11 @@ interface RepositoryModule {
 
     @Binds
     fun bindMomentRepository(
-        momentRepositoryImpl: MomentRepositoryImpl
+        momentRepositoryImpl: MomentRepositoryImpl,
     ): MomentRepository
 
     @Binds
     fun bindPlaceSearchRepository(
-        placeSearchRepositoryImpl: PlaceSearchRepositoryImpl
+        placeSearchRepositoryImpl: PlaceSearchRepositoryImpl,
     ): PlaceSearchRepository
 }

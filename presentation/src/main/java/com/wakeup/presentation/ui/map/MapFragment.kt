@@ -12,24 +12,20 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.map
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
-import com.naver.maps.geometry.LatLng
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.naver.maps.map.LocationTrackingMode
-import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
-import com.naver.maps.map.NaverMapOptions
 import com.naver.maps.map.OnMapReadyCallback
-import com.naver.maps.map.overlay.Marker
-import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import com.wakeup.domain.model.SortType
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
-import com.wakeup.presentation.databinding.ItemMapMarkerBinding
+import com.wakeup.presentation.extension.getNavigationResultFromTop
 import com.wakeup.presentation.model.LocationModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -44,10 +40,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
+    private lateinit var mapHelper: MapHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentMapBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -56,11 +53,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initMapHelper()
         initMap()
         initLocation()
         initBottomSheet()
 
         collectMoments()
+        updateMoments()
+    }
+
+    private fun updateMoments() {
+        findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
+            ?.observe(viewLifecycleOwner) { isUpdated ->
+                if (isUpdated) {
+                    viewModel.fetchMoments()
+                }
+            }
     }
 
     private fun collectMoments() {
@@ -82,27 +90,29 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun setMenus(binding: BottomSheetBinding) {
         val items = listOf(
-            getString(R.string.date_sort_desc),
-            getString(R.string.date_sort_asc),
-            getString(R.string.location_sort)
+            getString(R.string.most_recent),
+            getString(R.string.oldest),
+            getString(R.string.nearest)
         )
         val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_sort_menu, items)
-        (binding.textField.editText as? AutoCompleteTextView)?.setAdapter(menuAdapter)
+        binding.textField.viewTreeObserver.addOnGlobalLayoutListener {
+            (binding.textField.editText as? MaterialAutoCompleteTextView)?.setAdapter(menuAdapter)
+        }
 
         binding.sortMenu.setOnItemClickListener { _, _, position, _ ->
             expandBottomSheet(binding.bottomSheet)
-
-            Timber.d("${locationSource.lastLocation?.latitude} ${locationSource.lastLocation?.longitude}")
-            when (position) {
-                0 -> viewModel.fetchMoments(SortType.MOST_RECENT)
-                1 -> viewModel.fetchMoments(SortType.OLDEST)
-                else -> locationSource.lastLocation?.apply {
-                    viewModel.fetchMoments(
-                        sortType = SortType.NEAREST,
-                        location = LocationModel(latitude, longitude)
-                    )
+            viewModel.location.value = null
+            viewModel.sortType.value = when (position) {
+                0 -> SortType.MOST_RECENT
+                1 -> SortType.OLDEST
+                else -> {
+                    locationSource.lastLocation?.apply {
+                        viewModel.location.value = LocationModel(latitude, longitude)
+                    }
+                    SortType.NEAREST
                 }
             }
+            viewModel.fetchMoments()
         }
     }
 
@@ -117,25 +127,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         binding.rvMoments.adapter = momentAdapter
     }
 
+    private fun initMapHelper() {
+        mapHelper = MapHelper(requireContext())
+    }
+
     private fun initMap() {
-        // TODO Fragment 내부에서는, childFragmentManager 사용 필요
-        val fm = childFragmentManager
-
-        // 지도 옵션
-        val options = NaverMapOptions()
-            .locationButtonEnabled(true)
-            .tiltGesturesEnabled(true)
-            .indoorEnabled(true)
-            .zoomControlEnabled(false)
-        //.mapType(NaverMap.MapType.Navi)
-        //.nightModeEnabled(true)
-
-        // 지도 생성
-        val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
-            ?: MapFragment.newInstance(options).also {
-                fm.beginTransaction().add(R.id.map, it).commit()
-            }
-        mapFragment.getMapAsync(this)
+        mapHelper.initMap(childFragmentManager, this)
     }
 
     private fun initLocation() {
@@ -146,37 +143,23 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
     }
 
-    // TODO 테스트 코드 수정
-    private fun setTestMarkers() {
-        val markerBinding = ItemMapMarkerBinding.inflate(layoutInflater, binding.map, false)
-        markerBinding.ivThumbnail.setImageResource(R.drawable.sample_image)
-
-        repeat(10) {
-            Marker().apply {
-                this.position = LatLng(37.5670135 + it * 0.00001, 126.9783740)
-                this.isHideCollidedSymbols = true
-                this.isIconPerspectiveEnabled = true
-                this.map = naverMap
-                this.icon = OverlayImage.fromView(markerBinding.root)
-                this.tag = "$it"
-                this.setOnClickListener {
-                    Snackbar.make(binding.root, "${it.tag}번째 마커", Snackbar.LENGTH_SHORT).show()
-                    true
-                }
-            }
-
-        }
-    }
-
     override fun onMapReady(naverMap: NaverMap) {
-        this.naverMap = naverMap.also {
-            // 위치 설정
-            it.locationSource = locationSource
-            it.locationTrackingMode = LocationTrackingMode.Follow
+        this.naverMap = naverMap
+
+        // 위치 관련 설정
+        mapHelper.apply {
+            setCurrentLocation(naverMap, locationSource)
+            setLocationButtonView(naverMap, binding.lbvLocation)
+            setScaleBarView(naverMap, binding.sbvScale)
+            setLogoView(naverMap, binding.lvLogo)
         }
 
-        // 테스트 마커
-        setTestMarkers()
+        // 테스트 마커 설정
+        mapHelper.setTestMarker(naverMap) {
+            Snackbar.make(binding.root, "${it.tag}번째 마커", Snackbar.LENGTH_SHORT).show()
+            mapHelper.setDarkMode(naverMap)
+            true
+        }
     }
 
     // Deprecated 되었지만,
@@ -185,7 +168,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         if (locationSource.onRequestPermissionsResult(
                 requestCode, permissions,

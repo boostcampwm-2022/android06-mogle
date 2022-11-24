@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.PictureAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentBinding
+import com.wakeup.presentation.extension.setNavigationResultToBackStack
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.util.BitmapUtil.fixRotation
 import com.wakeup.presentation.util.setToolbar
@@ -63,6 +65,7 @@ class AddMomentFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         initToolbar()
 
@@ -84,7 +87,11 @@ class AddMomentFragment : Fragment() {
 
         binding.tvSave.setOnClickListener {
             viewModel.saveMoment()
-            findNavController().popBackStack()
+            Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
+
+            val navController = findNavController()
+            navController.setNavigationResultToBackStack("isUpdated", true)
+            navController.popBackStack()
         }
 
         args.place?.let {

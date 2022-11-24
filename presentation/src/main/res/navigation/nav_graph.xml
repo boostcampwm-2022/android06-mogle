@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/action_map_fragment_to_add_moment_navigation"
-            app:destination="@id/add_moment_navigation" />
+            app:destination="@id/add_moment_navigation"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -38,7 +42,11 @@
                 app:nullable="true" />
             <action
                 android:id="@+id/action_addMoment_to_placeSearch"
-                app:destination="@id/place_search_fragment" />
+                app:destination="@id/place_search_fragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
         </fragment>
 
         <fragment
@@ -62,6 +70,10 @@
             <action
                 android:id="@+id/action_place_check_to_add_moment"
                 app:destination="@id/add_moment_fragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
                 app:popUpTo="@id/add_moment_fragment"
                 app:popUpToInclusive="true" />
         </fragment>

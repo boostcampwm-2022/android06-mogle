@@ -2,7 +2,6 @@ package com.wakeup.presentation.ui.addmoment
 
 import android.content.Intent
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.wakeup.domain.usecase.SaveMomentUseCase
 import com.wakeup.presentation.mapper.toDomain
@@ -11,16 +10,15 @@ import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.model.PlaceModel
-import com.wakeup.presentation.util.DateUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import androidx.lifecycle.asLiveData
+
 
 @HiltViewModel
 class AddMomentViewModel @Inject constructor(
@@ -53,8 +51,7 @@ class AddMomentViewModel @Inject constructor(
 
     private val _selectedDate = MutableStateFlow(System.currentTimeMillis())
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val selectedDateByTime = _selectedDate.flatMapLatest { date ->
+    val selectedDateByTime = _selectedDate.map { date ->
         MutableStateFlow(DateUtil.getDateByTime(date))
     }.asLiveData()
 
@@ -122,7 +119,7 @@ class AddMomentViewModel @Inject constructor(
                     content = content.value,
                     globes = listOf(selectedGlobe.value),
                     date = _selectedDate.value
-                ).apply { Timber.d("$this") }.toDomain()
+                ).toDomain()
             )
         }
     }
