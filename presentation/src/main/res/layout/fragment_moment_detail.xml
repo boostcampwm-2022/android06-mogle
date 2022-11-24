@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="momentModel"
             type="com.wakeup.presentation.model.MomentModel" />
@@ -47,12 +48,11 @@
 
             <TextView
                 android:id="@+id/tv_main_address"
+                style="@style/TextAppearance.Mogle.Headline1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_150"
                 android:text="@{momentModel.place.mainAddress}"
-                android:textColor="@color/black"
-                android:textSize="@dimen/normal_125_tv"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -61,11 +61,11 @@
 
             <TextView
                 android:id="@+id/tv_detail_address"
+                style="@style/TextAppearance.Mogle.Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/small_50"
                 android:text="@{momentModel.place.detailAddress}"
-                android:textSize="@dimen/small_150_tv"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
