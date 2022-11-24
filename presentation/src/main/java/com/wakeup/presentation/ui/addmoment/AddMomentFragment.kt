@@ -74,7 +74,6 @@ class AddMomentFragment : Fragment() {
         initPlace()
         initSave()
 
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun initAdapter() {
