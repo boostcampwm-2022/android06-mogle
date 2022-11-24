@@ -114,7 +114,7 @@ class AddMomentViewModel @Inject constructor(
         _place.value = place
     }
 
-    fun saveMoment() {
+    suspend fun saveMoment() {
         viewModelScope.launch {
             saveMomentUseCase(
                 moment = MomentModel(
@@ -125,6 +125,6 @@ class AddMomentViewModel @Inject constructor(
                     date = _selectedDate.value
                 ).toDomain()
             )
-        }
+        }.join()
     }
 }

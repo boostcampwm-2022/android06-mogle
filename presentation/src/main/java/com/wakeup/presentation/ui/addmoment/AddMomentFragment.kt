@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
@@ -20,6 +22,7 @@ import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.util.BitmapUtil.fixRotation
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -117,12 +120,13 @@ class AddMomentFragment : Fragment() {
 
     private fun initSave() {
         binding.tvSave.setOnClickListener {
-            viewModel.saveMoment()
-            Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
-
-            val navController = findNavController()
-            navController.setNavigationResultToBackStack("isUpdated", true)
-            navController.popBackStack()
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.saveMoment()
+                Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
+                val navController = findNavController()
+                navController.setNavigationResultToBackStack("isUpdated", true)
+                navController.popBackStack()
+            }
         }
     }
 }
