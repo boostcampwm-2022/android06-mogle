@@ -13,6 +13,10 @@
     <string name="home">홈</string>
     <string name="dragger">드래거</string>
 
+    <string name="add_moment">모먼트 남기기</string>
+    <string name="place_search">장소 선택</string>
+    <string name="place_check">장소 확인</string>
+
 
     <string name="add_moment_picture_title">사진 (%d/5)</string>
     <string name="add_moment_content_length">%d/500자</string>
@@ -26,9 +30,13 @@
     <string name="item_picture_description">This is the picture you added.</string>
     <string name="item_picture_remove_picture_description">remove picture</string>
 
+    <string name="dialog_place_positive">여기가 맞는 것 같아요!</string>
+    <string name="dialog_place_negative">여기가 아닌 것 같아요..</string>
+
     <string name="network_error">네트워크 연결을 확인해 주세요.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

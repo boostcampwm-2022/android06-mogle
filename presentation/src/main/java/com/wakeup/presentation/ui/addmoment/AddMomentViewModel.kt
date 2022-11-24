@@ -2,6 +2,7 @@ package com.wakeup.presentation.ui.addmoment
 
 import android.content.Intent
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.wakeup.domain.usecase.SaveMomentUseCase
 import com.wakeup.presentation.mapper.toDomain
@@ -15,9 +16,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+
 
 @HiltViewModel
 class AddMomentViewModel @Inject constructor(
@@ -25,7 +28,7 @@ class AddMomentViewModel @Inject constructor(
 ) : ViewModel() {
 
     // mock data
-    val globes = listOf(
+    private val globes = listOf(
         GlobeModel("globe 1"),
         GlobeModel("globe 2"),
         GlobeModel("globe 3"),
@@ -33,22 +36,12 @@ class AddMomentViewModel @Inject constructor(
 
     val defaultGlobe = globes.first()
 
+    // mock data
     val tmpGlobes = arrayOf(
         ("globe 1"),
         ("globe 2"),
         ("globe 3"),
     )
-
-    // mock data
-    val place = MutableStateFlow(
-        PlaceModel(
-            mainAddress = "우리집",
-            detailAddress = "안동시 옥동",
-            location = LocationModel(36.567, 127.456)
-        )
-    )
-
-    private var selectedGlobe = MutableStateFlow(globes.first())
 
     private val _pictures = MutableStateFlow<List<PictureModel>>(emptyList())
     val pictures = _pictures.asStateFlow()
@@ -56,8 +49,24 @@ class AddMomentViewModel @Inject constructor(
     private val _isPictureMax = MutableStateFlow(false)
     val isPictureMax = _isPictureMax.asStateFlow()
 
+    private var selectedGlobe = MutableStateFlow(globes.first())
+
     private val _selectedDate = MutableStateFlow(System.currentTimeMillis())
-    val selectedDate = _selectedDate.asStateFlow()
+
+    val selectedDateByTime = _selectedDate.map { date ->
+        DateUtil.getDateByTime(date)
+    }.asLiveData()
+
+    // initial data
+    private val _place: MutableStateFlow<PlaceModel> = MutableStateFlow(
+        PlaceModel(
+            "",
+            "",
+            LocationModel(0.0, 0.0)
+        )
+    )
+    val place = _place.asStateFlow()
+
 
     val content = MutableStateFlow("")
 
@@ -97,10 +106,12 @@ class AddMomentViewModel @Inject constructor(
         selectedGlobe.value = globes[position]
     }
 
-    fun getSelectedDateByTime(): String = DateUtil.getDateByTime(selectedDate.value)
-
     fun setSelectedDate(date: Long) {
         _selectedDate.value = date
+    }
+
+    fun setPlace(place: PlaceModel) {
+        _place.value = place
     }
 
     fun saveMoment() {
@@ -111,10 +122,9 @@ class AddMomentViewModel @Inject constructor(
                     pictures = pictures.value,
                     content = content.value,
                     globes = listOf(selectedGlobe.value),
-                    date = selectedDate.value
+                    date = _selectedDate.value
                 ).toDomain()
             )
-            //Timber.d("${pictures.value[0]}")
         }
     }
 }
