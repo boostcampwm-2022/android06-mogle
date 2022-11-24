@@ -5,5 +5,5 @@ import com.wakeup.domain.model.Place
 
 interface PlaceSearchRepository {
 
-    suspend fun search(keyword: String): List<Place>
+    suspend fun search(keyword: String): Result<List<Place>>
 }

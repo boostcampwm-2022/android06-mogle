@@ -3,6 +3,7 @@ package com.wakeup.presentation.factory
 import com.wakeup.presentation.model.GlobeModel
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
+import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.model.PlaceModel
 
 object FakeMomentFactory {
@@ -16,7 +17,7 @@ object FakeMomentFactory {
                 place = createPlace(it),
                 pictures = emptyList(),
                 content = "재민${it}",
-                globes = listOf(GlobeModel("default")),
+                globes = listOf(GlobeModel("여행"), GlobeModel("default")),
                 date = System.currentTimeMillis() + (it * ONE_DAY)
             )
         }
@@ -26,4 +27,17 @@ object FakeMomentFactory {
         detailAddress = "상세 주소${count}",
         location = LocationModel(37.0 + count, 128.0 + count)
     )
+
+    fun createMomentsWithSampleImage(picture: PictureModel, count: Int): List<MomentModel> =
+        (1..count).map {
+            MomentModel(
+                id = 1L,
+                place = createPlace(it),
+                pictures = listOf(picture, picture, picture, picture),
+                content = "재민${it}",
+                globes = listOf(GlobeModel("여행"), GlobeModel("default")),
+                date = System.currentTimeMillis() + (it * ONE_DAY)
+            )
+        }
+
 }

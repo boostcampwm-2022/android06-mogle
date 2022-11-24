@@ -24,13 +24,22 @@ class PlaceSearchViewModel @Inject constructor(
     private val _searchResult = MutableStateFlow<List<PlaceModel>>(emptyList())
     val searchResult = _searchResult.asStateFlow()
 
+    private val _isNetworkError = MutableStateFlow(false)
+    val isNetworkError = _isNetworkError.asStateFlow()
+
     init {
         viewModelScope.launch {
             searchText.debounce(500).collect {
-                _searchResult.value = if (it.isEmpty()) {
-                    emptyList()
+                _isNetworkError.value = false
+                if (it.isEmpty()) {
+                    _searchResult.value = emptyList()
                 } else {
-                    searchPlaceUseCase(it).map { place -> place.toPresentation() }
+                    searchPlaceUseCase(it)
+                        .onSuccess { places ->
+                            _searchResult.value = places.map { place -> place.toPresentation() }
+                        }.onFailure {
+                            _isNetworkError.value = true
+                        }
                 }
             }
         }

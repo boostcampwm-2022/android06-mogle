@@ -3,13 +3,13 @@ package com.wakeup.data.database.mapper
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.domain.model.Picture
 
-fun Picture.toEntity(): PictureEntity {
+fun Picture.toEntity(fileName: String): PictureEntity {
     return PictureEntity(
-        bitmap = bitmap,
+        fileName = fileName,
     )
 }
 
-fun PictureEntity.toDomain(): Picture {
+fun PictureEntity.toDomain(bitmap: ByteArray): Picture {
     return Picture(
         bitmap = bitmap,
     )

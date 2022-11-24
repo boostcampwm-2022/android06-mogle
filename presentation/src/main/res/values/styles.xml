@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="BottomSheetDialog" parent="Widget.Material3.BottomSheet">
         <item name="backgroundTint">?attr/colorSurface</item>
         <item name="shapeAppearance">@style/ShapeAppearance.Mogle.LargeComponent</item>
@@ -40,4 +41,5 @@
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/gray</item>
     </style>
+
 </resources>

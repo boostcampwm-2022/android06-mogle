@@ -52,7 +52,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
         val indexResult = momentDao.savePictures(pictures).toMutableList()
         indexResult.forEachIndexed { pictureIndex, id ->
             if (id == EXIST_INSERT_ERROR_CODE) {
-                indexResult[pictureIndex] = momentDao.getPictureIdByByteArray(pictures[pictureIndex].bitmap)
+                indexResult[pictureIndex] = momentDao.getPictureIdByByteArray(pictures[pictureIndex].fileName)
             }
         }
         return indexResult.toList()
