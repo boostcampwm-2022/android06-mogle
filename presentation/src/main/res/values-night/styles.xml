@@ -34,4 +34,5 @@
     <style name="TextAppearance.Mogle.SubBody" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">10sp</item>
     </style>
+
 </resources>

@@ -52,8 +52,8 @@ interface MomentDao {
     @Query("SELECT globe_id FROM globe WHERE name = :globeName")
     suspend fun getGlobeIdByName(globeName: String): Long
 
-    @Query("SELECT picture_id FROM picture WHERE bitmap = :bitmap")
-    suspend fun getPictureIdByByteArray(bitmap: ByteArray): Long
+    @Query("SELECT picture_id FROM picture WHERE fileName = :fileName")
+    suspend fun getPictureIdByByteArray(fileName: String): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMoment(moment: MomentEntity): Long

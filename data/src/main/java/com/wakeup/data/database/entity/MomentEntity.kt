@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -14,7 +13,8 @@ import androidx.room.PrimaryKey
             entity = PictureEntity::class,
             parentColumns = ["picture_id"],
             childColumns = ["thumbnail_id"],
-            onUpdate = CASCADE
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE,
         )
     ]
 )

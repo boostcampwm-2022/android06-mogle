@@ -8,7 +8,9 @@ class PlaceSearchRemoteDataSourceImpl @Inject constructor(
     private val placeSearchService: PlaceSearchService
 ) : PlaceSearchRemoteDataSource {
 
-    override suspend fun search(keyword: String): PlaceResponse {
-        return placeSearchService.getPlaces(keyword)
+    override suspend fun search(keyword: String): Result<PlaceResponse> {
+        return Result.runCatching {
+            placeSearchService.getPlaces(keyword)
+        }
     }
 }

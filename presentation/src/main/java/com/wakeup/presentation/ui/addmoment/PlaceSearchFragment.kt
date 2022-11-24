@@ -6,17 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.PlaceAdapter
 import com.wakeup.presentation.databinding.FragmentPlaceSearchBinding
+import com.wakeup.presentation.model.PlaceModel
+import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class PlaceSearchFragment : Fragment() {
 
     private val viewModel: PlaceSearchViewModel by viewModels()
     private lateinit var binding: FragmentPlaceSearchBinding
-    private val adapter = PlaceAdapter { Timber.d("$it") }
+    private val adapter = PlaceAdapter { navigateToPlaceCheckFragment(it) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,9 +28,34 @@ class PlaceSearchFragment : Fragment() {
         binding = FragmentPlaceSearchBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             vm = viewModel
-            rvSearchResult.adapter = adapter
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initAdapter()
+        initToolbar()
+
+    }
+
+    private fun navigateToPlaceCheckFragment(place: PlaceModel) {
+        findNavController().navigate(
+            PlaceSearchFragmentDirections.actionPlaceSearchToPlaceCheck(place)
+        )
+    }
+
+    private fun initAdapter() {
+        binding.rvSearchResult.adapter = adapter
+    }
+
+    private fun initToolbar() {
+        setToolbar(
+            toolbar = binding.tbPlaceSearch,
+            titleId = R.string.place_search,
+            onBackClick = { findNavController().navigateUp() }
+        )
     }
 }

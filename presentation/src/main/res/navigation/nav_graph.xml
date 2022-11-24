@@ -10,9 +10,17 @@
         android:name="com.wakeup.presentation.ui.map.MapFragment"
         android:label="지도"
         tools:layout="@layout/fragment_map" >
+        
         <action
             android:id="@+id/action_map_fragment_to_momentDetailFragment"
             app:destination="@id/momentDetailFragment" />
+        <action
+            android:id="@+id/action_map_fragment_to_add_moment_navigation"
+            app:destination="@id/add_moment_navigation"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -21,30 +29,60 @@
         android:label="글로브"
         tools:layout="@layout/fragment_globe" />
 
-    <fragment
-        android:id="@+id/add_moment_fragment"
-        android:name="com.wakeup.presentation.ui.addmoment.AddMomentFragment"
-        android:label="AddMomentFragment"
-        tools:layout="@layout/fragment_add_moment">
-        <action
-            android:id="@+id/action_addMoment_to_placeSearch"
-            app:destination="@id/place_search_fragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
 
-    </fragment>
+    <navigation
+        android:id="@+id/add_moment_navigation"
+        app:startDestination="@id/add_moment_fragment">
 
-    <fragment
-        android:id="@+id/place_search_fragment"
-        android:name="com.wakeup.presentation.ui.addmoment.PlaceSearchFragment"
-        android:label="PlaceSearchFragment"
-        tools:layout="@layout/fragment_place_search"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+        <fragment
+            android:id="@+id/add_moment_fragment"
+            android:name="com.wakeup.presentation.ui.addmoment.AddMomentFragment"
+            android:label="AddMomentFragment"
+            tools:layout="@layout/fragment_add_moment">
+            <argument
+                android:name="place"
+                android:defaultValue="@null"
+                app:argType="com.wakeup.presentation.model.PlaceModel"
+                app:nullable="true" />
+            <action
+                android:id="@+id/action_addMoment_to_placeSearch"
+                app:destination="@id/place_search_fragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/place_search_fragment"
+            android:name="com.wakeup.presentation.ui.addmoment.PlaceSearchFragment"
+            android:label="PlaceSearchFragment"
+            tools:layout="@layout/fragment_place_search">
+            <action
+                android:id="@+id/action_place_search_to_place_check"
+                app:destination="@id/place_check_fragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/place_check_fragment"
+            android:name="com.wakeup.presentation.ui.addmoment.PlaceCheckFragment"
+            android:label="PlaceCheckFragment"
+            tools:layout="@layout/fragment_place_check">
+            <argument
+                android:name="place"
+                app:argType="com.wakeup.presentation.model.PlaceModel" />
+            <action
+                android:id="@+id/action_place_check_to_add_moment"
+                app:destination="@id/add_moment_fragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
+                app:popUpTo="@id/add_moment_fragment"
+                app:popUpToInclusive="true" />
+        </fragment>
+
+    </navigation>
 
     <fragment
         android:id="@+id/momentDetailFragment"
