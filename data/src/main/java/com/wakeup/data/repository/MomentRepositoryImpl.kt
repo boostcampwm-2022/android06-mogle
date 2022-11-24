@@ -8,6 +8,7 @@ import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.mapper.toDomain
 import com.wakeup.data.database.mapper.toEntity
 import com.wakeup.data.source.local.moment.MomentLocalDataSource
+import com.wakeup.data.util.InternalFileUtil
 import com.wakeup.domain.model.Location
 import com.wakeup.domain.model.Moment
 import com.wakeup.domain.model.SortType
@@ -21,6 +22,7 @@ import javax.inject.Inject
 
 class MomentRepositoryImpl @Inject constructor(
     private val localDataSource: MomentLocalDataSource,
+    private val util: InternalFileUtil,
 ) : MomentRepository {
 
     init {
@@ -42,7 +44,8 @@ class MomentRepositoryImpl @Inject constructor(
     ): Flow<PagingData<Moment>> =
         localDataSource.getMoments(sort, query, myLocation?.toEntity()).map { pagingData ->
             pagingData.map { momentInfo ->
-                momentInfo.toDomain(momentInfo.pictureList, momentInfo.globeList)
+                momentInfo.toDomain(util.getPictureInInternalStorage(momentInfo.pictureList),
+                    momentInfo.globeList)
             }
         }
 
@@ -51,8 +54,9 @@ class MomentRepositoryImpl @Inject constructor(
             localDataSource.saveMoment(moment.toEntity(moment.place, null))
             return
         }
-        val pictureIndexes =
-            localDataSource.savePictures(moment.pictures.map { it.toEntity() })
+        val pictureFileNames = util.savePictureInInternalStorageAndGetFileName(moment.pictures)
+        val pictureIndexes = localDataSource.savePictures(pictureFileNames)
+
         // 정책: moment 추가할 때 항상 globe 하나 선택해서 추가(default 도 하나 선택해서 추가 임).
         val globeIndex = localDataSource.getGlobeId(moment.globes[0].name)
         val momentIndex =

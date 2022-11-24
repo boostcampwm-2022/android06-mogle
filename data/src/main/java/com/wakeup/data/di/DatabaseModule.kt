@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Room
 import com.wakeup.data.database.MogleDatabase
 import com.wakeup.data.database.dao.MomentDao
+import com.wakeup.data.util.InternalFileUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
@@ -28,4 +30,10 @@ object DatabaseModule {
     fun provideMomentDao(
         mogleDatabase: MogleDatabase,
     ): MomentDao = mogleDatabase.momentDao()
+
+    @Singleton
+    @Provides
+    fun provideSaveUtil(
+        @ApplicationContext context: Context,
+    ): InternalFileUtil = InternalFileUtil(context, Dispatchers.IO)
 }

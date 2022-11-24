@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream
 fun PictureModel.toDomain(): Picture {
     val stream = ByteArrayOutputStream()
     bitmap.compress(Bitmap.CompressFormat.PNG, 1, stream)
+    println(stream.toByteArray())
     return Picture(stream.toByteArray())
 }
 
