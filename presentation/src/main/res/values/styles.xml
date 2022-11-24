@@ -42,11 +42,4 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <!-- Toolbar   -->
-    <style name="TextToolbar" parent="android:Widget.TextView">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/normal_125_tv</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
 </resources>

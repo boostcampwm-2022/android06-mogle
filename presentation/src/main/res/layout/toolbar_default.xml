@@ -30,7 +30,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_marginStart="@dimen/normal_100"
                 android:gravity="center|start"
-                android:textAppearance="@style/TextToolbar"
+                android:textAppearance="@style/TextAppearance.Mogle.Headline1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

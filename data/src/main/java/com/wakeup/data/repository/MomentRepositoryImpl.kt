@@ -26,11 +26,13 @@ class MomentRepositoryImpl @Inject constructor(
     init {
         // todo: globe_test_code (must remove to release)
         CoroutineScope(Dispatchers.IO).launch {
-            localDataSource.saveGlobes(listOf(
-                GlobeEntity(name = "default"),
-                GlobeEntity(name = "globe 1"),
-                GlobeEntity(name = "globe 2"),
-                GlobeEntity(name = "globe 3"))
+            localDataSource.saveGlobes(
+                listOf(
+                    GlobeEntity(name = "default"),
+                    GlobeEntity(name = "globe 1"),
+                    GlobeEntity(name = "globe 2"),
+                    GlobeEntity(name = "globe 3")
+                )
             )
         }
     }

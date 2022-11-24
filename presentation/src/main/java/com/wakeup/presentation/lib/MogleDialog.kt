@@ -11,11 +11,9 @@ import android.view.View
 import android.view.WindowManager
 
 /**
- *
  * @example
  *
- * MogleDialog.with(requireContext(), R.id.dialog)
- *  .setView(R.layout.dialog_place)
+ * MogleDialog.with(requireContext(), R.id.dialog_deleteAlbum)
  *  .setOnPositive(R.id.tv_positive) { Timber.d("OK") }
  *  .setOnNegative(R.id.tv_negative) { Timber.d("CANCEL") }
  *  .show()
@@ -31,12 +29,9 @@ class MogleDialog private constructor() {
     companion object {
 
         /**
-         *
          * @param context 화면에 띄울 컨텍스트를 지정
          * @param layoutId 원하는 dialog 레이아웃을 넣어준다.
-         *
          */
-
         fun with(context: Context, layoutId: Int): MogleDialog {
             return MogleDialog().apply {
                 builder = AlertDialog.Builder(context)
@@ -76,7 +71,6 @@ class MogleDialog private constructor() {
 
     /**
      * @param isCanceled dialog 외부를 터치하면 없이질 지 여부를 결정한다.
-     *
      */
     fun setCanceledOnTouchOutside(isCanceled: Boolean): MogleDialog {
         dialog.setCanceledOnTouchOutside(isCanceled)
@@ -84,7 +78,6 @@ class MogleDialog private constructor() {
     }
 
     /**
-     *
      * required
      *
      * @param resId dialog positive button 을 지정한다.

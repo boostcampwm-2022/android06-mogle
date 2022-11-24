@@ -28,7 +28,7 @@ class AddMomentViewModel @Inject constructor(
 ) : ViewModel() {
 
     // mock data
-    val globes = listOf(
+    private val globes = listOf(
         GlobeModel("globe 1"),
         GlobeModel("globe 2"),
         GlobeModel("globe 3"),
@@ -58,13 +58,15 @@ class AddMomentViewModel @Inject constructor(
     }.asLiveData()
 
     // initial data
-    val place: MutableStateFlow<PlaceModel> = MutableStateFlow(
+    private val _place: MutableStateFlow<PlaceModel> = MutableStateFlow(
         PlaceModel(
             "",
             "",
             LocationModel(0.0, 0.0)
         )
     )
+    val place = _place.asStateFlow()
+
 
     val content = MutableStateFlow("")
 
@@ -109,7 +111,7 @@ class AddMomentViewModel @Inject constructor(
     }
 
     fun setPlace(place: PlaceModel) {
-        this.place.value = place
+        _place.value = place
     }
 
     fun saveMoment() {
