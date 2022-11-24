@@ -26,6 +26,7 @@ class MomentDetailFragment : Fragment() {
     private lateinit var binding: FragmentMomentDetailBinding
     private val args: MomentDetailFragmentArgs by navArgs()
 
+    // TODO 역할 위임
     private lateinit var indicatorAnimator: ObjectAnimator
     private val pageChangedFlow = MutableStateFlow(0)
     private var isDragging = false
@@ -122,6 +123,7 @@ class MomentDetailFragment : Fragment() {
     }
 
     private fun fadeAwayIndicator() {
+        if (binding.tvIndicator.alpha == END_ALPHA) return
         indicatorAnimator.start()
     }
 
@@ -145,7 +147,7 @@ class MomentDetailFragment : Fragment() {
         super.onDestroyView()
     }
 
-    companion object {
+    private companion object {
         // 인디케이터 1부터 시작 위함
         const val ALPHA_PROPERTY = "alpha"
         const val START_ALPHA = 1.0f
