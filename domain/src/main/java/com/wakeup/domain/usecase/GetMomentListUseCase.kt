@@ -11,7 +11,11 @@ import javax.inject.Inject
 class GetMomentListUseCase @Inject constructor(
     private val momentRepository: MomentRepository
 ) {
-    operator fun invoke(sortType: SortType, query: String, myLocation: Location?): Flow<PagingData<Moment>>{
+    operator fun invoke(
+        sortType: SortType,
+        query: String,
+        myLocation: Location?,
+    ): Flow<PagingData<Moment>> {
         return momentRepository.getMoments(sortType, query, myLocation)
     }
 }
