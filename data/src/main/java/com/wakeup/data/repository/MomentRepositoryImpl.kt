@@ -44,8 +44,13 @@ class MomentRepositoryImpl @Inject constructor(
     ): Flow<PagingData<Moment>> =
         localDataSource.getMoments(sort, query, myLocation?.toEntity()).map { pagingData ->
             pagingData.map { momentInfo ->
-                momentInfo.toDomain(util.getPictureInInternalStorage(momentInfo.pictureList),
-                    momentInfo.globeList)
+                momentInfo.toDomain(
+                    util.getPictureInInternalStorage(
+                        momentInfo.pictureList,
+                        momentInfo.moment.thumbnailId
+                    ),
+                    momentInfo.globeList
+                )
             }
         }
 
@@ -57,7 +62,7 @@ class MomentRepositoryImpl @Inject constructor(
         val pictureFileNames = util.savePictureInInternalStorageAndGetFileName(moment.pictures)
         val pictureIndexes = localDataSource.savePictures(pictureFileNames)
 
-        // 정책: moment 추가할 때 항상 globe 하나 선택해서 추가(default 도 하나 선택해서 추가 임).
+        // moment 추가할 때 항상 globe 하나 선택해서 추가(default 도 하나 선택해서 추가 임).
         val globeIndex = localDataSource.getGlobeId(moment.globes[0].name)
         val momentIndex =
             localDataSource.saveMoment(moment.toEntity(moment.place, pictureIndexes[0]))

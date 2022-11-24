@@ -48,13 +48,13 @@ class InternalFileUtil @Inject constructor(
         }
     }
 
-    suspend fun getPictureInInternalStorage(pictures: List<PictureEntity>): List<Picture> {
+    suspend fun getPictureInInternalStorage(pictures: List<PictureEntity>, thumbnailId: Long?): List<Picture> {
         return withContext(dispatcher) {
-            val pictureBitmaps = mutableListOf<ByteArray>()
+            val pictureBitmaps = ArrayDeque<ByteArray>()
 
-            pictures.forEach { pictureFileName ->
+            pictures.forEach { picture ->
                 runCatching {
-                    BitmapFactory.decodeFile("${context.filesDir}/${pictureFileName.fileName}")
+                    BitmapFactory.decodeFile("${context.filesDir}/${picture.fileName}")
                 }.onFailure { e ->
                     Timber.e("MyTag", "FileNotFoundException : " + e.message)
                 }.onSuccess { bitmapPicture ->
@@ -64,7 +64,12 @@ class InternalFileUtil @Inject constructor(
                         Timber.e("MyTag", "IOException : " + e.message)
                     }.onSuccess { stream ->
                         bitmapPicture.compress(Bitmap.CompressFormat.JPEG, 1, stream)
-                        pictureBitmaps.add(stream.toByteArray())
+                        // thumbnail 사진이 가장 앞으로 오도록, pictureBitmaps[0]는 항상 thumbnail 사진
+                        if(thumbnailId != null && picture.id == thumbnailId) {
+                            pictureBitmaps.addFirst(stream.toByteArray())
+                        } else {
+                            pictureBitmaps.addLast(stream.toByteArray())
+                        }
                     }
                 }
             }
