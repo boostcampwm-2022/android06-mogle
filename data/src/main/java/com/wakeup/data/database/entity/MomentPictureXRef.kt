@@ -28,4 +28,3 @@ data class MomentPictureXRef(
     @ColumnInfo(name = "moment_id", index = true) val momentId: Long,
     @ColumnInfo(name = "picture_id", index = true) val pictureId: Long,
 )
-// PR 리뷰 남기고 -> 사진
