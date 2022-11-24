@@ -54,7 +54,7 @@ class AddMomentViewModel @Inject constructor(
     private val _selectedDate = MutableStateFlow(System.currentTimeMillis())
 
     val selectedDateByTime = _selectedDate.map { date ->
-        MutableStateFlow(DateUtil.getDateByTime(date))
+        DateUtil.getDateByTime(date)
     }.asLiveData()
 
     // initial data
