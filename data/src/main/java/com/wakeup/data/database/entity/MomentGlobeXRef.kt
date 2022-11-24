@@ -11,13 +11,15 @@ import androidx.room.ForeignKey
             entity = MomentEntity::class,
             parentColumns = ["moment_id"],
             childColumns = ["moment_id"],
-            onUpdate = ForeignKey.CASCADE
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
             entity = GlobeEntity::class,
             parentColumns = ["globe_id"],
             childColumns = ["globe_id"],
-            onUpdate = ForeignKey.CASCADE
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE,
         )
     ],
     primaryKeys = ["moment_id", "globe_id"]

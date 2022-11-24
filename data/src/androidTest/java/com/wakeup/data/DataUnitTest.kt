@@ -46,13 +46,13 @@ class DataUnitTest {
     fun saveMomentAndGetMoments(): Unit = runBlocking {
         val pictureId = momentDao.savePictures(listOf(
             PictureEntity(
-                bitmap = "picture1".toByteArray()
+                fileName = "picture1"
             ),
             PictureEntity(
-                bitmap = "picture2".toByteArray()
+                fileName = "picture2"
             ),
             PictureEntity(
-                bitmap = "picture3".toByteArray()
+                fileName = "picture3"
             )
         ))
         val momentId1 = momentDao.saveMoment(MomentEntity(
