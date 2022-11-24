@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -41,6 +42,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
     private lateinit var mapHelper: MapHelper
+
+    private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+            super.onItemRangeMoved(fromPosition, toPosition, itemCount)
+            binding.bottomSheet.rvMoments.scrollToPosition(0)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -114,6 +122,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
             viewModel.fetchMoments()
         }
+
+        momentAdapter.registerAdapterDataObserver(adapterDataObserver)
     }
 
     private fun expandBottomSheet(bottomSheet: ConstraintLayout) {
@@ -187,6 +197,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onDestroyView() {
+        momentAdapter.unregisterAdapterDataObserver(adapterDataObserver)
         binding.unbind()
         super.onDestroyView()
     }
