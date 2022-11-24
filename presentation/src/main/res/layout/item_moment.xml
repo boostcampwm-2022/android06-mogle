@@ -26,6 +26,7 @@
                 android:id="@+id/iv_moment"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/moment_picture"
                 app:imageFromBitmap="@{moment.pictures[0].bitmap}"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -69,8 +69,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         initBottomSheet()
         setAdapterListener()
 
-        initTestButton()
-
         collectMoments()
         updateMoments()
 
@@ -107,20 +105,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         with(binding.bottomSheet) {
             setMenus(this)
             setAdapter(this)
-        }
-    }
-
-    // TODO 추후 삭제
-    private fun initTestButton() {
-        val bitmap =
-            BitmapFactory.decodeResource(requireContext().resources, R.drawable.sample_image2)
-        val picture = PictureModel(bitmap)
-
-        binding.btnTest.setOnClickListener {
-            val fakeMoment = FakeMomentFactory.createMomentsWithSampleImage(picture, 1)
-            val action =
-                MapFragmentDirections.actionMapFragmentToMomentDetailFragment(fakeMoment.first())
-            findNavController().navigate(action)
         }
     }
 

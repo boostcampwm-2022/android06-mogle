@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
@@ -14,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.DetailPictureAdapter
 import com.wakeup.presentation.databinding.FragmentMomentDetailBinding
+import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,10 +45,19 @@ class MomentDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initToolbar()
         initAnimator()
         initViewPagerAdapter()
         initMoment()
         collectPageChangedFlow()
+    }
+
+    private fun initToolbar() {
+        setToolbar(
+            toolbar = binding.tbDetailMoment,
+            titleId = R.string.moment,
+            onBackClick = { findNavController().navigateUp() }
+        )
     }
 
     private fun initAnimator() {

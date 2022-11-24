@@ -12,11 +12,8 @@
         tools:layout="@layout/fragment_map" >
         
         <action
-            android:id="@+id/action_map_fragment_to_momentDetailFragment"
-            app:destination="@id/momentDetailFragment" />
-        <action
-            android:id="@+id/action_map_fragment_to_add_moment_navigation"
-            app:destination="@id/add_moment_navigation"
+            android:id="@+id/action_map_fragment_to_moment_detail_fragment"
+            app:destination="@id/moment_detail_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -28,7 +25,6 @@
         android:name="com.wakeup.presentation.ui.globe.GlobeFragment"
         android:label="글로브"
         tools:layout="@layout/fragment_globe" />
-
 
     <navigation
         android:id="@+id/add_moment_navigation"
@@ -85,7 +81,7 @@
     </navigation>
 
     <fragment
-        android:id="@+id/momentDetailFragment"
+        android:id="@+id/moment_detail_fragment"
         android:name="com.wakeup.presentation.ui.detail.MomentDetailFragment"
         android:label="MomentDetailFragment"
         tools:layout="@layout/fragment_moment_detail">
