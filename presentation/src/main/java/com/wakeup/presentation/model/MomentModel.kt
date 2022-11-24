@@ -3,6 +3,7 @@ package com.wakeup.presentation.model
 import com.wakeup.presentation.util.DateUtil
 import java.io.Serializable
 
+// TODO @Parcelize 변경
 data class MomentModel(
     val id: Long = 0,
     val place: PlaceModel,
