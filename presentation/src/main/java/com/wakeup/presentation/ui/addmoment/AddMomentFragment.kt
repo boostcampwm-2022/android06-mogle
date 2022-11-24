@@ -17,7 +17,6 @@ import com.wakeup.presentation.databinding.FragmentAddMomentBinding
 import com.wakeup.presentation.extension.setNavigationResultToBackStack
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.util.BitmapUtil.fixRotation
-import com.wakeup.presentation.util.DateUtil
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
