@@ -29,16 +29,20 @@ class MapViewModel @Inject constructor(
 
     private val searchQuery = MutableStateFlow("")
 
+    val sortType = MutableStateFlow(SortType.MOST_RECENT)
+
+    val location = MutableStateFlow<LocationModel?>(null)
+
     init {
-        fetchMoments(SortType.MOST_RECENT)
+        fetchMoments()
     }
 
-    fun fetchMoments(sortType: SortType, location: LocationModel? = null) {
+    fun fetchMoments() {
         viewModelScope.launch {
             _moments.value = getMomentListUseCase(
-                sortType = sortType,
+                sortType = sortType.value,
                 query = searchQuery.value,
-                myLocation = location?.toDomain()
+                myLocation = location.value?.toDomain()
             ).map { pagingMoments ->
                 pagingMoments.map { moment ->
                     moment.toPresentation()
@@ -47,5 +51,7 @@ class MapViewModel @Inject constructor(
                 .cachedIn(viewModelScope)
                 .first()
         }
+
+
     }
 }

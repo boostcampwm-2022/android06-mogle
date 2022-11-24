@@ -12,8 +12,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -23,6 +25,7 @@ import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
+import com.wakeup.presentation.extension.getNavigationResultFromTop
 import com.wakeup.presentation.model.LocationModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -56,6 +59,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         initBottomSheet()
 
         collectMoments()
+        updateMoments()
+    }
+
+    private fun updateMoments() {
+        findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
+            ?.observe(viewLifecycleOwner) { isUpdated ->
+                if (isUpdated) {
+                    viewModel.fetchMoments()
+                }
+            }
     }
 
     private fun collectMoments() {
@@ -77,27 +90,29 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun setMenus(binding: BottomSheetBinding) {
         val items = listOf(
-            getString(R.string.date_sort_desc),
-            getString(R.string.date_sort_asc),
-            getString(R.string.location_sort)
+            getString(R.string.most_recent),
+            getString(R.string.oldest),
+            getString(R.string.nearest)
         )
         val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_sort_menu, items)
-        (binding.textField.editText as? AutoCompleteTextView)?.setAdapter(menuAdapter)
+        binding.textField.viewTreeObserver.addOnGlobalLayoutListener {
+            (binding.textField.editText as? MaterialAutoCompleteTextView)?.setAdapter(menuAdapter)
+        }
 
         binding.sortMenu.setOnItemClickListener { _, _, position, _ ->
             expandBottomSheet(binding.bottomSheet)
-
-            Timber.d("${locationSource.lastLocation?.latitude} ${locationSource.lastLocation?.longitude}")
-            when (position) {
-                0 -> viewModel.fetchMoments(SortType.MOST_RECENT)
-                1 -> viewModel.fetchMoments(SortType.OLDEST)
-                else -> locationSource.lastLocation?.apply {
-                    viewModel.fetchMoments(
-                        sortType = SortType.NEAREST,
-                        location = LocationModel(latitude, longitude)
-                    )
+            viewModel.location.value = null
+            viewModel.sortType.value = when (position) {
+                0 -> SortType.MOST_RECENT
+                1 -> SortType.OLDEST
+                else -> {
+                    locationSource.lastLocation?.apply {
+                        viewModel.location.value = LocationModel(latitude, longitude)
+                    }
+                    SortType.NEAREST
                 }
             }
+            viewModel.fetchMoments()
         }
     }
 

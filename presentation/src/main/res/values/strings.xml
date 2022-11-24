@@ -5,9 +5,9 @@
     <string name="date">날짜</string>
     <string name="content">내용</string>
     <string name="place">장소</string>
-    <string name="date_sort_asc">오래된순</string>
-    <string name="location_sort">거리순</string>
-    <string name="date_sort_desc">최신순</string>
+    <string name="oldest">오래된순</string>
+    <string name="nearest">가까운순</string>
+    <string name="most_recent">최신순</string>
     <string name="moment_picture">모먼트 사진</string>
     <string name="add_button">추가 버튼</string>
     <string name="home">홈</string>

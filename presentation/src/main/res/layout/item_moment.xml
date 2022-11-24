@@ -35,15 +35,13 @@
 
             <TextView
                 android:id="@+id/tv_main_address"
+                style="@style/TextAppearance.Mogle.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/small_150"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{moment.place.mainAddress}"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/tv_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_moment"
@@ -52,6 +50,7 @@
 
             <TextView
                 android:id="@+id/tv_content"
+                style="@style/TextAppearance.Mogle.Body"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/small_150"
@@ -67,6 +66,7 @@
 
             <TextView
                 android:id="@+id/tv_date"
+                style="@style/TextAppearance.MaterialComponents.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{moment.formattedDate}"
