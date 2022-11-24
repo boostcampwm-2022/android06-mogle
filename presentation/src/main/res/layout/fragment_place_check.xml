@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="place"
+            type="com.wakeup.presentation.model.PlaceModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/tb_place_check"
+            layout="@layout/toolbar_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/small_100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/fl_map"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_place_check" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/normal_150"
+            app:cardCornerRadius="@dimen/small_150"
+            app:cardElevation="@dimen/small_100"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/normal_150">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/small_100"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/iv_image"
+                        android:layout_width="@dimen/large_200"
+                        android:layout_height="@dimen/large_200"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sample_image"
+                        tools:src="@drawable/sample_image" />
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_100"
+                    android:text="@{place.mainAddress}"
+                    android:textAppearance="@style/TextAppearance.Mogle.Title"
+                    app:layout_constraintBottom_toTopOf="@id/tv_content"
+                    app:layout_constraintStart_toEndOf="@id/cv_place"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    tools:text="영일대 해수욕장" />
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_50"
+                    android:text="@{place.detailAddress}"
+                    app:layout_constraintBottom_toBottomOf="@id/cv_place"
+                    app:layout_constraintStart_toStartOf="@id/tv_title"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title"
+                    tools:text="경상북도 포항시 북구 두호동 685-1" />
+
+
+                <TextView
+                    android:id="@+id/tv_positive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal_100"
+                    android:background="@drawable/bg_corner_8"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:gravity="center"
+                    android:padding="@dimen/normal_100"
+                    android:text="@string/dialog_place_positive"
+                    android:textColor="?attr/colorOnPrimary"
+                    app:layout_constraintBottom_toTopOf="@id/tv_negative"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cv_place" />
+
+                <TextView
+                    android:id="@+id/tv_negative"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_100"
+                    android:background="@drawable/bg_corner_8"
+                    android:backgroundTint="@color/gray"
+                    android:gravity="center"
+                    android:padding="@dimen/normal_100"
+                    android:text="@string/dialog_place_negative"
+                    android:textColor="?attr/colorOnPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_positive" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

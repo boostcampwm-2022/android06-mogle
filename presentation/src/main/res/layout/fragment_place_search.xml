@@ -15,6 +15,15 @@
         android:layout_height="match_parent"
         tools:context=".ui.addmoment.PlaceSearchFragment">
 
+        <include
+            android:id="@+id/tb_place_search"
+            layout="@layout/toolbar_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/small_100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_start"
@@ -50,7 +59,23 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tb_place_search" />
+
+        <TextView
+            android:id="@+id/tv_network_error"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/normal_100"
+            android:gravity="center"
+            android:text="@string/network_error"
+            android:textSize="@dimen/normal_100_tv"
+            android:textStyle="bold"
+            app:gone="@{!vm.isNetworkError}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search" />
+
 
         <TextView
             android:id="@+id/tv_search_result"
@@ -59,6 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/normal_175"
             android:text="@{@string/place_search_result(vm.searchResult.size())}"
+            app:gone="@{vm.isNetworkError}"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/et_search"
             tools:text="검색결과 10" />
@@ -68,10 +94,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/normal_100"
+            app:gone="@{vm.isNetworkError}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_search_result"
             app:submitList="@{vm.searchResult}"
             tools:listitem="@layout/item_place" />

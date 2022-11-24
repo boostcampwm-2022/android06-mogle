@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="momentModel"
+            type="com.wakeup.presentation.model.MomentModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.detail.MomentDetailFragment">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/normal_padding" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/normal_padding" />
+
+            <ImageView
+                android:id="@+id/iv_header"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_sunny_header"
+                app:layout_constraintDimensionRatio="3:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/bg_sunny_header" />
+
+            <TextView
+                android:id="@+id/tv_main_address"
+                style="@style/TextAppearance.Mogle.Headline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_150"
+                android:text="@{momentModel.place.mainAddress}"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/iv_header"
+                tools:text="영일대 해수욕장" />
+
+            <TextView
+                android:id="@+id/tv_detail_address"
+                style="@style/TextAppearance.Mogle.Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_50"
+                android:text="@{momentModel.place.detailAddress}"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_main_address"
+                tools:text="경상북도 포항시 북구 두호동 685-1" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_image_container"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/normal_100"
+                app:cardCornerRadius="@dimen/small_100"
+                app:cardElevation="0dp"
+                app:layout_constraintDimensionRatio="2:1"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_address">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/vp2_images"
+                        submitList="@{momentModel.pictures}"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal" />
+
+                    <TextView
+                        android:id="@+id/tv_indicator"
+                        android:layout_width="@dimen/normal_275"
+                        android:layout_height="@dimen/normal_175"
+                        android:layout_gravity="end|top"
+                        android:layout_marginTop="@dimen/small_100"
+                        android:layout_marginRight="@dimen/small_100"
+                        android:background="@drawable/bg_text_indicator"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        tools:text="1/5" />
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_100"
+                android:text="@{momentModel.content}"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/cv_image_container"
+                tools:text="오늘은 집에서 뒹굴거렸다. 요몇일 계속 일찍 일어났더
+                니 일어나기 싫더라...  가나다라마바사아가나다라마바
+                가나다라마바사아 가나다라마바 사아가나다라마바사
+                가나 다라마 바사아 호호 이이 아아 리어이러" />
+
+            <TextView
+                android:id="@+id/tv_globe"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_100"
+                android:layout_marginBottom="@dimen/large_200"
+                globeNames="@{momentModel.globes}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_date"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@id/tv_description"
+                tools:text="여행 글로브 +3" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_100"
+                android:layout_marginBottom="@dimen/large_200"
+                android:text="@{momentModel.formattedDate}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toEndOf="@id/tv_globe"
+                app:layout_constraintTop_toBottomOf="@id/tv_description"
+                tools:text="11월 10일 일요일" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
