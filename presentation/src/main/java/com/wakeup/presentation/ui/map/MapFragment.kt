@@ -25,6 +25,7 @@ import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
+import com.wakeup.presentation.extension.getNavigationResultFromTop
 import com.wakeup.presentation.model.LocationModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -62,7 +63,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun updateMoments() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("isUpdated")
+        findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
             ?.observe(viewLifecycleOwner) { isUpdated ->
                 if (isUpdated) {
                     viewModel.fetchMoments()

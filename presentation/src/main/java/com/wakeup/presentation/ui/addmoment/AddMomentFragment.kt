@@ -14,6 +14,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.PictureAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentBinding
+import com.wakeup.presentation.extension.setNavigationResultToBackStack
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.util.BitmapUtil.fixRotation
 import com.wakeup.presentation.util.DateUtil
@@ -83,7 +84,7 @@ class AddMomentFragment : Fragment() {
             Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
 
             val navController = findNavController()
-            navController.previousBackStackEntry?.savedStateHandle?.set("isUpdated", true)
+            navController.setNavigationResultToBackStack("isUpdated", true)
             navController.popBackStack()
         }
     }

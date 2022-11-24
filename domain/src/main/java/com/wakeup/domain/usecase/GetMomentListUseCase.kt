@@ -14,7 +14,7 @@ class GetMomentListUseCase @Inject constructor(
     operator fun invoke(
         sortType: SortType,
         query: String,
-        myLocation: Location?
+        myLocation: Location?,
     ): Flow<PagingData<Moment>> {
         return momentRepository.getMoments(sortType, query, myLocation)
     }
