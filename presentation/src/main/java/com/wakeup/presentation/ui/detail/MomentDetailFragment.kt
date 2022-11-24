@@ -20,13 +20,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MomentDetailFragment : Fragment() {
     private lateinit var binding: FragmentMomentDetailBinding
     private val args: MomentDetailFragmentArgs by navArgs()
 
+    private lateinit var indicatorAnimator: ObjectAnimator
     private val pageChangedFlow = MutableStateFlow(0)
     private var isDragging = false
 
@@ -42,9 +42,18 @@ class MomentDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initAnimator()
         initViewPagerAdapter()
         initMoment()
-        collectFlow()
+        collectPageChangedFlow()
+    }
+
+    private fun initAnimator() {
+        indicatorAnimator =
+            ObjectAnimator.ofFloat(binding.tvIndicator, ALPHA_PROPERTY, START_ALPHA, END_ALPHA)
+                .apply {
+                    duration = FADE_AWAY_DURATION
+                }
     }
 
     private fun initViewPagerAdapter() {
@@ -52,12 +61,23 @@ class MomentDetailFragment : Fragment() {
 
         binding.vp2Images.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             var currentPage = 0
+            var infiniteCount = 0
 
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
                 when (state) {
                     SCROLL_STATE_DRAGGING -> isDragging = true
-                    SCROLL_STATE_IDLE -> isDragging = false
+                    SCROLL_STATE_IDLE -> {
+                        isDragging = false
+                        currentPage = binding.vp2Images.currentItem // 완전히 페이지 변경 되었을 때, 현재 페이지 변경
+
+                        // 완료 데이터 방출
+                        // stateFlow는 이전과 같은 값을 방출하면, collect를 하지 못하여, 계속 값을 증가하여 바꿔줌
+                        // (오버 플로우가 발생해도, 값이 달라지는 거라 괜찮다고 생각)
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            pageChangedFlow.emit(++infiniteCount)
+                        }
+                    }
                 }
             }
 
@@ -85,22 +105,13 @@ class MomentDetailFragment : Fragment() {
                     setIndicator(position + OFFSET)
                 }
             }
-
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                currentPage = position
-
-                Timber.d("Holding onPageSelected")
-                viewLifecycleOwner.lifecycleScope.launch {
-                    pageChangedFlow.emit(position)
-                }
-            }
         })
     }
 
     private fun isMoveToRight(currentPage: Int, position: Int): Boolean = (currentPage == position)
 
     private fun showIndicator() {
+        indicatorAnimator.cancel()
         binding.tvIndicator.alpha = START_ALPHA
     }
 
@@ -111,9 +122,7 @@ class MomentDetailFragment : Fragment() {
     }
 
     private fun fadeAwayIndicator() {
-        ObjectAnimator.ofFloat(binding.tvIndicator, ALPHA_PROPERTY, START_ALPHA, END_ALPHA).apply {
-            duration = FADE_AWAY_DURATION
-        }.start()
+        indicatorAnimator.start()
     }
 
     private fun initMoment() {
@@ -121,7 +130,9 @@ class MomentDetailFragment : Fragment() {
     }
 
     @OptIn(FlowPreview::class)
-    private fun collectFlow() {
+    private fun collectPageChangedFlow() {
+        // 페이지를 연속으로 변경하는 경우는 무시
+        // 페이지 변경 후, 일정 시간 동안 가만히 있어야 사라짐
         viewLifecycleOwner.lifecycleScope.launch {
             pageChangedFlow.debounce(ANIMATION_START_DELAY).collectLatest {
                 if (!isDragging) fadeAwayIndicator()

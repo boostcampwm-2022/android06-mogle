@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="momentModel"
             type="com.wakeup.presentation.model.MomentModel" />
