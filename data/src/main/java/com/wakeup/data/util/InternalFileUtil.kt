@@ -1,16 +1,15 @@
 package com.wakeup.data.util
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.util.Base64
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.domain.model.Picture
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
+import java.io.BufferedInputStream
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
@@ -63,19 +62,19 @@ class InternalFileUtil @Inject constructor(
 
             pictures.forEach { picture ->
                 runCatching {
-                    val bitmapPicture =
-                        BitmapFactory.decodeFile("${context.filesDir}/${picture.fileName}")
-                    val stream = ByteArrayOutputStream()
-                    bitmapPicture to stream
-                }.onSuccess { (bitmapPicture, stream) ->
-                    bitmapPicture.compress(Bitmap.CompressFormat.JPEG, 1, stream)
+                    val file = File("${context.filesDir}/${picture.fileName}")
+                    val buffer = BufferedInputStream(FileInputStream(file))
+                    val bytes = ByteArray(file.length().toInt())
+                    buffer.read(bytes, 0, bytes.size)
+                    buffer to bytes
+                }.onSuccess { (buffer, bytes) ->
                     // thumbnail 사진이 가장 앞으로 오도록, pictureBitmaps[0]는 항상 thumbnail 사진
                     if (thumbnailId != null && picture.id == thumbnailId) {
-                        pictureBitmaps.addFirst(stream.toByteArray())
+                        pictureBitmaps.addFirst(bytes)
                     } else {
-                        pictureBitmaps.addLast(stream.toByteArray())
+                        pictureBitmaps.addLast(bytes)
                     }
-                    stream.close()
+                    buffer.close()
                 }.onFailure { exception ->
                     when (exception) {
                         is FileNotFoundException ->

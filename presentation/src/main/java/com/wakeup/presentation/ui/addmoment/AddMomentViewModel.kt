@@ -103,7 +103,7 @@ class AddMomentViewModel @Inject constructor(
         _selectedDate.value = date
     }
 
-    fun saveMoment() {
+    suspend fun saveMoment() {
         viewModelScope.launch {
             saveMomentUseCase(
                 moment = MomentModel(
@@ -114,7 +114,6 @@ class AddMomentViewModel @Inject constructor(
                     date = selectedDate.value
                 ).toDomain()
             )
-            //Timber.d("${pictures.value[0]}")
-        }
+        }.join()
     }
 }
