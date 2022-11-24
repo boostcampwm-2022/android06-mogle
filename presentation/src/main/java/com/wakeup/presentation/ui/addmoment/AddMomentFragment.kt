@@ -58,7 +58,6 @@ class AddMomentFragment : Fragment() {
         binding = FragmentAddMomentBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             vm = viewModel
-            rvPicture.adapter = adapter
         }
 
         return binding.root
@@ -67,38 +66,19 @@ class AddMomentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initAdapter()
         initToolbar()
-
-        binding.cvAddPicture.setOnClickListener {
-            getPicture.launch(viewModel.getPictureIntent())
-        }
-
-        binding.actGlobe.setOnItemClickListener { _, _, position, _ ->
-            viewModel.setSelectedGlobe(position)
-        }
-
-        binding.tvDateValue.setOnClickListener {
-            datePicker.show(childFragmentManager, "datePicker")
-        }
-
-        binding.tvPlaceValue.setOnClickListener {
-            findNavController().navigate(R.id.action_addMoment_to_placeSearch)
-        }
-
-        binding.tvSave.setOnClickListener {
-            viewModel.saveMoment()
-            Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
-
-            val navController = findNavController()
-            navController.setNavigationResultToBackStack("isUpdated", true)
-            navController.popBackStack()
-        }
-
-        args.place?.let {
-            viewModel.setPlace(it)
-        }
+        initAddPicture()
+        initGlobe()
+        initDate()
+        initPlace()
+        initSave()
 
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun initAdapter() {
+        binding.rvPicture.adapter = adapter
     }
 
     private fun initToolbar() {
@@ -107,5 +87,43 @@ class AddMomentFragment : Fragment() {
             titleId = R.string.add_moment,
             onBackClick = { findNavController().navigateUp() }
         )
+    }
+
+    private fun initAddPicture() {
+        binding.cvAddPicture.setOnClickListener {
+            getPicture.launch(viewModel.getPictureIntent())
+        }
+    }
+
+    private fun initGlobe() {
+        binding.actGlobe.setOnItemClickListener { _, _, position, _ ->
+            viewModel.setSelectedGlobe(position)
+        }
+    }
+
+    private fun initDate() {
+        binding.tvDateValue.setOnClickListener {
+            datePicker.show(childFragmentManager, "datePicker")
+        }
+    }
+
+    private fun initPlace() {
+        binding.tvPlaceValue.setOnClickListener {
+            findNavController().navigate(R.id.action_addMoment_to_placeSearch)
+        }
+        args.place?.let {
+            viewModel.setPlace(it)
+        }
+    }
+
+    private fun initSave() {
+        binding.tvSave.setOnClickListener {
+            viewModel.saveMoment()
+            Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
+
+            val navController = findNavController()
+            navController.setNavigationResultToBackStack("isUpdated", true)
+            navController.popBackStack()
+        }
     }
 }

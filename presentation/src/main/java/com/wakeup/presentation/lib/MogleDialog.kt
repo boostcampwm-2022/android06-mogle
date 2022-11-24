@@ -14,7 +14,7 @@ import android.view.WindowManager
  *
  * @example
  *
- * MogleDialog.with(requireContext())
+ * MogleDialog.with(requireContext(), R.id.dialog)
  *  .setView(R.layout.dialog_place)
  *  .setOnPositive(R.id.tv_positive) { Timber.d("OK") }
  *  .setOnNegative(R.id.tv_negative) { Timber.d("CANCEL") }

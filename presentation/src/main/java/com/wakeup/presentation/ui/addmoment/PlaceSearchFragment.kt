@@ -28,7 +28,6 @@ class PlaceSearchFragment : Fragment() {
         binding = FragmentPlaceSearchBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             vm = viewModel
-            rvSearchResult.adapter = adapter
         }
 
         return binding.root
@@ -37,6 +36,7 @@ class PlaceSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initAdapter()
         initToolbar()
 
     }
@@ -45,6 +45,10 @@ class PlaceSearchFragment : Fragment() {
         findNavController().navigate(
             PlaceSearchFragmentDirections.actionPlaceSearchToPlaceCheck(place)
         )
+    }
+
+    private fun initAdapter() {
+        binding.rvSearchResult.adapter = adapter
     }
 
     private fun initToolbar() {
