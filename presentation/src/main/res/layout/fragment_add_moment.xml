@@ -60,7 +60,7 @@
                 android:layout_marginTop="@dimen/small_150"
                 app:cardCornerRadius="@dimen/small_100"
                 app:cardElevation="@dimen/small_100"
-                app:gone="@{vm.isPictureMax()}"
+                app:isGone="@{vm.isPictureMax()}"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@id/tv_picture"
                 app:strokeWidth="0dp">

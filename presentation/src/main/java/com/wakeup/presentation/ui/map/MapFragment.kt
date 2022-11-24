@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.map
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
@@ -65,9 +66,19 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         initMap()
         initLocation()
         initBottomSheet()
+        setAdapterListener()
 
         collectMoments()
         updateMoments()
+
+    }
+
+    private fun setAdapterListener() {
+        momentAdapter.registerAdapterDataObserver(adapterDataObserver)
+
+        momentAdapter.addLoadStateListener {
+            binding.bottomSheet.hasMoments = momentAdapter.itemCount > 0
+        }
     }
 
     private fun updateMoments() {
@@ -122,8 +133,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
             viewModel.fetchMoments()
         }
-
-        momentAdapter.registerAdapterDataObserver(adapterDataObserver)
     }
 
     private fun expandBottomSheet(bottomSheet: ConstraintLayout) {
