@@ -12,6 +12,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
             android:orientation="horizontal">
 
             <ImageView
@@ -27,9 +28,9 @@
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:layout_marginStart="@dimen/normal_100"
                 android:gravity="center|start"
                 android:textAppearance="@style/TextToolbar"
-                android:layout_marginStart="@dimen/normal_100"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

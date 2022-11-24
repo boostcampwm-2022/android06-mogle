@@ -34,4 +34,10 @@
     <style name="TextAppearance.Mogle.SubBody" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">10sp</item>
     </style>
+
+    <style name="TextToolbar" parent="android:Widget.TextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/normal_125_tv</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>
