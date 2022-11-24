@@ -33,7 +33,7 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideSaveUtil(
+    fun provideInternalFileUtil(
         @ApplicationContext context: Context,
     ): InternalFileUtil = InternalFileUtil(context, Dispatchers.IO)
 }

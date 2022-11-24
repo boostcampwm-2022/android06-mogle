@@ -11,7 +11,9 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.io.IOException
 import java.security.DigestException
 import java.security.MessageDigest
 import javax.inject.Inject
@@ -24,23 +26,26 @@ class InternalFileUtil @Inject constructor(
     suspend fun savePictureInInternalStorageAndGetFileName(pictures: List<Picture>): List<PictureEntity> {
         return withContext(dispatcher) {
             val pictureFiles = mutableListOf<String>()
+
             pictures.forEach { picture ->
                 val fileName = hashSHA256(encodeBase64(picture.bitmap))
                 val tempFile = File(context.filesDir, fileName)
-
                 runCatching {
                     tempFile.createNewFile()
-                }.onFailure { e ->
-                    Timber.e("MyTag", "FileNotFoundException : " + e.message)
-                }.onSuccess {
-                    runCatching {
-                        val out = FileOutputStream(tempFile)
+                    FileOutputStream(tempFile).use { out ->
                         out.write(picture.bitmap)
                         out.close()
-                    }.onFailure { e ->
-                        Timber.e("MyTag", "IOException : " + e.message)
-                    }.onSuccess {
-                        pictureFiles.add(fileName)
+                    }
+                }.onSuccess {
+                    pictureFiles.add(fileName)
+                }.onFailure { exception ->
+                    when (exception) {
+                        is FileNotFoundException ->
+                            Timber.e("MyTag", "FileNotFoundException : " + exception.message)
+                        is IOException ->
+                            Timber.e("MyTag", "IOException : " + exception.message)
+                        else ->
+                            Timber.e("MyTag", "AnotherException : " + exception.message)
                     }
                 }
             }
@@ -48,28 +53,37 @@ class InternalFileUtil @Inject constructor(
         }
     }
 
-    suspend fun getPictureInInternalStorage(pictures: List<PictureEntity>, thumbnailId: Long?): List<Picture> {
+
+    suspend fun getPictureInInternalStorage(
+        pictures: List<PictureEntity>,
+        thumbnailId: Long?,
+    ): List<Picture> {
         return withContext(dispatcher) {
             val pictureBitmaps = ArrayDeque<ByteArray>()
 
             pictures.forEach { picture ->
                 runCatching {
-                    BitmapFactory.decodeFile("${context.filesDir}/${picture.fileName}")
-                }.onFailure { e ->
-                    Timber.e("MyTag", "FileNotFoundException : " + e.message)
-                }.onSuccess { bitmapPicture ->
-                    runCatching {
-                        ByteArrayOutputStream()
-                    }.onFailure { e ->
-                        Timber.e("MyTag", "IOException : " + e.message)
-                    }.onSuccess { stream ->
-                        bitmapPicture.compress(Bitmap.CompressFormat.JPEG, 1, stream)
-                        // thumbnail 사진이 가장 앞으로 오도록, pictureBitmaps[0]는 항상 thumbnail 사진
-                        if(thumbnailId != null && picture.id == thumbnailId) {
-                            pictureBitmaps.addFirst(stream.toByteArray())
-                        } else {
-                            pictureBitmaps.addLast(stream.toByteArray())
-                        }
+                    val bitmapPicture =
+                        BitmapFactory.decodeFile("${context.filesDir}/${picture.fileName}")
+                    val stream = ByteArrayOutputStream()
+                    bitmapPicture to stream
+                }.onSuccess { (bitmapPicture, stream) ->
+                    bitmapPicture.compress(Bitmap.CompressFormat.JPEG, 1, stream)
+                    // thumbnail 사진이 가장 앞으로 오도록, pictureBitmaps[0]는 항상 thumbnail 사진
+                    if (thumbnailId != null && picture.id == thumbnailId) {
+                        pictureBitmaps.addFirst(stream.toByteArray())
+                    } else {
+                        pictureBitmaps.addLast(stream.toByteArray())
+                    }
+                    stream.close()
+                }.onFailure { exception ->
+                    when (exception) {
+                        is FileNotFoundException ->
+                            Timber.e("MyTag", "FileNotFoundException : " + exception.message)
+                        is IOException ->
+                            Timber.e("MyTag", "IOException : " + exception.message)
+                        else ->
+                            Timber.e("MyTag", "AnotherException : " + exception.message)
                     }
                 }
             }
@@ -82,19 +96,24 @@ class InternalFileUtil @Inject constructor(
     }
 
     private fun hashSHA256(msg: String): String {
-        val hash: ByteArray
-        try {
+        return runCatching {
+            val hash: ByteArray
             val md = MessageDigest.getInstance("SHA-256")
             md.update(msg.toByteArray())
             hash = md.digest()
-        } catch (e: CloneNotSupportedException) {
-            throw DigestException("couldn't make digest of patial content")
-        }
-        return bytesToHex(hash)
+            bytesToHex(hash)
+        }.onFailure { exception ->
+            if (exception is CloneNotSupportedException) {
+                Timber.e("MyTag", "\"couldn't make digest of patial content\" DigestException : " + exception.message)
+                throw DigestException()
+            } else {
+                Timber.e("MyTag", "AnotherException : " + exception.message)
+                throw Exception()
+            }
+        }.getOrThrow()
     }
 
     private fun bytesToHex(byteArray: ByteArray): String {
-
         val hexChars = CharArray(byteArray.size * 2)
         for (i in byteArray.indices) {
             val v = byteArray[i].toInt() and 0xff
