@@ -52,13 +52,17 @@ fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap?) {
     }
 }
 
-@BindingAdapter("app:globeNames")
+@BindingAdapter("globeNames")
 fun bindGlobeNames(view: TextView, globes: List<GlobeModel>) {
     val res = view.resources
 
-    view.text = if (globes.isEmpty()) res.getString(R.string.moment_detail_no_globe)
-    else if (globes.size == 1) globes.first().name
-    else String.format(res.getString(R.string.moment_detail_globes),
-        globes.first().name,
-        globes.size - 1)
+    view.text = if (globes.isEmpty()) {
+        res.getString(R.string.moment_detail_no_globe)
+    } else if (globes.size == 1) {
+        globes.first().name
+    } else {
+        String.format(res.getString(R.string.moment_detail_globes),
+            globes.first().name,
+            globes.size - 1)
+    }
 }

@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/large_100"
                 android:layout_marginBottom="@dimen/large_200"
-                app:globeNames="@{momentModel.globes}"
+                globeNames="@{momentModel.globes}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_date"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
