@@ -71,7 +71,7 @@
                     android:layout_marginTop="@dimen/small_150"
                     app:cardCornerRadius="@dimen/small_100"
                     app:cardElevation="@dimen/small_100"
-                    app:gone="@{vm.isPictureMax()}"
+                    app:isGone="@{vm.isPictureMax()}"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/tv_picture"
                     app:strokeWidth="0dp">
@@ -126,131 +126,132 @@
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/tv_globe">
 
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/act_globe"
-                    style="@style/TextAppearance.Mogle.SubTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:text="@{vm.defaultGlobe.name}"
-                    app:simpleItems="@{vm.tmpGlobes}" />
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/act_globe"
+                        style="@style/TextAppearance.Mogle.SubTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:text="@{vm.defaultGlobe.name}"
+                        app:simpleItems="@{vm.tmpGlobes}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tv_date"
-                style="@style/TextAppearance.Mogle.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_100"
-                android:text="@string/date"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/til_globe" />
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/TextAppearance.Mogle.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal_100"
+                    android:text="@string/date"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/til_globe" />
 
-            <TextView
-                android:id="@+id/tv_date_value"
-                style="@style/TextAppearance.Mogle.SubTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_100"
-                android:background="@drawable/bg_corner_8"
-                android:elevation="@dimen/small_150"
-                android:padding="@dimen/normal_100"
-                android:text="@{vm.selectedDateByTime}"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_date"
-                tools:text="2022년 11월 16일" />
+                <TextView
+                    android:id="@+id/tv_date_value"
+                    style="@style/TextAppearance.Mogle.SubTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_100"
+                    android:background="@drawable/bg_corner_8"
+                    android:elevation="@dimen/small_150"
+                    android:padding="@dimen/normal_100"
+                    android:text="@{vm.selectedDateByTime}"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/tv_date"
+                    tools:text="2022년 11월 16일" />
 
-            <TextView
-                android:id="@+id/tv_place"
-                style="@style/TextAppearance.Mogle.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_100"
-                android:text="@string/place"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_date_value" />
+                <TextView
+                    android:id="@+id/tv_place"
+                    style="@style/TextAppearance.Mogle.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal_100"
+                    android:text="@string/place"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/tv_date_value" />
 
-            <TextView
-                android:id="@+id/tv_place_value"
-                style="@style/TextAppearance.Mogle.SubTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_100"
-                android:background="@drawable/bg_corner_8"
-                android:elevation="@dimen/small_150"
-                android:hint="@string/add_moment_place_hint"
-                android:padding="@dimen/normal_100"
-                android:text="@{vm.place.mainAddress}"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_place" />
+                <TextView
+                    android:id="@+id/tv_place_value"
+                    style="@style/TextAppearance.Mogle.SubTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_100"
+                    android:background="@drawable/bg_corner_8"
+                    android:elevation="@dimen/small_150"
+                    android:hint="@string/add_moment_place_hint"
+                    android:padding="@dimen/normal_100"
+                    android:text="@{vm.place.mainAddress}"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/tv_place" />
 
-            <TextView
-                android:id="@+id/tv_content"
-                style="@style/TextAppearance.Mogle.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_100"
-                android:text="@string/content"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_place_value" />
+                <TextView
+                    android:id="@+id/tv_content"
+                    style="@style/TextAppearance.Mogle.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal_100"
+                    android:text="@string/content"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/tv_place_value" />
 
-            <EditText
-                android:id="@+id/et_content_value"
-                style="@style/TextAppearance.Mogle.SubTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_100"
-                android:background="@drawable/bg_corner_8"
-                android:elevation="@dimen/small_150"
-                android:gravity="start|top"
-                android:hint="@string/add_moment_content_hint"
-                android:importantForAutofill="no"
-                android:inputType="textMultiLine"
-                android:maxLength="500"
-                android:minLines="5"
-                android:padding="@dimen/normal_100"
-                android:text="@={vm.content}"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_content" />
+                <EditText
+                    android:id="@+id/et_content_value"
+                    style="@style/TextAppearance.Mogle.SubTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_100"
+                    android:background="@drawable/bg_corner_8"
+                    android:elevation="@dimen/small_150"
+                    android:gravity="start|top"
+                    android:hint="@string/add_moment_content_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:maxLength="500"
+                    android:minLines="5"
+                    android:padding="@dimen/normal_100"
+                    android:text="@={vm.content}"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/tv_content" />
 
-            <TextView
-                android:id="@+id/tv_content_length"
-                style="@style/TextAppearance.Mogle.Body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_100"
-                android:text="@{@string/add_moment_content_length(vm.content.length())}"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintTop_toBottomOf="@id/et_content_value"
-                tools:text="0/500자" />
+                <TextView
+                    android:id="@+id/tv_content_length"
+                    style="@style/TextAppearance.Mogle.Body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_100"
+                    android:text="@{@string/add_moment_content_length(vm.content.length())}"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintTop_toBottomOf="@id/et_content_value"
+                    tools:text="0/500자" />
 
-            <Button
-                android:id="@+id/tv_save"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_200"
-                android:layout_marginBottom="@dimen/normal_150"
-                android:background="@drawable/bg_corner_8"
-                android:backgroundTint="?attr/colorPrimary"
-                android:elevation="@dimen/small_150"
-                android:enabled="@{vm.isSaveButtonEnabled()}"
-                android:gravity="center"
-                android:padding="@dimen/normal_100"
-                android:text="@string/add_moment_save"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="@dimen/normal_100_tv"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/tv_content_length"
-                tools:text="남기기" />
+                <Button
+                    android:id="@+id/tv_save"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal_200"
+                    android:layout_marginBottom="@dimen/normal_150"
+                    android:background="@drawable/bg_corner_8"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:elevation="@dimen/small_150"
+                    android:enabled="@{vm.isSaveButtonEnabled()}"
+                    android:gravity="center"
+                    android:padding="@dimen/normal_100"
+                    android:text="@string/add_moment_save"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textSize="@dimen/normal_100_tv"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/tv_content_length"
+                    tools:text="남기기" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
-</LinearLayout></layout>
+    </LinearLayout>
+</layout>

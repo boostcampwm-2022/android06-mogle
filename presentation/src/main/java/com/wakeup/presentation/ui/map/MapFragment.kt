@@ -13,6 +13,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.map
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -43,6 +45,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var mapHelper: MapHelper
 
+    private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+            super.onItemRangeMoved(fromPosition, toPosition, itemCount)
+            binding.bottomSheet.rvMoments.scrollToPosition(0)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -58,10 +67,19 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         initMap()
         initLocation()
         initBottomSheet()
-        initTestButton()
+        setAdapterListener()
 
         collectMoments()
         updateMoments()
+
+    }
+
+    private fun setAdapterListener() {
+        momentAdapter.registerAdapterDataObserver(adapterDataObserver)
+
+        momentAdapter.addLoadStateListener {
+            binding.bottomSheet.hasMoments = momentAdapter.itemCount > 0
+        }
     }
 
     private fun updateMoments() {
@@ -87,20 +105,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         with(binding.bottomSheet) {
             setMenus(this)
             setAdapter(this)
-        }
-    }
-
-    // TODO 추후 삭제
-    private fun initTestButton() {
-        val bitmap =
-            BitmapFactory.decodeResource(requireContext().resources, R.drawable.sample_image2)
-        val picture = PictureModel(bitmap)
-
-        binding.btnTest.setOnClickListener {
-            val fakeMoment = FakeMomentFactory.createMomentsWithSampleImage(picture, 1)
-            val action =
-                MapFragmentDirections.actionMapFragmentToMomentDetailFragment(fakeMoment.first())
-            findNavController().navigate(action)
         }
     }
 
@@ -203,6 +207,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onDestroyView() {
+        momentAdapter.unregisterAdapterDataObserver(adapterDataObserver)
         binding.unbind()
         super.onDestroyView()
     }

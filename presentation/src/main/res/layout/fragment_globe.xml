@@ -9,46 +9,11 @@
         tools:context=".ui.globe.GlobeFragment">
 
         <TextView
-            style="@style/TextAppearance.Mogle.Headline1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="글로브" />
-
-        <TextView
-            style="@style/TextAppearance.Mogle.Headline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="글로브" />
-
-        <TextView
-            style="@style/TextAppearance.Mogle.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="글로브" />
-
-        <TextView
-            style="@style/TextAppearance.Mogle.SubTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="글로브" />
-
-        <TextView
             style="@style/TextAppearance.Mogle.Body"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:text="글로브" />
-
-        <TextView
-            style="@style/TextAppearance.Mogle.SubBody"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="글로브" />
+            android:text="준비 중" />
 
     </LinearLayout>
 

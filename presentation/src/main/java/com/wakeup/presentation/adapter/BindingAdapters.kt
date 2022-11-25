@@ -33,9 +33,9 @@ fun bindImageBitmap(view: ImageView, bitmap: Bitmap?) {
     view.setImageBitmap(bitmap)
 }
 
-@BindingAdapter("gone")
-fun bindGone(view: View, shouldBeGone: Boolean) {
-    view.visibility = if (shouldBeGone) {
+@BindingAdapter("isGone")
+fun bindGone(view: View, isGone: Boolean) {
+    view.visibility = if (isGone) {
         View.GONE
     } else {
         View.VISIBLE

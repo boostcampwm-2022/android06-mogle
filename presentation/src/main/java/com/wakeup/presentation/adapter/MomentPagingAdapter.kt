@@ -1,8 +1,11 @@
 package com.wakeup.presentation.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ItemMomentBinding
 import com.wakeup.presentation.model.MomentModel
+import com.wakeup.presentation.ui.map.MapFragmentDirections
 import timber.log.Timber
 
 class MomentPagingAdapter :
@@ -37,10 +41,17 @@ class MomentPagingAdapter :
         private val binding: ItemMomentBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
-            itemView.setOnClickListener {
-                // TODO: 모먼트 페이지 이동
-                Timber.d("모먼트 클릭")
+            itemView.setOnClickListener { view ->
+                binding.moment?.let { moment ->
+                    navigateToMoment(moment, view)
+                }
             }
+        }
+
+        private fun navigateToMoment(moment: MomentModel, view: View) {
+            val direction =
+                MapFragmentDirections.actionMapFragmentToMomentDetailFragment(moment)
+            view.findNavController().navigate(direction)
         }
 
         fun bind(moment: MomentModel) {

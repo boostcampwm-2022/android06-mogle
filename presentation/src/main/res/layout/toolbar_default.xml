@@ -30,12 +30,11 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_marginStart="@dimen/normal_100"
                 android:gravity="center|start"
-                android:textAppearance="@style/TextAppearance.Mogle.Headline1"
+                android:textAppearance="@style/TextAppearance.Mogle.Headline2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="hi i'm toolbar" />
-
 
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
