@@ -68,6 +68,7 @@
                     android:id="@+id/rv_moments"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="92dp"
                     android:layout_marginTop="@dimen/normal_100"
                     app:isGone="@{!hasMoments}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
