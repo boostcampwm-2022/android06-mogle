@@ -39,7 +39,6 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
                 android:layout_marginTop="@dimen/normal_100"
                 android:paddingHorizontal="@dimen/normal_100"
                 app:endIconTint="@color/black"

@@ -105,10 +105,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun initBottomSheet() {
         with(binding.bottomSheet) {
+            setState(this)
             setMenus(this)
             setAdapter(this)
             setCallback(this)
         }
+    }
+
+    private fun setState(binding: BottomSheetBinding) {
+        val behavior = BottomSheetBehavior.from(binding.bottomSheet)
+        behavior.state = viewModel.bottomSheetState.value
     }
 
     private fun setMenus(binding: BottomSheetBinding) {
@@ -123,7 +129,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         binding.sortMenu.setOnItemClickListener { _, _, position, _ ->
-            expandBottomSheet(binding.bottomSheet)
             viewModel.location.value = null
             viewModel.sortType.value = when (position) {
                 0 -> SortType.MOST_RECENT
@@ -139,24 +144,27 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun expandBottomSheet(bottomSheet: ConstraintLayout) {
-        val behavior = BottomSheetBehavior.from(bottomSheet)
-        if (behavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-    }
-
     private fun setAdapter(binding: BottomSheetBinding) {
         binding.rvMoments.adapter = momentAdapter
     }
 
     private fun setCallback(binding: BottomSheetBinding) {
         val behavior = BottomSheetBehavior.from(binding.bottomSheet)
+        if (behavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+            binding.textField.visibility = View.INVISIBLE
+        }
+
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> changeVisible(true)
-                    BottomSheetBehavior.STATE_COLLAPSED -> changeVisible(false)
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        changeVisibleMenu(true)
+                        viewModel.bottomSheetState.value = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        changeVisibleMenu(false)
+                        viewModel.bottomSheetState.value = BottomSheetBehavior.STATE_COLLAPSED
+                    }
                 }
             }
 
@@ -166,7 +174,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         })
     }
 
-    private fun changeVisible(isVisible: Boolean) = with(binding.bottomSheet.textField) {
+    private fun changeVisibleMenu(isVisible: Boolean) = with(binding.bottomSheet.textField) {
         if (isVisible) {
             visibility = View.VISIBLE
             animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
