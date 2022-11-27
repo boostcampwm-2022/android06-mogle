@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.wakeup.presentation.adapter.GlobeAdapter
 import com.wakeup.presentation.databinding.FragmentGlobeBinding
 import com.wakeup.presentation.ui.GridSpaceItemDecoration
-import com.wakeup.presentation.util.dp
+import com.wakeup.presentation.ui.util.dp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

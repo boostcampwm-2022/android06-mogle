@@ -1,4 +1,4 @@
-package com.wakeup.presentation.util
+package com.wakeup.presentation.ui.util
 
 import android.content.res.Resources
 import android.util.TypedValue
