@@ -25,6 +25,7 @@ object FakeMomentFactory {
     private fun createPlace(count: Int): PlaceModel = PlaceModel(
         mainAddress = "메인 장소${count}",
         detailAddress = "상세 주소${count}",
+        imageUrl = "https://www.naver.com",
         location = LocationModel(37.0 + count, 128.0 + count)
     )
 

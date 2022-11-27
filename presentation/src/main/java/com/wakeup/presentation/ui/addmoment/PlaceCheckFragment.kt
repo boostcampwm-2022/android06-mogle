@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapFragment
@@ -43,6 +44,7 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
         initDialog()
         initToolbar()
 
+        Snackbar.make(binding.root, "${args.place}", Snackbar.LENGTH_SHORT).show()
     }
 
     private fun initMap() {

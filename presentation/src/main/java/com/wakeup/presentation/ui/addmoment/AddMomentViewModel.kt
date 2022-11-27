@@ -62,6 +62,7 @@ class AddMomentViewModel @Inject constructor(
         PlaceModel(
             "",
             "",
+            "",
             LocationModel(0.0, 0.0)
         )
     )
