@@ -69,12 +69,15 @@
 
                 <TextView
                     android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/normal_100"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@{vm.place.mainAddress}"
                     android:textAppearance="@style/TextAppearance.Mogle.Title"
                     app:layout_constraintBottom_toTopOf="@id/tv_content"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/cv_place"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
@@ -82,11 +85,14 @@
 
                 <TextView
                     android:id="@+id/tv_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_50"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@{vm.place.detailAddress}"
                     app:layout_constraintBottom_toBottomOf="@id/cv_place"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_title"
                     app:layout_constraintTop_toBottomOf="@id/tv_title"
                     tools:text="경상북도 포항시 북구 두호동 685-1" />
