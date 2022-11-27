@@ -49,5 +49,6 @@
 
     <dimen name="bottom_sheet_peek_height">156dp</dimen>
     <dimen name="globe_title_height">312dp</dimen>
+    <dimen name="globe_image_size">80dp</dimen>
 
 </resources>

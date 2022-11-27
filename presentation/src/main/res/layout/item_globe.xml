@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="globe"
+            type="com.wakeup.presentation.model.GlobeModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_globe_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cv_globe_item"
+            android:layout_width="@dimen/globe_image_size"
+            android:layout_height="@dimen/globe_image_size"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="@dimen/small_100"
+            android:layout_marginTop="@dimen/small_100"
+            android:layout_marginStart="@dimen/small_100"
+            app:layout_constraintDimensionRatio="1:1"
+            android:src="@drawable/default_globe_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_globe"/>
+
+        <TextView
+            android:id="@+id/tv_globe_item_title"
+            style="@style/TextAppearance.Mogle.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_globe_item"
+            tools:text="맛집" />
+
+        <TextView
+            android:id="@+id/tv_globe_item_amount"
+            style="@style/TextAppearance.Mogle.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_globe_item_title"
+            tools:text="30" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
