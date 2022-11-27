@@ -15,7 +15,7 @@ fun Place.toPresentation(): PlaceModel {
     return PlaceModel(
         mainAddress = mainAddress,
         detailAddress = detailAddress,
-        imageUrl = imageUrl ?: "",
+        placeUrl = placeUrl ?: "",
         location = location.toPresentation(),
     )
 }

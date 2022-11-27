@@ -52,6 +52,16 @@ fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap?) {
     }
 }
 
+@BindingAdapter("ImageFromUrl")
+fun bindImageFromUrl(view: ImageView, url: String?) {
+    url?.let {
+        Glide.with(view.context)
+            .load(it)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(view)
+    }
+}
+
 @BindingAdapter("globeNames")
 fun bindGlobeNames(view: TextView, globes: List<GlobeModel>) {
     val res = view.resources

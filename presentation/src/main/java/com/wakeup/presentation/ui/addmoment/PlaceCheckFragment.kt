@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.JavascriptInterface
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapFragment
@@ -18,11 +22,15 @@ import com.naver.maps.map.overlay.Marker
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentPlaceCheckBinding
 import com.wakeup.presentation.util.setToolbar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.jsoup.Jsoup
 
 
 class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding: FragmentPlaceCheckBinding
+    private val viewModel: PlaceCheckViewModel by viewModels()
     private val args: PlaceCheckFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -31,7 +39,7 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
     ): View {
         binding = FragmentPlaceCheckBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
-            place = args.place
+            vm = viewModel
         }
 
         return binding.root
@@ -40,11 +48,16 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initPlace()
         initMap()
         initDialog()
         initToolbar()
+        initCrawling()
 
-        Snackbar.make(binding.root, "${args.place}", Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun initPlace() {
+        viewModel.setPlace(args.place)
     }
 
     private fun initMap() {
@@ -99,8 +112,46 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
         )
     }
 
+    private fun initCrawling() {
+        binding.wvCrawling.apply {
+            settings.javaScriptEnabled = true
+            addJavascriptInterface(CrawlingInterface(), "Android")
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView, url: String) {
+                    super.onPageFinished(view, url)
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(DELAY_FOR_CRAWLING)
+                        view.loadUrl("javascript:window.Android.getHtml(document.getElementsByTagName('body')[0].innerHTML);")
+                    }
+                }
+            }
+            loadUrl(args.place.placeUrl)
+        }
+    }
+
     override fun onMapReady(naverMap: NaverMap) {
         initCameraUpdate(naverMap)
         initMaker(naverMap)
+    }
+
+    companion object {
+        private const val DELAY_FOR_CRAWLING = 500L
+    }
+
+    inner class CrawlingInterface {
+        @JavascriptInterface
+        fun getHtml(html: String) {
+            val query = ".box_photo"
+            val attributeKey = "style"
+            runCatching {
+                Jsoup.parse(html).select(query).attr(attributeKey)
+            }.onSuccess {
+                val imageUrl = it.ifEmpty {
+                    null
+                }?.substringAfter("'")?.substringBefore("'")
+                viewModel.setImageUrl(imageUrl)
+            }
+        }
     }
 }

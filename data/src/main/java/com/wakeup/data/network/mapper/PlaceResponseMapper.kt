@@ -10,13 +10,7 @@ fun PlaceResponseItem.toDomain(): Place {
     return Place(
         mainAddress = place_name,
         detailAddress = road_address_name,
-        imageUrl = getImageUrl(place_url),
-        location = LocationEntity(y.toDouble(), x.toDouble()).toDomain()
+        placeUrl = place_url,
+        location = LocationEntity(y.toDouble(), x.toDouble()).toDomain(),
     )
-}
-
-fun getImageUrl(placeUrl: String): String {
-
-
-    return " "
 }
