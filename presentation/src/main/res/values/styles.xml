@@ -44,4 +44,8 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
+    <style name="TextAppearance.Mogle.TransparentToolbar" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#00000000</item>
+    </style>
+
 </resources>
