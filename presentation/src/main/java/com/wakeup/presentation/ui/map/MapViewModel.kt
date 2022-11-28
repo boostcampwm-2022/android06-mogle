@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val STATE_COLLAPSED = 4
+
 @HiltViewModel
 class MapViewModel @Inject constructor(
     private val getMomentListUseCase: GetMomentListUseCase
@@ -30,7 +32,7 @@ class MapViewModel @Inject constructor(
     private val searchQuery = MutableStateFlow("")
 
     val sortType = MutableStateFlow(SortType.MOST_RECENT)
-
+    val bottomSheetState = MutableStateFlow(STATE_COLLAPSED)
     val location = MutableStateFlow<LocationModel?>(null)
 
     init {
