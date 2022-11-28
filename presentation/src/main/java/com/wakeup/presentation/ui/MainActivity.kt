@@ -1,6 +1,9 @@
 package com.wakeup.presentation.ui
 
+import android.app.Activity
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -27,6 +30,11 @@ class MainActivity : AppCompatActivity() {
 
     fun openNavDrawer() {
         binding.drawerLayout.open()
+    }
+
+    fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     private fun setBottomNav() {

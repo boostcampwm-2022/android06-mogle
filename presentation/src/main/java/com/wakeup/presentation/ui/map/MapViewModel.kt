@@ -12,10 +12,7 @@ import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.LocationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,7 +26,8 @@ class MapViewModel @Inject constructor(
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
     val moments: Flow<PagingData<MomentModel>> = _moments
 
-    private val searchQuery = MutableStateFlow("")
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
 
     val sortType = MutableStateFlow(SortType.MOST_RECENT)
     val bottomSheetState = MutableStateFlow(STATE_COLLAPSED)
@@ -53,7 +51,9 @@ class MapViewModel @Inject constructor(
                 .cachedIn(viewModelScope)
                 .first()
         }
+    }
 
-
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
     }
 }
