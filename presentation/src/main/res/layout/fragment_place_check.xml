@@ -62,7 +62,7 @@
                         android:layout_width="@dimen/large_200"
                         android:layout_height="@dimen/large_200"
                         android:scaleType="centerCrop"
-                        app:ImageFromUrl="@{vm.imageUrl}"
+                        app:imageFromUrl="@{vm.imageUrl}"
                         tools:src="@drawable/sample_image" />
                 </com.google.android.material.card.MaterialCardView>
 

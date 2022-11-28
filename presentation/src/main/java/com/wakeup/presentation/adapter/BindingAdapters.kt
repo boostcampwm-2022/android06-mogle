@@ -52,7 +52,7 @@ fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap?) {
     }
 }
 
-@BindingAdapter("ImageFromUrl")
+@BindingAdapter("imageFromUrl")
 fun bindImageFromUrl(view: ImageView, url: String?) {
     url?.let {
         Glide.with(view.context)

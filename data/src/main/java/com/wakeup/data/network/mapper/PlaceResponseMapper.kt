@@ -8,9 +8,9 @@ import com.wakeup.domain.model.Place
 
 fun PlaceResponseItem.toDomain(): Place {
     return Place(
-        mainAddress = place_name,
-        detailAddress = road_address_name,
-        placeUrl = place_url,
+        mainAddress = placeName,
+        detailAddress = roadAddressName,
+        placeUrl = placeUrl,
         location = LocationEntity(y.toDouble(), x.toDouble()).toDomain(),
     )
 }
