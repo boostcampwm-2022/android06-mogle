@@ -22,7 +22,6 @@ import com.naver.maps.map.overlay.Marker
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentPlaceCheckBinding
 import com.wakeup.presentation.util.setToolbar
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 
@@ -103,7 +102,6 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-
     private fun initToolbar() {
         setToolbar(
             toolbar = binding.tbPlaceCheck,
@@ -120,28 +118,28 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
                 override fun onPageFinished(view: WebView, url: String) {
                     super.onPageFinished(view, url)
 
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        delay(DELAY_FOR_CRAWLING)
-                        view.loadUrl("javascript:window.Android.getHtml(document.getElementsByTagName('body')[0].innerHTML);")
-                    }
+                    getHtmlFromPage(view)
                 }
             }
             loadUrl(args.place.placeUrl)
         }
     }
 
-    override fun onMapReady(naverMap: NaverMap) {
-        initCameraUpdate(naverMap)
-        initMaker(naverMap)
-    }
-
-    companion object {
-        private const val DELAY_FOR_CRAWLING = 500L
+    private fun getHtmlFromPage(view: WebView) {
+        view.loadUrl("javascript:window.Android.getHtml(document.getElementsByTagName('div')[1].innerHTML);")
     }
 
     inner class CrawlingInterface {
         @JavascriptInterface
         fun getHtml(html: String) {
+
+            if (html.contains("box_photo").not()) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    getHtmlFromPage(binding.wvCrawling)
+                }
+                return
+            }
+
             val query = ".box_photo"
             val attributeKey = "style"
             runCatching {
@@ -153,5 +151,10 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
                 viewModel.setImageUrl(imageUrl)
             }
         }
+    }
+
+    override fun onMapReady(naverMap: NaverMap) {
+        initCameraUpdate(naverMap)
+        initMaker(naverMap)
     }
 }
