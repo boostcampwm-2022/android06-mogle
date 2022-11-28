@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.GlobeAdapter
 import com.wakeup.presentation.databinding.FragmentGlobeBinding
-import com.wakeup.presentation.ui.GridSpaceItemDecoration
-import com.wakeup.presentation.ui.util.dp
+import com.wakeup.presentation.extension.dp
+import com.wakeup.presentation.lib.MogleDialog
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class GlobeFragment : Fragment() {
@@ -20,7 +22,7 @@ class GlobeFragment : Fragment() {
     private val viewModel: GlobeViewModel by viewModels()
     private lateinit var binding: FragmentGlobeBinding
     private val globeGirdAdapter = GlobeAdapter {
-        //todo navigation action
+        //todo action navigate to `globe detail`
     }
 
     override fun onCreateView(
@@ -38,6 +40,7 @@ class GlobeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initToolbar()
         initAdapter()
+        initClickListener()
     }
 
     private fun initToolbar() {
@@ -61,4 +64,16 @@ class GlobeFragment : Fragment() {
     private fun getWidthDp(): Float =
         resources.displayMetrics.widthPixels / resources.displayMetrics.density
 
+    private fun initClickListener() {
+        binding.ivAddGlobeButton.setOnClickListener {
+            MogleDialog.with(requireContext(), R.layout.dialog_add_globe)
+                .setOnPositive(R.id.tv_add_globe_add) {
+                    // todo add Globe
+                    Timber.d("OK")
+                }
+                .setOnNegative(R.id.tv_add_globe_cancel) { Timber.d("CANCEL") }
+                .setFocusAndKeyboardUp(R.id.et_add_globe)
+                .show()
+        }
+    }
 }

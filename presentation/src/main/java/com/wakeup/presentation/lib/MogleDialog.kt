@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 
 /**
  * @example
@@ -24,7 +25,7 @@ class MogleDialog private constructor() {
     private lateinit var builder: AlertDialog.Builder
     private lateinit var dialog: AlertDialog
     private lateinit var dialogView: View
-
+    private lateinit var context: Context
 
     companion object {
 
@@ -34,6 +35,7 @@ class MogleDialog private constructor() {
          */
         fun with(context: Context, layoutId: Int): MogleDialog {
             return MogleDialog().apply {
+                this.context = context
                 builder = AlertDialog.Builder(context)
                 dialogView = LayoutInflater.from(context).inflate(layoutId, null)
                 dialog = builder.setView(dialogView).create()
@@ -78,6 +80,18 @@ class MogleDialog private constructor() {
     }
 
     /**
+     * dialog 가 나타날 때 키보드를 올린다.
+     */
+    fun setFocusAndKeyboardUp(resId: Int): MogleDialog {
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val dialogEditText = dialogView.findViewById<View>(resId)
+        inputMethodManager.showSoftInput(dialogEditText, 0)
+        dialogEditText.requestFocus()
+        return this
+    }
+
+    /**
      * required
      *
      * @param resId dialog positive button 을 지정한다.
@@ -112,5 +126,4 @@ class MogleDialog private constructor() {
     fun show() {
         dialog.show()
     }
-
 }

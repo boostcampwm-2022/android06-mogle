@@ -1,4 +1,4 @@
-package com.wakeup.presentation.ui
+package com.wakeup.presentation.ui.globe
 
 import android.graphics.Rect
 import android.view.View
