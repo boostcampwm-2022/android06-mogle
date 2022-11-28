@@ -68,6 +68,7 @@
                     android:id="@+id/rv_moments"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="92dp"
                     android:layout_marginTop="@dimen/normal_100"
                     app:isGone="@{!hasMoments}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -78,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="지금 이 순간을 기록해보세요."
+                    android:text="지금 이 순간을 기록해보세요.ㅇ"
                     app:isGone="@{hasMoments}" />
 
             </FrameLayout>
