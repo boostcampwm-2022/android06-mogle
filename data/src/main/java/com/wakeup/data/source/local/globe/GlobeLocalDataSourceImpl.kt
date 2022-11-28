@@ -3,6 +3,7 @@ package com.wakeup.data.source.local.globe
 import com.wakeup.data.database.dao.GlobeDao
 import com.wakeup.data.database.entity.GlobeEntity
 import kotlinx.coroutines.flow.Flow
+import timber.log.Timber
 import javax.inject.Inject
 
 class GlobeLocalDataSourceImpl @Inject constructor(
@@ -18,6 +19,7 @@ class GlobeLocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun updateGlobe(globe: GlobeEntity) {
+        Timber.d("updateGlobe: $globe")
         globeDao.updateGlobe(globe)
     }
 
