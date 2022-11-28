@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
@@ -119,13 +120,19 @@ class AddMomentFragment : Fragment() {
     }
 
     private fun initSave() {
-        binding.tvSave.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.saveMoment()
-                Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
-                val navController = findNavController()
-                navController.setNavigationResultToBackStack("isUpdated", true)
-                navController.popBackStack()
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isSaveButtonClicked.collect { isClicked ->
+                    if (isClicked.not()) return@collect
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        viewModel.saveMoment()
+                        Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
+                        findNavController().run {
+                            setNavigationResultToBackStack("isUpdated", true)
+                            popBackStack()
+                        }
+                    }
+                }
             }
         }
     }

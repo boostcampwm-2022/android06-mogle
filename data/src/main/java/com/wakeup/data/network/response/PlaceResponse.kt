@@ -1,8 +1,6 @@
 package com.wakeup.data.network.response
 
-import com.wakeup.data.database.mapper.toDomain
-import com.wakeup.data.database.entity.LocationEntity
-import com.wakeup.domain.model.Place
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -27,19 +25,12 @@ data class PlaceResponse(
  */
 @Serializable
 data class PlaceResponseItem(
-    val place_name: String,
-    val road_address_name: String,
-    val x: String,
-    val y: String
+    @SerialName("place_name") val placeName: String,
+    @SerialName("road_address_name") val roadAddressName: String,
+    @SerialName("place_url") val placeUrl: String,
+    @SerialName("x") val x: String,
+    @SerialName("y") val y: String
 )
-
-fun PlaceResponseItem.toDomain(): Place {
-    return Place(
-        mainAddress = place_name,
-        detailAddress = road_address_name,
-        location = LocationEntity(y.toDouble(), x.toDouble()).toDomain()
-    )
-}
 
 
 //@Serializable

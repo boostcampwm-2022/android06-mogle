@@ -62,16 +62,19 @@ class AddMomentViewModel @Inject constructor(
         PlaceModel(
             "",
             "",
+            "",
             LocationModel(0.0, 0.0)
         )
     )
     val place = _place.asStateFlow()
 
-
     val content = MutableStateFlow("")
 
     private val _isSaveButtonEnabled = MutableStateFlow(false)
     val isSaveButtonEnabled = _isSaveButtonEnabled.asStateFlow()
+
+    private val _isSaveButtonClicked = MutableStateFlow(false)
+    val isSaveButtonClicked = _isSaveButtonClicked.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -112,6 +115,11 @@ class AddMomentViewModel @Inject constructor(
 
     fun setPlace(place: PlaceModel) {
         _place.value = place
+    }
+
+    fun save() {
+        if (isSaveButtonClicked.value) return
+        _isSaveButtonClicked.value = true
     }
 
     suspend fun saveMoment() {
