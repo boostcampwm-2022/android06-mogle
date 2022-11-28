@@ -3,6 +3,7 @@ package com.wakeup.data.di
 import android.content.Context
 import androidx.room.Room
 import com.wakeup.data.database.MogleDatabase
+import com.wakeup.data.database.dao.GlobeDao
 import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.util.InternalFileUtil
 import dagger.Module
@@ -30,6 +31,12 @@ object DatabaseModule {
     fun provideMomentDao(
         mogleDatabase: MogleDatabase,
     ): MomentDao = mogleDatabase.momentDao()
+
+    @Singleton
+    @Provides
+    fun provideGlobeDao(
+        mogleDatabase: MogleDatabase,
+    ): GlobeDao = mogleDatabase.globeDao()
 
     @Singleton
     @Provides

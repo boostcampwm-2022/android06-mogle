@@ -4,7 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.wakeup.data.database.dao.MomentDao
-import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.LocationEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentGlobeXRef
@@ -60,10 +59,6 @@ class MomentLocalDataSourceImpl @Inject constructor(
 
     override suspend fun saveMomentPictures(momentPictures: List<MomentPictureXRef>) {
         momentDao.saveMomentPictureXRefs(momentPictures)
-    }
-
-    override suspend fun saveGlobes(globes: List<GlobeEntity>): List<Long> {
-        return momentDao.saveGlobes(globes)
     }
 
     override suspend fun saveMomentGlobe(momentGlobe: MomentGlobeXRef) {
