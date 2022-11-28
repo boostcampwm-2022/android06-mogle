@@ -4,8 +4,10 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.wakeup.data.database.entity.GlobeEntity
+import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,4 +24,8 @@ interface GlobeDao {
 
     @Query("SELECT * FROM globe")
     fun getGlobes(): Flow<List<GlobeEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM moment WHERE moment_id = (SELECT moment_id FROM moment_globe WHERE globe_id = :globeId)")
+    fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>>
 }

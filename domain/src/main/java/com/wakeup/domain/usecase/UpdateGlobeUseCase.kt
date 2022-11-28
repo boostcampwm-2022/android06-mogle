@@ -7,7 +7,6 @@ import javax.inject.Inject
 class UpdateGlobeUseCase @Inject constructor(
     private val globeRepository: GlobeRepository
 ) {
-
     suspend operator fun invoke(globe: Globe) {
         globeRepository.updateGlobe(globe)
     }

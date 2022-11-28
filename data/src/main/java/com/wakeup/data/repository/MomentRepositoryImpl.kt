@@ -32,8 +32,7 @@ class MomentRepositoryImpl @Inject constructor(
                     util.getPictureInInternalStorage(
                         momentInfo.pictureList,
                         momentInfo.moment.thumbnailId
-                    ),
-                    momentInfo.globeList
+                    )
                 )
             }
         }

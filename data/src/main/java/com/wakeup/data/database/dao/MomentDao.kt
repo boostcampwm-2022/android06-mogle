@@ -64,7 +64,6 @@ interface MomentDao {
     @Query("SELECT globe_id FROM globe WHERE name = :globeName")
     suspend fun getGlobeIdByName(globeName: String): Long
 
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend fun saveMomentGlobeXRef(momentGlobe: MomentGlobeXRef)
 }

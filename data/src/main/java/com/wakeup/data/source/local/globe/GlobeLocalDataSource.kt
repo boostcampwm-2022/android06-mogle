@@ -1,6 +1,7 @@
 package com.wakeup.data.source.local.globe
 
 import com.wakeup.data.database.entity.GlobeEntity
+import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import kotlinx.coroutines.flow.Flow
 
 interface GlobeLocalDataSource {
@@ -12,4 +13,6 @@ interface GlobeLocalDataSource {
     suspend fun updateGlobe(globe: GlobeEntity)
 
     fun getGlobes(): Flow<List<GlobeEntity>>
+
+    fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>>
 }

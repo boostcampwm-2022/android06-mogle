@@ -2,6 +2,7 @@ package com.wakeup.data.source.local.globe
 
 import com.wakeup.data.database.dao.GlobeDao
 import com.wakeup.data.database.entity.GlobeEntity
+import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,5 +26,9 @@ class GlobeLocalDataSourceImpl @Inject constructor(
 
     override fun getGlobes(): Flow<List<GlobeEntity>> {
         return globeDao.getGlobes()
+    }
+
+    override fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>> {
+        return globeDao.getMomentsByGlobe(globeId)
     }
 }
