@@ -94,6 +94,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             ?.observe(viewLifecycleOwner) { isUpdated ->
                 this.isUpdated = isUpdated
                 if (isUpdated) {
+                    binding.bottomSheet.sortMenu.setText(R.string.most_recent)
+                    viewModel.sortType.value = SortType.MOST_RECENT
                     viewModel.fetchMoments()
                 }
             }
