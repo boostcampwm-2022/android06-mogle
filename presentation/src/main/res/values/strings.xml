@@ -40,6 +40,11 @@
 
     <string name="network_error">네트워크 연결을 확인해 주세요.</string>
 
+    <string name="add_globe_dialog_title">글로브 만들기</string>
+    <string name="add_globe_dialog_hint">글로브 이름을 입력하세요</string>
+    <string name="cancel">취소</string>
+    <string name="add">추가</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
