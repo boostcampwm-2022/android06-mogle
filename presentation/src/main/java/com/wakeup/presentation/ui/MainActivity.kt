@@ -1,6 +1,7 @@
 package com.wakeup.presentation.ui
 
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -21,6 +22,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setBottomNav()
+        setSpinner()
+    }
+
+    fun openNavDrawer() {
+        binding.drawerLayout.open()
     }
 
     private fun setBottomNav() {
@@ -34,6 +40,11 @@ class MainActivity : AppCompatActivity() {
         binding.fab.setOnClickListener {
             navController.navigate(R.id.add_moment_navigation)
         }
+    }
+
+    private fun setSpinner() {
+        val adapter = ArrayAdapter(this, R.layout.item_menu, listOf("자동", "낮", "밤"))
+        binding.layoutDrawer.spinnerTheme.adapter = adapter
     }
 
     private fun setTopLevelDestinations(navController: NavController) {

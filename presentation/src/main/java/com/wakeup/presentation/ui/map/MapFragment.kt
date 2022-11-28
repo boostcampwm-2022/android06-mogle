@@ -12,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
@@ -28,6 +27,7 @@ import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
 import com.wakeup.presentation.extension.getNavigationResultFromTop
 import com.wakeup.presentation.model.LocationModel
+import com.wakeup.presentation.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -60,9 +60,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         initLocation()
         initBottomSheet()
         setAdapterListener()
+        setSearchBarListener()
 
         collectMoments()
         updateMoments()
+    }
+
+    private fun setSearchBarListener() {
+        binding.ivMenu.setOnClickListener {
+            (activity as MainActivity).openNavDrawer()
+        }
     }
 
     private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
@@ -131,7 +138,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             getString(R.string.oldest),
             getString(R.string.nearest)
         )
-        val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_sort_menu, items)
+        val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_menu, items)
         binding.textField.viewTreeObserver.addOnGlobalLayoutListener {
             (binding.textField.editText as? MaterialAutoCompleteTextView)?.setAdapter(menuAdapter)
         }
@@ -176,9 +183,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
         })
     }
 

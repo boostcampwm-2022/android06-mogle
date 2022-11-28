@@ -34,10 +34,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/normal_100"
+                        android:padding="@dimen/normal_100"
                         android:src="@drawable/ic_menu" />
 
                     <EditText
+                        android:id="@+id/et_search"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
