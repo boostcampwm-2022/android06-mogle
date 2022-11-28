@@ -42,6 +42,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var mapHelper: MapHelper
 
+    private var isUpdated = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -61,10 +63,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         collectMoments()
         updateMoments()
-
     }
 
     private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            super.onItemRangeInserted(positionStart, itemCount)
+            if (isUpdated) {
+                binding.bottomSheet.rvMoments.scrollToPosition(0)
+            }
+            isUpdated = false
+        }
 
         override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
             super.onItemRangeMoved(fromPosition, toPosition, itemCount)
@@ -83,6 +92,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun updateMoments() {
         findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
             ?.observe(viewLifecycleOwner) { isUpdated ->
+                this.isUpdated = isUpdated
                 if (isUpdated) {
                     viewModel.fetchMoments()
                 }
