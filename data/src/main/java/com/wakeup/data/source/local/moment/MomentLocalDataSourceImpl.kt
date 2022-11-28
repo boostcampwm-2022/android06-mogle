@@ -31,9 +31,11 @@ class MomentLocalDataSourceImpl @Inject constructor(
             ),
             pagingSourceFactory = {
                 when (sortType) {
-                    SortType.NEAREST -> momentDao.getMomentsByNearestDistance(query,
+                    SortType.NEAREST -> momentDao.getMomentsByNearestDistance(
+                        query,
                         myLocation?.latitude,
-                        myLocation?.longitude)
+                        myLocation?.longitude
+                    )
                     else -> momentDao.getMoments(sortType.ordinal, query)
                 }
             }
@@ -51,7 +53,8 @@ class MomentLocalDataSourceImpl @Inject constructor(
         val indexResult = momentDao.savePictures(pictures).toMutableList()
         indexResult.forEachIndexed { pictureIndex, id ->
             if (id == EXIST_INSERT_ERROR_CODE) {
-                indexResult[pictureIndex] = momentDao.getPictureIdByByteArray(pictures[pictureIndex].fileName)
+                indexResult[pictureIndex] =
+                    momentDao.getPictureIdByByteArray(pictures[pictureIndex].fileName)
             }
         }
         return indexResult.toList()

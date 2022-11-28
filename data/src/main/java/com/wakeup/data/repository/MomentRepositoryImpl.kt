@@ -39,24 +39,26 @@ class MomentRepositoryImpl @Inject constructor(
         }
 
     override suspend fun saveMoment(moment: Moment) {
+        val globeIndex = localDataSource.getGlobeId(moment.globes.first().name)
+
         if (moment.pictures.isEmpty()) {
-            localDataSource.saveMoment(moment.toEntity(moment.place, null))
+            val momentIndex =
+                localDataSource.saveMoment(moment.toEntity(moment.place, null))
+            localDataSource.saveMomentGlobe(
+                MomentGlobeXRef(momentId = momentIndex, globeId = globeIndex)
+            )
             return
         }
+
         val pictureFileNames = util.savePictureInInternalStorageAndGetFileName(moment.pictures)
         val pictureIndexes = localDataSource.savePictures(pictureFileNames)
 
-        // moment 추가할 때 항상 globe 하나 선택해서 추가(default 도 하나 선택해서 추가 임).
-        val globeIndex =
-            localDataSource.getGlobeId(moment.globes.first().name)
         val momentIndex =
             localDataSource.saveMoment(moment.toEntity(moment.place, pictureIndexes.first()))
 
-        localDataSource.saveMomentPictures(
-            pictureIndexes.map { pictureId ->
-                MomentPictureXRef(momentId = momentIndex, pictureId = pictureId)
-            }
-        )
+        localDataSource.saveMomentPictures(pictureIndexes.map { pictureId ->
+            MomentPictureXRef(momentId = momentIndex, pictureId = pictureId)
+        })
         localDataSource.saveMomentGlobe(
             MomentGlobeXRef(momentId = momentIndex, globeId = globeIndex)
         )

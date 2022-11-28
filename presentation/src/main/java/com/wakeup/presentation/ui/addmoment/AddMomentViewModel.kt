@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -82,7 +81,6 @@ class AddMomentViewModel @Inject constructor(
                 place.mainAddress.isNotEmpty() &&
                         content.isNotEmpty()
             }.collect {
-                Timber.d("isSaveButtonEnabled: $it")
                 _isSaveButtonEnabled.value = it
             }
         }
