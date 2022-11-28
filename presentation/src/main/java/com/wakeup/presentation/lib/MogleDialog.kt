@@ -81,6 +81,7 @@ class MogleDialog private constructor() {
 
     /**
      * dialog 가 나타날 때 키보드를 올린다.
+     * @param resId dialog 안에 resId로 받는 EditText 와 같은 뷰를 Focus 시킨 후, 키보드를 올린다.
      */
     fun setFocusAndKeyboardUp(resId: Int): MogleDialog {
         val inputMethodManager =

@@ -44,7 +44,7 @@ class GlobeFragment : Fragment() {
     }
 
     private fun initToolbar() {
-        binding.tvIcon.setOnClickListener { findNavController().navigateUp() }
+        binding.ivBackButton.setOnClickListener { findNavController().navigateUp() }
     }
 
     private fun initAdapter() {
@@ -53,7 +53,7 @@ class GlobeFragment : Fragment() {
         val criteriaWidthDp = 500
         binding.rvGlobes.apply {
             adapter = globeGirdAdapter
-            binding.rvGlobes.layoutManager = GridLayoutManager(
+            layoutManager = GridLayoutManager(
                 requireContext(),
                 if (getWidthDp() > criteriaWidthDp) largeSpan else smallSpan
             )

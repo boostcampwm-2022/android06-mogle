@@ -1,6 +1,8 @@
 package com.wakeup.presentation.adapter
 
 import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.databinding.ItemGlobeBinding
@@ -8,11 +10,11 @@ import com.wakeup.presentation.model.GlobeModel
 
 class GlobeAdapter(
     private val onClickGlobeDetail: () -> Unit,
-) : ListAdapter<GlobeModel, GlobeAdapter.GlobeViewHolder>(diffCallback) {
+) : ListAdapter<GlobeModel, GlobeAdapter.GlobeViewHolder>(GlobeDiffUtil) {
 
     class GlobeViewHolder private constructor(
         private val binding: ItemGlobeBinding,
-        private val onClickGlobeDetail: () -> Unit
+        private val onClickGlobeDetail: () -> Unit,
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -27,14 +29,16 @@ class GlobeAdapter(
         }
 
         companion object {
-            fun from(parent: android.view.ViewGroup, onClickGlobeDetail: () -> Unit) = GlobeViewHolder(
-                ItemGlobeBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                onClickGlobeDetail
-            )
+            fun from(parent: ViewGroup, onClickGlobeDetail: () -> Unit): GlobeViewHolder {
+                return GlobeViewHolder(
+                    ItemGlobeBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                    onClickGlobeDetail
+                )
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: android.view.ViewGroup, viewType: Int): GlobeViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GlobeViewHolder {
         return GlobeViewHolder.from(parent, onClickGlobeDetail)
     }
 
@@ -42,15 +46,13 @@ class GlobeAdapter(
         holder.bind(getItem(position))
     }
 
-    companion object {
-        private val diffCallback =
-            object : androidx.recyclerview.widget.DiffUtil.ItemCallback<GlobeModel>() {
-                override fun areItemsTheSame(oldItem: GlobeModel, newItem: GlobeModel): Boolean =
-                    oldItem.name == newItem.name
+    companion object GlobeDiffUtil : DiffUtil.ItemCallback<GlobeModel>() {
+        override fun areItemsTheSame(oldItem: GlobeModel, newItem: GlobeModel): Boolean {
+            return oldItem.name == newItem.name
+        }
 
-                override fun areContentsTheSame(oldItem: GlobeModel, newItem: GlobeModel): Boolean =
-                    oldItem == newItem
-
-            }
+        override fun areContentsTheSame(oldItem: GlobeModel, newItem: GlobeModel): Boolean {
+            return oldItem == newItem
+        }
     }
 }

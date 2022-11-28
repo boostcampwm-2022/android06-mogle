@@ -14,11 +14,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_globe_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="10dp">
+        android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/cv_globe_item"
+            android:id="@+id/civ_globe_item"
             android:layout_width="@dimen/globe_image_size"
             android:layout_height="@dimen/globe_image_size"
             android:scaleType="centerCrop"
@@ -39,7 +38,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_globe_item"
+            app:layout_constraintTop_toBottomOf="@id/civ_globe_item"
             tools:text="맛집" />
 
         <TextView

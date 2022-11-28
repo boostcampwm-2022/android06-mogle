@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/normal_150"
+        android:padding="@dimen/small_50"
         app:cardCornerRadius="@dimen/small_150"
         app:cardElevation="@dimen/small_100"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,8 +25,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:padding="@dimen/small_150">
+            android:layout_margin="@dimen/small_100"
+            android:padding="@dimen/small_100">
 
             <TextView
                 android:id="@+id/tv_add_globe_title"
@@ -34,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/small_50"
                 android:paddingBottom="@dimen/small_150"
-                android:text="글로브 만들기"
+                android:text="@string/add_globe_dialog_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="true"
-                android:hint="앨범 명을 입력하세요."
+                android:hint="@string/add_globe_dialog_hint"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_add_globe_title">
 
