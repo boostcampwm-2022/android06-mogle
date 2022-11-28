@@ -1,5 +1,4 @@
 <resources>
-
     <style name="Theme.Mogle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/mint</item>
         <item name="colorOnPrimary">@color/white</item>
