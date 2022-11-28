@@ -1,19 +1,18 @@
 package com.wakeup.presentation.ui.map
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.paging.map
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
@@ -28,9 +27,7 @@ import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
 import com.wakeup.presentation.extension.getNavigationResultFromTop
-import com.wakeup.presentation.factory.FakeMomentFactory
 import com.wakeup.presentation.model.LocationModel
-import com.wakeup.presentation.model.PictureModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -45,12 +42,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var mapHelper: MapHelper
 
-    private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
-        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-            super.onItemRangeMoved(fromPosition, toPosition, itemCount)
-            binding.bottomSheet.rvMoments.scrollToPosition(0)
-        }
-    }
+    private var isUpdated = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +63,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         collectMoments()
         updateMoments()
+    }
 
+    private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            super.onItemRangeInserted(positionStart, itemCount)
+            if (isUpdated) {
+                binding.bottomSheet.rvMoments.scrollToPosition(0)
+            }
+            isUpdated = false
+        }
+
+        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+            super.onItemRangeMoved(fromPosition, toPosition, itemCount)
+            binding.bottomSheet.rvMoments.scrollToPosition(0)
+        }
     }
 
     private fun setAdapterListener() {
@@ -85,7 +92,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun updateMoments() {
         findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
             ?.observe(viewLifecycleOwner) { isUpdated ->
+                this.isUpdated = isUpdated
                 if (isUpdated) {
+                    binding.bottomSheet.sortMenu.setText(R.string.most_recent)
+                    viewModel.sortType.value = SortType.MOST_RECENT
                     viewModel.fetchMoments()
                 }
             }
@@ -103,9 +113,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun initBottomSheet() {
         with(binding.bottomSheet) {
+            setState(this)
             setMenus(this)
             setAdapter(this)
+            setCallback(this)
         }
+    }
+
+    private fun setState(binding: BottomSheetBinding) {
+        val behavior = BottomSheetBehavior.from(binding.bottomSheet)
+        behavior.state = viewModel.bottomSheetState.value
     }
 
     private fun setMenus(binding: BottomSheetBinding) {
@@ -120,7 +137,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         binding.sortMenu.setOnItemClickListener { _, _, position, _ ->
-            expandBottomSheet(binding.bottomSheet)
             viewModel.location.value = null
             viewModel.sortType.value = when (position) {
                 0 -> SortType.MOST_RECENT
@@ -136,15 +152,44 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun expandBottomSheet(bottomSheet: ConstraintLayout) {
-        val behavior = BottomSheetBehavior.from(bottomSheet)
-        if (behavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-    }
-
     private fun setAdapter(binding: BottomSheetBinding) {
         binding.rvMoments.adapter = momentAdapter
+    }
+
+    private fun setCallback(binding: BottomSheetBinding) {
+        val behavior = BottomSheetBehavior.from(binding.bottomSheet)
+        if (behavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+            binding.textField.visibility = View.INVISIBLE
+        }
+
+        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        changeVisibleMenu(true)
+                        viewModel.bottomSheetState.value = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        changeVisibleMenu(false)
+                        viewModel.bottomSheetState.value = BottomSheetBehavior.STATE_COLLAPSED
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+        })
+    }
+
+    private fun changeVisibleMenu(isVisible: Boolean) = with(binding.bottomSheet.textField) {
+        if (isVisible) {
+            visibility = View.VISIBLE
+            animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+        } else {
+            visibility = View.INVISIBLE
+            animation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
+        }
     }
 
     private fun initMapHelper() {

@@ -2,4 +2,5 @@
 <resources>
 
     <integer name="slide">200</integer>
+    <integer name="fade">200</integer>
 </resources>

@@ -240,7 +240,6 @@
                     android:enabled="@{vm.isSaveButtonEnabled()}"
                     android:gravity="center"
                     android:onClick="@{() -> vm.save()}"
-                    android:padding="@dimen/normal_100"
                     android:text="@string/add_moment_save"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="@dimen/normal_100_tv"
