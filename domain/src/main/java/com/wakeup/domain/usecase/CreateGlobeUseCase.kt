@@ -7,6 +7,7 @@ import javax.inject.Inject
 class CreateGlobeUseCase @Inject constructor(
     private val globeRepository: GlobeRepository
 ) {
+
     suspend operator fun invoke(globe: Globe) {
         globeRepository.createGlobe(globe)
     }

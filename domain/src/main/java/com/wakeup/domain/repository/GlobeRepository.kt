@@ -1,6 +1,7 @@
 package com.wakeup.domain.repository
 
 import com.wakeup.domain.model.Globe
+import kotlinx.coroutines.flow.Flow
 
 interface GlobeRepository {
 
@@ -10,5 +11,5 @@ interface GlobeRepository {
 
     suspend fun deleteGlobe(globe: Globe)
 
-    suspend fun getGlobes(): List<Globe>
+    fun getGlobes(): Flow<List<Globe>>
 }

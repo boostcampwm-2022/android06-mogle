@@ -2,6 +2,7 @@ package com.wakeup.data.source.local.globe
 
 import com.wakeup.data.database.dao.GlobeDao
 import com.wakeup.data.database.entity.GlobeEntity
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GlobeLocalDataSourceImpl @Inject constructor(
@@ -9,18 +10,18 @@ class GlobeLocalDataSourceImpl @Inject constructor(
 ) : GlobeLocalDataSource {
 
     override suspend fun createGlobe(globe: GlobeEntity) {
-        TODO("Not yet implemented")
+        globeDao.createGlobe(globe)
     }
 
-    override suspend fun removeGlobe(globe: GlobeEntity) {
-        TODO("Not yet implemented")
+    override suspend fun deleteGlobe(globe: GlobeEntity) {
+        globeDao.deleteGlobe(globe)
     }
 
     override suspend fun updateGlobe(globe: GlobeEntity) {
-        TODO("Not yet implemented")
+        globeDao.updateGlobe(globe)
     }
 
-    override suspend fun getGlobes(): GlobeEntity {
-        TODO("Not yet implemented")
+    override fun getGlobes(): Flow<List<GlobeEntity>> {
+        return globeDao.getGlobes()
     }
 }

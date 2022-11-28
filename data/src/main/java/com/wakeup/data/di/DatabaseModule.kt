@@ -24,6 +24,7 @@ object DatabaseModule {
         @ApplicationContext context: Context,
     ): MogleDatabase = Room
         .databaseBuilder(context, MogleDatabase::class.java, "mogle.db")
+        .addCallback(MogleDatabase.callback)
         .build()
 
     @Singleton
