@@ -3,8 +3,9 @@ package com.wakeup.data.source.local.moment
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.wakeup.data.database.dao.GlobeDao
 import com.wakeup.data.database.dao.MomentDao
-import com.wakeup.data.database.entity.GlobeEntity
+import com.wakeup.data.database.dao.XRefDao
 import com.wakeup.data.database.entity.LocationEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentGlobeXRef
@@ -17,6 +18,8 @@ import javax.inject.Inject
 
 class MomentLocalDataSourceImpl @Inject constructor(
     private val momentDao: MomentDao,
+    private val globeDao: GlobeDao,
+    private val XRefDao: XRefDao,
 ) : MomentLocalDataSource {
     override fun getMoments(
         sortType: SortType,
@@ -32,16 +35,18 @@ class MomentLocalDataSourceImpl @Inject constructor(
             ),
             pagingSourceFactory = {
                 when (sortType) {
-                    SortType.NEAREST -> momentDao.getMomentsByNearestDistance(query,
+                    SortType.NEAREST -> momentDao.getMomentsByNearestDistance(
+                        query,
                         myLocation?.latitude,
-                        myLocation?.longitude)
+                        myLocation?.longitude
+                    )
                     else -> momentDao.getMoments(sortType.ordinal, query)
                 }
             }
         ).flow
 
     override suspend fun getGlobeId(globeName: String): Long {
-        return momentDao.getGlobeIdByName(globeName)
+        return globeDao.getGlobeIdByName(globeName)
     }
 
     override suspend fun saveMoment(moment: MomentEntity): Long {
@@ -52,22 +57,19 @@ class MomentLocalDataSourceImpl @Inject constructor(
         val indexResult = momentDao.savePictures(pictures).toMutableList()
         indexResult.forEachIndexed { pictureIndex, id ->
             if (id == EXIST_INSERT_ERROR_CODE) {
-                indexResult[pictureIndex] = momentDao.getPictureIdByByteArray(pictures[pictureIndex].fileName)
+                indexResult[pictureIndex] =
+                    momentDao.getPictureIdByByteArray(pictures[pictureIndex].fileName)
             }
         }
         return indexResult.toList()
     }
 
     override suspend fun saveMomentPictures(momentPictures: List<MomentPictureXRef>) {
-        momentDao.saveMomentPictureXRefs(momentPictures)
-    }
-
-    override suspend fun saveGlobes(globes: List<GlobeEntity>): List<Long> {
-        return momentDao.saveGlobes(globes)
+        XRefDao.saveMomentPictureXRefs(momentPictures)
     }
 
     override suspend fun saveMomentGlobe(momentGlobe: MomentGlobeXRef) {
-        momentDao.saveMomentGlobeXRef(momentGlobe)
+        XRefDao.saveMomentGlobeXRef(momentGlobe)
     }
 
     companion object {

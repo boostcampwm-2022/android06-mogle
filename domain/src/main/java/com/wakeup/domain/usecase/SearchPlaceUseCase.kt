@@ -7,7 +7,6 @@ import javax.inject.Inject
 class SearchPlaceUseCase @Inject constructor(
     private val placeSearchRepository: PlaceSearchRepository
 ) {
-
     suspend operator fun invoke(keyword: String): Result<List<Place>> {
         return placeSearchRepository.search(keyword)
     }

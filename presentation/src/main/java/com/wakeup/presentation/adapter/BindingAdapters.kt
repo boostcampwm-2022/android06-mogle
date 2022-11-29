@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.wakeup.presentation.R
 import com.wakeup.presentation.model.GlobeModel
 
@@ -74,4 +75,9 @@ fun bindGlobeNames(view: TextView, globes: List<GlobeModel>) {
             globes.first().name,
             globes.size - 1)
     }
+}
+
+@BindingAdapter("globeItems")
+fun bindGlobeItems(view: MaterialAutoCompleteTextView, items: List<GlobeModel>) {
+    view.setSimpleItems(items.map { it.name }.toTypedArray())
 }
