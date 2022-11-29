@@ -44,12 +44,11 @@ fun bindGone(view: View, isGone: Boolean) {
 
 @BindingAdapter("imageFromBitmap")
 fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap?) {
-    bitmap?.let {
-        Glide.with(view.context)
-            .load(it)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(view)
-    }
+    Glide.with(view.context)
+        .load(bitmap)
+        .fallback(R.drawable.sample_image2)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(view)
 }
 
 @BindingAdapter("imageFromUrl")
