@@ -3,6 +3,7 @@ package com.wakeup.presentation.ui.map
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
+import android.graphics.PointF
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
@@ -25,13 +26,19 @@ import com.naver.maps.map.widget.LogoView
 import com.naver.maps.map.widget.ScaleBarView
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ItemMapMarkerBinding
+import com.wakeup.presentation.extension.dp
 import com.wakeup.presentation.extension.getFadeOutAnimator
 import com.wakeup.presentation.extension.setListener
 import com.wakeup.presentation.model.MomentModel
 
-class MapHelper(private val context: Context) {
+class MapHelper(context: Context) {
     private val markerBinding =
         ItemMapMarkerBinding.inflate(LayoutInflater.from(context), null, false)
+
+    /**
+     * 현재 포커싱 된 마커 객체
+     */
+    private var markerFocused: Marker? = null
 
     /**
      * 지도 생성 함수
@@ -76,7 +83,28 @@ class MapHelper(private val context: Context) {
                     view.isVisible = false
                 }
             }).start()
+
+            setMarkerUnfocused()
         }
+    }
+
+    fun setMarkerFocused(marker: Marker) {
+        markerFocused = marker
+
+        markerFocused?.apply {
+            width += (width * MARKER_SCALE_UP_SIZE).toInt()
+            height += (height * MARKER_SCALE_UP_SIZE).toInt()
+            zIndex = Z_INDEX_FRONT
+        }
+    }
+
+    fun setMarkerUnfocused() {
+        markerFocused?.apply {
+            width -= (width * MARKER_SCALE_UP_SIZE).toInt()
+            height -= (height * MARKER_SCALE_UP_SIZE).toInt()
+            zIndex = Z_INDEX_BACK
+        }
+        markerFocused = null
     }
 
     fun setCurrentLocation(map: NaverMap, _locationSource: FusedLocationSource) {
@@ -117,8 +145,9 @@ class MapHelper(private val context: Context) {
         }
 
         Marker().apply {
-            width = Marker.SIZE_AUTO
-            height = Marker.SIZE_AUTO
+            width = MARKER_WIDTH.dp.toInt()
+            height = MARKER_HEIGHT.dp.toInt()
+            anchor = PointF(POINT_X, POINT_Y)
             position =
                 LatLng(momentModel.place.location.latitude, momentModel.place.location.longitude)
             isHideCollidedSymbols = true
@@ -156,6 +185,15 @@ class MapHelper(private val context: Context) {
         const val INITIAL_LONG = 128.25
         const val MIN_ZOOM = 5.0
         const val CAMERA_MOVE_DURATION = 2000L
+
         const val INVISIBLE_ALPHA = 0.0f
+
+        const val MARKER_WIDTH = 52
+        const val MARKER_HEIGHT = 58
+        const val MARKER_SCALE_UP_SIZE = 0.2
+        const val Z_INDEX_FRONT = 10
+        const val Z_INDEX_BACK = 0
+        const val POINT_X = 0.5f
+        const val POINT_Y = 0.95f
     }
 }

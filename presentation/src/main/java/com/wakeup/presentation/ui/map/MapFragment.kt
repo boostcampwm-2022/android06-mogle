@@ -267,13 +267,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
              Snackbar.make(binding.root, "${it.tag}번째 마커", Snackbar.LENGTH_SHORT).show()
              mapHelper.setDarkMode(naverMap)
              true
-         }*/
+         } */
     }
 
     private fun setMarkerClickListener(moment: MomentModel) {
         val clickListener = OnClickListener { marker ->
 
             (marker as Marker).apply {
+                mapHelper.setMarkerFocused(this)
                 mapHelper.moveCamera(naverMap, position)
                 binding.momentModel = (tag as MomentModel)
             }
