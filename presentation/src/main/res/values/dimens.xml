@@ -24,7 +24,7 @@
 
     <dimen name="big_padding">@dimen/normal_225</dimen>
     <dimen name="normal_padding">@dimen/normal_150</dimen>
-    <dimen name="location_btn_margin">168dp</dimen>
+    <dimen name="map_moment_preview_margin">140dp</dimen>
 
     <!-- standard by 100 % -->
 

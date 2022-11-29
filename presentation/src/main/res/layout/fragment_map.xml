@@ -11,6 +11,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_home_view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.map.MapFragment">
@@ -54,6 +55,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <FrameLayout
+            android:id="@+id/fl_map_view_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -62,16 +64,17 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <FrameLayout
-                android:id="@+id/map"
+                android:id="@+id/fl_map"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_map_controls_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
                 android:layout_marginHorizontal="@dimen/normal_100"
-                android:layout_marginBottom="@dimen/location_btn_margin">
+                android:layout_marginBottom="@dimen/map_moment_preview_margin">
 
                 <com.naver.maps.map.widget.LocationButtonView
                     android:id="@+id/lbv_location"
@@ -81,7 +84,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1"
+                    app:layout_constraintVertical_chainStyle="packed" />
 
                 <com.naver.maps.map.widget.ScaleBarView
                     android:id="@+id/sbv_scale"
@@ -99,10 +104,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_100"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/lbv_location"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/lbv_location" />
+                    app:layout_constraintTop_toBottomOf="@id/lbv_location"
+                    app:layout_constraintVertical_bias="0" />
 
                 <include
                     android:id="@+id/moment_preview"

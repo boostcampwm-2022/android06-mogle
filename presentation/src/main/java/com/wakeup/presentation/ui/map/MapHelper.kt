@@ -51,9 +51,9 @@ class MapHelper(private val context: Context) {
             .logoClickEnabled(true)
 
         // 지도 생성
-        val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
+        val mapFragment = fm.findFragmentById(R.id.fl_map) as MapFragment?
             ?: MapFragment.newInstance(options).also {
-                fm.beginTransaction().add(R.id.map, it).commit()
+                fm.beginTransaction().add(R.id.fl_map, it).commit()
             }
 
         mapFragment.getMapAsync(callback)
