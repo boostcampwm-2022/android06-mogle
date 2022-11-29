@@ -1,5 +1,7 @@
 package com.wakeup.data.di
 
+import com.wakeup.data.source.local.globe.GlobeLocalDataSource
+import com.wakeup.data.source.local.globe.GlobeLocalDataSourceImpl
 import com.wakeup.data.source.local.moment.MomentLocalDataSource
 import com.wakeup.data.source.local.moment.MomentLocalDataSourceImpl
 import com.wakeup.data.source.remote.placeSearch.PlaceSearchRemoteDataSource
@@ -22,4 +24,9 @@ interface DataSourceModule {
     fun bindPlaceSearchRemoteDataSource(
         placeSearchRemoteDataSourceImpl: PlaceSearchRemoteDataSourceImpl,
     ): PlaceSearchRemoteDataSource
+
+    @Binds
+    fun bindGlobeLocalDataSource(
+        globeLocalDataSourceImpl: GlobeLocalDataSourceImpl,
+    ): GlobeLocalDataSource
 }
