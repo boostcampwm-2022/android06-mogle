@@ -17,6 +17,7 @@ import com.wakeup.domain.model.SortType
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentMapBinding
 import com.wakeup.presentation.extension.getNavigationResultFromTop
+import com.wakeup.presentation.extension.hideKeyboard
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
 import com.wakeup.presentation.ui.map.sheet.BottomSheetFragment
@@ -72,7 +73,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
                 viewModel.setSearchQuery(textView.text.toString())
                 viewModel.fetchMoments()
 
-                (activity as MainActivity).hideKeyboard()
+                hideKeyboard()
             }
             false // true: 계속 search 가능
         }

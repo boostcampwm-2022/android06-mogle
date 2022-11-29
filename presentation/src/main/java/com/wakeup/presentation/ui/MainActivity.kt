@@ -13,6 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ActivityMainBinding
+import com.wakeup.presentation.model.WeatherTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,14 +33,9 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.open()
     }
 
-    fun hideKeyboard() {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-    }
-
     private fun setBottomNav() {
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNav.setupWithNavController(navController)
 
@@ -51,16 +47,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setSpinner() {
-        val adapter = ArrayAdapter(this, R.layout.item_menu, listOf("자동", "낮", "밤"))
+        val adapter = ArrayAdapter(this, R.layout.item_menu, listOf(
+                WeatherTheme.AUTO.str,
+                WeatherTheme.BRIGHT.str,
+                WeatherTheme.DARK.str)
+        )
         binding.layoutDrawer.spinnerTheme.adapter = adapter
     }
 
     private fun setTopLevelDestinations(navController: NavController) {
         val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.map_fragment,
-                R.id.globe_fragment
-            )
+                setOf(
+                        R.id.map_fragment,
+                        R.id.globe_fragment
+                )
         )
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
