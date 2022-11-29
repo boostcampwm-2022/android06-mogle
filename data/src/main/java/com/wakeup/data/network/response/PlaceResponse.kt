@@ -1,5 +1,6 @@
 package com.wakeup.data.network.response
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -24,11 +25,11 @@ data class PlaceResponse(
  */
 @Serializable
 data class PlaceResponseItem(
-    val place_name: String,
-    val road_address_name: String,
-    val place_url: String,
-    val x: String,
-    val y: String
+    @SerialName("place_name") val placeName: String,
+    @SerialName("road_address_name") val roadAddressName: String,
+    @SerialName("place_url") val placeUrl: String,
+    @SerialName("x") val x: String,
+    @SerialName("y") val y: String
 )
 
 

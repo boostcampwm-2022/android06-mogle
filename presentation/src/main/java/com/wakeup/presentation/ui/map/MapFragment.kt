@@ -1,18 +1,21 @@
 package com.wakeup.presentation.ui.map
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
@@ -28,9 +31,11 @@ import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
 import com.wakeup.presentation.extension.getNavigationResultFromTop
 import com.wakeup.presentation.model.LocationModel
+import com.wakeup.presentation.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -42,7 +47,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var mapHelper: MapHelper
 
-    private var isUpdated = false
+    private var scrollToTop = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,19 +65,37 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         initLocation()
         initBottomSheet()
         setAdapterListener()
+        setSearchBarListener()
 
         collectMoments()
         updateMoments()
+    }
+
+    private fun setSearchBarListener() {
+        binding.ivMenu.setOnClickListener {
+            (activity as MainActivity).openNavDrawer()
+        }
+
+        binding.etSearch.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i == EditorInfo.IME_ACTION_SEARCH) {
+                scrollToTop = true
+                viewModel.setSearchQuery(textView.text.toString())
+                viewModel.fetchMoments()
+
+                (activity as MainActivity).hideKeyboard()
+            }
+            false // true: 계속 search 가능
+        }
     }
 
     private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
 
         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
             super.onItemRangeInserted(positionStart, itemCount)
-            if (isUpdated) {
+            if (scrollToTop) {
                 binding.bottomSheet.rvMoments.scrollToPosition(0)
             }
-            isUpdated = false
+            scrollToTop = false
         }
 
         override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
@@ -92,7 +115,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun updateMoments() {
         findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
             ?.observe(viewLifecycleOwner) { isUpdated ->
-                this.isUpdated = isUpdated
+                scrollToTop = isUpdated
                 if (isUpdated) {
                     binding.bottomSheet.sortMenu.setText(R.string.most_recent)
                     viewModel.sortType.value = SortType.MOST_RECENT
@@ -131,7 +154,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             getString(R.string.oldest),
             getString(R.string.nearest)
         )
-        val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_sort_menu, items)
+        val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_menu, items)
         binding.textField.viewTreeObserver.addOnGlobalLayoutListener {
             (binding.textField.editText as? MaterialAutoCompleteTextView)?.setAdapter(menuAdapter)
         }
@@ -176,9 +199,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
         })
     }
 

@@ -28,10 +28,12 @@ class DetailPictureAdapter :
         }
 
         companion object {
-            fun from(parent: ViewGroup): DetailPictureViewHolder = DetailPictureViewHolder(
-                ListItemDetailPictureBinding.inflate(LayoutInflater.from(parent.context),
-                    parent,
-                    false))
+            fun from(parent: ViewGroup): DetailPictureViewHolder {
+                return DetailPictureViewHolder(
+                    ListItemDetailPictureBinding
+                        .inflate(LayoutInflater.from(parent.context), parent, false)
+                )
+            }
         }
     }
 
