@@ -68,10 +68,11 @@ class GlobeFragment : Fragment() {
         binding.ivAddGlobeButton.setOnClickListener {
             MogleDialog.with(requireContext(), R.layout.dialog_add_globe)
                 .setOnPositive(R.id.tv_add_globe_add) {
-                    // todo add Globe
                     Timber.d("OK")
                 }
-                .setOnNegative(R.id.tv_add_globe_cancel) { Timber.d("CANCEL") }
+                .setOnNegative(R.id.tv_add_globe_cancel) {
+                    Timber.d("CANCEL")
+                }
                 .setFocusAndKeyboardUp(R.id.et_add_globe)
                 .show()
         }
