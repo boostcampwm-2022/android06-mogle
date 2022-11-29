@@ -30,6 +30,7 @@ import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
 import com.wakeup.presentation.extension.getNavigationResultFromTop
+import com.wakeup.presentation.extension.hideKeyboard
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -82,7 +83,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 viewModel.setSearchQuery(textView.text.toString())
                 viewModel.fetchMoments()
 
-                (activity as MainActivity).hideKeyboard()
+                hideKeyboard()
             }
             false // true: 계속 search 가능
         }
