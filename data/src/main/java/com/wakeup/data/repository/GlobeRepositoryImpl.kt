@@ -39,7 +39,7 @@ class GlobeRepositoryImpl @Inject constructor(
             it.map { momentEntity ->
                 momentEntity.toDomain(
                     util.getPictureInInternalStorage(
-                        momentEntity.pictureList,
+                        momentEntity.pictures,
                         momentEntity.moment.thumbnailId
                     )
                 )

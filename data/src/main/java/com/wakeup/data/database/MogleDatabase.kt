@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.wakeup.data.database.dao.GlobeDao
 import com.wakeup.data.database.dao.MomentDao
+import com.wakeup.data.database.dao.RefDao
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentGlobeXRef
@@ -26,6 +27,7 @@ import java.util.concurrent.Executors
 abstract class MogleDatabase : RoomDatabase() {
     abstract fun momentDao(): MomentDao
     abstract fun globeDao(): GlobeDao
+    abstract fun refDao(): RefDao
 
     companion object {
         val callback = object : Callback() {

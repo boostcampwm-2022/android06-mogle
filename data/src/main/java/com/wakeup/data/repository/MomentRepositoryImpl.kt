@@ -30,7 +30,7 @@ class MomentRepositoryImpl @Inject constructor(
             pagingData.map { momentInfo ->
                 momentInfo.toDomain(
                     util.getPictureInInternalStorage(
-                        momentInfo.pictureList,
+                        momentInfo.pictures,
                         momentInfo.moment.thumbnailId
                     )
                 )

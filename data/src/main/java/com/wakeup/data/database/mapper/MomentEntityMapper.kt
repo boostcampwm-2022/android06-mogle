@@ -14,7 +14,7 @@ fun MomentWithGlobesAndPictures.toDomain(
         place = moment.place.toDomain(),
         pictures = pictures,
         content = moment.content,
-        globes = globeList.map { it.toDomain() },
+        globes = globes.map { it.toDomain() },
         date = moment.date,
     )
 }

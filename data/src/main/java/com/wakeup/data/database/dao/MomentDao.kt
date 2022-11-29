@@ -7,8 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentGlobeXRef
-import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
 
@@ -57,13 +55,4 @@ interface MomentDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun savePictures(pictures: List<PictureEntity>): List<Long>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveMomentPictureXRefs(momentPictures: List<MomentPictureXRef>)
-
-
-    @Query("SELECT globe_id FROM globe WHERE name = :globeName")
-    suspend fun getGlobeIdByName(globeName: String): Long
-
-    @Insert
-    suspend fun saveMomentGlobeXRef(momentGlobe: MomentGlobeXRef)
 }

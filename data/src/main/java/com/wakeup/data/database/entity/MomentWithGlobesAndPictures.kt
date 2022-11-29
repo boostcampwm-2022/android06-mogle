@@ -12,12 +12,12 @@ data class MomentWithGlobesAndPictures(
         entityColumn = "globe_id",
         associateBy = Junction(MomentGlobeXRef::class)
     )
-    val globeList: List<GlobeEntity>,
+    val globes: List<GlobeEntity>,
     @Relation(
         parentColumn = "moment_id",
         entity = PictureEntity::class,
         entityColumn = "picture_id",
         associateBy = Junction(MomentPictureXRef::class)
     )
-    val pictureList: List<PictureEntity>,
+    val pictures: List<PictureEntity>,
 )
