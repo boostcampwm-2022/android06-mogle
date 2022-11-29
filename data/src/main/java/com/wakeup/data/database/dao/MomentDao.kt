@@ -6,10 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentGlobeXRef
-import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
 
@@ -49,9 +46,6 @@ interface MomentDao {
         lng: Double?,
     ): PagingSource<Int, MomentWithGlobesAndPictures>
 
-    @Query("SELECT globe_id FROM globe WHERE name = :globeName")
-    suspend fun getGlobeIdByName(globeName: String): Long
-
     @Query("SELECT picture_id FROM picture WHERE fileName = :fileName")
     suspend fun getPictureIdByByteArray(fileName: String): Long
 
@@ -61,12 +55,4 @@ interface MomentDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun savePictures(pictures: List<PictureEntity>): List<Long>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveMomentPictureXRefs(momentPictures: List<MomentPictureXRef>)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun saveGlobes(globes: List<GlobeEntity>): List<Long>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveMomentGlobeXRef(momentGlobe: MomentGlobeXRef)
 }

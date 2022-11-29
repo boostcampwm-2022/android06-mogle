@@ -5,12 +5,14 @@ import com.wakeup.domain.model.Globe
 
 fun Globe.toEntity(): GlobeEntity {
     return GlobeEntity(
+        id = id,
         name = name,
     )
 }
 
 fun GlobeEntity.toDomain(): Globe {
     return Globe(
+        id = id,
         name = name,
     )
 }
