@@ -3,11 +3,11 @@ package com.wakeup.data.di
 import com.wakeup.data.repository.GlobeRepositoryImpl
 import com.wakeup.data.repository.MomentRepositoryImpl
 import com.wakeup.data.repository.PlaceSearchRepositoryImpl
-import com.wakeup.data.repository.RefRepositoryImpl
+import com.wakeup.data.repository.RelationRepositoryImpl
 import com.wakeup.domain.repository.GlobeRepository
 import com.wakeup.domain.repository.MomentRepository
 import com.wakeup.domain.repository.PlaceSearchRepository
-import com.wakeup.domain.repository.RefRepository
+import com.wakeup.domain.repository.RelationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -34,6 +34,6 @@ interface RepositoryModule {
 
     @Binds
     fun bindRefRepository(
-        refRepositoryImpl: RefRepositoryImpl,
-    ): RefRepository
+        refRepositoryImpl: RelationRepositoryImpl,
+    ): RelationRepository
 }

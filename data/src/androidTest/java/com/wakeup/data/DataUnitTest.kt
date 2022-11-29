@@ -9,7 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.wakeup.data.database.MogleDatabase
 import com.wakeup.data.database.dao.MomentDao
-import com.wakeup.data.database.dao.RefDao
+import com.wakeup.data.database.dao.XRefDao
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.PictureEntity
@@ -28,7 +28,7 @@ import org.junit.runner.RunWith
 class DataUnitTest {
     private lateinit var testDatabase: MogleDatabase
     private lateinit var momentDao: MomentDao
-    private lateinit var refDao: RefDao
+    private lateinit var xRefDao: XRefDao
 
 
     @Before
@@ -38,7 +38,7 @@ class DataUnitTest {
             context, MogleDatabase::class.java
         ).build()
         momentDao = testDatabase.momentDao()
-        refDao = testDatabase.refDao()
+        xRefDao = testDatabase.xRefDao()
     }
 
     @After
@@ -89,7 +89,7 @@ class DataUnitTest {
             )
         )
 
-        refDao.saveMomentPictureRefs(
+        xRefDao.saveMomentPictureXRefs(
             listOf(
                 MomentPictureXRef(
                     momentId = momentId1,
@@ -106,7 +106,7 @@ class DataUnitTest {
             )
         )
 
-        refDao.saveMomentPictureRefs(
+        xRefDao.saveMomentPictureXRefs(
             listOf(
                 MomentPictureXRef(
                     momentId = momentId2,

@@ -5,9 +5,9 @@ import com.wakeup.domain.repository.MomentRepository
 import javax.inject.Inject
 
 class SaveMomentUseCase @Inject constructor(
-    private val localRepository: MomentRepository
+    private val momentRepository: MomentRepository
 ) {
     suspend operator fun invoke(moment: Moment) {
-        localRepository.saveMoment(moment)
+        momentRepository.saveMoment(moment)
     }
 }

@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.wakeup.data.database.MogleDatabase
 import com.wakeup.data.database.dao.GlobeDao
 import com.wakeup.data.database.dao.MomentDao
-import com.wakeup.data.database.dao.RefDao
+import com.wakeup.data.database.dao.XRefDao
 import com.wakeup.data.util.InternalFileUtil
 import dagger.Module
 import dagger.Provides
@@ -42,9 +42,9 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideRefDao(
+    fun provideXRefDao(
         mogleDatabase: MogleDatabase,
-    ): RefDao = mogleDatabase.refDao()
+    ): XRefDao = mogleDatabase.xRefDao()
 
     @Singleton
     @Provides

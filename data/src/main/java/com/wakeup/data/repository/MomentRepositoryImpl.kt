@@ -8,7 +8,7 @@ import com.wakeup.data.database.mapper.toDomain
 import com.wakeup.data.database.mapper.toEntity
 import com.wakeup.data.source.local.globe.GlobeLocalDataSource
 import com.wakeup.data.source.local.moment.MomentLocalDataSource
-import com.wakeup.data.source.local.ref.RefLocalDataSource
+import com.wakeup.data.source.local.xref.XRefLocalDataSource
 import com.wakeup.data.util.InternalFileUtil
 import com.wakeup.domain.model.Location
 import com.wakeup.domain.model.Moment
@@ -18,11 +18,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-// TODO: 다양한 dataSource 가 쓰인다면 UseCase 에서 조합하여 사용하는 게 좋을 것 같다.
 class MomentRepositoryImpl @Inject constructor(
     private val momentLocalDataSource: MomentLocalDataSource,
     private val globeLocalDataSource: GlobeLocalDataSource,
-    private val refLocalDataSource: RefLocalDataSource,
+    private val XRefLocalDataSource: XRefLocalDataSource,
     private val util: InternalFileUtil,
 ) : MomentRepository {
 
@@ -48,7 +47,7 @@ class MomentRepositoryImpl @Inject constructor(
         if (moment.pictures.isEmpty()) {
             val momentIndex =
                 momentLocalDataSource.saveMoment(moment.toEntity(moment.place, null))
-            refLocalDataSource.saveMomentGlobeRef(
+            XRefLocalDataSource.saveMomentGlobeXRef(
                 MomentGlobeXRef(momentId = momentIndex, globeId = globeIndex)
             )
             return
@@ -60,10 +59,10 @@ class MomentRepositoryImpl @Inject constructor(
         val momentIndex =
             momentLocalDataSource.saveMoment(moment.toEntity(moment.place, pictureIndexes.first()))
 
-        refLocalDataSource.saveMomentPictureRefs(pictureIndexes.map { pictureId ->
+        XRefLocalDataSource.saveMomentPictureXRefs(pictureIndexes.map { pictureId ->
             MomentPictureXRef(momentId = momentIndex, pictureId = pictureId)
         })
-        refLocalDataSource.saveMomentGlobeRef(
+        XRefLocalDataSource.saveMomentGlobeXRef(
             MomentGlobeXRef(momentId = momentIndex, globeId = globeIndex)
         )
     }

@@ -12,30 +12,30 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GlobeRepositoryImpl @Inject constructor(
-    private val localDataSource: GlobeLocalDataSource,
+    private val globeLocalDataSource: GlobeLocalDataSource,
     private val util: InternalFileUtil,
 ) : GlobeRepository {
 
     override suspend fun createGlobe(globe: Globe) {
-        localDataSource.createGlobe(globe.toEntity())
+        globeLocalDataSource.createGlobe(globe.toEntity())
     }
 
     override suspend fun updateGlobe(globe: Globe) {
-        localDataSource.updateGlobe(globe.toEntity())
+        globeLocalDataSource.updateGlobe(globe.toEntity())
     }
 
     override suspend fun deleteGlobe(globe: Globe) {
-        localDataSource.deleteGlobe(globe.toEntity())
+        globeLocalDataSource.deleteGlobe(globe.toEntity())
     }
 
     override fun getGlobes(): Flow<List<Globe>> {
-        return localDataSource.getGlobes().map {
+        return globeLocalDataSource.getGlobes().map {
             it.map { globeEntity -> globeEntity.toDomain() }
         }
     }
 
     override fun getMomentsByGlobe(globeId: Long): Flow<List<Moment>> {
-        return localDataSource.getMomentsByGlobe(globeId).map {
+        return globeLocalDataSource.getMomentsByGlobe(globeId).map {
             it.map { momentEntity ->
                 momentEntity.toDomain(
                     util.getPictureInInternalStorage(

@@ -7,17 +7,15 @@ import androidx.room.OnConflictStrategy
 import com.wakeup.data.database.entity.MomentGlobeXRef
 import com.wakeup.data.database.entity.MomentPictureXRef
 
-// TODO: Ref 로 할 지 XRef 로 할 지 결정 후 수정
-
 @Dao
-interface RefDao {
+interface XRefDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveMomentPictureRefs(momentPictures: List<MomentPictureXRef>)
+    suspend fun saveMomentPictureXRefs(momentPictures: List<MomentPictureXRef>)
 
     @Insert
-    suspend fun saveMomentGlobeRef(momentGlobe: MomentGlobeXRef)
+    suspend fun saveMomentGlobeXRef(momentGlobe: MomentGlobeXRef)
 
     @Delete
-    suspend fun deleteMomentGlobeRef(momentGlobe: MomentGlobeXRef)
+    suspend fun deleteMomentGlobeXRef(momentGlobe: MomentGlobeXRef)
 }
