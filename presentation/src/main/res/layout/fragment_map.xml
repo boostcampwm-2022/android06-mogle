@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="momentModel"
+            type="com.wakeup.presentation.model.MomentModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -60,10 +67,10 @@
                 android:layout_height="match_parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
-                android:layout_marginLeft="@dimen/normal_100"
+                android:layout_marginHorizontal="@dimen/normal_100"
                 android:layout_marginBottom="@dimen/location_btn_margin">
 
                 <com.naver.maps.map.widget.LocationButtonView
@@ -83,6 +90,7 @@
                     android:layout_marginLeft="@dimen/normal_100"
                     android:layout_marginTop="@dimen/small_100"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toEndOf="@id/lv_logo"
                     app:layout_constraintTop_toBottomOf="@id/lbv_location" />
 
@@ -93,7 +101,18 @@
                     android:layout_marginTop="@dimen/small_100"
                     app:layout_constraintEnd_toEndOf="@id/lbv_location"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/lbv_location" />
+
+                <include
+                    android:id="@+id/moment_preview"
+                    layout="@layout/item_moment_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:momentModel="@{momentModel}" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>
 

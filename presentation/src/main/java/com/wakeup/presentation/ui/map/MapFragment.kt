@@ -1,15 +1,13 @@
 package com.wakeup.presentation.ui.map
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -18,24 +16,26 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.Overlay.OnClickListener
 import com.naver.maps.map.util.FusedLocationSource
 import com.wakeup.domain.model.SortType
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
+import com.wakeup.presentation.extension.getFadeInAnimator
 import com.wakeup.presentation.extension.getNavigationResultFromTop
 import com.wakeup.presentation.model.LocationModel
+import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -60,9 +60,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initMapHelper()
+        initMomentPreviewClickListener()
+
         initMap()
-        initLocation()
+
         initBottomSheet()
         setAdapterListener()
         setSearchBarListener()
@@ -71,67 +72,27 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         updateMoments()
     }
 
-    private fun setSearchBarListener() {
-        binding.ivMenu.setOnClickListener {
-            (activity as MainActivity).openNavDrawer()
-        }
-
-        binding.etSearch.setOnEditorActionListener { textView, i, keyEvent ->
-            if (i == EditorInfo.IME_ACTION_SEARCH) {
-                scrollToTop = true
-                viewModel.setSearchQuery(textView.text.toString())
-                viewModel.fetchMoments()
-
-                (activity as MainActivity).hideKeyboard()
+    // 프리뷰 터치시, 상세 페이지 이동
+    private fun initMomentPreviewClickListener() {
+        binding.momentPreview.root.setOnClickListener {
+            binding.momentPreview.momentModel?.let {
+                val action =
+                    MapFragmentDirections.actionMapFragmentToMomentDetailFragment(it)
+                findNavController().navigate(action)
             }
-            false // true: 계속 search 가능
         }
     }
 
-    private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+    private fun initMap() {
+        mapHelper = MapHelper(requireContext())
 
-        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-            super.onItemRangeInserted(positionStart, itemCount)
-            if (scrollToTop) {
-                binding.bottomSheet.rvMoments.scrollToPosition(0)
+        mapHelper.initMap(childFragmentManager, this)
+
+        locationSource =
+            FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE).apply {
+                // 사용자가 바라보는 방향으로 지도 회전 활성화
+                this.isCompassEnabled = true
             }
-            scrollToTop = false
-        }
-
-        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-            super.onItemRangeMoved(fromPosition, toPosition, itemCount)
-            binding.bottomSheet.rvMoments.scrollToPosition(0)
-        }
-    }
-
-    private fun setAdapterListener() {
-        momentAdapter.registerAdapterDataObserver(adapterDataObserver)
-
-        momentAdapter.addLoadStateListener {
-            binding.bottomSheet.hasMoments = momentAdapter.itemCount > 0
-        }
-    }
-
-    private fun updateMoments() {
-        findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
-            ?.observe(viewLifecycleOwner) { isUpdated ->
-                scrollToTop = isUpdated
-                if (isUpdated) {
-                    binding.bottomSheet.sortMenu.setText(R.string.most_recent)
-                    viewModel.sortType.value = SortType.MOST_RECENT
-                    viewModel.fetchMoments()
-                }
-            }
-    }
-
-    private fun collectMoments() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.moments.collectLatest {
-                    momentAdapter.submitData(it)
-                }
-            }
-        }
     }
 
     private fun initBottomSheet() {
@@ -213,24 +174,76 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun initMapHelper() {
-        mapHelper = MapHelper(requireContext())
+    private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            super.onItemRangeInserted(positionStart, itemCount)
+            if (scrollToTop) {
+                binding.bottomSheet.rvMoments.scrollToPosition(0)
+            }
+            scrollToTop = false
+        }
+
+        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+            super.onItemRangeMoved(fromPosition, toPosition, itemCount)
+            binding.bottomSheet.rvMoments.scrollToPosition(0)
+        }
     }
 
-    private fun initMap() {
-        mapHelper.initMap(childFragmentManager, this)
+    private fun setAdapterListener() {
+        momentAdapter.registerAdapterDataObserver(adapterDataObserver)
+
+        momentAdapter.addLoadStateListener {
+            binding.bottomSheet.hasMoments = momentAdapter.itemCount > 0
+        }
     }
 
-    private fun initLocation() {
-        locationSource =
-            FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE).apply {
-                // 사용자가 바라보는 방향으로 지도 회전 활성화
-                this.isCompassEnabled = true
+    private fun setSearchBarListener() {
+        binding.ivMenu.setOnClickListener {
+            (activity as MainActivity).openNavDrawer()
+        }
+
+        binding.etSearch.setOnEditorActionListener { textView, i, _ ->
+            if (i == EditorInfo.IME_ACTION_SEARCH) {
+                scrollToTop = true
+                viewModel.setSearchQuery(textView.text.toString())
+                viewModel.fetchMoments()
+
+                (activity as MainActivity).hideKeyboard()
+            }
+            false // true: 계속 search 가능
+        }
+    }
+
+    private fun collectMoments() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.moments.collectLatest {
+                    momentAdapter.submitData(it)
+                }
+            }
+        }
+    }
+
+    private fun updateMoments() {
+        findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
+            ?.observe(viewLifecycleOwner) { isUpdated ->
+                scrollToTop = isUpdated
+                if (isUpdated) {
+                    binding.bottomSheet.sortMenu.setText(R.string.most_recent)
+                    viewModel.sortType.value = SortType.MOST_RECENT
+                    viewModel.fetchMoments()
+                }
             }
     }
 
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
+
+        // 지도 터치시, 정보 창 사라짐 설정
+        mapHelper.setViewFadeOutClickListener(naverMap,
+            binding.momentPreview.root,
+            MOMENT_PREVIEW_ANIM_DURATION)
 
         // 위치 관련 설정
         mapHelper.apply {
@@ -240,12 +253,39 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             setLogoView(naverMap, binding.lvLogo)
         }
 
+        // TODO Paging 없이, Moment 가져오기
+        viewLifecycleOwner.lifecycleScope.launch {
+            momentAdapter.loadStateFlow.collectLatest {
+                momentAdapter.snapshot().items.forEach { moment ->
+                    setMarkerClickListener(moment)
+                }
+            }
+        }
+
         // 테스트 마커 설정
-        mapHelper.setTestMarker(naverMap) {
-            Snackbar.make(binding.root, "${it.tag}번째 마커", Snackbar.LENGTH_SHORT).show()
-            mapHelper.setDarkMode(naverMap)
+        /* mapHelper.setTestMarker(naverMap) {
+             Snackbar.make(binding.root, "${it.tag}번째 마커", Snackbar.LENGTH_SHORT).show()
+             mapHelper.setDarkMode(naverMap)
+             true
+         }*/
+    }
+
+    private fun setMarkerClickListener(moment: MomentModel) {
+        val clickListener = OnClickListener { marker ->
+
+            (marker as Marker).apply {
+                mapHelper.moveCamera(naverMap, position)
+                binding.momentModel = (tag as MomentModel)
+            }
+
+            binding.momentPreview.root.let {
+                it.isVisible = true
+                it.getFadeInAnimator(MOMENT_PREVIEW_ANIM_DURATION).start()
+            }
             true
         }
+
+        mapHelper.setMarker(naverMap, moment, clickListener)
     }
 
     // Deprecated 되었지만,
@@ -280,5 +320,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1000
+        const val MOMENT_PREVIEW_ANIM_DURATION = 300L
     }
 }
