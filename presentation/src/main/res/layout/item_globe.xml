@@ -39,6 +39,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/civ_globe_item"
+            android:text="@{globe.name}"
             tools:text="맛집" />
 
         <TextView

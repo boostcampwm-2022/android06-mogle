@@ -17,7 +17,7 @@ object FakeMomentFactory {
                 place = createPlace(it),
                 pictures = emptyList(),
                 content = "재민${it}",
-                globes = listOf(GlobeModel("여행"), GlobeModel("default")),
+                globes = listOf(GlobeModel(0, "여행"), GlobeModel(0, "default")),
                 date = System.currentTimeMillis() + (it * ONE_DAY)
             )
         }
@@ -36,7 +36,7 @@ object FakeMomentFactory {
                 place = createPlace(it),
                 pictures = listOf(picture, picture, picture, picture),
                 content = "재민${it}",
-                globes = listOf(GlobeModel("여행"), GlobeModel("default")),
+                globes = listOf(GlobeModel(0, "여행"), GlobeModel(0, "default")),
                 date = System.currentTimeMillis() + (it * ONE_DAY)
             )
         }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_globe_detail_add_moment"
+        android:title="@string/globe_detail_menu_add_moment" />
+
+    <item
+        android:id="@+id/item_globe_detail_delete_moment"
+        android:title="@string/globe_detail_menu_delete_moment" />
+
+    <item
+        android:icon="@drawable/ic_add"
+        android:title="" />
+
+    <item
+        android:id="@+id/item_globe_detail_update_globe"
+        android:title="@string/globe_detail_menu_update_globe" />
+
+    <item
+        android:id="@+id/item_globe_detail_delete_globe"
+        android:title="@string/globe_detail_menu_delete_globe" />
+</menu>

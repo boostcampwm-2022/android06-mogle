@@ -9,8 +9,7 @@
         android:id="@+id/map_fragment"
         android:name="com.wakeup.presentation.ui.map.MapFragment"
         android:label="지도"
-        tools:layout="@layout/fragment_map" >
-        
+        tools:layout="@layout/fragment_map">
         <action
             android:id="@+id/action_map_fragment_to_moment_detail_fragment"
             app:destination="@id/moment_detail_fragment"
@@ -24,7 +23,15 @@
         android:id="@+id/globe_fragment"
         android:name="com.wakeup.presentation.ui.globe.GlobeFragment"
         android:label="글로브"
-        tools:layout="@layout/fragment_globe" />
+        tools:layout="@layout/fragment_globe">
+        <action
+            android:id="@+id/action_globe_fragment_to_globeDetailFragment"
+            app:destination="@id/globeDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <navigation
         android:id="@+id/add_moment_navigation"
@@ -88,5 +95,16 @@
         <argument
             android:name="momentModel"
             app:argType="com.wakeup.presentation.model.MomentModel" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/globeDetailFragment"
+        android:name="com.wakeup.presentation.ui.globe.GlobeDetailFragment"
+        android:label="GlobeDetailFragment">
+        <argument
+            android:name="globe"
+            android:defaultValue="@null"
+            app:argType="com.wakeup.presentation.model.GlobeModel"
+            app:nullable="true" />
     </fragment>
 </navigation>

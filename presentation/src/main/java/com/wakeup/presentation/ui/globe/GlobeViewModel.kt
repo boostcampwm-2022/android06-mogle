@@ -14,14 +14,14 @@ class GlobeViewModel @Inject constructor(
     private val _globes = MutableStateFlow<List<GlobeModel>>(
         // mock
         listOf(
-            GlobeModel("default"),
-            GlobeModel("맛집"),
-            GlobeModel("여행"),
-            GlobeModel("경험"),
-            GlobeModel("가족"),
-            GlobeModel("1"),
-            GlobeModel("2"),
-            GlobeModel("3"),
+            GlobeModel(0, "default"),
+            GlobeModel(1, "맛집"),
+            GlobeModel(2, "여행"),
+            GlobeModel(3, "경험"),
+            GlobeModel(4, "가족"),
+            GlobeModel(5, "1"),
+            GlobeModel(6, "2"),
+            GlobeModel(7, "3"),
         )
     )
     val globes = _globes.asStateFlow()

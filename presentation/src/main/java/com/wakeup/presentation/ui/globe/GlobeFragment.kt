@@ -16,18 +16,16 @@ import com.wakeup.presentation.lib.MogleDialog
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
-
 @AndroidEntryPoint
 class GlobeFragment : Fragment() {
 
     private val viewModel: GlobeViewModel by viewModels()
     private lateinit var binding: FragmentGlobeBinding
-    private val globeGirdAdapter = GlobeAdapter {
-        //todo action navigate to `globe detail`
-    }
+    private val globeGirdAdapter = GlobeAdapter()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentGlobeBinding.inflate(inflater, container, false).apply {

@@ -29,9 +29,9 @@ class AddMomentViewModel @Inject constructor(
 
     // mock data
     private val globes = listOf(
-        GlobeModel("globe 1"),
-        GlobeModel("globe 2"),
-        GlobeModel("globe 3"),
+        GlobeModel(0, "globe 1"),
+        GlobeModel(1, "globe 2"),
+        GlobeModel(2, "globe 3"),
     )
 
     val defaultGlobe = globes.first()
