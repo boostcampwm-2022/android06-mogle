@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ItemMomentBinding
 import com.wakeup.presentation.model.MomentModel
-import com.wakeup.presentation.ui.map.MapFragmentDirections
+import com.wakeup.presentation.ui.home.HomeFragmentDirections
 
 class MomentPagingAdapter :
     PagingDataAdapter<MomentModel, MomentPagingAdapter.MomentViewHolder>(MomentDiffCallback()) {
@@ -47,7 +47,7 @@ class MomentPagingAdapter :
 
         private fun navigateToMoment(moment: MomentModel, view: View) {
             val direction =
-                MapFragmentDirections.actionMapFragmentToMomentDetailFragment(moment)
+                HomeFragmentDirections.actionMapFragmentToMomentDetailFragment(moment)
             view.findNavController().navigate(direction)
         }
 

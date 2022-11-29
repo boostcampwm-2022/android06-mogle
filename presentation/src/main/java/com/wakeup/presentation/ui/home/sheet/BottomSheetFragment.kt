@@ -1,4 +1,4 @@
-package com.wakeup.presentation.ui.map.sheet
+package com.wakeup.presentation.ui.home.sheet
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,25 +18,23 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.wakeup.domain.model.SortType
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
-import com.wakeup.presentation.databinding.BottomSheetBinding
-import com.wakeup.presentation.ui.map.MapFragment
-import com.wakeup.presentation.ui.map.MapViewModel
+import com.wakeup.presentation.databinding.FragmentBottomSheetBinding
+import com.wakeup.presentation.ui.home.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class BottomSheetFragment : BottomSheetDialogFragment() {
 
-    lateinit var binding: BottomSheetBinding
-    private val viewModel: MapViewModel by viewModels({ requireParentFragment() })
+    lateinit var binding: FragmentBottomSheetBinding
+    private val viewModel: HomeViewModel by viewModels({ requireParentFragment() })
     private val momentAdapter = MomentPagingAdapter()
-    private lateinit var locationListener: LocationListener
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BottomSheetBinding.inflate(inflater, container, false)
+        binding = FragmentBottomSheetBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
@@ -73,13 +71,11 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         })
 
         binding.sortMenu.setOnItemClickListener { _, _, position, _ ->
-            viewModel.location.value = null
             viewModel.sortType.value = when (position) {
                 0 -> SortType.MOST_RECENT
                 1 -> SortType.OLDEST
                 else -> {
-                    locationListener = parentFragment as MapFragment
-                    locationListener.onSetLocation()
+                    viewModel.fetchLocationState.value = true
                     SortType.NEAREST
                 }
             }
@@ -125,14 +121,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.moments.collectLatest {
                     momentAdapter.submitData(it)
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.sortType.collectLatest {
-                    binding.sortMenu.setText(it.str)
                 }
             }
         }
@@ -182,8 +170,4 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         binding.unbind()
         super.onDestroyView()
     }
-}
-
-interface LocationListener {
-    fun onSetLocation()
 }

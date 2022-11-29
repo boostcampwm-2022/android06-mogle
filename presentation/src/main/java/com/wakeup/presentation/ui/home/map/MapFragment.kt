@@ -1,50 +1,40 @@
-package com.wakeup.presentation.ui.map
+package com.wakeup.presentation.ui.home.map
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.util.FusedLocationSource
-import com.wakeup.domain.model.SortType
-import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentMapBinding
-import com.wakeup.presentation.extension.getNavigationResultFromTop
-import com.wakeup.presentation.extension.hideKeyboard
 import com.wakeup.presentation.model.LocationModel
-import com.wakeup.presentation.ui.MainActivity
-import com.wakeup.presentation.ui.map.sheet.BottomSheetFragment
-import com.wakeup.presentation.ui.map.sheet.LocationListener
-import dagger.hilt.android.AndroidEntryPoint
+import com.wakeup.presentation.ui.home.HomeViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
+class MapFragment : Fragment(), OnMapReadyCallback {
+
     private lateinit var binding: FragmentMapBinding
-    private val viewModel: MapViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels({ requireParentFragment() })
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
     private lateinit var mapHelper: MapHelper
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        initBottomSheet()
-    }
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentMapBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -52,42 +42,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
         super.onViewCreated(view, savedInstanceState)
 
         initMap()
-        setSearchBarListener()
-
-        updateMoments()
-    }
-
-    private fun initBottomSheet() {
-        val bottomSheetFragment = BottomSheetFragment()
-        childFragmentManager.beginTransaction().add(R.id.bottom_sheet, bottomSheetFragment).commit()
-    }
-
-    private fun setSearchBarListener() {
-        binding.ivMenu.setOnClickListener {
-            (activity as MainActivity).openNavDrawer()
-        }
-
-        binding.etSearch.setOnEditorActionListener { textView, i, keyEvent ->
-            if (i == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.setScrollToTop(true)
-                viewModel.setSearchQuery(textView.text.toString())
-                viewModel.fetchMoments()
-
-                hideKeyboard()
-            }
-            false // true: 계속 search 가능
-        }
-    }
-
-    private fun updateMoments() {
-        findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
-            ?.observe(viewLifecycleOwner) { isUpdated ->
-                viewModel.setScrollToTop(isUpdated)
-                if (isUpdated) {
-                    viewModel.sortType.value = SortType.MOST_RECENT
-                    viewModel.fetchMoments()
-                }
-            }
+        collectData()
     }
 
     private fun initMap() {
@@ -100,9 +55,18 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
             }
     }
 
-    override fun onSetLocation() {
-        locationSource.lastLocation?.apply {
-            viewModel.location.value = LocationModel(latitude, longitude)
+    private fun collectData() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.fetchLocationState.collectLatest { state ->
+                    if (state) {
+                        locationSource.lastLocation?.apply {
+                            val location = LocationModel(latitude, longitude)
+                            viewModel.setLocation(location)
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -147,11 +111,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
             return
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    override fun onDestroyView() {
-        binding.unbind()
-        super.onDestroyView()
     }
 
     companion object {
