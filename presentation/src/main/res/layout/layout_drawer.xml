@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:padding="@dimen/large_125">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_mogle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mogle_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_alarm"
+                style="@style/TextAppearance.Mogle.SubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_150"
+                android:text="@string/setting_alarm"
+                app:layout_constraintEnd_toEndOf="@id/iv_mogle"
+                app:layout_constraintStart_toStartOf="@id/iv_mogle"
+                app:layout_constraintTop_toBottomOf="@id/iv_mogle" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/small_50"
+                app:layout_constraintTop_toTopOf="@id/tv_alarm"
+                app:layout_constraintBottom_toBottomOf="@id/tv_alarm"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_theme"
+                style="@style/TextAppearance.Mogle.SubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_100"
+                android:text="@string/setting_theme"
+                app:layout_constraintEnd_toEndOf="@id/tv_alarm"
+                app:layout_constraintStart_toStartOf="@id/tv_alarm"
+                app:layout_constraintTop_toBottomOf="@id/tv_alarm" />
+
+            <Spinner
+                android:id="@+id/spinner_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:layout_constraintTop_toTopOf="@id/tv_theme"
+                app:layout_constraintBottom_toBottomOf="@id/tv_theme"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.navigation.NavigationView>
+
+</layout>
