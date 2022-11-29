@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+// TODO: 다양한 dataSource 가 쓰인다면 UseCase 에서 조합하여 사용하는 게 좋을 것 같다.
 class MomentRepositoryImpl @Inject constructor(
     private val momentLocalDataSource: MomentLocalDataSource,
     private val globeLocalDataSource: GlobeLocalDataSource,

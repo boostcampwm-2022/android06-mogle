@@ -17,4 +17,8 @@ class RefLocalDataSourceImpl @Inject constructor(
     override suspend fun saveMomentGlobeRef(momentGlobe: MomentGlobeXRef) {
         refDao.saveMomentGlobeRef(momentGlobe)
     }
+
+    override suspend fun deleteMomentGlobeRef(momentGlobe: MomentGlobeXRef) {
+        refDao.deleteMomentGlobeRef(momentGlobe)
+    }
 }

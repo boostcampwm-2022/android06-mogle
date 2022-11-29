@@ -8,4 +8,6 @@ interface RefLocalDataSource {
     suspend fun saveMomentPictureRefs(momentPictures: List<MomentPictureXRef>)
 
     suspend fun saveMomentGlobeRef(momentGlobe: MomentGlobeXRef)
+
+    suspend fun deleteMomentGlobeRef(momentGlobe: MomentGlobeXRef)
 }
