@@ -7,7 +7,7 @@ import com.wakeup.data.database.entity.MomentGlobeXRef
 import com.wakeup.data.database.entity.MomentPictureXRef
 
 @Dao
-interface RefDao {
+interface XRefDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMomentPictureXRefs(momentPictures: List<MomentPictureXRef>)
