@@ -1,17 +1,11 @@
-package com.wakeup.data.database.dao
+package com.wakeup.data.source.local.ref
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import com.wakeup.data.database.entity.MomentGlobeXRef
 import com.wakeup.data.database.entity.MomentPictureXRef
 
-@Dao
-interface RefDao {
+interface RefLocalDataSource {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMomentPictureRefs(momentPictures: List<MomentPictureXRef>)
 
-    @Insert
     suspend fun saveMomentGlobeRef(momentGlobe: MomentGlobeXRef)
 }

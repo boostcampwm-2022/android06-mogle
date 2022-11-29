@@ -6,7 +6,9 @@ import com.wakeup.data.database.entity.MomentGlobeXRef
 import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.mapper.toDomain
 import com.wakeup.data.database.mapper.toEntity
+import com.wakeup.data.source.local.globe.GlobeLocalDataSource
 import com.wakeup.data.source.local.moment.MomentLocalDataSource
+import com.wakeup.data.source.local.ref.RefLocalDataSource
 import com.wakeup.data.util.InternalFileUtil
 import com.wakeup.domain.model.Location
 import com.wakeup.domain.model.Moment
@@ -17,7 +19,9 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class MomentRepositoryImpl @Inject constructor(
-    private val localDataSource: MomentLocalDataSource,
+    private val momentLocalDataSource: MomentLocalDataSource,
+    private val globeLocalDataSource: GlobeLocalDataSource,
+    private val refLocalDataSource: RefLocalDataSource,
     private val util: InternalFileUtil,
 ) : MomentRepository {
 
@@ -26,7 +30,7 @@ class MomentRepositoryImpl @Inject constructor(
         query: String,
         myLocation: Location?,
     ): Flow<PagingData<Moment>> =
-        localDataSource.getMoments(sort, query, myLocation?.toEntity()).map { pagingData ->
+        momentLocalDataSource.getMoments(sort, query, myLocation?.toEntity()).map { pagingData ->
             pagingData.map { momentInfo ->
                 momentInfo.toDomain(
                     util.getPictureInInternalStorage(
@@ -38,27 +42,27 @@ class MomentRepositoryImpl @Inject constructor(
         }
 
     override suspend fun saveMoment(moment: Moment) {
-        val globeIndex = localDataSource.getGlobeId(moment.globes.first().name)
+        val globeIndex = globeLocalDataSource.getGlobeId(moment.globes.first().name)
 
         if (moment.pictures.isEmpty()) {
             val momentIndex =
-                localDataSource.saveMoment(moment.toEntity(moment.place, null))
-            localDataSource.saveMomentGlobe(
+                momentLocalDataSource.saveMoment(moment.toEntity(moment.place, null))
+            refLocalDataSource.saveMomentGlobeRef(
                 MomentGlobeXRef(momentId = momentIndex, globeId = globeIndex)
             )
             return
         }
 
         val pictureFileNames = util.savePictureInInternalStorageAndGetFileName(moment.pictures)
-        val pictureIndexes = localDataSource.savePictures(pictureFileNames)
+        val pictureIndexes = momentLocalDataSource.savePictures(pictureFileNames)
 
         val momentIndex =
-            localDataSource.saveMoment(moment.toEntity(moment.place, pictureIndexes.first()))
+            momentLocalDataSource.saveMoment(moment.toEntity(moment.place, pictureIndexes.first()))
 
-        localDataSource.saveMomentPictures(pictureIndexes.map { pictureId ->
+        refLocalDataSource.saveMomentPictureRefs(pictureIndexes.map { pictureId ->
             MomentPictureXRef(momentId = momentIndex, pictureId = pictureId)
         })
-        localDataSource.saveMomentGlobe(
+        refLocalDataSource.saveMomentGlobeRef(
             MomentGlobeXRef(momentId = momentIndex, globeId = globeIndex)
         )
     }

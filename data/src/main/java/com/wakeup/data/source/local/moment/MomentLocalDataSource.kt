@@ -3,8 +3,6 @@ package com.wakeup.data.source.local.moment
 import androidx.paging.PagingData
 import com.wakeup.data.database.entity.LocationEntity
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentGlobeXRef
-import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.domain.model.SortType
@@ -22,13 +20,7 @@ interface MomentLocalDataSource {
 
     suspend fun getGlobes(momentId: Long): List<GlobeEntity>*/
 
-    suspend fun getGlobeId(globeName: String): Long
-
     suspend fun saveMoment(moment: MomentEntity): Long
 
     suspend fun savePictures(pictures: List<PictureEntity>): List<Long>
-
-    suspend fun saveMomentPictures(momentPictures: List<MomentPictureXRef>)
-
-    suspend fun saveMomentGlobe(momentGlobe: MomentGlobeXRef)
 }

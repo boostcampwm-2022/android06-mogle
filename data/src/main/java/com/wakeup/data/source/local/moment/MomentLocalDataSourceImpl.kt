@@ -3,13 +3,9 @@ package com.wakeup.data.source.local.moment
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.wakeup.data.database.dao.GlobeDao
 import com.wakeup.data.database.dao.MomentDao
-import com.wakeup.data.database.dao.RefDao
 import com.wakeup.data.database.entity.LocationEntity
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentGlobeXRef
-import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.domain.model.SortType
@@ -18,8 +14,6 @@ import javax.inject.Inject
 
 class MomentLocalDataSourceImpl @Inject constructor(
     private val momentDao: MomentDao,
-    private val globeDao: GlobeDao,
-    private val refDao: RefDao,
 ) : MomentLocalDataSource {
     override fun getMoments(
         sortType: SortType,
@@ -45,9 +39,6 @@ class MomentLocalDataSourceImpl @Inject constructor(
             }
         ).flow
 
-    override suspend fun getGlobeId(globeName: String): Long {
-        return globeDao.getGlobeIdByName(globeName)
-    }
 
     override suspend fun saveMoment(moment: MomentEntity): Long {
         return momentDao.saveMoment(moment)
@@ -62,14 +53,6 @@ class MomentLocalDataSourceImpl @Inject constructor(
             }
         }
         return indexResult.toList()
-    }
-
-    override suspend fun saveMomentPictures(momentPictures: List<MomentPictureXRef>) {
-        refDao.saveMomentPictureXRefs(momentPictures)
-    }
-
-    override suspend fun saveMomentGlobe(momentGlobe: MomentGlobeXRef) {
-        refDao.saveMomentGlobeXRef(momentGlobe)
     }
 
     companion object {

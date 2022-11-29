@@ -12,6 +12,8 @@ interface GlobeLocalDataSource {
 
     suspend fun updateGlobe(globe: GlobeEntity)
 
+    suspend fun getGlobeId(globeName: String): Long
+
     fun getGlobes(): Flow<List<GlobeEntity>>
 
     fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>>
