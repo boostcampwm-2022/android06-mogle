@@ -28,6 +28,10 @@ class GlobeRepositoryImpl @Inject constructor(
         globeLocalDataSource.deleteGlobe(globe.toEntity())
     }
 
+    override suspend fun getGlobeId(globeName: String): Long {
+        return globeLocalDataSource.getGlobeId(globeName)
+    }
+
     override fun getGlobes(): Flow<List<Globe>> {
         return globeLocalDataSource.getGlobes().map {
             it.map { globeEntity -> globeEntity.toDomain() }
