@@ -51,7 +51,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:text="@string/most_recent"
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>

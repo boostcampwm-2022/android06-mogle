@@ -26,8 +26,10 @@ class MapViewModel @Inject constructor(
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
     val moments: Flow<PagingData<MomentModel>> = _moments
 
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery = _searchQuery.asStateFlow()
+    private val searchQuery = MutableStateFlow("")
+
+    private val _scrollToTop = MutableStateFlow(false)
+    val scrollToTop = _scrollToTop.asStateFlow()
 
     val sortType = MutableStateFlow(SortType.MOST_RECENT)
     val bottomSheetState = MutableStateFlow(STATE_COLLAPSED)
@@ -54,6 +56,10 @@ class MapViewModel @Inject constructor(
     }
 
     fun setSearchQuery(query: String) {
-        _searchQuery.value = query
+        searchQuery.value = query
+    }
+
+    fun setScrollToTop(state: Boolean) {
+        _scrollToTop.value = state
     }
 }

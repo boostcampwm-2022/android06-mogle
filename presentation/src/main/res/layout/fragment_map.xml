@@ -97,9 +97,8 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>
 
-        <include
+        <FrameLayout
             android:id="@+id/bottom_sheet"
-            layout="@layout/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/normal_100"

@@ -1,53 +1,42 @@
 package com.wakeup.presentation.ui.map
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.util.FusedLocationSource
 import com.wakeup.domain.model.SortType
 import com.wakeup.presentation.R
-import com.wakeup.presentation.adapter.MomentPagingAdapter
-import com.wakeup.presentation.databinding.BottomSheetBinding
 import com.wakeup.presentation.databinding.FragmentMapBinding
 import com.wakeup.presentation.extension.getNavigationResultFromTop
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
+import com.wakeup.presentation.ui.map.sheet.BottomSheetFragment
+import com.wakeup.presentation.ui.map.sheet.LocationListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), OnMapReadyCallback, LocationListener {
     private lateinit var binding: FragmentMapBinding
     private val viewModel: MapViewModel by viewModels()
-    private val momentAdapter = MomentPagingAdapter()
 
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
     private lateinit var mapHelper: MapHelper
 
-    private var scrollToTop = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        initBottomSheet()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,15 +49,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initMapHelper()
+
         initMap()
-        initLocation()
-        initBottomSheet()
-        setAdapterListener()
         setSearchBarListener()
 
-        collectMoments()
         updateMoments()
+    }
+
+    private fun initBottomSheet() {
+        val bottomSheetFragment = BottomSheetFragment()
+        childFragmentManager.beginTransaction().add(R.id.bottom_sheet, bottomSheetFragment).commit()
     }
 
     private fun setSearchBarListener() {
@@ -78,7 +68,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         binding.etSearch.setOnEditorActionListener { textView, i, keyEvent ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
-                scrollToTop = true
+                viewModel.setScrollToTop(true)
                 viewModel.setSearchQuery(textView.text.toString())
                 viewModel.fetchMoments()
 
@@ -88,145 +78,31 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
-
-        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-            super.onItemRangeInserted(positionStart, itemCount)
-            if (scrollToTop) {
-                binding.bottomSheet.rvMoments.scrollToPosition(0)
-            }
-            scrollToTop = false
-        }
-
-        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-            super.onItemRangeMoved(fromPosition, toPosition, itemCount)
-            binding.bottomSheet.rvMoments.scrollToPosition(0)
-        }
-    }
-
-    private fun setAdapterListener() {
-        momentAdapter.registerAdapterDataObserver(adapterDataObserver)
-
-        momentAdapter.addLoadStateListener {
-            binding.bottomSheet.hasMoments = momentAdapter.itemCount > 0
-        }
-    }
-
     private fun updateMoments() {
         findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
             ?.observe(viewLifecycleOwner) { isUpdated ->
-                scrollToTop = isUpdated
+                viewModel.setScrollToTop(isUpdated)
                 if (isUpdated) {
-                    binding.bottomSheet.sortMenu.setText(R.string.most_recent)
                     viewModel.sortType.value = SortType.MOST_RECENT
                     viewModel.fetchMoments()
                 }
             }
     }
 
-    private fun collectMoments() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.moments.collectLatest {
-                    momentAdapter.submitData(it)
-                }
-            }
-        }
-    }
-
-    private fun initBottomSheet() {
-        with(binding.bottomSheet) {
-            setState(this)
-            setMenus(this)
-            setAdapter(this)
-            setCallback(this)
-        }
-    }
-
-    private fun setState(binding: BottomSheetBinding) {
-        val behavior = BottomSheetBehavior.from(binding.bottomSheet)
-        behavior.state = viewModel.bottomSheetState.value
-    }
-
-    private fun setMenus(binding: BottomSheetBinding) {
-        val items = listOf(
-            getString(R.string.most_recent),
-            getString(R.string.oldest),
-            getString(R.string.nearest)
-        )
-        val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_menu, items)
-        binding.textField.viewTreeObserver.addOnGlobalLayoutListener {
-            (binding.textField.editText as? MaterialAutoCompleteTextView)?.setAdapter(menuAdapter)
-        }
-
-        binding.sortMenu.setOnItemClickListener { _, _, position, _ ->
-            viewModel.location.value = null
-            viewModel.sortType.value = when (position) {
-                0 -> SortType.MOST_RECENT
-                1 -> SortType.OLDEST
-                else -> {
-                    locationSource.lastLocation?.apply {
-                        viewModel.location.value = LocationModel(latitude, longitude)
-                    }
-                    SortType.NEAREST
-                }
-            }
-            viewModel.fetchMoments()
-        }
-    }
-
-    private fun setAdapter(binding: BottomSheetBinding) {
-        binding.rvMoments.adapter = momentAdapter
-    }
-
-    private fun setCallback(binding: BottomSheetBinding) {
-        val behavior = BottomSheetBehavior.from(binding.bottomSheet)
-        if (behavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-            binding.textField.visibility = View.INVISIBLE
-        }
-
-        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        changeVisibleMenu(true)
-                        viewModel.bottomSheetState.value = BottomSheetBehavior.STATE_EXPANDED
-                    }
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        changeVisibleMenu(false)
-                        viewModel.bottomSheetState.value = BottomSheetBehavior.STATE_COLLAPSED
-                    }
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
-        })
-    }
-
-    private fun changeVisibleMenu(isVisible: Boolean) = with(binding.bottomSheet.textField) {
-        if (isVisible) {
-            visibility = View.VISIBLE
-            animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
-        } else {
-            visibility = View.INVISIBLE
-            animation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
-        }
-    }
-
-    private fun initMapHelper() {
-        mapHelper = MapHelper(requireContext())
-    }
-
     private fun initMap() {
+        mapHelper = MapHelper(requireContext())
         mapHelper.initMap(childFragmentManager, this)
-    }
-
-    private fun initLocation() {
         locationSource =
             FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE).apply {
                 // 사용자가 바라보는 방향으로 지도 회전 활성화
                 this.isCompassEnabled = true
             }
+    }
+
+    override fun onSetLocation() {
+        locationSource.lastLocation?.apply {
+            viewModel.location.value = LocationModel(latitude, longitude)
+        }
     }
 
     override fun onMapReady(naverMap: NaverMap) {
@@ -273,7 +149,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onDestroyView() {
-        momentAdapter.unregisterAdapterDataObserver(adapterDataObserver)
         binding.unbind()
         super.onDestroyView()
     }
