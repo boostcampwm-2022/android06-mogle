@@ -86,7 +86,7 @@ class GlobeDetailFragment : Fragment() {
                 requireContext(),
                 if (getWidthDp() > criteriaWidthDp) largeSpan else smallSpan
             )
-            addItemDecoration(GridSpaceItemDecoration(12.dp, 8.dp, 16.dp, 12.dp, 16.dp, 12.dp))
+            addItemDecoration(GridSpaceItemDecoration(12.dp))
         }
     }
 
