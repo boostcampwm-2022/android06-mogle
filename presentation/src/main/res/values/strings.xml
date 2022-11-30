@@ -44,6 +44,10 @@
     <string name="add_globe_dialog_hint">글로브 이름을 입력하세요</string>
     <string name="cancel">취소</string>
     <string name="add">추가</string>
+    <string name="globe_detail_menu_add_moment">모먼트 추가하기</string>
+    <string name="globe_detail_menu_delete_moment">모먼트 삭제하기</string>
+    <string name="globe_detail_menu_update_globe">글로브 이름 수정하기</string>
+    <string name="globe_detail_menu_delete_globe">글로브 삭제하기</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -44,4 +44,8 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
+    <style name="ToolbarPopupAppearance.Mogle.GlobeDetail" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textAppearance">@style/TextAppearance.Mogle.Title</item>
+    </style>
+
 </resources>
