@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GlobeViewModel @Inject constructor(
     // todo add UseCase 'getGlobes'
-): ViewModel() {
+) : ViewModel() {
     private val _globes = MutableStateFlow<List<GlobeModel>>(
         // mock
         listOf(
@@ -25,6 +25,4 @@ class GlobeViewModel @Inject constructor(
         )
     )
     val globes = _globes.asStateFlow()
-
-
 }

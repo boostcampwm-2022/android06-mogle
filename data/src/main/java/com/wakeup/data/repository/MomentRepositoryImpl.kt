@@ -2,7 +2,6 @@ package com.wakeup.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentGlobeXRef
 import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.mapper.toDomain
@@ -13,31 +12,14 @@ import com.wakeup.domain.model.Location
 import com.wakeup.domain.model.Moment
 import com.wakeup.domain.model.SortType
 import com.wakeup.domain.repository.MomentRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MomentRepositoryImpl @Inject constructor(
     private val localDataSource: MomentLocalDataSource,
     private val util: InternalFileUtil,
 ) : MomentRepository {
-
-    init {
-        // todo: globe_test_code (must remove to release)
-        CoroutineScope(Dispatchers.IO).launch {
-            localDataSource.saveGlobes(
-                listOf(
-                    GlobeEntity(name = "default"),
-                    GlobeEntity(name = "globe 1"),
-                    GlobeEntity(name = "globe 2"),
-                    GlobeEntity(name = "globe 3")
-                )
-            )
-        }
-    }
 
     override fun getMoments(
         sort: SortType,
@@ -48,32 +30,34 @@ class MomentRepositoryImpl @Inject constructor(
             pagingData.map { momentInfo ->
                 momentInfo.toDomain(
                     util.getPictureInInternalStorage(
-                        momentInfo.pictureList,
+                        momentInfo.pictures,
                         momentInfo.moment.thumbnailId
-                    ),
-                    momentInfo.globeList
+                    )
                 )
             }
         }
 
     override suspend fun saveMoment(moment: Moment) {
+        val globeIndex = localDataSource.getGlobeId(moment.globes.first().name)
+
         if (moment.pictures.isEmpty()) {
-            localDataSource.saveMoment(moment.toEntity(moment.place, null))
+            val momentIndex =
+                localDataSource.saveMoment(moment.toEntity(moment.place, null))
+            localDataSource.saveMomentGlobe(
+                MomentGlobeXRef(momentId = momentIndex, globeId = globeIndex)
+            )
             return
         }
+
         val pictureFileNames = util.savePictureInInternalStorageAndGetFileName(moment.pictures)
         val pictureIndexes = localDataSource.savePictures(pictureFileNames)
 
-        // moment 추가할 때 항상 globe 하나 선택해서 추가(default 도 하나 선택해서 추가 임).
-        val globeIndex = localDataSource.getGlobeId(moment.globes[0].name)
         val momentIndex =
-            localDataSource.saveMoment(moment.toEntity(moment.place, pictureIndexes[0]))
+            localDataSource.saveMoment(moment.toEntity(moment.place, pictureIndexes.first()))
 
-        localDataSource.saveMomentPictures(
-            pictureIndexes.map { pictureId ->
-                MomentPictureXRef(momentId = momentIndex, pictureId = pictureId)
-            }
-        )
+        localDataSource.saveMomentPictures(pictureIndexes.map { pictureId ->
+            MomentPictureXRef(momentId = momentIndex, pictureId = pictureId)
+        })
         localDataSource.saveMomentGlobe(
             MomentGlobeXRef(momentId = momentIndex, globeId = globeIndex)
         )
