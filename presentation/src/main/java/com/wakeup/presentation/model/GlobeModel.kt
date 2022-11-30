@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GlobeModel(
-    val id: Long,
+    val id: Long = 0,
     val name: String,
 ) : Parcelable
