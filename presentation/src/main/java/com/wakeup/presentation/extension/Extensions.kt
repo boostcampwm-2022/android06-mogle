@@ -5,6 +5,10 @@ import android.animation.ObjectAnimator
 import android.content.res.Resources
 import android.util.TypedValue
 import android.view.View
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 
@@ -20,6 +24,14 @@ val Int.dp
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), dm)
     } ?: 0f
 
+fun Fragment.hideKeyboard() {
+    view?.let { activity?.hideKeyboard(it) }
+}
+
+fun Context.hideKeyboard(view: View) {
+    val imm = getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
 
 fun View.getFadeOutAnimator(animDuration: Long): ObjectAnimator =
     ObjectAnimator.ofFloat(this, "alpha", 1.0f, 0.0f).apply {
