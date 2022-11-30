@@ -88,6 +88,11 @@ class MapHelper(context: Context) {
         }
     }
 
+    /**
+     * 인자로 넘어온 마커를 focus 마커로 설정합니다.
+     *
+     * @param marker 마커 객체
+     */
     fun setMarkerFocused(marker: Marker) {
         markerFocused = marker
 
@@ -98,6 +103,10 @@ class MapHelper(context: Context) {
         }
     }
 
+    /**
+     * 현재 focus 된 마커를 해제시킵니다.
+     *
+     */
     fun setMarkerUnfocused() {
         markerFocused?.apply {
             width -= (width * MARKER_SCALE_UP_SIZE).toInt()
@@ -107,6 +116,12 @@ class MapHelper(context: Context) {
         markerFocused = null
     }
 
+    /**
+     * 지도에 사용자의 위치 정보를 설정합니다.
+     *
+     * @param map 지도 객체
+     * @param _locationSource 사용자의 위치 정보를 제공할 구현체
+     */
     fun setCurrentLocation(map: NaverMap, _locationSource: FusedLocationSource) {
         map.apply {
             locationSource = _locationSource
@@ -114,14 +129,32 @@ class MapHelper(context: Context) {
         }
     }
 
+    /**
+     * 지도에 위치 트래킹 버튼을 설정합니다.
+     *
+     * @param map 지도 객체
+     * @param locationButtonView 위치 트래킹 버튼 뷰
+     */
     fun setLocationButtonView(map: NaverMap, locationButtonView: LocationButtonView) {
         locationButtonView.map = map
     }
 
+    /**
+     * 지도에 축척 바를 설정합니다.
+     *
+     * @param map 지도 객체
+     * @param scaleBarView 축척 바 뷰
+     */
     fun setScaleBarView(map: NaverMap, scaleBarView: ScaleBarView) {
         scaleBarView.map = map
     }
 
+    /**
+     * 지도에 네이버 로고를 설정합니다.
+     *
+     * @param map 지도 객체
+     * @param logoView 네이버 로고 뷰
+     */
     fun setLogoView(map: NaverMap, logoView: LogoView) {
         logoView.setMap(map)
     }
@@ -137,6 +170,13 @@ class MapHelper(context: Context) {
         }
     }
 
+    /**
+     * 지도에 모먼트 마커를 표시합니다.
+     *
+     * @param _map 지도 객체
+     * @param momentModel 모먼트 데이터
+     * @param clickListener 마커 클릭 리스너
+     */
     fun setMarker(_map: NaverMap, momentModel: MomentModel, clickListener: OnClickListener) {
         momentModel.pictures.takeIf { it.isNotEmpty() }?.let {
             markerBinding.ivThumbnail.setImageBitmap(it.first().bitmap)
@@ -159,12 +199,24 @@ class MapHelper(context: Context) {
         }
     }
 
+    /**
+     * 인자로 넘어온 위치로 지도 시점을 이동시킵니다.
+     *
+     * @param map 지도 객체
+     * @param position 위도, 경도 위치
+     */
     fun moveCamera(map: NaverMap, position: LatLng) {
         val cameraUpdate = CameraUpdate.scrollTo(position)
             .animate(CameraAnimation.Easing, CAMERA_MOVE_DURATION)
         map.moveCamera(cameraUpdate)
     }
 
+    /**
+     * 지도에 테스트 마커를 띄웁니다.
+     *
+     * @param _map 지도 객체
+     * @param clickListener 마커 클릭 리스너
+     */
     fun setTestMarker(_map: NaverMap, clickListener: OnClickListener) {
         markerBinding.ivThumbnail.setImageResource(R.drawable.sample_image)
         repeat(10) {
