@@ -106,5 +106,8 @@
             android:defaultValue="@null"
             app:argType="com.wakeup.presentation.model.GlobeModel"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_globeDetailFragment_to_moment_detail_fragment"
+            app:destination="@id/moment_detail_fragment" />
     </fragment>
 </navigation>

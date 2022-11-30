@@ -41,6 +41,7 @@ class GlobeFragment : Fragment() {
         initToolbar()
         initAdapter()
         initClickListener()
+        initGlobes()
     }
 
     private fun initToolbar() {
@@ -66,16 +67,21 @@ class GlobeFragment : Fragment() {
 
     private fun initClickListener() {
         binding.ivAddGlobeButton.setOnClickListener {
-            val mogleDialog = MogleDialog.with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
+            val mogleDialog =
+                MogleDialog.with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
             mogleDialog.setOnPositive(R.id.tv_add_globe_add) {
-                    viewModel.createGlobe(mogleDialog.gettextInEditText())
-                    Timber.d("OK")
-                    showSnackBar(getString(R.string.snack_bar_message_add_globe))
-                }
+                viewModel.createGlobe(mogleDialog.gettextInEditText())
+                Timber.d("OK")
+                showSnackBar(getString(R.string.snack_bar_message_add_globe))
+            }
                 .setOnNegative(R.id.tv_add_globe_cancel) { Timber.d("CANCEL") }
                 .setFocusEditTextAndKeyboardUp()
                 .show()
         }
+    }
+
+    private fun initGlobes() {
+        viewModel.fetchGlobes()
     }
 
     private fun showSnackBar(message: String) {

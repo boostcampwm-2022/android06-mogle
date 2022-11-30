@@ -15,4 +15,6 @@ interface GlobeLocalDataSource {
     fun getGlobes(): Flow<List<GlobeEntity>>
 
     fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>>
+
+    fun getMomentCountByGlobe(globeId: Long): Flow<Int>
 }

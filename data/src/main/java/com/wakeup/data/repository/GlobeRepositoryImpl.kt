@@ -46,4 +46,8 @@ class GlobeRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override fun getMomentCountByGlobe(globeId: Long): Flow<Int> {
+        return localDataSource.getMomentCountByGlobe(globeId)
+    }
 }

@@ -31,4 +31,10 @@ class GlobeLocalDataSourceImpl @Inject constructor(
     override fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>> {
         return globeDao.getMomentsByGlobe(globeId)
     }
+
+    override fun getMomentCountByGlobe(globeId: Long): Flow<Int> {
+        return globeDao.getMomentCountByGlobe(globeId)
+    }
+
+
 }

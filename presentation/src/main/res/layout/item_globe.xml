@@ -5,6 +5,7 @@
 
     <data>
 
+
         <variable
             name="globe"
             type="com.wakeup.presentation.model.GlobeModel" />
@@ -20,26 +21,26 @@
             android:id="@+id/civ_globe_item"
             android:layout_width="@dimen/globe_image_size"
             android:layout_height="@dimen/globe_image_size"
-            android:scaleType="centerCrop"
-            android:layout_marginEnd="@dimen/small_100"
-            android:layout_marginTop="@dimen/small_100"
             android:layout_marginStart="@dimen/small_100"
-            app:layout_constraintDimensionRatio="1:1"
+            android:layout_marginTop="@dimen/small_100"
+            android:layout_marginEnd="@dimen/small_100"
+            android:scaleType="centerCrop"
             android:src="@drawable/default_globe_image"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_globe"/>
+            app:srcCompat="@drawable/ic_globe" />
 
         <TextView
             android:id="@+id/tv_globe_item_title"
             style="@style/TextAppearance.Mogle.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{globe.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/civ_globe_item"
-            android:text="@{globe.name}"
             tools:text="맛집" />
 
         <TextView
@@ -47,6 +48,7 @@
             style="@style/TextAppearance.Mogle.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{globe.momentCount}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_globe_item_title"

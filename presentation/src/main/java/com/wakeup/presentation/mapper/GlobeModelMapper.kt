@@ -10,9 +10,10 @@ fun GlobeModel.toDomain(): Globe {
     )
 }
 
-fun Globe.toPresentation(): GlobeModel {
+fun Globe.toPresentation(momentCount: String = "-1"): GlobeModel {
     return GlobeModel(
         id = id,
-        name = name
+        name = name,
+        momentCount = momentCount
     )
 }
