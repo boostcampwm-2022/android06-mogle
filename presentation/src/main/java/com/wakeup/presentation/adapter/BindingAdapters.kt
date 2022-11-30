@@ -56,7 +56,7 @@ fun bindGone(view: View, isGone: Boolean) {
 }
 
 @BindingAdapter("imageFromBitmap")
-fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap) {
+fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap?) {
     Glide.with(view.context)
         .load(bitmap)
         .fallback(R.drawable.ic_no_image)
