@@ -22,7 +22,7 @@ class GlobeLocalDataSourceImpl @Inject constructor(
         globeDao.updateGlobe(globe)
     }
 
-    override suspend fun getGlobeId(globeName: String): Long {
+    override suspend fun getGlobeIdByName(globeName: String): Long {
         return globeDao.getGlobeIdByName(globeName)
     }
 

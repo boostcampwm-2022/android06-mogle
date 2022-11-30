@@ -52,7 +52,7 @@ class MomentRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveMomentWithPictures(moment: Moment): Pair<Long, List<Long>> {
-        val pictureFileNames = util.savePictureInInternalStorageAndGetFileName(moment.pictures)
+        val pictureFileNames = util.savePictureInInternalStorage(moment.pictures)
         val pictureIds = momentLocalDataSource.savePictures(pictureFileNames)
 
         val momentId = momentLocalDataSource.saveMoment(moment.toEntity(pictureIds.first()))

@@ -29,7 +29,7 @@ class GlobeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getGlobeId(globeName: String): Long {
-        return globeLocalDataSource.getGlobeId(globeName)
+        return globeLocalDataSource.getGlobeIdByName(globeName)
     }
 
     override fun getGlobes(): Flow<List<Globe>> {

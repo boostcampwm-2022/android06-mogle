@@ -12,7 +12,7 @@ interface GlobeLocalDataSource {
 
     suspend fun updateGlobe(globe: GlobeEntity)
 
-    suspend fun getGlobeId(globeName: String): Long
+    suspend fun getGlobeIdByName(globeName: String): Long
 
     fun getGlobes(): Flow<List<GlobeEntity>>
 
