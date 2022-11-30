@@ -44,6 +44,6 @@ class MomentRepositoryImpl @Inject constructor(
         val pictureIds = momentLocalDataSource.savePictures(pictureFileNames)
 
         val momentId = momentLocalDataSource.saveMoment(moment.toEntity(pictureIds.first()))
-        return Pair(momentId, pictureIds)
+        return momentId to pictureIds
     }
 }
