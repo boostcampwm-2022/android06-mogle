@@ -13,6 +13,8 @@ interface MomentRepository {
         myLocation: Location? = null
     ): Flow<PagingData<Moment>>
 
+    fun getAllMoments(): Flow<List<Moment>>
+
     suspend fun saveMoment(moment: Moment): Long
 
     suspend fun saveMomentWithPictures(moment: Moment): Pair<Long, List<Long>>

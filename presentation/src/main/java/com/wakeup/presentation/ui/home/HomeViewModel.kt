@@ -5,25 +5,34 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.naver.maps.map.util.FusedLocationSource
 import com.wakeup.domain.model.SortType
+import com.wakeup.domain.usecase.GetAllMomentsUseCase
 import com.wakeup.domain.usecase.GetMomentListUseCase
 import com.wakeup.presentation.mapper.toDomain
-import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.LocationModel
+import com.wakeup.presentation.model.MomentModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 private const val STATE_COLLAPSED = 4
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getMomentListUseCase: GetMomentListUseCase
+    private val getMomentListUseCase: GetMomentListUseCase,
+    private val getAllMomentListUseCase: GetAllMomentsUseCase,
 ) : ViewModel() {
+    val allMoments: Flow<List<MomentModel>> = getAllMomentListUseCase.invoke().map { moments ->
+        moments.map { moment ->
+            moment.toPresentation()
+        }
+    }
 
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
     val moments: Flow<PagingData<MomentModel>> = _moments

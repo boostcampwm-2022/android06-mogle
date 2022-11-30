@@ -39,6 +39,8 @@ class MomentLocalDataSourceImpl @Inject constructor(
             }
         ).flow
 
+    override fun getAllMoments(): Flow<List<MomentWithGlobesAndPictures>> =
+        momentDao.getAllMoments()
 
     override suspend fun saveMoment(moment: MomentEntity): Long {
         return momentDao.saveMoment(moment)

@@ -16,6 +16,8 @@ interface MomentLocalDataSource {
         myLocation: LocationEntity?
     ): Flow<PagingData<MomentWithGlobesAndPictures>>
 
+    fun getAllMoments(): Flow<List<MomentWithGlobesAndPictures>>
+
 /*    suspend fun getPictures(momentId: Long): List<PictureEntity>
 
     suspend fun getGlobes(momentId: Long): List<GlobeEntity>*/

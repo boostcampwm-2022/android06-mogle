@@ -35,14 +35,24 @@ class MomentRepositoryImpl @Inject constructor(
             }
         }
 
+    override fun getAllMoments(): Flow<List<Moment>> =
+        momentLocalDataSource.getAllMoments().map { momentInfoList ->
+            momentInfoList.map { momentInfo ->
+                momentInfo.toDomain(
+                    util.getPictureInInternalStorage(
+                        momentInfo.pictures,
+                        momentInfo.moment.thumbnailId
+                    )
+                )
+            }
+        }
+
     override suspend fun saveMoment(moment: Moment): Long {
         return momentLocalDataSource.saveMoment(moment.toEntity())
     }
 
     override suspend fun saveMomentWithPictures(moment: Moment): Pair<Long, List<Long>> {
-        val pictureFileNames = util.savePictureInInternalStorageAndGetFileName(moment.pictures)
         val pictureIds = momentLocalDataSource.savePictures(pictureFileNames)
-
         val momentId = momentLocalDataSource.saveMoment(moment.toEntity(pictureIds.first()))
         return momentId to pictureIds
     }

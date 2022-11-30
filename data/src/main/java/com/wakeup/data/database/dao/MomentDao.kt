@@ -9,6 +9,7 @@ import androidx.room.Transaction
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MomentDao {
@@ -45,6 +46,10 @@ interface MomentDao {
         lat: Double?,
         lng: Double?,
     ): PagingSource<Int, MomentWithGlobesAndPictures>
+
+    @Transaction
+    @Query("SELECT * FROM moment")
+    fun getAllMoments(): Flow<List<MomentWithGlobesAndPictures>>
 
     @Query("SELECT picture_id FROM picture WHERE fileName = :fileName")
     suspend fun getPictureIdByByteArray(fileName: String): Long

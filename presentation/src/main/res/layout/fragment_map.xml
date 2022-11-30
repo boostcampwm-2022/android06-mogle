@@ -2,52 +2,76 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="momentModel"
+            type="com.wakeup.presentation.model.MomentModel" />
+    </data>
+
+
     <FrameLayout
+        android:id="@+id/fl_map_view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/map"
+            android:id="@+id/fl_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|bottom"
-            android:layout_marginLeft="@dimen/normal_100"
-            android:layout_marginBottom="@dimen/location_btn_margin">
-
-            <com.naver.maps.map.widget.LocationButtonView
-                android:id="@+id/lbv_location"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_map_controls_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/lv_logo"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="start|bottom"
+                android:layout_marginHorizontal="@dimen/normal_100"
+                android:layout_marginBottom="@dimen/map_moment_preview_margin">
 
-            <com.naver.maps.map.widget.ScaleBarView
-                android:id="@+id/sbv_scale"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/normal_100"
-                android:layout_marginTop="@dimen/small_100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/lv_logo"
-                app:layout_constraintTop_toBottomOf="@id/lbv_location" />
+                <com.naver.maps.map.widget.LocationButtonView
+                    android:id="@+id/lbv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/lv_logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1"
+                    app:layout_constraintVertical_chainStyle="packed" />
 
-            <com.naver.maps.map.widget.LogoView
-                android:id="@+id/lv_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_100"
-                app:layout_constraintEnd_toEndOf="@id/lbv_location"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lbv_location" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.naver.maps.map.widget.ScaleBarView
+                    android:id="@+id/sbv_scale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/normal_100"
+                    android:layout_marginTop="@dimen/small_100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@id/lv_logo"
+                    app:layout_constraintTop_toBottomOf="@id/lbv_location" />
 
-    </FrameLayout>
+                <com.naver.maps.map.widget.LogoView
+                    android:id="@+id/lv_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_100"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/lbv_location"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lbv_location"
+                    app:layout_constraintVertical_bias="0" />
+
+                <include
+                    android:id="@+id/moment_preview"
+                    layout="@layout/item_moment_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:momentModel="@{momentModel}" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
 
 </layout>
