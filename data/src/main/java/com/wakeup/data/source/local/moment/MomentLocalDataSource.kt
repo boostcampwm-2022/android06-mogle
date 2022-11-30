@@ -1,7 +1,6 @@
 package com.wakeup.data.source.local.moment
 
 import androidx.paging.PagingData
-import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.LocationEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentGlobeXRef
@@ -13,7 +12,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface MomentLocalDataSource {
 
-    fun getMoments(sortType: SortType, query: String, myLocation: LocationEntity?): Flow<PagingData<MomentWithGlobesAndPictures>>
+    fun getMoments(
+        sortType: SortType,
+        query: String,
+        myLocation: LocationEntity?
+    ): Flow<PagingData<MomentWithGlobesAndPictures>>
 
 /*    suspend fun getPictures(momentId: Long): List<PictureEntity>
 
@@ -25,9 +28,7 @@ interface MomentLocalDataSource {
 
     suspend fun savePictures(pictures: List<PictureEntity>): List<Long>
 
-    suspend fun saveMomentPictures(momentPictures :List<MomentPictureXRef>)
+    suspend fun saveMomentPictures(momentPictures: List<MomentPictureXRef>)
 
-    suspend fun saveGlobes(globes: List<GlobeEntity>): List<Long>
-
-    suspend fun saveMomentGlobe(momentGlobe :MomentGlobeXRef)
+    suspend fun saveMomentGlobe(momentGlobe: MomentGlobeXRef)
 }

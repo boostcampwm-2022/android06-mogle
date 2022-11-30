@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/map_fragment"
-        android:name="com.wakeup.presentation.ui.map.MapFragment"
+        android:name="com.wakeup.presentation.ui.home.HomeFragment"
         android:label="지도"
         tools:layout="@layout/fragment_map">
         <action

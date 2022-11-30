@@ -4,8 +4,10 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.wakeup.domain.usecase.GetGlobesUseCase
 import com.wakeup.domain.usecase.SaveMomentUseCase
 import com.wakeup.presentation.mapper.toDomain
+import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.GlobeModel
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
@@ -15,33 +17,18 @@ import com.wakeup.presentation.util.DateUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
 @HiltViewModel
 class AddMomentViewModel @Inject constructor(
+    private val getGlobesUseCase: GetGlobesUseCase,
     private val saveMomentUseCase: SaveMomentUseCase
 ) : ViewModel() {
-
-    // mock data
-    private val globes = listOf(
-        GlobeModel(0, "globe 1"),
-        GlobeModel(1, "globe 2"),
-        GlobeModel(2, "globe 3"),
-    )
-
-    val defaultGlobe = globes.first()
-
-    // mock data
-    val tmpGlobes = arrayOf(
-        ("globe 1"),
-        ("globe 2"),
-        ("globe 3"),
-    )
 
     private val _pictures = MutableStateFlow<List<PictureModel>>(emptyList())
     val pictures = _pictures.asStateFlow()
@@ -49,7 +36,11 @@ class AddMomentViewModel @Inject constructor(
     private val _isPictureMax = MutableStateFlow(false)
     val isPictureMax = _isPictureMax.asStateFlow()
 
-    private var selectedGlobe = MutableStateFlow(globes.first())
+    private val _globes = MutableStateFlow(emptyList<GlobeModel>())
+    val globes = _globes.asStateFlow()
+
+    private var _selectedGlobe = MutableStateFlow(GlobeModel(name = ""))
+    var selectedGlobe = _selectedGlobe.asStateFlow()
 
     private val _selectedDate = MutableStateFlow(System.currentTimeMillis())
 
@@ -77,6 +68,13 @@ class AddMomentViewModel @Inject constructor(
     val isSaveButtonClicked = _isSaveButtonClicked.asStateFlow()
 
     init {
+        viewModelScope.launch {
+            getGlobesUseCase().collectLatest {
+                _globes.value = it.map { globe -> globe.toPresentation() }
+                _selectedGlobe.value = _globes.value.first()
+            }
+        }
+
         viewModelScope.launch {
             combine(place, content)
             { place, content ->
@@ -106,7 +104,7 @@ class AddMomentViewModel @Inject constructor(
     }
 
     fun setSelectedGlobe(position: Int) {
-        selectedGlobe.value = globes[position]
+        _selectedGlobe.value = globes.value[position]
     }
 
     fun setSelectedDate(date: Long) {

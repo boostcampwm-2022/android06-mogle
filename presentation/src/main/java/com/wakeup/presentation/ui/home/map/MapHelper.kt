@@ -1,4 +1,4 @@
-package com.wakeup.presentation.ui.map
+package com.wakeup.presentation.ui.home.map
 
 import android.content.Context
 import android.view.LayoutInflater
