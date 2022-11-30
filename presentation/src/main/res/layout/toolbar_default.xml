@@ -13,6 +13,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_default"
             android:layout_width="match_parent"
+            app:popupTheme="@style/ToolbarPopupAppearance.Mogle.GlobeDetail"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -42,8 +43,9 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="hi i'm toolbar" />
 
-
             </LinearLayout>
+
         </androidx.appcompat.widget.Toolbar>
+
     </com.google.android.material.appbar.AppBarLayout>
 </layout>
