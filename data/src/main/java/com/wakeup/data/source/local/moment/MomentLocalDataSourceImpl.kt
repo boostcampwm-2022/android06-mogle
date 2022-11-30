@@ -45,6 +45,8 @@ class MomentLocalDataSourceImpl @Inject constructor(
             }
         ).flow
 
+    override fun getAllMoments(): Flow<List<MomentWithGlobesAndPictures>> = momentDao.getAllMoments()
+
     override suspend fun getGlobeId(globeName: String): Long {
         return globeDao.getGlobeIdByName(globeName)
     }
