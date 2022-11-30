@@ -144,7 +144,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
             binding.momentPreview.root.let {
                 it.isVisible = true
-                it.getFadeInAnimator(MapFragment.MOMENT_PREVIEW_ANIM_DURATION).start()
+                it.getFadeInAnimator(MOMENT_PREVIEW_ANIM_DURATION).start()
             }
             true
         }

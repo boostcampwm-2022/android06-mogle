@@ -188,8 +188,10 @@ class MapHelper(context: Context) {
             width = MARKER_WIDTH.dp.toInt()
             height = MARKER_HEIGHT.dp.toInt()
             anchor = PointF(POINT_X, POINT_Y)
-            position =
-                LatLng(momentModel.place.location.latitude, momentModel.place.location.longitude)
+            position = LatLng(
+                momentModel.place.location.latitude,
+                momentModel.place.location.longitude
+            )
             isHideCollidedSymbols = true
             isIconPerspectiveEnabled = true
             map = _map
