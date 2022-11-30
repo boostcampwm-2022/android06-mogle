@@ -6,6 +6,8 @@ import com.wakeup.data.source.local.moment.MomentLocalDataSource
 import com.wakeup.data.source.local.moment.MomentLocalDataSourceImpl
 import com.wakeup.data.source.remote.placeSearch.PlaceSearchRemoteDataSource
 import com.wakeup.data.source.remote.placeSearch.PlaceSearchRemoteDataSourceImpl
+import com.wakeup.data.source.remote.weather.WeatherRemoteDataSource
+import com.wakeup.data.source.remote.weather.WeatherRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -29,4 +31,9 @@ interface DataSourceModule {
     fun bindGlobeLocalDataSource(
         globeLocalDataSourceImpl: GlobeLocalDataSourceImpl,
     ): GlobeLocalDataSource
+
+    @Binds
+    fun bindWeatherRemoteDataSource(
+        weatherRemoteDataSourceImpl: WeatherRemoteDataSourceImpl,
+    ): WeatherRemoteDataSource
 }
