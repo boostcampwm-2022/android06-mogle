@@ -52,11 +52,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setMenus() {
-        val items = listOf(
-            SortType.MOST_RECENT.str,
-            SortType.OLDEST.str,
-            SortType.NEAREST.str
-        )
+        val items = SortType.values().map { it.str }
         val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_menu, items)
         binding.textField.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -135,18 +131,16 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (viewModel.bottomSheetState.value == newState) return
+
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        if (viewModel.bottomSheetState.value != newState) {
-                            changeVisibleMenu(true)
-                            viewModel.bottomSheetState.value = BottomSheetBehavior.STATE_EXPANDED
-                        }
+                        changeVisibleMenu(true)
+                        viewModel.bottomSheetState.value = BottomSheetBehavior.STATE_EXPANDED
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        if (viewModel.bottomSheetState.value != newState) {
-                            changeVisibleMenu(false)
-                            viewModel.bottomSheetState.value = BottomSheetBehavior.STATE_COLLAPSED
-                        }
+                        changeVisibleMenu(false)
+                        viewModel.bottomSheetState.value = BottomSheetBehavior.STATE_COLLAPSED
                     }
                 }
             }

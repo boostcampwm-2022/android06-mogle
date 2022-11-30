@@ -35,6 +35,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMapBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
@@ -57,7 +58,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun collectData() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.fetchLocationState.collectLatest { state ->
                     if (state) {
                         locationSource.lastLocation?.apply {

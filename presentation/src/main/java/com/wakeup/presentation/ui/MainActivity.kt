@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setBottomNav() {
         val navHostFragment =
-                supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNav.setupWithNavController(navController)
 
@@ -47,20 +47,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setSpinner() {
-        val adapter = ArrayAdapter(this, R.layout.item_menu, listOf(
+        val adapter = ArrayAdapter(
+            this, R.layout.item_menu, listOf(
                 WeatherTheme.AUTO.str,
                 WeatherTheme.BRIGHT.str,
-                WeatherTheme.DARK.str)
+                WeatherTheme.DARK.str,
+                WeatherTheme.CLOUDY.str
+            )
         )
         binding.layoutDrawer.spinnerTheme.adapter = adapter
     }
 
     private fun setTopLevelDestinations(navController: NavController) {
         val appBarConfiguration = AppBarConfiguration(
-                setOf(
-                        R.id.map_fragment,
-                        R.id.globe_fragment
-                )
+            setOf(
+                R.id.map_fragment,
+                R.id.globe_fragment
+            )
         )
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
