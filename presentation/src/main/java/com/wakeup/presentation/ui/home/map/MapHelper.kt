@@ -129,6 +129,15 @@ class MapHelper(context: Context) {
     }
 
     /**
+     * 현재 포커싱된 마커가 있는지 확인합니다.
+     *
+     * @return true-포커싱된 마커 있음
+     */
+    fun checkFocusedMarkerExists(): Boolean {
+        return markerFocused != null
+    }
+
+    /**
      * 지도에 사용자의 위치 정보를 설정합니다.
      *
      * @param map 지도 객체
