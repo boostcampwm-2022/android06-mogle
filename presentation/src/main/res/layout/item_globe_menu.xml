@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/normal_150"
+        android:padding="@dimen/small_50"
+        app:cardCornerRadius="@dimen/small_150"
+        app:cardElevation="@dimen/small_100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_globe_detail_add_moment"
+                android:layout_width="@dimen/globe_detail_text_width"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/normal_100"
+                android:text="@string/globe_detail_menu_add_moment"
+                android:textAppearance="@style/TextAppearance.Mogle.Headline2"
+                app:layout_constraintBottom_toTopOf="@id/tv_globe_detail_delete_moment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_globe_detail_delete_moment"
+                android:layout_width="@dimen/globe_detail_text_width"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/normal_100"
+                android:text="@string/globe_detail_menu_delete_moment"
+                android:textAppearance="@style/TextAppearance.Mogle.Headline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_globe_detail_add_moment" />
+
+            <View
+                android:id="@+id/tv_empty_view"
+                android:layout_width="@dimen/globe_detail_text_width"
+                android:layout_height="@dimen/small_100"
+                android:background="@color/gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_globe_detail_delete_moment" />
+
+            <TextView
+                android:id="@+id/tv_globe_detail_update_globe"
+                android:layout_width="@dimen/globe_detail_text_width"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/normal_100"
+                android:text="@string/globe_detail_menu_update_globe"
+                android:textAppearance="@style/TextAppearance.Mogle.Headline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_empty_view" />
+
+            <TextView
+                android:id="@+id/tv_globe_detail_delete_globe"
+                android:layout_width="@dimen/globe_detail_text_width"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/normal_100"
+                android:text="@string/globe_detail_menu_delete_globe"
+                android:textAppearance="@style/TextAppearance.Mogle.Headline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_globe_detail_update_globe" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

@@ -4,38 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_default"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="?attr/colorOnPrimary"
         app:elevation="@dimen/small_100">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_default"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorSurface"
-            android:orientation="horizontal">
+            app:popupTheme="@style/ToolbarPopupAppearance.Mogle.GlobeDetail"
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/iv_back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:paddingStart="@dimen/normal_100"
-                android:src="@drawable/ic_arrow_back"
-                tools:src="@drawable/ic_arrow_back" />
-
-            <TextView
-                android:id="@+id/tv_title"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginStart="@dimen/normal_100"
-                android:gravity="center|start"
-                android:textAppearance="@style/TextAppearance.Mogle.Headline2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="hi i'm toolbar" />
+                android:layout_height="wrap_content"
+                android:background="?attr/colorSurface"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_back_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:paddingStart="@dimen/normal_100"
+                    android:src="@drawable/ic_arrow_back"
+                    tools:src="@drawable/ic_arrow_back" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginStart="@dimen/normal_100"
+                    android:gravity="center|start"
+                    android:textAppearance="@style/TextAppearance.Mogle.Headline2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="hi i'm toolbar" />
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
     </com.google.android.material.appbar.AppBarLayout>
 </layout>
