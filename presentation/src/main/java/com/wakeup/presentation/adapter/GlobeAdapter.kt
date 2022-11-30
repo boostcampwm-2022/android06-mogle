@@ -1,7 +1,6 @@
 package com.wakeup.presentation.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -19,21 +18,20 @@ class GlobeAdapter : ListAdapter<GlobeModel, GlobeAdapter.GlobeViewHolder>(Globe
         RecyclerView.ViewHolder(binding.root) {
 
         init {
-            itemView.setOnClickListener { view ->
-                binding.globe?.let { globe ->
-                    navigateToGlobeDetail(globe, view)
-                }
+            itemView.setOnClickListener {
+                navigateToGlobeDetail()
             }
         }
 
-        private fun navigateToGlobeDetail(globe: GlobeModel, view: View) {
-            val direction =
-                GlobeFragmentDirections.actionGlobeFragmentToGlobeDetailFragment(globe)
-            view.findNavController().navigate(direction)
+        private fun navigateToGlobeDetail() {
+            val action =
+                GlobeFragmentDirections.actionGlobeFragmentToGlobeDetailFragment(binding.globe)
+            itemView.findNavController().navigate(action)
         }
 
         fun bind(globe: GlobeModel) {
             binding.globe = globe
+            binding.executePendingBindings()
         }
 
         companion object {

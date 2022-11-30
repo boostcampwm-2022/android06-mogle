@@ -2,27 +2,31 @@ package com.wakeup.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.databinding.ItemPlaceBinding
 import com.wakeup.presentation.model.PlaceModel
+import com.wakeup.presentation.ui.addmoment.PlaceSearchFragmentDirections
 
-class PlaceAdapter(private val onClick: (place: PlaceModel) -> Unit) :
-    ListAdapter<PlaceModel, PlaceAdapter.PlaceViewHolder>(PlaceDiffUtil) {
+class PlaceAdapter : ListAdapter<PlaceModel, PlaceAdapter.PlaceViewHolder>(PlaceDiffUtil) {
 
     class PlaceViewHolder private constructor(
         private val binding: ItemPlaceBinding,
-        private val onClick: (place: PlaceModel) -> Unit,
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
-                binding.place?.let { place ->
-                    onClick(place)
-                }
+                navigateToPlaceCheckFragment()
             }
+        }
+
+        private fun navigateToPlaceCheckFragment() {
+            val action =
+                PlaceSearchFragmentDirections.actionPlaceSearchToPlaceCheck(binding.place)
+            itemView.findNavController().navigate(action)
         }
 
         fun bind(place: PlaceModel) {
@@ -31,17 +35,16 @@ class PlaceAdapter(private val onClick: (place: PlaceModel) -> Unit) :
         }
 
         companion object {
-            fun from(parent: ViewGroup, onClick: (place: PlaceModel) -> Unit): PlaceViewHolder {
+            fun from(parent: ViewGroup): PlaceViewHolder {
                 return PlaceViewHolder(
                     ItemPlaceBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                    onClick
                 )
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
-        return PlaceViewHolder.from(parent, onClick)
+        return PlaceViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
