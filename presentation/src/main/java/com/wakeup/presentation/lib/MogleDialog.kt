@@ -45,7 +45,7 @@ class MogleDialog private constructor() {
                     dialogEditText = dialogView.findViewById(editTextId)
                 }
                 dialog = builder.setView(dialogView).create()
-
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             }
         }
     }
@@ -92,7 +92,6 @@ class MogleDialog private constructor() {
     fun setFocusEditTextAndKeyboardUp(): MogleDialog {
         val inputMethodManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        //val dialogEditText = dialogView.findViewById<View>(resId)
         inputMethodManager.showSoftInput(dialogEditText, 0)
         (dialogEditText ?: return this).requestFocus()
         return this
