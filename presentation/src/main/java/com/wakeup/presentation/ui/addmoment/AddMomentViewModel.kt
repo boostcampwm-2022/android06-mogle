@@ -81,7 +81,6 @@ class AddMomentViewModel @Inject constructor(
                 place.mainAddress.isNotEmpty() &&
                         content.isNotEmpty()
             }.collect {
-                Timber.d("isSaveButtonEnabled: $it")
                 _isSaveButtonEnabled.value = it
             }
         }
