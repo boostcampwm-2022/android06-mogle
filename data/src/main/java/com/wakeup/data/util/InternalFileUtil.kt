@@ -22,7 +22,7 @@ class InternalFileUtil @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
 ) {
 
-    suspend fun savePictureInInternalStorageAndGetFileName(pictures: List<Picture>): List<PictureEntity> {
+    suspend fun savePictureInInternalStorage(pictures: List<Picture>): List<PictureEntity> {
         return withContext(dispatcher) {
             val pictureFiles = mutableListOf<String>()
 

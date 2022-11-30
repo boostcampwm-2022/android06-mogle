@@ -39,6 +39,7 @@ class MogleDialog private constructor() {
                 builder = AlertDialog.Builder(context)
                 dialogView = LayoutInflater.from(context).inflate(layoutId, null)
                 dialog = builder.setView(dialogView).create()
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             }
         }
     }
