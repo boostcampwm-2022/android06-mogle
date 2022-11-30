@@ -43,8 +43,8 @@ class MomentPagingAdapter :
         }
 
         private fun navigateToMoment() {
-            val action =
-                HomeFragmentDirections.actionMapFragmentToMomentDetailFragment(binding.moment)
+            val action = HomeFragmentDirections
+                .actionMapFragmentToMomentDetailFragment(binding.moment ?: return)
             itemView.findNavController().navigate(action)
         }
 

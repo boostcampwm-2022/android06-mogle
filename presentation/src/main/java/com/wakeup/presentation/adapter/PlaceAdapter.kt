@@ -25,7 +25,7 @@ class PlaceAdapter : ListAdapter<PlaceModel, PlaceAdapter.PlaceViewHolder>(Place
 
         private fun navigateToPlaceCheckFragment() {
             val action =
-                PlaceSearchFragmentDirections.actionPlaceSearchToPlaceCheck(binding.place)
+                PlaceSearchFragmentDirections.actionPlaceSearchToPlaceCheck(binding.place ?: return)
             itemView.findNavController().navigate(action)
         }
 
