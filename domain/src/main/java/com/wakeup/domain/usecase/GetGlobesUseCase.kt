@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetGlobesUseCase @Inject constructor(
     private val globeRepository: GlobeRepository
 ) {
-    operator fun invoke(): Flow<List<Globe>> {
+    suspend operator fun invoke(): Flow<List<Globe>> {
         return globeRepository.getGlobes()
     }
 }
