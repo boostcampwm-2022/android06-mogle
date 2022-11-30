@@ -193,7 +193,7 @@ class MapHelper(context: Context) {
         momentModel.pictures.takeIf { it.isNotEmpty() }?.let {
             markerBinding.ivThumbnail.setImageBitmap(it.first().bitmap)
         } ?: kotlin.run {
-            markerBinding.ivThumbnail.setImageResource(R.drawable.sample_image2)
+            markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
         }
 
         Marker().apply {
