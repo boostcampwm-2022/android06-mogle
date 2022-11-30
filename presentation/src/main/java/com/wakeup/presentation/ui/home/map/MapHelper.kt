@@ -39,6 +39,7 @@ class MapHelper(context: Context) {
      * 현재 포커싱 된 마커 객체
      */
     private var markerFocused: Marker? = null
+    private var zIndexBeforeFocused = 0
 
     /**
      * 지도 생성 함수
@@ -97,6 +98,7 @@ class MapHelper(context: Context) {
         markerFocused = marker
 
         markerFocused?.apply {
+            zIndexBeforeFocused = zIndex
             width += (width * MARKER_SCALE_UP_SIZE).toInt()
             height += (height * MARKER_SCALE_UP_SIZE).toInt()
             zIndex = Z_INDEX_FRONT
@@ -109,11 +111,21 @@ class MapHelper(context: Context) {
      */
     fun setMarkerUnfocused() {
         markerFocused?.apply {
-            width -= (width * MARKER_SCALE_UP_SIZE).toInt()
-            height -= (height * MARKER_SCALE_UP_SIZE).toInt()
-            zIndex = Z_INDEX_BACK
+            width = MARKER_WIDTH.dp.toInt()
+            height = MARKER_HEIGHT.dp.toInt()
+            zIndex = zIndexBeforeFocused
         }
         markerFocused = null
+    }
+
+    /**
+     * 인자로 넘겨진 마커가 현재 포커싱되었는지 확인합니다.
+     *
+     * @param marker 마커 객체
+     * @return true-포커싱 상태
+     */
+    fun isMarkerFocused(marker: Marker): Boolean {
+        return marker === markerFocused
     }
 
     /**
@@ -181,7 +193,7 @@ class MapHelper(context: Context) {
         momentModel.pictures.takeIf { it.isNotEmpty() }?.let {
             markerBinding.ivThumbnail.setImageBitmap(it.first().bitmap)
         } ?: kotlin.run {
-            markerBinding.ivThumbnail.setImageResource(R.drawable.sample_image2)
+            markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
         }
 
         Marker().apply {
@@ -223,6 +235,8 @@ class MapHelper(context: Context) {
         markerBinding.ivThumbnail.setImageResource(R.drawable.sample_image)
         repeat(10) {
             Marker().apply {
+                width = MARKER_WIDTH.dp.toInt()
+                height = MARKER_HEIGHT.dp.toInt()
                 position = LatLng(37.5670135 + it * 0.00001, 126.9783740)
                 isHideCollidedSymbols = true
                 isIconPerspectiveEnabled = true
