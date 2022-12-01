@@ -138,6 +138,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
             (marker as Marker).apply {
                 if (mapHelper.isMarkerFocused(marker)) return@OnClickListener true
+                if (mapHelper.checkFocusedMarkerExists()) mapHelper.setMarkerUnfocused()
                 mapHelper.setMarkerFocused(this)
                 mapHelper.moveCamera(naverMap, position)
                 binding.momentModel = (tag as MomentModel)
