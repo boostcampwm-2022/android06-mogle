@@ -3,7 +3,8 @@ package com.wakeup.data.di
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.wakeup.data.BuildConfig
-import com.wakeup.data.network.response.WeathersResponse
+import com.wakeup.data.network.response.WeatherContainerResponse
+import com.wakeup.data.network.response.WeatherResponse
 import com.wakeup.data.network.service.PlaceSearchService
 import com.wakeup.data.network.service.WeatherService
 import dagger.Module
@@ -93,10 +94,19 @@ object NetworkModule {
             val response = chain.proceed(request)
             val jsonString = response.body?.string() ?: ""
             val json = Json{ ignoreUnknownKeys = true }
-            val result = json.decodeFromString<WeathersResponse>(jsonString)
+            val result = json.decodeFromString<WeatherContainerResponse>(jsonString)
+            val weather = result.weathers.first()
+            val main = result.main
             response.newBuilder()
                 .message(response.message)
-                .body(Json.encodeToString(result.weathers.first()).toResponseBody())
+                .body(Json.encodeToString(
+                    WeatherResponse(
+                        weather.id,
+                        weather.type,
+                        weather.icon,
+                        main.temperature
+                    )
+                ).toResponseBody())
                 .build()
         }
     }

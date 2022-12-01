@@ -7,6 +7,7 @@ fun Weather.toPresentation(): WeatherModel {
     return WeatherModel(
         id = id,
         type = type,
-        iconUrl = iconUrl
+        iconUrl = iconUrl,
+        temperature = temperature
     )
 }

@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setBottomNav()
         setSpinner()
+
+        viewModel.testGetWeather()
     }
 
     fun openNavDrawer() {

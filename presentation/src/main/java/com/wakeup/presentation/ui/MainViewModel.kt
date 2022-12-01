@@ -16,7 +16,7 @@ class MainViewModel @Inject constructor(
     private val getWeatherDataUseCase: GetWeatherDataUseCase
 ) : ViewModel() {
 
-    init {
+    fun testGetWeather() {
         viewModelScope.launch {
             getWeatherDataUseCase(
                 LocationModel(
@@ -26,9 +26,11 @@ class MainViewModel @Inject constructor(
             )
                 .mapCatching { it.toPresentation() }
                 .onSuccess { weather ->
-                    Timber.d("날씨: ${weather.type}")
+                    Timber.d("날씨: ${weather.type} ${weather.temperature}")
                 }
-                .onFailure {  }
+                .onFailure {
+                    Timber.d("에러 $it")
+                }
         }
     }
 }

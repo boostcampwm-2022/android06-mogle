@@ -1,6 +1,7 @@
 package com.wakeup.data.network.service
 
 import com.wakeup.data.network.response.WeatherResponse
+import com.wakeup.data.network.response.WeatherTypeResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
