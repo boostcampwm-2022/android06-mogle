@@ -50,13 +50,7 @@ class MomentDetailFragment : Fragment() {
 
     private fun initViewPagerAdapter() {
         binding.vp2Images.adapter = DetailPictureAdapter()
-
-        val callback = TextViewPagerCallback(
-            binding.vp2Images,
-            binding.tvIndicator,
-            viewLifecycleOwner.lifecycleScope
-        )
-        binding.vp2Images.registerOnPageChangeCallback(callback)
+        binding.tpiIndicator.attachTo(binding.vp2Images, viewLifecycleOwner.lifecycleScope)
     }
 
     override fun onDestroyView() {

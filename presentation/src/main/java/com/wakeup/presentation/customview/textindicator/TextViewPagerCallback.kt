@@ -1,4 +1,4 @@
-package com.wakeup.presentation.ui.detail
+package com.wakeup.presentation.customview.textindicator
 
 import android.animation.ObjectAnimator
 import android.widget.TextView
