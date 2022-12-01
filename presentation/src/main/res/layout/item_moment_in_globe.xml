@@ -21,7 +21,7 @@
             android:layout_height="100dp"
             android:contentDescription="@string/moment_picture"
             android:scaleType="centerCrop"
-            app:imageFromBitmap="@{moment.pictures[0].bitmap}"
+            app:imageFromFilePath="@{moment.pictures[0].path}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

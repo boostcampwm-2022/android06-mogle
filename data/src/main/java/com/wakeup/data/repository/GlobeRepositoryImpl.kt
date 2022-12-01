@@ -40,14 +40,7 @@ class GlobeRepositoryImpl @Inject constructor(
 
     override fun getMomentsByGlobe(globeId: Long): Flow<List<Moment>> {
         return globeLocalDataSource.getMomentsByGlobe(globeId).map {
-            it.map { momentEntity ->
-                momentEntity.toDomain(
-                    util.getPictureInInternalStorage(
-                        momentEntity.pictures,
-                        momentEntity.moment.thumbnailId
-                    )
-                )
-            }
+            it.map { momentEntity -> momentEntity.toDomain() }
         }
     }
 

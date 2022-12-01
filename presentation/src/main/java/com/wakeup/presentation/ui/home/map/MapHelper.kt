@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.PointF
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import com.naver.maps.geometry.LatLng
@@ -31,7 +32,7 @@ import com.wakeup.presentation.extension.getFadeOutAnimator
 import com.wakeup.presentation.extension.setListener
 import com.wakeup.presentation.model.MomentModel
 
-class MapHelper(context: Context) {
+class MapHelper(private val context: Context) {
     private val markerBinding =
         ItemMapMarkerBinding.inflate(LayoutInflater.from(context), null, false)
 
@@ -200,7 +201,8 @@ class MapHelper(context: Context) {
      */
     fun setMarker(_map: NaverMap, momentModel: MomentModel, clickListener: OnClickListener) {
         momentModel.pictures.takeIf { it.isNotEmpty() }?.let {
-            markerBinding.ivThumbnail.setImageBitmap(it.first().bitmap)
+            markerBinding.picture = it.first()
+            markerBinding.ivThumbnail.setImageURI(("${context.filesDir}/${it.first().path}").toUri())
         } ?: kotlin.run {
             markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
         }

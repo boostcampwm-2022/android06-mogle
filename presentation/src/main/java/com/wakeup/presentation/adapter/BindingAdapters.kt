@@ -14,7 +14,8 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.wakeup.presentation.R
 import com.wakeup.presentation.extension.getBitMapFromVectorDrawable
 import com.wakeup.presentation.model.GlobeModel
-import com.wakeup.presentation.model.PictureModel
+import timber.log.Timber
+import java.io.File
 
 @BindingAdapter("submitList")
 fun bindSubmitList(view: RecyclerView, itemList: List<Any>?) {
@@ -29,15 +30,16 @@ fun bindSubmitList(view: ViewPager2, itemList: List<Any>?) {
     view.adapter?.let {
         itemList?.let { itemList ->
             if (itemList.isEmpty()) {
-                val fallbackBitmap = getBitMapFromVectorDrawable(view.context, R.drawable.ic_no_image)
-                (view.adapter as ListAdapter<Any, *>).submitList(listOf(PictureModel(fallbackBitmap)))
+                val fallbackBitmap =
+                    getBitMapFromVectorDrawable(view.context, R.drawable.ic_no_image)
+                //(view.adapter as ListAdapter<Any, *>).submitList(listOf(PictureModel(fallbackBitmap)))
             } else {
                 (view.adapter as ListAdapter<Any, *>).submitList(itemList)
             }
         }
     } ?: run {
         val fallbackBitmap = getBitMapFromVectorDrawable(view.context, R.drawable.ic_no_image)
-        (view.adapter as ListAdapter<Any, *>).submitList(listOf(PictureModel(fallbackBitmap)))
+        //(view.adapter as ListAdapter<Any, *>).submitList(listOf(PictureModel(fallbackBitmap)))
     }
 }
 
@@ -53,6 +55,17 @@ fun bindGone(view: View, isGone: Boolean) {
     } else {
         View.VISIBLE
     }
+}
+
+@BindingAdapter("imageFromFilePath")
+fun bindImageFromFile(view: ImageView, filePath: String?) {
+    Timber.d(filePath)
+    Timber.d("${view.context.filesDir}/" + "images/" + "$filePath")
+    Glide.with(view.context)
+        .load(File("${view.context.filesDir}/" + "images/" + "$filePath"))
+        .fallback(R.drawable.ic_no_image)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(view)
 }
 
 @BindingAdapter("imageFromBitmap")

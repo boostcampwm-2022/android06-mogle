@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        
+        <variable
+            name="picture"
+            type="com.wakeup.presentation.model.PictureModel" />
+    </data>
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -20,6 +27,7 @@
             android:layout_marginStart="7.5dp"
             android:layout_marginTop="4.5dp"
             android:scaleType="centerCrop"
+            app:imageFromFilePath="@{picture.path}"
             tools:src="@drawable/sample_image2" />
     </FrameLayout>
 </layout>
