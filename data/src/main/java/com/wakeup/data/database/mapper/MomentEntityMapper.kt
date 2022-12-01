@@ -4,11 +4,8 @@ import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.domain.model.Moment
 import com.wakeup.domain.model.Picture
-import com.wakeup.domain.model.Place
 
-fun MomentWithGlobesAndPictures.toDomain(
-    pictures: List<Picture>,
-): Moment {
+fun MomentWithGlobesAndPictures.toDomain(pictures: List<Picture>): Moment {
     return Moment(
         id = moment.id,
         place = moment.place.toDomain(),
@@ -20,7 +17,7 @@ fun MomentWithGlobesAndPictures.toDomain(
 }
 
 
-fun Moment.toEntity(place: Place, thumbnailId: Long?): MomentEntity {
+fun Moment.toEntity(thumbnailId: Long? = null): MomentEntity {
     return MomentEntity(
         place = place.toEntity(),
         thumbnailId = thumbnailId,

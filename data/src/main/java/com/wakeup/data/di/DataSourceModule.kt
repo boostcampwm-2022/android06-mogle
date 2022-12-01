@@ -4,6 +4,8 @@ import com.wakeup.data.source.local.globe.GlobeLocalDataSource
 import com.wakeup.data.source.local.globe.GlobeLocalDataSourceImpl
 import com.wakeup.data.source.local.moment.MomentLocalDataSource
 import com.wakeup.data.source.local.moment.MomentLocalDataSourceImpl
+import com.wakeup.data.source.local.xref.XRefLocalDataSource
+import com.wakeup.data.source.local.xref.XRefLocalDataSourceImpl
 import com.wakeup.data.source.remote.placeSearch.PlaceSearchRemoteDataSource
 import com.wakeup.data.source.remote.placeSearch.PlaceSearchRemoteDataSourceImpl
 import com.wakeup.data.source.remote.weather.WeatherRemoteDataSource
@@ -36,4 +38,9 @@ interface DataSourceModule {
     fun bindWeatherRemoteDataSource(
         weatherRemoteDataSourceImpl: WeatherRemoteDataSourceImpl,
     ): WeatherRemoteDataSource
+
+    @Binds
+    fun bindXRefLocalDataSource(
+        xRefLocalDataSourceImpl: XRefLocalDataSourceImpl,
+    ): XRefLocalDataSource
 }

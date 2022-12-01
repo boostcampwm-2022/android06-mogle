@@ -8,6 +8,8 @@ import com.wakeup.domain.repository.GlobeRepository
 import com.wakeup.domain.repository.MomentRepository
 import com.wakeup.domain.repository.PlaceSearchRepository
 import com.wakeup.domain.repository.WeatherRepository
+import com.wakeup.data.repository.RelationRepositoryImpl
+import com.wakeup.domain.repository.RelationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -36,4 +38,9 @@ interface RepositoryModule {
     fun bindWeatherRepository(
         weatherRepositoryImpl: WeatherRepositoryImpl,
     ): WeatherRepository
+
+    @Binds
+    fun bindRefRepository(
+        refRepositoryImpl: RelationRepositoryImpl,
+    ): RelationRepository
 }

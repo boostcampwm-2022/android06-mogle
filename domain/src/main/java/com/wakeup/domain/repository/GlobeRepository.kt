@@ -12,6 +12,8 @@ interface GlobeRepository {
 
     suspend fun deleteGlobe(globe: Globe)
 
+    suspend fun getGlobeId(globeName: String): Long
+
     fun getGlobes(): Flow<List<Globe>>
 
     fun getMomentsByGlobe(globeId: Long): Flow<List<Moment>>

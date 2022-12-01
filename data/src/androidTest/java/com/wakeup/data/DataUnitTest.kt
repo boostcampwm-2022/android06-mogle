@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.wakeup.data.database.MogleDatabase
 import com.wakeup.data.database.dao.MomentDao
+import com.wakeup.data.database.dao.XRefDao
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.PictureEntity
@@ -27,6 +28,8 @@ import org.junit.runner.RunWith
 class DataUnitTest {
     private lateinit var testDatabase: MogleDatabase
     private lateinit var momentDao: MomentDao
+    private lateinit var xRefDao: XRefDao
+
 
     @Before
     fun createDb() {
@@ -35,6 +38,7 @@ class DataUnitTest {
             context, MogleDatabase::class.java
         ).build()
         momentDao = testDatabase.momentDao()
+        xRefDao = testDatabase.xRefDao()
     }
 
     @After
@@ -44,70 +48,80 @@ class DataUnitTest {
 
     @Test
     fun saveMomentAndGetMoments(): Unit = runBlocking {
-        val pictureId = momentDao.savePictures(listOf(
-            PictureEntity(
-                fileName = "picture1"
-            ),
-            PictureEntity(
-                fileName = "picture2"
-            ),
-            PictureEntity(
-                fileName = "picture3"
+        val pictureId = momentDao.savePictures(
+            listOf(
+                PictureEntity(
+                    fileName = "picture1"
+                ),
+                PictureEntity(
+                    fileName = "picture2"
+                ),
+                PictureEntity(
+                    fileName = "picture3"
+                )
             )
-        ))
-        val momentId1 = momentDao.saveMoment(MomentEntity(
-            place = PlaceEntity(
-                mainAddress = "우리집",
-                detailAddress = "쌍문동",
-                latitude = 37.5,
-                longitude = 36.5
-            ),
-            thumbnailId = pictureId[0],
-            content = "안녕하세요 우리들",
-            date = System.currentTimeMillis()
-        ))
-
-        val momentId2 = momentDao.saveMoment(MomentEntity(
-            place = PlaceEntity(
-                mainAddress = "우리집zzz",
-                detailAddress = "쌍문동zzz",
-                latitude = 37.53,
-                longitude = 332.5
-            ),
-            thumbnailId = pictureId[1],
-            content = "steadfastness",
-            date = System.currentTimeMillis()
-        ))
-
-        momentDao.saveMomentPictureXRefs(listOf(
-            MomentPictureXRef(
-                momentId = momentId1,
-                pictureId = pictureId[0]
-            ),
-            MomentPictureXRef(
-                momentId = momentId1,
-                pictureId = pictureId[1]
-            ),
-            MomentPictureXRef(
-                momentId = momentId1,
-                pictureId = pictureId[2]
+        )
+        val momentId1 = momentDao.saveMoment(
+            MomentEntity(
+                place = PlaceEntity(
+                    mainAddress = "우리집",
+                    detailAddress = "쌍문동",
+                    latitude = 37.5,
+                    longitude = 36.5
+                ),
+                thumbnailId = pictureId[0],
+                content = "안녕하세요 우리들",
+                date = System.currentTimeMillis()
             )
-        ))
+        )
 
-        momentDao.saveMomentPictureXRefs(listOf(
-            MomentPictureXRef(
-                momentId = momentId2,
-                pictureId = pictureId[0]
-            ),
-            MomentPictureXRef(
-                momentId = momentId2,
-                pictureId = pictureId[1]
-            ),
-            MomentPictureXRef(
-                momentId = momentId2,
-                pictureId = pictureId[2]
+        val momentId2 = momentDao.saveMoment(
+            MomentEntity(
+                place = PlaceEntity(
+                    mainAddress = "우리집zzz",
+                    detailAddress = "쌍문동zzz",
+                    latitude = 37.53,
+                    longitude = 332.5
+                ),
+                thumbnailId = pictureId[1],
+                content = "steadfastness",
+                date = System.currentTimeMillis()
             )
-        ))
+        )
+
+        xRefDao.saveMomentPictureXRefs(
+            listOf(
+                MomentPictureXRef(
+                    momentId = momentId1,
+                    pictureId = pictureId[0]
+                ),
+                MomentPictureXRef(
+                    momentId = momentId1,
+                    pictureId = pictureId[1]
+                ),
+                MomentPictureXRef(
+                    momentId = momentId1,
+                    pictureId = pictureId[2]
+                )
+            )
+        )
+
+        xRefDao.saveMomentPictureXRefs(
+            listOf(
+                MomentPictureXRef(
+                    momentId = momentId2,
+                    pictureId = pictureId[0]
+                ),
+                MomentPictureXRef(
+                    momentId = momentId2,
+                    pictureId = pictureId[1]
+                ),
+                MomentPictureXRef(
+                    momentId = momentId2,
+                    pictureId = pictureId[2]
+                )
+            )
+        )
 
         val result = Pager(
             config = PagingConfig(
