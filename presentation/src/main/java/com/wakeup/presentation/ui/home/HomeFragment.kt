@@ -48,13 +48,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun initMap() {
-        val mapFragment = MapFragment()
-        childFragmentManager.beginTransaction().add(R.id.map, mapFragment).commit()
+        if (childFragmentManager.findFragmentById(R.id.map) == null) {
+            val mapFragment = MapFragment()
+            childFragmentManager.beginTransaction().add(R.id.map, mapFragment).commit()
+        }
     }
 
     private fun initBottomSheet() {
-        val bottomSheetFragment = BottomSheetFragment()
-        childFragmentManager.beginTransaction().add(R.id.bottom_sheet, bottomSheetFragment).commit()
+        if (childFragmentManager.findFragmentById(R.id.bottom_sheet) == null) {
+            val bottomSheetFragment = BottomSheetFragment()
+            childFragmentManager.beginTransaction().add(R.id.bottom_sheet, bottomSheetFragment).commit()
+        }
     }
 
     private fun setSearchBarListener() {
