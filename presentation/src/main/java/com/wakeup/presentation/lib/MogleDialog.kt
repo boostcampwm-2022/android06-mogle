@@ -9,12 +9,13 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import com.wakeup.presentation.extension.showKeyBoard
 
 /**
  * @example
  *
- * MogleDialog.with(requireContext(), R.id.dialog_deleteAlbum)
+ * MogleDialog.with(requireContext(), R.id.dialog_deleteAlbum, R.id.dialog_editText)
  *  .setOnPositive(R.id.tv_positive) { Timber.d("OK") }
  *  .setOnNegative(R.id.tv_negative) { Timber.d("CANCEL") }
  *  .show()
@@ -26,18 +27,23 @@ class MogleDialog private constructor() {
     private lateinit var dialog: AlertDialog
     private lateinit var dialogView: View
     private lateinit var context: Context
+    private var dialogEditText: EditText? = null
 
     companion object {
 
         /**
          * @param context 화면에 띄울 컨텍스트를 지정
          * @param layoutId 원하는 dialog 레이아웃을 넣어준다.
+         * @param editTextId editText 가 존재한다면, 원하는 EditText 를 넣어준다.
          */
-        fun with(context: Context, layoutId: Int): MogleDialog {
+        fun with(context: Context, layoutId: Int, editTextId: Int? = null): MogleDialog {
             return MogleDialog().apply {
                 this.context = context
                 builder = AlertDialog.Builder(context)
                 dialogView = LayoutInflater.from(context).inflate(layoutId, null)
+                if (editTextId != null) {
+                    dialogEditText = dialogView.findViewById(editTextId)
+                }
                 dialog = builder.setView(dialogView).create()
                 dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             }
@@ -82,14 +88,9 @@ class MogleDialog private constructor() {
 
     /**
      * dialog 가 나타날 때 키보드를 올린다.
-     * @param resId dialog 안에 resId로 받는 EditText 와 같은 뷰를 Focus 시킨 후, 키보드를 올린다.
      */
-    fun setFocusAndKeyboardUp(resId: Int): MogleDialog {
-        val inputMethodManager =
-            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        val dialogEditText = dialogView.findViewById<View>(resId)
-        inputMethodManager.showSoftInput(dialogEditText, 0)
-        dialogEditText.requestFocus()
+    fun setFocusEditTextAndKeyboardUp(): MogleDialog {
+        context.showKeyBoard(dialogEditText ?: return this)
         return this
     }
 
@@ -127,5 +128,15 @@ class MogleDialog private constructor() {
      */
     fun show() {
         dialog.show()
+    }
+
+    /**
+     * required
+     *
+     * setOnPositive 안에서 dialogEditText의 값을 반환한다.
+     * caution: setOnPositive 의 함수 내에서 사용할 것, 초기화시 dialogEditText 가 null 이 아닐 것
+     */
+    fun gettextInEditText(): String {
+        return dialogEditText?.text.toString()
     }
 }

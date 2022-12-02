@@ -39,7 +39,7 @@ class DetailPictureAdapter :
 
     companion object DetailPictureDiffUtil : DiffUtil.ItemCallback<PictureModel>() {
         override fun areItemsTheSame(oldItem: PictureModel, newItem: PictureModel): Boolean {
-            return oldItem.bitmap.sameAs(newItem.bitmap)
+            return oldItem.path == newItem.path
         }
 
         override fun areContentsTheSame(oldItem: PictureModel, newItem: PictureModel): Boolean {

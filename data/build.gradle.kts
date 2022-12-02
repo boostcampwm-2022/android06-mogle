@@ -105,6 +105,10 @@ dependencies {
         exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel-ktx")
     }
 
+    // Glide
+    implementation(Depends.Libraries.glide)
+    implementation(Depends.Libraries.glide_compiler)
+
     // Stetho
     implementation(Depends.Libraries.stetho)
     implementation(Depends.Libraries.stetho_okhttp3)

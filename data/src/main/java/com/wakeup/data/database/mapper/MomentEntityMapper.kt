@@ -3,13 +3,12 @@ package com.wakeup.data.database.mapper
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.domain.model.Moment
-import com.wakeup.domain.model.Picture
 
-fun MomentWithGlobesAndPictures.toDomain(pictures: List<Picture>): Moment {
+fun MomentWithGlobesAndPictures.toDomain(): Moment {
     return Moment(
         id = moment.id,
         place = moment.place.toDomain(),
-        pictures = pictures,
+        pictures = pictures.map { it.toDomain() },
         content = moment.content,
         globes = globes.map { it.toDomain() },
         date = moment.date,
@@ -17,10 +16,9 @@ fun MomentWithGlobesAndPictures.toDomain(pictures: List<Picture>): Moment {
 }
 
 
-fun Moment.toEntity(thumbnailId: Long? = null): MomentEntity {
+fun Moment.toEntity(): MomentEntity {
     return MomentEntity(
         place = place.toEntity(),
-        thumbnailId = thumbnailId,
         content = content,
         date = date,
     )

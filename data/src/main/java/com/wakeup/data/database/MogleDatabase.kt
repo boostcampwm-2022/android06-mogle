@@ -5,13 +5,14 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.wakeup.data.database.dao.GlobeDao
 import com.wakeup.data.database.dao.MomentDao
+import com.wakeup.data.database.dao.PictureDao
 import com.wakeup.data.database.dao.XRefDao
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentGlobeXRef
 import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.PictureEntity
-import java.util.concurrent.Executors
+import java.util.concurrent.*
 
 @Database(
     entities = [
@@ -26,8 +27,10 @@ import java.util.concurrent.Executors
 )
 abstract class MogleDatabase : RoomDatabase() {
     abstract fun momentDao(): MomentDao
+    abstract fun pictureDao(): PictureDao
     abstract fun globeDao(): GlobeDao
     abstract fun xRefDao(): XRefDao
+
 
     companion object {
         val callback = object : Callback() {

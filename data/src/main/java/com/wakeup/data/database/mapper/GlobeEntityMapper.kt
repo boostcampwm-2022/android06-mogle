@@ -14,5 +14,6 @@ fun GlobeEntity.toDomain(): Globe {
     return Globe(
         id = id,
         name = name,
+        momentCount = 0
     )
 }

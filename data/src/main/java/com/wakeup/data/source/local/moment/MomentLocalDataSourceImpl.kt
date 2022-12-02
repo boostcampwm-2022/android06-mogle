@@ -46,17 +46,6 @@ class MomentLocalDataSourceImpl @Inject constructor(
         return momentDao.saveMoment(moment)
     }
 
-    override suspend fun savePictures(pictures: List<PictureEntity>): List<Long> {
-        val indexResult = momentDao.savePictures(pictures).toMutableList()
-        indexResult.forEachIndexed { pictureIndex, id ->
-            if (id == EXIST_INSERT_ERROR_CODE) {
-                indexResult[pictureIndex] =
-                    momentDao.getPictureIdByByteArray(pictures[pictureIndex].fileName)
-            }
-        }
-        return indexResult.toList()
-    }
-
     companion object {
         const val PREFETCH_PAGE = 2
         const val ITEMS_PER_PAGE = 10

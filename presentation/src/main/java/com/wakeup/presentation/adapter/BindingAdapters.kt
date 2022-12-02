@@ -14,7 +14,9 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.wakeup.presentation.R
 import com.wakeup.presentation.extension.getBitMapFromVectorDrawable
 import com.wakeup.presentation.model.GlobeModel
-import com.wakeup.presentation.model.PictureModel
+import timber.log.Timber
+import java.io.File
+
 
 @BindingAdapter("submitList")
 fun bindSubmitList(view: RecyclerView, itemList: List<Any>?) {
@@ -29,15 +31,16 @@ fun bindSubmitList(view: ViewPager2, itemList: List<Any>?) {
     view.adapter?.let {
         itemList?.let { itemList ->
             if (itemList.isEmpty()) {
-                val fallbackBitmap = getBitMapFromVectorDrawable(view.context, R.drawable.ic_no_image)
-                (view.adapter as ListAdapter<Any, *>).submitList(listOf(PictureModel(fallbackBitmap)))
+                val fallbackBitmap =
+                    getBitMapFromVectorDrawable(view.context, R.drawable.ic_no_image)
+                //(view.adapter as ListAdapter<Any, *>).submitList(listOf(PictureModel(fallbackBitmap)))
             } else {
                 (view.adapter as ListAdapter<Any, *>).submitList(itemList)
             }
         }
     } ?: run {
         val fallbackBitmap = getBitMapFromVectorDrawable(view.context, R.drawable.ic_no_image)
-        (view.adapter as ListAdapter<Any, *>).submitList(listOf(PictureModel(fallbackBitmap)))
+        //(view.adapter as ListAdapter<Any, *>).submitList(listOf(PictureModel(fallbackBitmap)))
     }
 }
 
@@ -55,6 +58,29 @@ fun bindGone(view: View, isGone: Boolean) {
     }
 }
 
+@BindingAdapter("contentImageFromFilePath")
+fun bindContentImageFromFile(view: ImageView, filePath: String?) {
+    bindImageFromFile(view, filePath, 1000, 1000)
+}
+
+@BindingAdapter("thumbnailImageFromFilePath")
+fun bindThumbnailImageFromFile(view: ImageView, filePath: String?) {
+    bindImageFromFile(view, filePath, 200, 200)
+}
+
+fun bindImageFromFile(view: ImageView, filePath: String?, width: Int, height: Int) {
+    Timber.d(filePath)
+    val url = "${view.context.filesDir}/" + "images/" + "$filePath"
+    Timber.d(url)
+    Glide.with(view.context)
+        .load(File(url))
+        .fallback(R.drawable.ic_no_image)
+        .timeout(500)
+        .override(width, height)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(view)
+}
+
 @BindingAdapter("imageFromBitmap")
 fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap?) {
     Glide.with(view.context)
@@ -70,6 +96,7 @@ fun bindImageFromUrl(view: ImageView, url: String?) {
         Glide.with(view.context)
             .load(it)
             .transition(DrawableTransitionOptions.withCrossFade())
+            .override(200, 200)
             .into(view)
     }
 }

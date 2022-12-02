@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.GlobeAdapter
 import com.wakeup.presentation.databinding.FragmentGlobeBinding
@@ -40,6 +41,7 @@ class GlobeFragment : Fragment() {
         initToolbar()
         initAdapter()
         initClickListener()
+        initGlobes()
     }
 
     private fun initToolbar() {
@@ -56,7 +58,7 @@ class GlobeFragment : Fragment() {
                 requireContext(),
                 if (getWidthDp() > criteriaWidthDp) largeSpan else smallSpan
             )
-            addItemDecoration(GridSpaceItemDecoration(12.dp, 8.dp, 16.dp, 12.dp, 16.dp, 12.dp))
+            addItemDecoration(GridSpaceItemDecoration(12.dp))
         }
     }
 
@@ -65,15 +67,25 @@ class GlobeFragment : Fragment() {
 
     private fun initClickListener() {
         binding.ivAddGlobeButton.setOnClickListener {
-            MogleDialog.with(requireContext(), R.layout.dialog_add_globe)
-                .setOnPositive(R.id.tv_add_globe_add) {
-                    Timber.d("OK")
-                }
-                .setOnNegative(R.id.tv_add_globe_cancel) {
-                    Timber.d("CANCEL")
-                }
-                .setFocusAndKeyboardUp(R.id.et_add_globe)
+            val mogleDialog =
+                MogleDialog.with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
+            mogleDialog.setOnPositive(R.id.tv_add_globe_add) {
+                viewModel.createGlobe(mogleDialog.gettextInEditText())
+                Timber.d("OK")
+                showSnackBar(getString(R.string.snack_bar_message_add_globe))
+            }
+                .setOnNegative(R.id.tv_add_globe_cancel) { Timber.d("CANCEL") }
+                .setFocusEditTextAndKeyboardUp()
                 .show()
         }
+    }
+
+    private fun initGlobes() {
+        viewModel.fetchGlobes()
+    }
+
+    private fun showSnackBar(message: String) {
+        val snackBar = Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+        snackBar.show()
     }
 }
