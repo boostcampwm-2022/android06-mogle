@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:imageFromFilePath="@{pictureModel.path}"
+        app:contentImageFromFilePath="@{pictureModel.path}"
         android:scaleType="centerCrop"
         tools:src="@drawable/sample_image" />
 </layout>

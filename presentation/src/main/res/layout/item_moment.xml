@@ -28,7 +28,7 @@
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/moment_picture"
-                app:imageFromFilePath="@{moment.pictures[0].path}"
+                app:thumbnailImageFromFilePath="@{moment.pictures[0].path}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

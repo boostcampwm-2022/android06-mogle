@@ -45,7 +45,7 @@ class AddMomentFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = FragmentAddMomentBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
@@ -112,13 +112,11 @@ class AddMomentFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isSaveButtonClicked.collect { isClicked ->
                     if (isClicked.not()) return@collect
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.saveMoment()
-                        Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
-                        findNavController().run {
-                            setNavigationResultToBackStack("isUpdated", true)
-                            popBackStack()
-                        }
+                    viewModel.saveMoment()
+                    Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
+                    findNavController().run {
+                        setNavigationResultToBackStack("isUpdated", true)
+                        popBackStack()
                     }
                 }
             }

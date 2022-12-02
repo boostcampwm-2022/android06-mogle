@@ -27,7 +27,7 @@
             android:layout_marginStart="7.5dp"
             android:layout_marginTop="4.5dp"
             android:scaleType="centerCrop"
-            app:imageFromFilePath="@{picture.path}"
+            app:thumbnailImageFromFilePath="@{picture.path}"
             tools:src="@drawable/sample_image2" />
     </FrameLayout>
 </layout>

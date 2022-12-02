@@ -28,6 +28,8 @@ class InternalFileUtil @Inject constructor(
             .asBitmap()
             .load(picture.path.toUri())
             .listener(PictureSaveRequestListener(picture, context))
+            .override(1000, 1000)
+            .fitCenter()
             .submit()
     }
 
