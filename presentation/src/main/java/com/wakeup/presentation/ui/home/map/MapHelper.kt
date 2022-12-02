@@ -201,8 +201,7 @@ class MapHelper(private val context: Context) {
      */
     fun setMarker(_map: NaverMap, momentModel: MomentModel, clickListener: OnClickListener) {
         momentModel.pictures.takeIf { it.isNotEmpty() }?.let {
-            markerBinding.picture = it.first()
-            markerBinding.ivThumbnail.setImageURI(("${context.filesDir}/${it.first().path}").toUri())
+            markerBinding.ivThumbnail.setImageURI(("${context.filesDir}/images/${it.first().path}").toUri())
         } ?: kotlin.run {
             markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
         }
