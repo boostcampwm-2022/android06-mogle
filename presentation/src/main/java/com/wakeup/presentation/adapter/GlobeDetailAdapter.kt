@@ -23,8 +23,8 @@ class GlobeDetailAdapter :
         }
 
         private fun navigateToMomentDetail() {
-            val action =
-                GlobeDetailFragmentDirections.actionGlobeDetailFragmentToMomentDetailFragment(binding.moment ?: return)
+            val action = GlobeDetailFragmentDirections
+                .actionGlobeDetailFragmentToMomentDetailFragment(binding.moment ?: return)
             itemView.findNavController().navigate(action)
         }
 
@@ -36,9 +36,11 @@ class GlobeDetailAdapter :
         companion object {
             fun from(parent: ViewGroup): GlobeMomentViewHolder {
                 return GlobeMomentViewHolder(
-                    ItemMomentInGlobeBinding.inflate(LayoutInflater.from(parent.context),
+                    ItemMomentInGlobeBinding.inflate(
+                        LayoutInflater.from(parent.context),
                         parent,
-                        false)
+                        false
+                    )
                 )
             }
         }

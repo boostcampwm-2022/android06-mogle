@@ -9,8 +9,8 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.wakeup.presentation.extension.showKeyBoard
 
 /**
  * @example
@@ -90,10 +90,7 @@ class MogleDialog private constructor() {
      * dialog 가 나타날 때 키보드를 올린다.
      */
     fun setFocusEditTextAndKeyboardUp(): MogleDialog {
-        val inputMethodManager =
-            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(dialogEditText, 0)
-        (dialogEditText ?: return this).requestFocus()
+        context.showKeyBoard(dialogEditText ?: return this)
         return this
     }
 

@@ -18,5 +18,5 @@ interface GlobeRepository {
 
     fun getMomentsByGlobe(globeId: Long): Flow<List<Moment>>
 
-    fun getMomentCountByGlobe(globeId: Long): Flow<Int>
+    suspend fun getMomentCountByGlobe(globeId: Long): Int
 }

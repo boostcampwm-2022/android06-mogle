@@ -33,5 +33,5 @@ interface GlobeDao {
     fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>>
 
     @Query("SELECT COUNT(moment_id) FROM moment_globe WHERE globe_id = :globeId")
-    fun getMomentCountByGlobe(globeId: Long): Flow<Int>
+    suspend fun getMomentCountByGlobe(globeId: Long): Int
 }

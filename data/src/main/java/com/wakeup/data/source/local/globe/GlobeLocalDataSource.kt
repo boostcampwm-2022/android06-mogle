@@ -18,5 +18,5 @@ interface GlobeLocalDataSource {
 
     fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>>
 
-    fun getMomentCountByGlobe(globeId: Long): Flow<Int>
+    suspend fun getMomentCountByGlobe(globeId: Long): Int
 }

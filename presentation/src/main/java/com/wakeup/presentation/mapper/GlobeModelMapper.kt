@@ -6,11 +6,12 @@ import com.wakeup.presentation.model.GlobeModel
 fun GlobeModel.toDomain(): Globe {
     return Globe(
         id = id,
-        name = name
+        name = name,
+        momentCount = momentCount
     )
 }
 
-fun Globe.toPresentation(momentCount: String = "-1"): GlobeModel {
+fun Globe.toPresentation(): GlobeModel {
     return GlobeModel(
         id = id,
         name = name,

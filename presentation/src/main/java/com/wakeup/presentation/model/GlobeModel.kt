@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class GlobeModel(
     val id: Long = 0,
     val name: String,
-    val momentCount: String = (-1).toString(),
+    val momentCount: Int = 0
 ) : Parcelable

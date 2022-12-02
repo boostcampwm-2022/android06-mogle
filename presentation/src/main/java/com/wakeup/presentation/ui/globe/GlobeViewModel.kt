@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wakeup.domain.usecase.CreateGlobeUseCase
 import com.wakeup.domain.usecase.GetGlobesUseCase
-import com.wakeup.domain.usecase.GetMomentCountByGlobeUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.GlobeModel
@@ -20,18 +19,16 @@ import javax.inject.Inject
 class GlobeViewModel @Inject constructor(
     private val getGlobesUseCase: GetGlobesUseCase,
     private val createGlobesUseCase: CreateGlobeUseCase,
-    private val getMomentCountByGlobeUseCase: GetMomentCountByGlobeUseCase,
 ) : ViewModel() {
 
     private val _globes = MutableStateFlow<List<GlobeModel>>(emptyList())
     val globes = _globes.asStateFlow()
 
     fun fetchGlobes() {
+        println("good")
         viewModelScope.launch {
             _globes.value = getGlobesUseCase().map { globes ->
-                globes.map { globe ->
-                    globe.toPresentation(getMomentCountByGlobeUseCase(globe.id).first().toString())
-                }
+                globes.map { globe -> globe.toPresentation() }
             }.first()
         }
     }
