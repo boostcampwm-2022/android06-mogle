@@ -11,5 +11,6 @@ interface WeatherService {
     suspend fun getWeatherData(
         @Query("lat") latitude: Double,
         @Query("lon") longitude: Double,
+        @Query("units") tempType: String = "metric",
     ): WeatherResponse
 }

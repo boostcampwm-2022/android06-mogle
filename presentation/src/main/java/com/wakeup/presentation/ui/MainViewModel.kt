@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
             )
                 .mapCatching { it.toPresentation() }
                 .onSuccess { weather ->
-                    Timber.d("날씨: ${weather.type} ${weather.temperature}")
+                    Timber.d("날씨: ${weather.id} ${weather.type} ${weather.temperature}")
                 }
                 .onFailure {
                     Timber.d("에러 $it")

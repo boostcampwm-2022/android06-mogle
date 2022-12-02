@@ -5,16 +5,20 @@ import com.wakeup.data.network.request.LocationRequest
 import com.wakeup.data.network.response.WeatherResponse
 import com.wakeup.domain.model.Location
 import com.wakeup.domain.model.Weather
-import kotlin.math.round
-
-private fun Double.toKelvin() = round((this - 273.15) * 100) / 100
 
 fun WeatherResponse.toDomain(): Weather {
     return Weather(
         id = id,
         type = type,
         iconUrl = "${BuildConfig.WEATHER_BASE_URL}img/w/$icon.png",
-        temperature = temperature.toKelvin()
+        temperature = temperature
+    )
+}
+
+fun Location.toRequest(): LocationRequest {
+    return LocationRequest(
+        latitude = latitude,
+        longitude = longitude,
     )
 }
 
