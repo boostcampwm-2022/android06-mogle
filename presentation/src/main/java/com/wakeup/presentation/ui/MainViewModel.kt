@@ -20,13 +20,13 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             getWeatherDataUseCase(
                 LocationModel(
-                    37.0,
-                    129.0
+                    36.0981,
+                    129.3343
                 ).toDomain()
             )
                 .mapCatching { it.toPresentation() }
                 .onSuccess { weather ->
-                    Timber.d("날씨: ${weather.id} ${weather.type} ${weather.temperature}")
+                    Timber.d("날씨: ${weather.id} ${weather.type.name} ${weather.temperature}")
                 }
                 .onFailure {
                     Timber.d("에러 $it")

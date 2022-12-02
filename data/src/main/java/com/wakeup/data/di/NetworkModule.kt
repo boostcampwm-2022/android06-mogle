@@ -7,6 +7,7 @@ import com.wakeup.data.network.response.WeatherContainerResponse
 import com.wakeup.data.network.response.WeatherResponse
 import com.wakeup.data.network.service.PlaceSearchService
 import com.wakeup.data.network.service.WeatherService
+import com.wakeup.domain.model.WeatherType
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -96,18 +97,31 @@ object NetworkModule {
             val json = Json{ ignoreUnknownKeys = true }
             val result = json.decodeFromString<WeatherContainerResponse>(jsonString)
             val weather = result.weathers.first()
+            val type = getWeatherTypeById(weather.id)
             val main = result.main
             response.newBuilder()
                 .message(response.message)
                 .body(Json.encodeToString(
                     WeatherResponse(
                         weather.id,
-                        weather.type,
+                        type,
                         weather.icon,
                         main.temperature
                     )
                 ).toResponseBody())
                 .build()
+        }
+    }
+
+    private fun getWeatherTypeById(id: Long): WeatherType {
+        return when (id) {
+            in 200..299 -> WeatherType.THUNDERSTORM
+            in 300..399 -> WeatherType.DRIZZLE
+            in 500..599 -> WeatherType.RAIN
+            in 600..699 -> WeatherType.SNOW
+            in 700..799 -> WeatherType.ATMOSPHERE
+            in 800..899 -> WeatherType.CLOUDS
+            else -> WeatherType.CLEAR
         }
     }
 

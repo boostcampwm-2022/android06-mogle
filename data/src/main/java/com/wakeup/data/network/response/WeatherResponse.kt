@@ -1,5 +1,6 @@
 package com.wakeup.data.network.response
 
+import com.wakeup.domain.model.WeatherType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -10,7 +11,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WeatherResponse(
     val id: Long,
-    val type: String,
+    val type: WeatherType,
     val icon: String,
     val temperature: Double,
 )
@@ -18,7 +19,6 @@ data class WeatherResponse(
 @Serializable
 data class WeatherTypeResponse(
     @SerialName("id") val id: Long,
-    @SerialName("main") val type: String,
     @SerialName("icon") val icon: String
 )
 
