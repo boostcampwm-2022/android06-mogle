@@ -20,11 +20,28 @@ android {
         testInstrumentationRunner = Depends.Versions.testInstrumentationRunner
         consumerProguardFiles("consumer-rules.pro")
 
-
         buildConfigField(
             type = "String",
             name = "KAKAO_REST_API_KEY",
             value = gradleLocalProperties(rootDir).getProperty("KAKAO_REST_API_KEY")
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "WEATHER_API_KEY",
+            value = gradleLocalProperties(rootDir).getProperty("WEATHER_API_KEY")
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "KAKAO_BASE_URL",
+            value ="\"https://dapi.kakao.com/\""
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "WEATHER_BASE_URL",
+            value ="\"https://api.openweathermap.org/\""
         )
     }
 
