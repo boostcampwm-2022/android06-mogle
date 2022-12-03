@@ -106,16 +106,14 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal" />
 
-                        <TextView
-                            android:id="@+id/tv_indicator"
-                            android:layout_width="@dimen/normal_275"
-                            android:layout_height="@dimen/normal_175"
+                        <com.wakeup.presentation.customview.textindicator.TextPageIndicator
+                            android:id="@+id/tpi_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="end|top"
                             android:layout_marginTop="@dimen/small_100"
                             android:layout_marginRight="@dimen/small_100"
-                            android:background="@drawable/bg_text_indicator"
-                            android:gravity="center"
-                            android:textColor="@color/white"
+                            app:defaultIndicatorStyle="true"
                             tools:text="1/5" />
                     </FrameLayout>
                 </androidx.cardview.widget.CardView>
@@ -136,11 +134,11 @@
 
                 <TextView
                     android:id="@+id/tv_globe"
+                    globeNames="@{momentModel.globes}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/large_100"
                     android:layout_marginBottom="@dimen/large_200"
-                    globeNames="@{momentModel.globes}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_date"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
