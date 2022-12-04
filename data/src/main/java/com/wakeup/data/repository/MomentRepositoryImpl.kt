@@ -5,7 +5,6 @@ import androidx.paging.map
 import com.wakeup.data.database.mapper.toDomain
 import com.wakeup.data.database.mapper.toEntity
 import com.wakeup.data.source.local.moment.MomentLocalDataSource
-import com.wakeup.data.util.InternalFileUtil
 import com.wakeup.domain.model.Location
 import com.wakeup.domain.model.Moment
 import com.wakeup.domain.model.SortType
@@ -16,7 +15,6 @@ import javax.inject.Inject
 
 class MomentRepositoryImpl @Inject constructor(
     private val momentLocalDataSource: MomentLocalDataSource,
-    private val util: InternalFileUtil,
 ) : MomentRepository {
 
     override fun getMoments(
@@ -26,36 +24,18 @@ class MomentRepositoryImpl @Inject constructor(
     ): Flow<PagingData<Moment>> =
         momentLocalDataSource.getMoments(sort, query, myLocation?.toEntity()).map { pagingData ->
             pagingData.map { momentInfo ->
-                momentInfo.toDomain(
-                    util.getPictureInInternalStorage(
-                        momentInfo.pictures,
-                        momentInfo.moment.thumbnailId
-                    )
-                )
+                momentInfo.toDomain()
             }
         }
 
     override fun getAllMoments(): Flow<List<Moment>> =
         momentLocalDataSource.getAllMoments().map { momentInfoList ->
             momentInfoList.map { momentInfo ->
-                momentInfo.toDomain(
-                    util.getPictureInInternalStorage(
-                        momentInfo.pictures,
-                        momentInfo.moment.thumbnailId
-                    )
-                )
+                momentInfo.toDomain()
             }
         }
 
     override suspend fun saveMoment(moment: Moment): Long {
         return momentLocalDataSource.saveMoment(moment.toEntity())
-    }
-
-    override suspend fun saveMomentWithPictures(moment: Moment): Pair<Long, List<Long>> {
-        val pictureFileNames = util.savePictureInInternalStorage(moment.pictures)
-        val pictureIds = momentLocalDataSource.savePictures(pictureFileNames)
-
-        val momentId = momentLocalDataSource.saveMoment(moment.toEntity(pictureIds.first()))
-        return momentId to pictureIds
     }
 }

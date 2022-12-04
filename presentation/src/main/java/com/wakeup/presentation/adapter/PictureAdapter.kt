@@ -53,7 +53,7 @@ class PictureAdapter(private val onClickRemovePicture: (picture: PictureModel) -
 
     companion object PictureDiffUtil : DiffUtil.ItemCallback<PictureModel>() {
         override fun areItemsTheSame(oldItem: PictureModel, newItem: PictureModel): Boolean {
-            return oldItem.bitmap == newItem.bitmap
+            return oldItem.path == newItem.path
         }
 
         override fun areContentsTheSame(oldItem: PictureModel, newItem: PictureModel): Boolean {

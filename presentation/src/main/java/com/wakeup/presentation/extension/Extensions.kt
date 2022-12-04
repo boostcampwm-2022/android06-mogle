@@ -10,7 +10,7 @@ import android.os.Build
 import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
@@ -29,12 +29,18 @@ val Int.dp
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), dm)
     } ?: 0f
 
+fun Context.showKeyBoard(editText: EditText) {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(editText.rootView, InputMethodManager.SHOW_IMPLICIT)
+    editText.requestFocus()
+}
+
 fun Fragment.hideKeyboard() {
     view?.let { activity?.hideKeyboard(it) }
 }
 
 fun Context.hideKeyboard(view: View) {
-    val imm = getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 

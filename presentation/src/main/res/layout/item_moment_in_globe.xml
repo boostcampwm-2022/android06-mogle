@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="moment"
+            type="com.wakeup.presentation.model.MomentModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_moment_in_globe"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/moment_picture"
+            android:scaleType="centerCrop"
+            app:thumbnailImageFromFilePath="@{moment.pictures[0].path}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@color/gray" />
+
+        <TextView
+            android:id="@+id/tv_main_address_in_globe"
+            style="@style/TextAppearance.Mogle.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{moment.place.mainAddress}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_moment_in_globe"
+            tools:text="서울역전 터미널 서울역전 터미널 서울역전 터미널 서울역전 터미널" />
+
+
+        <TextView
+            android:id="@+id/tv_date"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{moment.formattedDate}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_main_address_in_globe"
+            tools:text="2022-11-16" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

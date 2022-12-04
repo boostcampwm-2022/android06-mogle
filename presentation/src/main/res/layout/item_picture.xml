@@ -25,7 +25,7 @@
             android:layout_height="90dp"
             android:contentDescription="@string/item_picture_description"
             android:scaleType="centerCrop"
-            app:imageBitmap="@{picture.bitmap}" />
+            app:imageFromUrl="@{picture.path}" />
 
         <ImageView
             android:id="@+id/tv_remove"

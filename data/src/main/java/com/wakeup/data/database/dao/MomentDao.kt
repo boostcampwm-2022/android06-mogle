@@ -8,7 +8,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
-import com.wakeup.data.database.entity.PictureEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -51,13 +50,11 @@ interface MomentDao {
     @Query("SELECT * FROM moment")
     fun getAllMoments(): Flow<List<MomentWithGlobesAndPictures>>
 
-    @Query("SELECT picture_id FROM picture WHERE fileName = :fileName")
-    suspend fun getPictureIdByByteArray(fileName: String): Long
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMoment(moment: MomentEntity): Long
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun savePictures(pictures: List<PictureEntity>): List<Long>
+
 
 }

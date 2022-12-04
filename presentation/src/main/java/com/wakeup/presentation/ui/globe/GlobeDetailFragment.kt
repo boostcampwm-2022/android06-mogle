@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.wakeup.presentation.R
+import com.wakeup.presentation.adapter.GlobeDetailAdapter
 import com.wakeup.presentation.databinding.FragmentGlobeDetailBinding
+import com.wakeup.presentation.extension.dp
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,6 +21,7 @@ class GlobeDetailFragment : Fragment() {
 
     private val viewModel: GlobeDetailViewModel by viewModels()
     private lateinit var binding: FragmentGlobeDetailBinding
+    private val globeDetailGirdAdapter = GlobeDetailAdapter()
     private val args: GlobeDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -35,6 +39,8 @@ class GlobeDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initToolbar()
+        initAdapter()
+        initMoment()
     }
 
     private fun initToolbar() {
@@ -70,4 +76,24 @@ class GlobeDetailFragment : Fragment() {
         }
     }
 
+    private fun initAdapter() {
+        val largeSpan = 5
+        val smallSpan = 3
+        val criteriaWidthDp = 500
+        binding.rvGlobeDetail.apply {
+            adapter = globeDetailGirdAdapter
+            layoutManager = GridLayoutManager(
+                requireContext(),
+                if (getWidthDp() > criteriaWidthDp) largeSpan else smallSpan
+            )
+            addItemDecoration(GridSpaceItemDecoration(12.dp))
+        }
+    }
+
+    private fun initMoment() {
+        viewModel.fetchMomentsByGlobe(args.globe?.id ?: -1L)
+    }
+
+    private fun getWidthDp(): Float =
+        resources.displayMetrics.widthPixels / resources.displayMetrics.density
 }

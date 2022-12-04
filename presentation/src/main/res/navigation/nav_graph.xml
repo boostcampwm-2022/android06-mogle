@@ -26,7 +26,7 @@
         tools:layout="@layout/fragment_globe">
         <action
             android:id="@+id/action_globe_fragment_to_globeDetailFragment"
-            app:destination="@id/globeDetailFragment"
+            app:destination="@id/globe_detail_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -98,7 +98,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/globeDetailFragment"
+        android:id="@+id/globe_detail_fragment"
         android:name="com.wakeup.presentation.ui.globe.GlobeDetailFragment"
         android:label="GlobeDetailFragment">
         <argument
@@ -106,5 +106,8 @@
             android:defaultValue="@null"
             app:argType="com.wakeup.presentation.model.GlobeModel"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_globe_detail_fragment_to_moment_detail_fragment"
+            app:destination="@id/moment_detail_fragment" />
     </fragment>
 </navigation>

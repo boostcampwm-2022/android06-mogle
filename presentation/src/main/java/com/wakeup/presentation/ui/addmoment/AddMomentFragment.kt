@@ -1,6 +1,5 @@
 package com.wakeup.presentation.ui.addmoment
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,11 +19,9 @@ import com.wakeup.presentation.adapter.PictureAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentBinding
 import com.wakeup.presentation.extension.setNavigationResultToBackStack
 import com.wakeup.presentation.model.PictureModel
-import com.wakeup.presentation.util.BitmapUtil.fixRotation
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class AddMomentFragment : Fragment() {
@@ -38,16 +35,7 @@ class AddMomentFragment : Fragment() {
     private val getPicture =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val uri = result.data?.data ?: return@registerForActivityResult
-            val contentResolver = requireContext().contentResolver
-            kotlin.runCatching {
-                listOf(contentResolver.openInputStream(uri), contentResolver.openInputStream(uri))
-            }.onSuccess {
-                val bitmap = BitmapFactory.decodeStream(it.first())
-                viewModel.addPicture(PictureModel(bitmap.fixRotation(it.last())))
-                it.forEach { stream -> stream?.close() }
-            }.onFailure {
-                Timber.e(it)
-            }
+            viewModel.addPicture(PictureModel(path = uri.toString()))
         }
 
     private val datePicker = MaterialDatePicker.Builder.datePicker().build().apply {
@@ -57,7 +45,7 @@ class AddMomentFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = FragmentAddMomentBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
@@ -124,13 +112,11 @@ class AddMomentFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isSaveButtonClicked.collect { isClicked ->
                     if (isClicked.not()) return@collect
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.saveMoment()
-                        Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
-                        findNavController().run {
-                            setNavigationResultToBackStack("isUpdated", true)
-                            popBackStack()
-                        }
+                    viewModel.saveMoment()
+                    Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
+                    findNavController().run {
+                        setNavigationResultToBackStack("isUpdated", true)
+                        popBackStack()
                     }
                 }
             }

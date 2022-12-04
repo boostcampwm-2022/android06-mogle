@@ -29,6 +29,9 @@ interface GlobeDao {
     suspend fun getGlobeIdByName(name: String): Long
 
     @Transaction
-    @Query("SELECT * FROM moment WHERE moment_id = (SELECT moment_id FROM moment_globe WHERE globe_id = :globeId)")
+    @Query("SELECT * FROM moment WHERE moment_id IN (SELECT moment_id FROM moment_globe WHERE globe_id = :globeId)")
     fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>>
+
+    @Query("SELECT COUNT(moment_id) FROM moment_globe WHERE globe_id = :globeId")
+    suspend fun getMomentCountByGlobe(globeId: Long): Int
 }

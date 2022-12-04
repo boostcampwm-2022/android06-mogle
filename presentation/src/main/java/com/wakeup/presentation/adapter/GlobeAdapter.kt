@@ -10,12 +10,12 @@ import com.wakeup.presentation.databinding.ItemGlobeBinding
 import com.wakeup.presentation.model.GlobeModel
 import com.wakeup.presentation.ui.globe.GlobeFragmentDirections
 
-class GlobeAdapter : ListAdapter<GlobeModel, GlobeAdapter.GlobeViewHolder>(GlobeDiffUtil) {
+class GlobeAdapter(
+) : ListAdapter<GlobeModel, GlobeAdapter.GlobeViewHolder>(GlobeDiffUtil) {
 
     class GlobeViewHolder private constructor(
         private val binding: ItemGlobeBinding,
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
@@ -37,7 +37,7 @@ class GlobeAdapter : ListAdapter<GlobeModel, GlobeAdapter.GlobeViewHolder>(Globe
         companion object {
             fun from(parent: ViewGroup): GlobeViewHolder {
                 return GlobeViewHolder(
-                    ItemGlobeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                    ItemGlobeBinding.inflate(LayoutInflater.from(parent.context), parent, false),
                 )
             }
         }
