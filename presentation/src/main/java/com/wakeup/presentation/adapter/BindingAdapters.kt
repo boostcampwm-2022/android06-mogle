@@ -92,13 +92,12 @@ fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap?) {
 
 @BindingAdapter("imageFromUrl")
 fun bindImageFromUrl(view: ImageView, url: String?) {
-    url?.let {
         Glide.with(view.context)
-            .load(it)
+            .load(url)
+            .fallback(R.drawable.ic_no_image)
             .transition(DrawableTransitionOptions.withCrossFade())
             .override(200, 200)
             .into(view)
-    }
 }
 
 @BindingAdapter("globeNames")
