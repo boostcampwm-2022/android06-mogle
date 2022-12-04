@@ -16,6 +16,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
+import com.google.android.material.snackbar.Snackbar
 
 fun <T> NavController.setNavigationResultToBackStack(key: String, value: T) {
     this.previousBackStackEntry?.savedStateHandle?.set(key, value)
@@ -31,8 +32,10 @@ val Int.dp
 
 fun Context.showKeyBoard(editText: EditText) {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.showSoftInput(editText.rootView, InputMethodManager.SHOW_IMPLICIT)
     editText.requestFocus()
+    editText.postDelayed({
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+    }, 100)
 }
 
 fun Fragment.hideKeyboard() {
@@ -66,12 +69,18 @@ fun getBitMapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
         drawable = DrawableCompat.wrap(drawable!!).mutate()
     }
 
-    val bitmap: Bitmap = Bitmap.createBitmap(drawable!!.intrinsicWidth,
-        drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+    val bitmap: Bitmap = Bitmap.createBitmap(
+        drawable!!.intrinsicWidth,
+        drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
+    )
 
     val canvas = Canvas(bitmap)
 
     drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
     drawable.draw(canvas)
     return bitmap
+}
+
+fun View.snackbar(text: String) {
+    Snackbar.make(this, text, Snackbar.LENGTH_SHORT).show()
 }
