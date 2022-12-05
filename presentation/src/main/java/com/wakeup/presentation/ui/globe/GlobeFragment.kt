@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.GlobeAdapter
 import com.wakeup.presentation.databinding.FragmentGlobeBinding
 import com.wakeup.presentation.extension.dp
-import com.wakeup.presentation.lib.MogleDialog
+import com.wakeup.presentation.extension.showSnackbar
+import com.wakeup.presentation.lib.dialog.EditDialog
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -67,25 +67,22 @@ class GlobeFragment : Fragment() {
 
     private fun initClickListener() {
         binding.ivAddGlobeButton.setOnClickListener {
-            val mogleDialog =
-                MogleDialog.with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
-            mogleDialog.setOnPositive(R.id.tv_add_globe_add) {
-                viewModel.createGlobe(mogleDialog.gettextInEditText())
-                Timber.d("OK")
-                showSnackBar(getString(R.string.snack_bar_message_add_globe))
-            }
-                .setOnNegative(R.id.tv_add_globe_cancel) { Timber.d("CANCEL") }
-                .setFocusEditTextAndKeyboardUp()
+            EditDialog
+                .with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
+                .setOnPositive(R.id.tv_add_globe_add) { dialog ->
+                    Timber.d("OK")
+                    viewModel.createGlobe(dialog.getTextInEditText())
+                    it.showSnackbar(getString(R.string.snack_bar_message_add_globe))
+                }
+                .setOnNegative(R.id.tv_add_globe_cancel) {
+                    Timber.d("CANCEL")
+                }
+                .setKeyboardUp(true)
                 .show()
         }
     }
 
     private fun initGlobes() {
         viewModel.fetchGlobes()
-    }
-
-    private fun showSnackBar(message: String) {
-        val snackBar = Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
-        snackBar.show()
     }
 }

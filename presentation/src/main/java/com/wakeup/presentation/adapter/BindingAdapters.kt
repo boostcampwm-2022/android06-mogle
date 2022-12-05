@@ -92,12 +92,12 @@ fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap?) {
 
 @BindingAdapter("imageFromUrl")
 fun bindImageFromUrl(view: ImageView, url: String?) {
-        Glide.with(view.context)
-            .load(url)
-            .fallback(R.drawable.ic_no_image)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .override(200, 200)
-            .into(view)
+    Glide.with(view.context)
+        .load(url)
+        .fallback(R.drawable.ic_no_image)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .override(200, 200)
+        .into(view)
 }
 
 @BindingAdapter("globeNames")
@@ -109,9 +109,11 @@ fun bindGlobeNames(view: TextView, globes: List<GlobeModel>) {
     } else if (globes.size == 1) {
         globes.first().name
     } else {
-        String.format(res.getString(R.string.moment_detail_globes),
+        String.format(
+            res.getString(R.string.moment_detail_globes),
             globes.first().name,
-            globes.size - 1)
+            globes.size - 1
+        )
     }
 }
 
