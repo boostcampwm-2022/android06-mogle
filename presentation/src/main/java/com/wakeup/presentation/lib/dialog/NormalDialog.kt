@@ -18,7 +18,6 @@ class NormalDialog private constructor(context: Context) :
 
     companion object {
 
-
         /**
          * @param context 화면에 띄울 컨텍스트를 지정
          * @param layoutId 원하는 dialog 레이아웃을 넣어준다.
@@ -30,9 +29,5 @@ class NormalDialog private constructor(context: Context) :
                 dialog = builder.setView(dialogView).create()
             }
         }
-    }
-
-    override fun self(): NormalDialog {
-        return this
     }
 }

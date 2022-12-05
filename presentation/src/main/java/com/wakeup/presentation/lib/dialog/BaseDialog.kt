@@ -9,14 +9,15 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 
-abstract class BaseDialog<T>(protected val context: Context) {
+abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
 
     protected lateinit var builder: AlertDialog.Builder
     protected lateinit var dialog: AlertDialog
     protected lateinit var dialogView: View
 
 
-    protected abstract fun self(): T
+    @Suppress("UNCHECKED_CAST")
+    private fun self(): T = this as T
 
 
     /**

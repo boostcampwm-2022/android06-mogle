@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.EditText
-import com.wakeup.presentation.extension.showKeyBoard
+import com.wakeup.presentation.extension.showKeyboard
 
 
 /**
@@ -39,11 +39,6 @@ class EditDialog private constructor(context: Context) :
         }
     }
 
-    override fun self(): EditDialog {
-        return this
-    }
-
-
     /**
      * dialog 가 나타날 때 키보드를 올린다.
      * @param boolean 키보드를 올릴 지 여부를 결정한다.
@@ -51,7 +46,7 @@ class EditDialog private constructor(context: Context) :
     fun setKeyboardUp(boolean: Boolean): EditDialog {
         if (boolean.not()) return this
         dialog.setOnShowListener {
-            context.showKeyBoard(editText)
+            context.showKeyboard(editText)
         }
         return this
     }

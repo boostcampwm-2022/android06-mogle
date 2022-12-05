@@ -30,7 +30,7 @@ val Int.dp
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), dm)
     } ?: 0f
 
-fun Context.showKeyBoard(editText: EditText) {
+fun Context.showKeyboard(editText: EditText) {
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     editText.requestFocus()
     editText.postDelayed({
@@ -81,6 +81,6 @@ fun getBitMapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
     return bitmap
 }
 
-fun View.snackbar(text: String) {
+fun View.showSnackbar(text: String) {
     Snackbar.make(this, text, Snackbar.LENGTH_SHORT).show()
 }

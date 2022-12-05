@@ -12,7 +12,7 @@ import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.GlobeAdapter
 import com.wakeup.presentation.databinding.FragmentGlobeBinding
 import com.wakeup.presentation.extension.dp
-import com.wakeup.presentation.extension.snackbar
+import com.wakeup.presentation.extension.showSnackbar
 import com.wakeup.presentation.lib.dialog.EditDialog
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -72,7 +72,7 @@ class GlobeFragment : Fragment() {
                 .setOnPositive(R.id.tv_add_globe_add) { dialog ->
                     Timber.d("OK")
                     viewModel.createGlobe(dialog.getTextInEditText())
-                    it.snackbar(getString(R.string.snack_bar_message_add_globe))
+                    it.showSnackbar(getString(R.string.snack_bar_message_add_globe))
                 }
                 .setOnNegative(R.id.tv_add_globe_cancel) {
                     Timber.d("CANCEL")
