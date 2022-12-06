@@ -14,8 +14,7 @@ class PictureAdapter(private val onClickRemovePicture: (picture: PictureModel) -
     class PictureViewHolder private constructor(
         private val binding: ItemPictureBinding,
         private val onClickRemovePicture: (picture: PictureModel) -> Unit,
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.tvRemove.setOnClickListener {

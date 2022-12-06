@@ -15,16 +15,20 @@ import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentInGlobeBinding
 import com.wakeup.presentation.extension.dp
+import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AddMomentInGlobeFragment : Fragment() {
     private val viewModel: AddMomentInGlobeViewModel by viewModels()
     private lateinit var binding: FragmentAddMomentInGlobeBinding
-    private val momentPagingAdapter = MomentPagingAdapter()
+    private val momentPagingAdapter = MomentPagingAdapter { moment ->
+        selectMoment(moment)
+    }
     private val args: AddMomentInGlobeFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -74,5 +78,9 @@ class AddMomentInGlobeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun selectMoment(moment: MomentModel) {
+        Timber.d("${moment} 가 선택되었습니다")
     }
 }
