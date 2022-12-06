@@ -44,9 +44,10 @@ class GlobeDetailFragment : Fragment() {
     }
 
     private fun initToolbar() {
+        val globe = args.globe ?: return
         setToolbar(
             toolbar = binding.tbGlobeDetail,
-            titleString = (args.globe ?: return).name,
+            titleString = globe.name,
             onBackClick = { findNavController().navigateUp() }
         )
         binding.tbGlobeDetail.tbDefault.apply {
@@ -54,8 +55,8 @@ class GlobeDetailFragment : Fragment() {
             setOnMenuItemClickListener { menu ->
                 when (menu.itemId) {
                     R.id.item_globe_detail_add_moment -> {
-                        val action =
-                            GlobeDetailFragmentDirections.actionGlobeDetailFragmentToAddMomentInGlobeFragment()
+                        val action = GlobeDetailFragmentDirections
+                            .actionGlobeDetailFragmentToAddMomentInGlobeFragment(globe.id)
                         findNavController().navigate(action)
                         true
                     }

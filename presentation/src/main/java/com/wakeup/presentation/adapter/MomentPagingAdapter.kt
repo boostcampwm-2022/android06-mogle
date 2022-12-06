@@ -11,6 +11,7 @@ import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ItemMomentBinding
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.ui.home.HomeFragmentDirections
+import timber.log.Timber
 
 class MomentPagingAdapter :
     PagingDataAdapter<MomentModel, MomentPagingAdapter.MomentViewHolder>(MomentDiffCallback) {
@@ -49,6 +50,7 @@ class MomentPagingAdapter :
         }
 
         fun bind(moment: MomentModel) {
+            Timber.d("$moment")
             binding.moment = moment
             binding.executePendingBindings()
         }

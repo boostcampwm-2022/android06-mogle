@@ -60,9 +60,7 @@ class HomeViewModel @Inject constructor(
                 query = searchQuery.value,
                 myLocation = location.value?.toDomain()
             ).map { pagingMoments ->
-                pagingMoments.map { moment ->
-                    moment.toPresentation()
-                }
+                pagingMoments.map { moment -> moment.toPresentation() }
             }
                 .cachedIn(viewModelScope)
                 .first()

@@ -7,7 +7,6 @@ import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.database.entity.LocationEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
-import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -49,6 +48,5 @@ class MomentLocalDataSourceImpl @Inject constructor(
     companion object {
         const val PREFETCH_PAGE = 2
         const val ITEMS_PER_PAGE = 10
-        const val EXIST_INSERT_ERROR_CODE = -1L
     }
 }

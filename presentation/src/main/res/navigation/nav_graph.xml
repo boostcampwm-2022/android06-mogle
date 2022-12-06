@@ -116,5 +116,10 @@
     <fragment
         android:id="@+id/addMomentInGlobeFragment"
         android:name="com.wakeup.presentation.ui.globe.AddMomentInGlobeFragment"
-        android:label="AddMomentInGlobeFragment" />
+        android:label="AddMomentInGlobeFragment">
+        <argument
+            android:name="globeId"
+            app:argType="long"
+            android:defaultValue="-1L"/>
+    </fragment>
 </navigation>

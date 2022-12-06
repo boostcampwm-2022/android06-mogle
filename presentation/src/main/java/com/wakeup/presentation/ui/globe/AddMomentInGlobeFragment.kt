@@ -6,20 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.fragment.navArgs
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentInGlobeBinding
 import com.wakeup.presentation.extension.dp
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddMomentInGlobeFragment : Fragment() {
     private val viewModel: AddMomentInGlobeViewModel by viewModels()
     private lateinit var binding: FragmentAddMomentInGlobeBinding
     private val momentPagingAdapter = MomentPagingAdapter()
+    private val args: AddMomentInGlobeFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +43,8 @@ class AddMomentInGlobeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initToolbar()
         initAdapter()
+        initMoment()
+        collectData()
     }
 
     private fun initToolbar() {
@@ -48,19 +56,23 @@ class AddMomentInGlobeFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        val largeSpan = 5
-        val smallSpan = 3
-        val criteriaWidthDp = 500
-        binding.rvSaveMomentInGlobe.apply {
+        binding.rvAddMomentInGlobe.apply {
             adapter = momentPagingAdapter
-            layoutManager = GridLayoutManager(
-                requireContext(),
-                if (getWidthDp() > criteriaWidthDp) largeSpan else smallSpan
-            )
             addItemDecoration(GridSpaceItemDecoration(12.dp))
         }
     }
 
-    private fun getWidthDp(): Float =
-        resources.displayMetrics.widthPixels / resources.displayMetrics.density
+    private fun initMoment() {
+        viewModel.fetchMomentsNotInGlobe(args.globeId)
+    }
+
+    private fun collectData() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.moments.collectLatest {
+                    momentPagingAdapter.submitData(it)
+                }
+            }
+        }
+    }
 }

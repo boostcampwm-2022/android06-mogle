@@ -17,6 +17,7 @@ import javax.inject.Inject
 class GlobeDetailViewModel @Inject constructor(
     private val getMomentsByGlobeUseCase: GetMomentsByGlobeUseCase
 ) : ViewModel() {
+
     private val _moments = MutableStateFlow<List<MomentModel>>(emptyList())
     val moments = _moments.asStateFlow()
 

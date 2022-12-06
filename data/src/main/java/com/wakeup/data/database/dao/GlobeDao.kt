@@ -1,5 +1,6 @@
 package com.wakeup.data.database.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -34,4 +35,7 @@ interface GlobeDao {
 
     @Query("SELECT COUNT(moment_id) FROM moment_globe WHERE globe_id = :globeId")
     suspend fun getMomentCountByGlobe(globeId: Long): Int
+
+    @Query("SELECT * FROM moment WHERE moment_id NOT IN (SELECT moment_id FROM moment_globe WHERE globe_id = :globeId)")
+    fun getMomentsNotInGlobe(globeId: Long): PagingSource<Int, MomentWithGlobesAndPictures>
 }
