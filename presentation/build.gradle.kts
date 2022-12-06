@@ -92,4 +92,7 @@ dependencies {
 
     // Jsoup
     implementation(Depends.Libraries.jsoup)
+
+    // Splash
+    implementation(Depends.Libraries.splash)
 }
