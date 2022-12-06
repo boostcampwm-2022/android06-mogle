@@ -46,15 +46,17 @@ class GlobeDetailFragment : Fragment() {
     private fun initToolbar() {
         setToolbar(
             toolbar = binding.tbGlobeDetail,
-            titleString = (args.globe?: return).name,
+            titleString = (args.globe ?: return).name,
             onBackClick = { findNavController().navigateUp() }
         )
         binding.tbGlobeDetail.tbDefault.apply {
             inflateMenu(R.menu.menu_globe_detail_toolbar)
             setOnMenuItemClickListener { menu ->
-                when(menu.itemId) {
+                when (menu.itemId) {
                     R.id.item_globe_detail_add_moment -> {
-                        // todo 모먼트 추가하기
+                        val action =
+                            GlobeDetailFragmentDirections.actionGlobeDetailFragmentToAddMomentInGlobeFragment()
+                        findNavController().navigate(action)
                         true
                     }
                     R.id.item_globe_detail_delete_moment -> {

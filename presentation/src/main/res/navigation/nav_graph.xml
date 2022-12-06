@@ -109,5 +109,12 @@
         <action
             android:id="@+id/action_globe_detail_fragment_to_moment_detail_fragment"
             app:destination="@id/moment_detail_fragment" />
+        <action
+            android:id="@+id/action_globe_detail_fragment_to_addMomentInGlobeFragment"
+            app:destination="@id/addMomentInGlobeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addMomentInGlobeFragment"
+        android:name="com.wakeup.presentation.ui.globe.AddMomentInGlobeFragment"
+        android:label="AddMomentInGlobeFragment" />
 </navigation>
