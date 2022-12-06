@@ -6,12 +6,15 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.wakeup.domain.model.SortType
+import com.wakeup.domain.model.WeatherType
 import com.wakeup.domain.usecase.GetAllMomentsUseCase
 import com.wakeup.domain.usecase.GetMomentListUseCase
+import com.wakeup.domain.usecase.weather.GetWeatherDataUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
+import com.wakeup.presentation.model.WeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +30,7 @@ private const val STATE_COLLAPSED = 4
 class HomeViewModel @Inject constructor(
     private val getMomentListUseCase: GetMomentListUseCase,
     private val getAllMomentListUseCase: GetAllMomentsUseCase,
+    private val getWeatherDataUseCase: GetWeatherDataUseCase,
 ) : ViewModel() {
     val allMoments: Flow<List<MomentModel>> = getAllMomentListUseCase.invoke().map { moments ->
         moments.map { moment ->
@@ -49,6 +53,9 @@ class HomeViewModel @Inject constructor(
 
     private val location = MutableStateFlow<LocationModel?>(null)
 
+    private val _weather = MutableStateFlow(WeatherModel(0, WeatherType.NONE, "", 0.0))
+    val weather = _weather.asStateFlow()
+
     init {
         fetchMoments()
     }
@@ -70,6 +77,18 @@ class HomeViewModel @Inject constructor(
 
         fetchLocationState.value = false
         location.value = null
+    }
+
+    fun fetchWeather(location: LocationModel) {
+        viewModelScope.launch {
+            getWeatherDataUseCase(location.toDomain())
+                .onSuccess {
+                    _weather.value = it.toPresentation()
+                }.onFailure {
+                    // TODO UI State 실패 처리하면 좋겠다.
+                    _weather.value = WeatherModel(0, WeatherType.NONE, "", 0.0)
+                }
+        }
     }
 
     fun setSearchQuery(query: String) {

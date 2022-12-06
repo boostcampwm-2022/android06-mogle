@@ -43,6 +43,12 @@ android {
             name = "WEATHER_BASE_URL",
             value ="\"https://api.openweathermap.org/\""
         )
+
+        buildConfigField(
+            type = "String",
+            name = "WEATHER_ICON_BASE_URL",
+            value ="\"https://openweathermap.org/\""
+        )
     }
 
     buildTypes {
