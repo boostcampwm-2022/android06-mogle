@@ -118,8 +118,9 @@
         android:name="com.wakeup.presentation.ui.globe.AddMomentInGlobeFragment"
         android:label="AddMomentInGlobeFragment">
         <argument
-            android:name="globeId"
-            app:argType="long"
-            android:defaultValue="-1L"/>
+            android:name="globe"
+            android:defaultValue="@null"
+            app:argType="com.wakeup.presentation.model.GlobeModel"
+            app:nullable="true" />
     </fragment>
 </navigation>

@@ -20,10 +20,10 @@ import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class AddMomentInGlobeFragment : Fragment() {
+
     private val viewModel: AddMomentInGlobeViewModel by viewModels()
     private lateinit var binding: FragmentAddMomentInGlobeBinding
     private val momentPagingAdapter = MomentPagingAdapter { moment ->
@@ -67,7 +67,7 @@ class AddMomentInGlobeFragment : Fragment() {
     }
 
     private fun initMoment() {
-        viewModel.fetchMomentsNotInGlobe(args.globeId)
+        viewModel.fetchMomentsNotInGlobe(args.globe?.id ?: -1L)
     }
 
     private fun collectData() {
@@ -80,7 +80,7 @@ class AddMomentInGlobeFragment : Fragment() {
         }
     }
 
-    private fun selectMoment(moment: MomentModel) {
-        Timber.d("${moment} 가 선택되었습니다")
+    private fun selectMoment(targetMoment: MomentModel) {
+        targetMoment.isSelected = targetMoment.isSelected.not()
     }
 }

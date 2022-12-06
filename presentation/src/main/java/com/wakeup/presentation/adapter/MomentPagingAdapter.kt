@@ -9,17 +9,23 @@ import com.wakeup.presentation.databinding.ItemMomentBinding
 import com.wakeup.presentation.model.MomentModel
 import timber.log.Timber
 
-class MomentPagingAdapter(private val itemClickListener: (MomentModel) -> Unit) :
-    PagingDataAdapter<MomentModel, MomentPagingAdapter.MomentViewHolder>(MomentDiffCallback) {
+class MomentPagingAdapter(
+    private val itemClickListener: (MomentModel) -> Unit,
+) : PagingDataAdapter<MomentModel, MomentPagingAdapter.MomentViewHolder>(MomentDiffCallback) {
 
     class MomentViewHolder(
         private val binding: ItemMomentBinding,
-        private val itemClickListener: (MomentModel) -> Unit
+        private val itemClickListener: (MomentModel) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
-            itemView.setOnClickListener {
+            itemView.setOnClickListener { item ->
                 binding.moment?.let { moment ->
                     itemClickListener(moment)
+                    if (moment.isSelected) {
+                        item.alpha = SELECTED_ALPHA
+                    } else {
+                        item.alpha = UNSELECTED_ALPHA
+                    }
                 }
             }
         }
@@ -31,6 +37,8 @@ class MomentPagingAdapter(private val itemClickListener: (MomentModel) -> Unit) 
         }
 
         companion object {
+            const val SELECTED_ALPHA = 0.5F
+            const val UNSELECTED_ALPHA = 1F
             fun from(
                 parent: ViewGroup,
                 itemClickListener: (moment: MomentModel) -> Unit,
