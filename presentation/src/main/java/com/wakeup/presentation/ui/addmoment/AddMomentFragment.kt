@@ -18,7 +18,10 @@ import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.PictureAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentBinding
 import com.wakeup.presentation.extension.setNavigationResultToBackStack
+import com.wakeup.presentation.lib.dialog.BaseDialog
+import com.wakeup.presentation.lib.dialog.NormalDialog
 import com.wakeup.presentation.model.PictureModel
+import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -113,10 +116,26 @@ class AddMomentFragment : Fragment() {
                 viewModel.isSaveButtonClicked.collect { isClicked ->
                     if (isClicked.not()) return@collect
                     viewModel.saveMoment()
-                    Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
-                    findNavController().run {
-                        setNavigationResultToBackStack("isUpdated", true)
-                        popBackStack()
+                }
+            }
+        }
+
+        val dialog = NormalDialog.with(requireContext(), R.layout.dialog_loading)
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    if (state is UiState.Loading) {
+                        dialog.show()
+                    } else {
+                        dialog.dismiss()
+                    }
+
+                    if (state is UiState.Success) {
+                        Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
+                        findNavController().run {
+                            setNavigationResultToBackStack("isUpdated", true)
+                            popBackStack()
+                        }
                     }
                 }
             }
