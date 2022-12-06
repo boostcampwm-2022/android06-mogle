@@ -70,18 +70,20 @@ class HomeFragment : Fragment() {
     private fun initBottomSheet() {
         if (childFragmentManager.findFragmentById(R.id.bottom_sheet) == null) {
             val bottomSheetFragment = BottomSheetFragment()
-            childFragmentManager.beginTransaction().add(R.id.bottom_sheet, bottomSheetFragment).commit()
+            childFragmentManager.beginTransaction().add(R.id.bottom_sheet, bottomSheetFragment)
+                .commit()
         }
     }
 
     private fun initLocation() {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireContext())
     }
 
     private fun hasLocationPermissions(): Boolean {
         if (ActivityCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
         ) {
             return false
@@ -120,7 +122,7 @@ class HomeFragment : Fragment() {
     // 따로 함수로 빼니까, 권한 확인을 했는지 IDE가 인식을 못합니다.
     @SuppressLint("MissingPermission")
     private fun fetchWeather() {
-        if (hasLocationPermissions())  {
+        if (hasLocationPermissions()) {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     viewModel.fetchWeather(LocationModel(location.latitude, location.longitude))

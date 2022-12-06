@@ -1,5 +1,6 @@
 package com.wakeup.data.network.mapper
 
+import com.wakeup.data.BuildConfig
 import com.wakeup.data.network.request.LocationRequest
 import com.wakeup.data.network.response.WeatherResponse
 import com.wakeup.domain.model.Location
@@ -9,7 +10,7 @@ fun WeatherResponse.toDomain(): Weather {
     return Weather(
         id = id,
         type = type,
-        iconUrl = "https://openweathermap.org/img/wn/$icon@4x.png",
+        iconUrl = "${BuildConfig.WEATHER_ICON_BASE_URL}img/wn/$icon@4x.png",
         temperature = temperature
     )
 }
