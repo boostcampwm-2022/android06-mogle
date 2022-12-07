@@ -4,12 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.JavascriptInterface
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.naver.maps.geometry.LatLng
@@ -22,10 +18,10 @@ import com.naver.maps.map.overlay.Marker
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentPlaceCheckBinding
 import com.wakeup.presentation.util.setToolbar
-import kotlinx.coroutines.launch
-import org.jsoup.Jsoup
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding: FragmentPlaceCheckBinding
@@ -51,7 +47,6 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
         initMap()
         initDialog()
         initToolbar()
-        initCrawling()
 
     }
 
@@ -72,6 +67,11 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
             }
 
         mapFragment.getMapAsync(this)
+    }
+
+    override fun onMapReady(naverMap: NaverMap) {
+        initCameraUpdate(naverMap)
+        initMaker(naverMap)
     }
 
     private fun initMaker(naverMap: NaverMap) {
@@ -108,53 +108,5 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
             titleId = R.string.place_check,
             onBackClick = { findNavController().navigateUp() }
         )
-    }
-
-    private fun initCrawling() {
-        binding.wvCrawling.apply {
-            settings.javaScriptEnabled = true
-            addJavascriptInterface(CrawlingInterface(), "Android")
-            webViewClient = object : WebViewClient() {
-                override fun onPageFinished(view: WebView, url: String) {
-                    super.onPageFinished(view, url)
-
-                    getHtmlFromPage(view)
-                }
-            }
-            loadUrl(args.place.placeUrl)
-        }
-    }
-
-    private fun getHtmlFromPage(view: WebView) {
-        view.loadUrl("javascript:window.Android.getHtml(document.getElementsByTagName('div')[1].innerHTML);")
-    }
-
-    inner class CrawlingInterface {
-        @JavascriptInterface
-        fun getHtml(html: String) {
-
-            if (html.contains("box_photo").not()) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    getHtmlFromPage(binding.wvCrawling)
-                }
-                return
-            }
-
-            val query = ".box_photo"
-            val attributeKey = "style"
-            runCatching {
-                Jsoup.parse(html).select(query).attr(attributeKey)
-            }.onSuccess {
-                val imageUrl = it.ifEmpty {
-                    null
-                }?.substringAfter("'")?.substringBefore("'")
-                viewModel.setImageUrl(imageUrl)
-            }
-        }
-    }
-
-    override fun onMapReady(naverMap: NaverMap) {
-        initCameraUpdate(naverMap)
-        initMaker(naverMap)
     }
 }
