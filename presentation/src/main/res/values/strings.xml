@@ -56,6 +56,8 @@
 
     <string name="add_moment_in_globe">모먼트 추가하기</string>
 
+    <string name="temperature_celsius">%.1f°C</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="empty_moment_list">지금 이 순간을 기록해보세요.</string>

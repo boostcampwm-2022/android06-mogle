@@ -48,6 +48,11 @@
         <item name="android:textAppearance">@style/TextAppearance.Mogle.Title</item>
     </style>
 
+    <style name="TextAppearance.Mogle.Temperature" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="MomentCheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:button">@drawable/checkbox_selector</item>
         <item name="background">@drawable/bg_text_indicator</item>
