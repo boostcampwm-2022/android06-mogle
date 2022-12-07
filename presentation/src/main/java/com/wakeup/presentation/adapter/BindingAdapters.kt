@@ -13,7 +13,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.wakeup.presentation.R
 import com.wakeup.presentation.model.GlobeModel
-import com.wakeup.presentation.model.PictureModel
 import timber.log.Timber
 import java.io.File
 
@@ -28,12 +27,7 @@ fun bindSubmitList(view: RecyclerView, itemList: List<Any>?) {
 @BindingAdapter("submitList")
 fun bindSubmitList(view: ViewPager2, itemList: List<Any>?) {
     view.adapter?.let {
-        val adapter = (view.adapter as ListAdapter<Any, *>)
-
-        if (itemList != null) {
-            if (itemList.isEmpty()) adapter.submitList(listOf(PictureModel("null")))
-            else adapter.submitList(itemList)
-        }
+        (view.adapter as ListAdapter<Any, *>).submitList(itemList)
     }
 }
 
