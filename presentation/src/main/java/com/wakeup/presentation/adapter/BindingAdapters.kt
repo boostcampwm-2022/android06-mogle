@@ -12,8 +12,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.wakeup.presentation.R
-import com.wakeup.presentation.extension.getBitMapFromVectorDrawable
 import com.wakeup.presentation.model.GlobeModel
+import com.wakeup.presentation.model.PictureModel
 import timber.log.Timber
 import java.io.File
 
@@ -27,20 +27,13 @@ fun bindSubmitList(view: RecyclerView, itemList: List<Any>?) {
 
 @BindingAdapter("submitList")
 fun bindSubmitList(view: ViewPager2, itemList: List<Any>?) {
-    // TODO fallback 이미지 vector와 png 같이 쓸건지 고민 - 벡터 변환 함수가 필요해서.
     view.adapter?.let {
-        itemList?.let { itemList ->
-            if (itemList.isEmpty()) {
-                val fallbackBitmap =
-                    getBitMapFromVectorDrawable(view.context, R.drawable.ic_no_image)
-                //(view.adapter as ListAdapter<Any, *>).submitList(listOf(PictureModel(fallbackBitmap)))
-            } else {
-                (view.adapter as ListAdapter<Any, *>).submitList(itemList)
-            }
+        val adapter = (view.adapter as ListAdapter<Any, *>)
+
+        if (itemList != null) {
+            if (itemList.isEmpty()) adapter.submitList(listOf(PictureModel("null")))
+            else adapter.submitList(itemList)
         }
-    } ?: run {
-        val fallbackBitmap = getBitMapFromVectorDrawable(view.context, R.drawable.ic_no_image)
-        //(view.adapter as ListAdapter<Any, *>).submitList(listOf(PictureModel(fallbackBitmap)))
     }
 }
 
@@ -69,13 +62,13 @@ fun bindThumbnailImageFromFile(view: ImageView, filePath: String?) {
 }
 
 fun bindImageFromFile(view: ImageView, filePath: String?, width: Int, height: Int) {
-    Timber.d(filePath)
     val url = "${view.context.filesDir}/" + "images/" + "$filePath"
     Timber.d(url)
     Glide.with(view.context)
         .load(File(url))
+        .placeholder(R.drawable.ic_no_image)
         .fallback(R.drawable.ic_no_image)
-        .timeout(500)
+        .error(R.drawable.ic_no_image)
         .override(width, height)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(view)
@@ -86,6 +79,7 @@ fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap?) {
     Glide.with(view.context)
         .load(bitmap)
         .fallback(R.drawable.ic_no_image)
+        .error(R.drawable.ic_no_image)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(view)
 }
@@ -95,6 +89,7 @@ fun bindImageFromUrl(view: ImageView, url: String?) {
     Glide.with(view.context)
         .load(url)
         .fallback(R.drawable.ic_no_image)
+        .error(R.drawable.ic_no_image)
         .transition(DrawableTransitionOptions.withCrossFade())
         .override(200, 200)
         .into(view)

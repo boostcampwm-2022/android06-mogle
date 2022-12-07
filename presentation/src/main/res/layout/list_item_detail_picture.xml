@@ -15,5 +15,5 @@
         android:layout_height="match_parent"
         app:contentImageFromFilePath="@{pictureModel.path}"
         android:scaleType="centerCrop"
-        tools:src="@drawable/sample_image" />
+        tools:src="@drawable/ic_no_image" />
 </layout>
