@@ -17,5 +17,7 @@ interface GlobeRepository {
 
     fun getMomentsByGlobe(globeId: Long): Flow<PagingData<Moment>>
 
+    suspend fun getFirstMomentByGlobe(globeId: Long): Moment?
+
     suspend fun getMomentCountByGlobe(globeId: Long): Int
 }

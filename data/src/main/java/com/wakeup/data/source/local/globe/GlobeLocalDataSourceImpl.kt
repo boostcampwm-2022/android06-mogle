@@ -39,6 +39,9 @@ class GlobeLocalDataSourceImpl @Inject constructor(
             pagingSourceFactory = { globeDao.getMomentsByGlobe(globeId) }
         ).flow
 
+    override suspend fun getFirstMomentByGlobe(globeId: Long): MomentWithGlobesAndPictures? {
+        return globeDao.getFirstMomentByGlobe(globeId)
+    }
 
     override suspend fun getMomentCountByGlobe(globeId: Long): Int {
         return globeDao.getMomentCountByGlobe(globeId)

@@ -1,11 +1,9 @@
 package com.wakeup.domain.usecase.globe
 
-import androidx.paging.PagingData
 import com.wakeup.domain.model.Globe
 import com.wakeup.domain.model.Moment
 import com.wakeup.domain.repository.GlobeRepository
 import com.wakeup.domain.repository.RelationRepository
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class DeleteMomentInGlobeUseCase @Inject constructor(
@@ -15,8 +13,12 @@ class DeleteMomentInGlobeUseCase @Inject constructor(
     suspend operator fun invoke(moment: Moment, globe: Globe) {
         relationRepository.deleteMomentGlobeXRef(moment.id, globe.id)
 
-        if (globeRepository.getMomentsByGlobe(globe.id).first() == PagingData.empty<Moment>()) {
+        val firstMoment = globeRepository.getFirstMomentByGlobe(globe.id)
+
+        if (firstMoment == null) {
             globeRepository.updateGlobe(globe.copy(thumbnail = null))
+        } else {
+            globeRepository.updateGlobe(globe.copy(thumbnail = firstMoment.pictures.first()))
         }
     }
 }

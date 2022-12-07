@@ -39,6 +39,9 @@ class GlobeRepositoryImpl @Inject constructor(
             pagingData.map { momentEntity -> momentEntity.toDomain() }
         }
 
+    override suspend fun getFirstMomentByGlobe(globeId: Long): Moment? {
+        return globeLocalDataSource.getFirstMomentByGlobe(globeId)?.toDomain()
+    }
 
     override suspend fun getMomentCountByGlobe(globeId: Long): Int {
         return globeLocalDataSource.getMomentCountByGlobe(globeId)
