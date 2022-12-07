@@ -1,5 +1,6 @@
 package com.wakeup.domain.repository
 
+import androidx.paging.PagingData
 import com.wakeup.domain.model.Globe
 import com.wakeup.domain.model.Moment
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +17,7 @@ interface GlobeRepository {
 
     fun getGlobes(): Flow<List<Globe>>
 
-    fun getMomentsByGlobe(globeId: Long): Flow<List<Moment>>
+    fun getMomentsByGlobe(globeId: Long): Flow<PagingData<Moment>>
 
     suspend fun getMomentCountByGlobe(globeId: Long): Int
 }

@@ -1,5 +1,7 @@
 package com.wakeup.data.repository
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.wakeup.data.database.mapper.toDomain
 import com.wakeup.data.database.mapper.toEntity
 import com.wakeup.data.source.local.globe.GlobeLocalDataSource
@@ -36,11 +38,11 @@ class GlobeRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMomentsByGlobe(globeId: Long): Flow<List<Moment>> {
-        return globeLocalDataSource.getMomentsByGlobe(globeId).map { momentXRefs ->
-            momentXRefs.map { momentEntity -> momentEntity.toDomain() }
+    override fun getMomentsByGlobe(globeId: Long): Flow<PagingData<Moment>> =
+        globeLocalDataSource.getMomentsByGlobe(globeId).map { pagingData ->
+            pagingData.map { momentEntity -> momentEntity.toDomain() }
         }
-    }
+
 
     override suspend fun getMomentCountByGlobe(globeId: Long): Int {
         return globeLocalDataSource.getMomentCountByGlobe(globeId)

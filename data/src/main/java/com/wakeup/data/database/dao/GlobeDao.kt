@@ -1,5 +1,6 @@
 package com.wakeup.data.database.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -30,7 +31,7 @@ interface GlobeDao {
 
     @Transaction
     @Query("SELECT * FROM moment WHERE moment_id IN (SELECT moment_id FROM moment_globe WHERE globe_id = :globeId)")
-    fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>>
+    fun getMomentsByGlobe(globeId: Long): PagingSource<Int, MomentWithGlobesAndPictures>
 
     @Query("SELECT COUNT(moment_id) FROM moment_globe WHERE globe_id = :globeId")
     suspend fun getMomentCountByGlobe(globeId: Long): Int
