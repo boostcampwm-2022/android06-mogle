@@ -1,5 +1,6 @@
 package com.wakeup.presentation.ui.addmoment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import com.wakeup.presentation.lib.dialog.BaseDialog
 import com.wakeup.presentation.lib.dialog.NormalDialog
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.ui.UiState
+import com.wakeup.presentation.util.UPDATE_MOMENTS_KEY
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -132,10 +134,9 @@ class AddMomentFragment : Fragment() {
 
                     if (state is UiState.Success) {
                         Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
-                        findNavController().run {
-                            setNavigationResultToBackStack("isUpdated", true)
-                            popBackStack()
-                        }
+                        val intent = Intent(UPDATE_MOMENTS_KEY)
+                        requireContext().sendBroadcast(intent)
+                        findNavController().popBackStack()
                     }
                 }
             }

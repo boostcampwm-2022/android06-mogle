@@ -1,5 +1,9 @@
 package com.wakeup.presentation.ui.home
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +20,7 @@ import com.wakeup.presentation.extension.hideKeyboard
 import com.wakeup.presentation.ui.MainActivity
 import com.wakeup.presentation.ui.home.map.MapFragment
 import com.wakeup.presentation.ui.home.sheet.BottomSheetFragment
+import com.wakeup.presentation.util.UPDATE_MOMENTS_KEY
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,11 +29,14 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
 
+    lateinit var broadcastReceiver: BroadcastReceiver
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initMap()
         initBottomSheet()
+        initializeBroadcastReceiver()
     }
 
     override fun onCreateView(
@@ -44,7 +52,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setSearchBarListener()
-        updateMoments()
     }
 
     private fun initMap() {
@@ -78,15 +85,19 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun updateMoments() {
-        findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
-            ?.observe(viewLifecycleOwner) { isUpdated ->
-                viewModel.setScrollToTop(isUpdated)
-                if (isUpdated) {
-                    viewModel.sortType.value = SortType.MOST_RECENT
-                    viewModel.fetchMoments()
-                }
+    private fun initializeBroadcastReceiver() {
+        broadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                viewModel.setScrollToTop(true)
+                viewModel.sortType.value = SortType.MOST_RECENT
+                viewModel.fetchMoments()
             }
+        }
+
+        requireActivity().registerReceiver(
+            broadcastReceiver,
+            IntentFilter(UPDATE_MOMENTS_KEY)
+        )
     }
 
     override fun onDestroyView() {
