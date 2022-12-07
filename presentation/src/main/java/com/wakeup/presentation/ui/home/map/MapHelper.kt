@@ -36,6 +36,7 @@ import com.wakeup.presentation.extension.dp
 import com.wakeup.presentation.extension.getFadeOutAnimator
 import com.wakeup.presentation.extension.setListener
 import com.wakeup.presentation.model.MomentModel
+import com.wakeup.presentation.model.PictureModel
 
 class MapHelper(private val context: Context) {
     /**
@@ -223,34 +224,42 @@ class MapHelper(private val context: Context) {
             }
         }
 
-        momentModel.pictures.takeIf { it.isNotEmpty() }?.let {
-            Glide.with(context)
-                .load("${context.filesDir}/images/${it.first().path}")
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean,
-                    ): Boolean = false
-
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean,
-                    ): Boolean {
-                        markerBinding.ivThumbnail.setImageDrawable(resource)
-                        setMarker(momentModel, markerBinding.root)
-                        return true
-                    }
-                })
-                .into(markerBinding.ivThumbnail)
-        } ?: kotlin.run {
-            markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
-            setMarker(momentModel, markerBinding.root)
+        // 이미지가 없으면, path를 파일이 없는 경로로 지정하여,
+        // onLoadFailed() 유도 -> 기본 이미지 출력
+        val picture = if (momentModel.pictures.isEmpty()) {
+            PictureModel(NO_IMAGE)
+        } else {
+            momentModel.pictures.first()
         }
+
+        Glide.with(context)
+            .load("${context.filesDir}/images/${picture.path}")
+            .listener(object : RequestListener<Drawable> {
+                // 이미지가 애초에 없거나, 이미지가 있는데도 로드 실패시 기본 이미지 출력
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean,
+                ): Boolean {
+                    markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
+                    setMarker(momentModel, markerBinding.root)
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean,
+                ): Boolean {
+                    markerBinding.ivThumbnail.setImageDrawable(resource)
+                    setMarker(momentModel, markerBinding.root)
+                    return true
+                }
+            })
+            .into(markerBinding.ivThumbnail)
     }
 
     /**
@@ -304,5 +313,7 @@ class MapHelper(private val context: Context) {
         const val Z_INDEX_BACK = 0
         const val POINT_X = 0.5f
         const val POINT_Y = 0.95f
+
+        const val NO_IMAGE = "NULL_PATH"
     }
 }
