@@ -144,14 +144,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 binding.momentModel = (tag as MomentModel)
             }
 
-            binding.momentPreview.root.let {
-                it.isVisible = true
-                it.getFadeInAnimator(MOMENT_PREVIEW_ANIM_DURATION).start()
+            binding.momentPreview.root.apply {
+                isVisible = true
+                getFadeInAnimator(MOMENT_PREVIEW_ANIM_DURATION).start()
             }
             true
         }
 
-        mapHelper.setMarker(naverMap, moment, clickListener)
+        mapHelper.setMomentMarker(naverMap, moment, clickListener)
     }
 
     // Deprecated 되었지만,

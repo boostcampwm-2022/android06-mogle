@@ -4,11 +4,16 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.PointF
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraPosition
@@ -33,9 +38,6 @@ import com.wakeup.presentation.extension.setListener
 import com.wakeup.presentation.model.MomentModel
 
 class MapHelper(private val context: Context) {
-    private val markerBinding =
-        ItemMapMarkerBinding.inflate(LayoutInflater.from(context), null, false)
-
     /**
      * 현재 포커싱 된 마커 객체
      */
@@ -199,27 +201,55 @@ class MapHelper(private val context: Context) {
      * @param momentModel 모먼트 데이터
      * @param clickListener 마커 클릭 리스너
      */
-    fun setMarker(_map: NaverMap, momentModel: MomentModel, clickListener: OnClickListener) {
-        momentModel.pictures.takeIf { it.isNotEmpty() }?.let {
-            markerBinding.ivThumbnail.setImageURI(("${context.filesDir}/images/${it.first().path}").toUri())
-        } ?: kotlin.run {
-            markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
+    fun setMomentMarker(_map: NaverMap, momentModel: MomentModel, clickListener: OnClickListener) {
+        val markerBinding =
+            ItemMapMarkerBinding.inflate(LayoutInflater.from(context), null, false)
+
+        val setMarker = { moment: MomentModel, view: View ->
+            Marker().apply {
+                width = MARKER_WIDTH.dp.toInt()
+                height = MARKER_HEIGHT.dp.toInt()
+                anchor = PointF(POINT_X, POINT_Y)
+                position = LatLng(
+                    moment.place.location.latitude,
+                    moment.place.location.longitude
+                )
+                isHideCollidedSymbols = true
+                isIconPerspectiveEnabled = true
+                map = _map
+                icon = OverlayImage.fromView(view)
+                tag = moment
+                onClickListener = clickListener
+            }
         }
 
-        Marker().apply {
-            width = MARKER_WIDTH.dp.toInt()
-            height = MARKER_HEIGHT.dp.toInt()
-            anchor = PointF(POINT_X, POINT_Y)
-            position = LatLng(
-                momentModel.place.location.latitude,
-                momentModel.place.location.longitude
-            )
-            isHideCollidedSymbols = true
-            isIconPerspectiveEnabled = true
-            map = _map
-            icon = OverlayImage.fromView(markerBinding.root)
-            tag = momentModel
-            onClickListener = clickListener
+        momentModel.pictures.takeIf { it.isNotEmpty() }?.let {
+            Glide.with(context)
+                .load("${context.filesDir}/images/${it.first().path}")
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean,
+                    ): Boolean = false
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean,
+                    ): Boolean {
+                        markerBinding.ivThumbnail.setImageDrawable(resource)
+                        setMarker(momentModel, markerBinding.root)
+                        return true
+                    }
+                })
+                .into(markerBinding.ivThumbnail)
+        } ?: kotlin.run {
+            markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
+            setMarker(momentModel, markerBinding.root)
         }
     }
 
@@ -242,7 +272,8 @@ class MapHelper(private val context: Context) {
      * @param clickListener 마커 클릭 리스너
      */
     fun setTestMarker(_map: NaverMap, clickListener: OnClickListener) {
-        markerBinding.ivThumbnail.setImageResource(R.drawable.sample_image)
+        val markerBinding =
+            ItemMapMarkerBinding.inflate(LayoutInflater.from(context), null, false)
         repeat(10) {
             Marker().apply {
                 width = MARKER_WIDTH.dp.toInt()
