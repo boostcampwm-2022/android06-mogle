@@ -4,19 +4,25 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.wakeup.domain.model.SortType
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentHomeBinding
-import com.wakeup.presentation.extension.getNavigationResultFromTop
 import com.wakeup.presentation.extension.hideKeyboard
+import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
 import com.wakeup.presentation.ui.home.map.MapFragment
 import com.wakeup.presentation.ui.home.sheet.BottomSheetFragment
@@ -30,12 +36,14 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
 
     lateinit var broadcastReceiver: BroadcastReceiver
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initMap()
         initBottomSheet()
+        initLocation()
         initializeBroadcastReceiver()
     }
 
@@ -45,6 +53,7 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
         return binding.root
     }
 
@@ -52,6 +61,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setSearchBarListener()
+        fetchWeather()
     }
 
     private fun initMap() {
@@ -64,8 +74,25 @@ class HomeFragment : Fragment() {
     private fun initBottomSheet() {
         if (childFragmentManager.findFragmentById(R.id.bottom_sheet) == null) {
             val bottomSheetFragment = BottomSheetFragment()
-            childFragmentManager.beginTransaction().add(R.id.bottom_sheet, bottomSheetFragment).commit()
+            childFragmentManager.beginTransaction().add(R.id.bottom_sheet, bottomSheetFragment)
+                .commit()
         }
+    }
+
+    private fun initLocation() {
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireContext())
+    }
+
+    private fun hasLocationPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return false
+        }
+        return true
     }
 
     private fun setSearchBarListener() {
@@ -99,6 +126,18 @@ class HomeFragment : Fragment() {
             broadcastReceiver,
             IntentFilter(UPDATE_MOMENTS_KEY)
         )
+    }
+
+    // 따로 함수로 빼니까, 권한 확인을 했는지 IDE가 인식을 못합니다.
+    @SuppressLint("MissingPermission")
+    private fun fetchWeather() {
+        if (hasLocationPermissions()) {
+            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    viewModel.fetchWeather(LocationModel(location.latitude, location.longitude))
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

@@ -1,13 +1,11 @@
 package com.wakeup.presentation.ui
 
 import android.animation.ObjectAnimator
-import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AnticipateInterpolator
-import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity

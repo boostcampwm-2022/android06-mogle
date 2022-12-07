@@ -10,7 +10,7 @@ fun WeatherResponse.toDomain(): Weather {
     return Weather(
         id = id,
         type = type,
-        iconUrl = "${BuildConfig.WEATHER_BASE_URL}img/w/$icon.png",
+        iconUrl = "${BuildConfig.WEATHER_ICON_BASE_URL}img/wn/$icon@4x.png",
         temperature = temperature
     )
 }
