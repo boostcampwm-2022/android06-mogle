@@ -7,7 +7,6 @@ import com.wakeup.data.database.dao.MomentDao
 import com.wakeup.data.database.entity.LocationEntity
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
-import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -41,6 +40,10 @@ class MomentLocalDataSourceImpl @Inject constructor(
 
     override fun getAllMoments(): Flow<List<MomentWithGlobesAndPictures>> =
         momentDao.getAllMoments()
+
+    override suspend fun getMoment(id: Long): MomentWithGlobesAndPictures {
+        return momentDao.getMoment(id)
+    }
 
     override suspend fun saveMoment(moment: MomentEntity): Long {
         return momentDao.saveMoment(moment)
