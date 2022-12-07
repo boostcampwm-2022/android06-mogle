@@ -69,12 +69,13 @@ class GlobeFragment : Fragment() {
         binding.ivAddGlobeButton.setOnClickListener {
             EditDialog
                 .with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
-                .setOnPositive(R.id.tv_add_globe_add) { dialog ->
+                .setTitle(R.id.tv_add_globe_title, getString(R.string.add_globe_dialog_title))
+                .setOnPositive(R.id.tv_add_globe_add, getString(R.string.add)) { dialog ->
                     Timber.d("OK")
                     viewModel.createGlobe(dialog.getTextInEditText())
                     it.showSnackbar(getString(R.string.snack_bar_message_add_globe))
                 }
-                .setOnNegative(R.id.tv_add_globe_cancel) {
+                .setOnNegative(R.id.tv_add_globe_cancel, getString(R.string.cancel)) {
                     Timber.d("CANCEL")
                 }
                 .setKeyboardUp(true)

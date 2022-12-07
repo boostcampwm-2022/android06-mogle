@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,16 +14,24 @@ import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.GlobeDetailAdapter
 import com.wakeup.presentation.databinding.FragmentGlobeDetailBinding
 import com.wakeup.presentation.extension.dp
+import com.wakeup.presentation.extension.showSnackbar
+import com.wakeup.presentation.lib.dialog.EditDialog
+import com.wakeup.presentation.model.GlobeModel
+import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class GlobeDetailFragment : Fragment() {
 
     private val viewModel: GlobeDetailViewModel by viewModels()
     private lateinit var binding: FragmentGlobeDetailBinding
-    private val globeDetailGirdAdapter = GlobeDetailAdapter()
+    private val globeDetailGirdAdapter = GlobeDetailAdapter { moment ->
+        changeMomentGlobeTitle(moment)
+    }
     private val args: GlobeDetailFragmentArgs by navArgs()
+    private var resultTitle: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,18 +47,22 @@ class GlobeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initToolbar()
+        initToolbar(resultTitle ?: (args.globe ?: return).name)
+        initToolbarMenu()
         initAdapter()
         initMoment()
     }
 
-    private fun initToolbar() {
-        val globe = args.globe ?: return
+    private fun initToolbar(title: String) {
         setToolbar(
             toolbar = binding.tbGlobeDetail,
-            titleString = globe.name,
+            titleString = title,
             onBackClick = { findNavController().navigateUp() }
         )
+    }
+
+    private fun initToolbarMenu() {
+        val globe = args.globe ?: return
         binding.tbGlobeDetail.tbDefault.apply {
             inflateMenu(R.menu.menu_globe_detail_toolbar)
             setOnMenuItemClickListener { menu ->
@@ -66,7 +79,7 @@ class GlobeDetailFragment : Fragment() {
                     }
 
                     R.id.item_globe_detail_update_globe -> {
-                        // todo 글로브 이름 변경하기
+                        showDialog(globe, this)
                         true
                     }
                     R.id.item_globe_detail_delete_globe -> {
@@ -77,6 +90,31 @@ class GlobeDetailFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showDialog(globe: GlobeModel, toolbar: Toolbar) {
+        EditDialog
+            .with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
+            .setTitle(R.id.tv_add_globe_title,
+                getString(R.string.update_globe_name_dialog_title))
+            .setOnPositive(R.id.tv_add_globe_add, getString(R.string.update)) { dialog ->
+                resultTitle = dialog.getTextInEditText()
+                val replaceTitle = (args.globe ?: return@setOnPositive).name
+                viewModel.updateGlobeTitle(globe, resultTitle ?: replaceTitle)
+                toolbar.showSnackbar(getString(R.string.snack_bar_message_update_globe_name))
+                initToolbar((resultTitle ?: args.globe ?: replaceTitle) as String)
+            }
+            .setOnNegative(R.id.tv_add_globe_cancel, getString(R.string.cancel)) {
+                Timber.d("CANCEL")
+            }
+            .setKeyboardUp(true)
+            .show()
+    }
+
+    private fun changeMomentGlobeTitle(moment: MomentModel): MomentModel {
+        return moment.copy(
+            globes = moment.globes.map { globe -> globe.copy(name = resultTitle ?: globe.name) }
+        )
     }
 
     private fun initAdapter() {
