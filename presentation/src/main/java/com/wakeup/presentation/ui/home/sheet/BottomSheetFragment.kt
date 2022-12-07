@@ -30,7 +30,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     lateinit var binding: FragmentBottomSheetBinding
     private val viewModel: HomeViewModel by viewModels({ requireParentFragment() })
-    private val momentAdapter = MomentPagingAdapter { moment ->
+    private val momentAdapter = MomentPagingAdapter(isSelectable = false) { moment ->
         navigateToMoment(moment)
     }
 

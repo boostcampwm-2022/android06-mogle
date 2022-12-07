@@ -2,6 +2,7 @@ package com.wakeup.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,22 +11,23 @@ import com.wakeup.presentation.model.MomentModel
 import timber.log.Timber
 
 class MomentPagingAdapter(
+    private val isSelectable: Boolean,
     private val itemClickListener: (MomentModel) -> Unit,
 ) : PagingDataAdapter<MomentModel, MomentPagingAdapter.MomentViewHolder>(MomentDiffCallback) {
 
     class MomentViewHolder(
         private val binding: ItemMomentBinding,
-        private val itemClickListener: (MomentModel) -> Unit,
+        itemClickListener: (MomentModel) -> Unit,
+        isSelectable: Boolean,
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
-            itemView.setOnClickListener { item ->
+            if (isSelectable) {
+                binding.cbSelectMoment.isVisible = true
+                binding.viewBlockMoment.isVisible = true
+            }
+            itemView.setOnClickListener {
                 binding.moment?.let { moment ->
                     itemClickListener(moment)
-                    if (moment.isSelected) {
-                        item.alpha = SELECTED_ALPHA
-                    } else {
-                        item.alpha = UNSELECTED_ALPHA
-                    }
                 }
             }
         }
@@ -33,26 +35,28 @@ class MomentPagingAdapter(
         fun bind(moment: MomentModel) {
             Timber.d("$moment")
             binding.moment = moment
+            binding.cbSelectMoment.isChecked = moment.isSelected
+            binding.viewBlockMoment.isVisible = moment.isSelected.not()
             binding.executePendingBindings()
         }
 
         companion object {
-            const val SELECTED_ALPHA = 0.5F
-            const val UNSELECTED_ALPHA = 1F
             fun from(
                 parent: ViewGroup,
                 itemClickListener: (moment: MomentModel) -> Unit,
+                isSelectable: Boolean,
             ): MomentViewHolder {
                 return MomentViewHolder(
                     ItemMomentBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                    itemClickListener
+                    itemClickListener,
+                    isSelectable
                 )
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MomentViewHolder {
-        return MomentViewHolder.from(parent, itemClickListener)
+        return MomentViewHolder.from(parent, itemClickListener, isSelectable)
     }
 
     override fun onBindViewHolder(holder: MomentViewHolder, position: Int) {
