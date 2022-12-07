@@ -27,7 +27,7 @@ class MainViewModel @Inject constructor(
     private val _isReady = MutableStateFlow(false)
     val isReady = _isReady.asStateFlow()
 
-    val allMoments: Flow<List<MomentModel>?> = getAllMomentListUseCase.invoke().map { moments ->
+    val allMoments: Flow<List<MomentModel>?> = getAllMomentListUseCase("").map { moments ->
         moments.map { moment ->
             moment.toPresentation()
         }

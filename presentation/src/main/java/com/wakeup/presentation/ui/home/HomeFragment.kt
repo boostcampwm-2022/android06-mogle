@@ -78,6 +78,7 @@ class HomeFragment : Fragment() {
                 viewModel.setScrollToTop(true)
                 viewModel.setSearchQuery(textView.text.toString())
                 viewModel.fetchMoments()
+                viewModel.fetchAllMoments()
 
                 hideKeyboard()
             }
