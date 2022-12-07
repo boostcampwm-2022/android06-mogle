@@ -56,7 +56,7 @@ class GlobeDetailFragment : Fragment() {
                 when (menu.itemId) {
                     R.id.item_globe_detail_add_moment -> {
                         val action = GlobeDetailFragmentDirections
-                            .actionGlobeDetailFragmentToAddMomentInGlobeFragment(globe.id)
+                            .actionGlobeDetailFragmentToAddMomentInGlobeFragment(globe)
                         findNavController().navigate(action)
                         true
                     }

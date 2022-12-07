@@ -48,4 +48,6 @@
         <item name="android:textAppearance">@style/TextAppearance.Mogle.Title</item>
     </style>
 
+    <!-- 클릭했을 때 전체적으로 회색 빛 보여주고, 체크박스 추가, 추가 버튼은 툴바 -->
+
 </resources>
