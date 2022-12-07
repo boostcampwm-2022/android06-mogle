@@ -1,7 +1,7 @@
 package com.wakeup.presentation.ui.globe
 
 import androidx.lifecycle.ViewModel
-import com.wakeup.domain.usecase.GetMomentsByGlobeUseCase
+import com.wakeup.domain.usecase.globe.GetMomentsByGlobeUseCase
 import com.wakeup.presentation.model.MomentModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -4,8 +4,8 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.wakeup.domain.usecase.GetGlobesUseCase
-import com.wakeup.domain.usecase.SaveMomentUseCase
+import com.wakeup.domain.usecase.globe.GetGlobesUseCase
+import com.wakeup.domain.usecase.moment.SaveMomentUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.GlobeModel

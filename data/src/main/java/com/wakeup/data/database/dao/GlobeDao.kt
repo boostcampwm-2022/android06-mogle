@@ -26,9 +26,6 @@ interface GlobeDao {
     @Query("SELECT * FROM globe")
     fun getGlobes(): Flow<List<GlobeEntity>>
 
-    @Query("SELECT globe_id FROM globe WHERE name = :name")
-    suspend fun getGlobeIdByName(name: String): Long
-
     @Transaction
     @Query("SELECT * FROM moment WHERE moment_id IN (SELECT moment_id FROM moment_globe WHERE globe_id = :globeId)")
     fun getMomentsByGlobe(globeId: Long): PagingSource<Int, MomentWithGlobesAndPictures>

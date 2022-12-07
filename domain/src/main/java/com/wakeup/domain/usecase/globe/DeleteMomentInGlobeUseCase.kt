@@ -1,4 +1,4 @@
-package com.wakeup.domain.usecase
+package com.wakeup.domain.usecase.globe
 
 import com.wakeup.domain.repository.RelationRepository
 import javax.inject.Inject

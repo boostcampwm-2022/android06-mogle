@@ -25,10 +25,6 @@ class GlobeLocalDataSourceImpl @Inject constructor(
         globeDao.updateGlobe(globe)
     }
 
-    override suspend fun getGlobeIdByName(globeName: String): Long {
-        return globeDao.getGlobeIdByName(globeName)
-    }
-
     override fun getGlobes(): Flow<List<GlobeEntity>> {
         return globeDao.getGlobes()
     }

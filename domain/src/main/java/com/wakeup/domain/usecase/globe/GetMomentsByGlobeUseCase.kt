@@ -1,4 +1,4 @@
-package com.wakeup.domain.usecase
+package com.wakeup.domain.usecase.globe
 
 import androidx.paging.PagingData
 import com.wakeup.domain.model.Moment
