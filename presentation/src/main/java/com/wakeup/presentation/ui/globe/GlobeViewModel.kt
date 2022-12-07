@@ -35,7 +35,7 @@ class GlobeViewModel @Inject constructor(
 
     fun createGlobe(globeName: String) {
         viewModelScope.launch {
-            createGlobesUseCase(GlobeModel(name = globeName).toDomain())
+            createGlobesUseCase(GlobeModel(name = globeName, thumbnail = null).toDomain())
             fetchGlobes()
         }
     }

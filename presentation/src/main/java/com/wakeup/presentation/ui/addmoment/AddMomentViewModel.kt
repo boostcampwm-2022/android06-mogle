@@ -39,7 +39,7 @@ class AddMomentViewModel @Inject constructor(
     private val _globes = MutableStateFlow(emptyList<GlobeModel>())
     val globes = _globes.asStateFlow()
 
-    private var _selectedGlobe = MutableStateFlow(GlobeModel(name = ""))
+    private var _selectedGlobe = MutableStateFlow(GlobeModel(name = "", thumbnail = null))
     var selectedGlobe = _selectedGlobe.asStateFlow()
 
     private val _selectedDate = MutableStateFlow(System.currentTimeMillis())
