@@ -28,7 +28,7 @@ class GlobeDetailFragment : Fragment() {
     private val viewModel: GlobeDetailViewModel by viewModels()
     private lateinit var binding: FragmentGlobeDetailBinding
     private val globeDetailGirdAdapter = GlobeDetailAdapter { moment ->
-        changeMomentGlobeTitle(moment)
+        changeGlobeTitleOfMoment(moment)
     }
     private val args: GlobeDetailFragmentArgs by navArgs()
     private var resultTitle: String? = null
@@ -111,7 +111,7 @@ class GlobeDetailFragment : Fragment() {
             .show()
     }
 
-    private fun changeMomentGlobeTitle(moment: MomentModel): MomentModel {
+    private fun changeGlobeTitleOfMoment(moment: MomentModel): MomentModel {
         return moment.copy(
             globes = moment.globes.map { globe -> globe.copy(name = resultTitle ?: globe.name) }
         )

@@ -10,12 +10,12 @@ import com.wakeup.presentation.databinding.ItemMomentInGlobeBinding
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.ui.globe.GlobeDetailFragmentDirections
 
-class GlobeDetailAdapter(private val changeMomentGlobeTitle: (MomentModel) -> MomentModel) :
+class GlobeDetailAdapter(private val changeGlobeTitleOfMoment: (MomentModel) -> MomentModel) :
     ListAdapter<MomentModel, GlobeDetailAdapter.GlobeMomentViewHolder>(GlobeDetailDiffUtil) {
 
     class GlobeMomentViewHolder private constructor(
         private val binding: ItemMomentInGlobeBinding,
-        private val changeMomentGlobeTitle: (MomentModel) -> MomentModel
+        private val changeGlobeTitleOfMoment: (MomentModel) -> MomentModel
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -25,7 +25,7 @@ class GlobeDetailAdapter(private val changeMomentGlobeTitle: (MomentModel) -> Mo
         }
 
         private fun navigateToMomentDetail() {
-            val argMoment = changeMomentGlobeTitle(binding.moment ?: return)
+            val argMoment = changeGlobeTitleOfMoment(binding.moment ?: return)
             val action = GlobeDetailFragmentDirections
                 .actionGlobeDetailFragmentToMomentDetailFragment(argMoment)
             itemView.findNavController().navigate(action)
@@ -37,21 +37,21 @@ class GlobeDetailAdapter(private val changeMomentGlobeTitle: (MomentModel) -> Mo
         }
 
         companion object {
-            fun from(parent: ViewGroup, changeMomentGlobeTitle: (MomentModel) -> MomentModel): GlobeMomentViewHolder {
+            fun from(parent: ViewGroup, changeGlobeTitleOfMoment: (MomentModel) -> MomentModel): GlobeMomentViewHolder {
                 return GlobeMomentViewHolder(
                     ItemMomentInGlobeBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
                     ),
-                    changeMomentGlobeTitle
+                    changeGlobeTitleOfMoment
                 )
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GlobeMomentViewHolder {
-        return GlobeMomentViewHolder.from(parent, changeMomentGlobeTitle)
+        return GlobeMomentViewHolder.from(parent, changeGlobeTitleOfMoment)
     }
 
     override fun onBindViewHolder(holder: GlobeMomentViewHolder, position: Int) {
