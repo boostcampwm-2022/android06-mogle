@@ -3,15 +3,15 @@ package com.wakeup.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.databinding.ItemMomentInGlobeBinding
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.ui.globe.GlobeDetailFragmentDirections
 
-class GlobeDetailAdapter(private val changeGlobeTitleOfMoment: (MomentModel) -> MomentModel) :
-    ListAdapter<MomentModel, GlobeDetailAdapter.GlobeMomentViewHolder>(GlobeDetailDiffUtil) {
+class GlobeDetailPagingAdapter(private val changeGlobeTitleOfMoment: (MomentModel) -> MomentModel) :
+    PagingDataAdapter<MomentModel, GlobeDetailPagingAdapter.GlobeMomentViewHolder>(GlobeDetailDiffUtil) {
 
     class GlobeMomentViewHolder private constructor(
         private val binding: ItemMomentInGlobeBinding,
@@ -55,7 +55,10 @@ class GlobeDetailAdapter(private val changeGlobeTitleOfMoment: (MomentModel) -> 
     }
 
     override fun onBindViewHolder(holder: GlobeMomentViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val moment = getItem(position)
+        if (moment != null) {
+            holder.bind(moment)
+        }
     }
 
     companion object GlobeDetailDiffUtil : DiffUtil.ItemCallback<MomentModel>() {

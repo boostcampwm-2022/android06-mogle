@@ -67,7 +67,7 @@ class AddMomentInGlobeFragment : Fragment() {
     }
 
     private fun initMoment() {
-        viewModel.fetchMomentsNotInGlobe(args.globe?.id ?: -1L)
+        viewModel.fetchMomentsNotInGlobe(args.globe.id)
     }
 
     private fun collectData() {

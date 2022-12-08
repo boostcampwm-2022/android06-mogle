@@ -7,11 +7,15 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.wakeup.presentation.R
-import com.wakeup.presentation.adapter.GlobeDetailAdapter
+import com.wakeup.presentation.adapter.GlobeDetailPagingAdapter
 import com.wakeup.presentation.databinding.FragmentGlobeDetailBinding
 import com.wakeup.presentation.extension.dp
 import com.wakeup.presentation.extension.showSnackbar
@@ -20,6 +24,8 @@ import com.wakeup.presentation.model.GlobeModel
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -27,11 +33,10 @@ class GlobeDetailFragment : Fragment() {
 
     private val viewModel: GlobeDetailViewModel by viewModels()
     private lateinit var binding: FragmentGlobeDetailBinding
-    private val globeDetailGridAdapter = GlobeDetailAdapter { moment ->
+    private val globeDetailGridAdapter = GlobeDetailPagingAdapter { moment ->
         changeGlobeTitleOfMoment(moment)
     }
     private val args: GlobeDetailFragmentArgs by navArgs()
-    private lateinit var argsGlobeName: String
     private var resultTitle: String? = null
 
     override fun onCreateView(
@@ -48,10 +53,10 @@ class GlobeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        argsGlobeName = (args.globe ?: GlobeModel(name = getString(R.string.globe))).name
-        initToolbar(resultTitle ?: argsGlobeName)
+        initToolbar(resultTitle ?: args.globe.name)
         initToolbarMenu()
         initAdapter()
+        collectData()
     }
 
     private fun initToolbar(title: String) {
@@ -63,22 +68,21 @@ class GlobeDetailFragment : Fragment() {
     }
 
     private fun initToolbarMenu() {
-        val globe = args.globe ?: return
+        val globe = args.globe
         binding.tbGlobeDetail.tbDefault.apply {
             inflateMenu(R.menu.menu_globe_detail_toolbar)
             setOnMenuItemClickListener { menu ->
                 when (menu.itemId) {
                     R.id.item_globe_detail_add_moment -> {
-                        findNavController().navigate(
-                            R.id.action_globe_detail_fragment_to_addMomentInGlobeFragment
-                        )
+                        val action = GlobeDetailFragmentDirections
+                            .actionGlobeDetailFragmentToAddMomentInGlobeFragment(args.globe)
+                        findNavController().navigate(action)
                         true
                     }
                     R.id.item_globe_detail_delete_moment -> {
                         // todo 모먼트 삭제하기
                         true
                     }
-
                     R.id.item_globe_detail_update_globe -> {
                         showDialog(globe, this)
                         true
@@ -100,9 +104,9 @@ class GlobeDetailFragment : Fragment() {
                 getString(R.string.update_globe_name_dialog_title))
             .setOnPositive(R.id.tv_add_globe_add, getString(R.string.update)) { dialog ->
                 resultTitle = dialog.getTextInEditText()
-                viewModel.updateGlobeTitle(globe, resultTitle ?: argsGlobeName)
+                viewModel.updateGlobeTitle(globe, resultTitle ?: args.globe.name)
                 toolbar.showSnackbar(getString(R.string.snack_bar_message_update_globe_name))
-                initToolbar(resultTitle ?: argsGlobeName)
+                initToolbar(resultTitle ?: args.globe.name)
             }
             .setOnNegative(R.id.tv_add_globe_cancel, getString(R.string.cancel)) {
                 Timber.d("CANCEL")
@@ -115,6 +119,16 @@ class GlobeDetailFragment : Fragment() {
         return moment.copy(
             globes = moment.globes.map { globe -> globe.copy(name = resultTitle ?: globe.name) }
         )
+    }
+
+    private fun collectData() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.moments.collectLatest {
+                    globeDetailGridAdapter.submitData(it)
+                }
+            }
+        }
     }
 
     private fun initAdapter() {

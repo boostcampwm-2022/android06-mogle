@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.wakeup.domain.usecase.DeleteMomentInGlobeUseCase
 import com.wakeup.domain.usecase.GetMomentsNotInGlobeUseCase
-import com.wakeup.domain.usecase.InsertMomentInGlobeUseCase
+import com.wakeup.domain.usecase.globe.DeleteMomentInGlobeUseCase
+import com.wakeup.domain.usecase.globe.InsertMomentInGlobeUseCase
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.MomentModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,9 +36,5 @@ class AddMomentInGlobeViewModel @Inject constructor(
                 .cachedIn(viewModelScope)
                 .first()
         }
-    }
-
-    fun setMoments(pagingDataMoment: PagingData<MomentModel>) {
-        _moments.value = pagingDataMoment
     }
 }
