@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/map_fragment">
+    app:startDestination="@id/home_fragment">
 
     <fragment
-        android:id="@+id/map_fragment"
+        android:id="@+id/home_fragment"
         android:name="com.wakeup.presentation.ui.home.HomeFragment"
         android:label="지도"
-        tools:layout="@layout/fragment_map">
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_map_fragment_to_moment_detail_fragment"
             app:destination="@id/moment_detail_fragment"

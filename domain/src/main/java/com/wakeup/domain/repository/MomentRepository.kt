@@ -13,7 +13,9 @@ interface MomentRepository {
         myLocation: Location? = null
     ): Flow<PagingData<Moment>>
 
-    fun getAllMoments(): Flow<List<Moment>>
+    fun getAllMoments(query: String): Flow<List<Moment>>
+
+    suspend fun getMoment(id: Long): Moment
 
     suspend fun saveMoment(moment: Moment): Long
 }

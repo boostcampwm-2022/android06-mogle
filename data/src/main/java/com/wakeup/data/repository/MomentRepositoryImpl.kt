@@ -28,10 +28,14 @@ class MomentRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun getAllMoments(): Flow<List<Moment>> =
-        momentLocalDataSource.getAllMoments().map { momentInfoList ->
+    override fun getAllMoments(query: String): Flow<List<Moment>> =
+        momentLocalDataSource.getAllMoments(query).map { momentInfoList ->
             momentInfoList.map { momentXRefs -> momentXRefs.toDomain() }
         }
+
+    override suspend fun getMoment(id: Long): Moment {
+        return momentLocalDataSource.getMoment(id).toDomain()
+    }
 
     override suspend fun saveMoment(moment: Moment): Long {
         return momentLocalDataSource.saveMoment(moment.toEntity())

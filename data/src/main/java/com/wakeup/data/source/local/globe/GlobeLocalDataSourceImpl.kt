@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GlobeLocalDataSourceImpl @Inject constructor(
-    private val globeDao: GlobeDao,
+    private val globeDao: GlobeDao
 ) : GlobeLocalDataSource {
 
     override suspend fun createGlobe(globe: GlobeEntity) {
@@ -25,29 +25,35 @@ class GlobeLocalDataSourceImpl @Inject constructor(
         globeDao.updateGlobe(globe)
     }
 
-    override suspend fun getGlobeIdByName(globeName: String): Long {
-        return globeDao.getGlobeIdByName(globeName)
-    }
-
     override fun getGlobes(): Flow<List<GlobeEntity>> {
         return globeDao.getGlobes()
     }
 
-    override fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>> {
-        return globeDao.getMomentsByGlobe(globeId)
+    override fun getMomentsByGlobe(globeId: Long): Flow<PagingData<MomentWithGlobesAndPictures>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = false,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = { globeDao.getMomentsByGlobe(globeId) }
+        ).flow
+
+    override suspend fun getFirstMomentByGlobe(globeId: Long): MomentWithGlobesAndPictures? {
+        return globeDao.getFirstMomentByGlobe(globeId)
     }
 
     override suspend fun getMomentCountByGlobe(globeId: Long): Int {
         return globeDao.getMomentCountByGlobe(globeId)
     }
 
+
     override fun getMomentsNotInGlobe(globeId: Long): Flow<PagingData<MomentWithGlobesAndPictures>> =
         Pager(
             config = PagingConfig(
-                pageSize = ITEMS_PER_PAGE,
+                pageSize = PAGE_SIZE,
                 enablePlaceholders = false,
-                initialLoadSize = ITEMS_PER_PAGE,
-                prefetchDistance = PREFETCH_PAGE
+                initialLoadSize = PAGE_SIZE,
             ),
             pagingSourceFactory = {
                 globeDao.getMomentsNotInGlobe(globeId)
@@ -55,7 +61,6 @@ class GlobeLocalDataSourceImpl @Inject constructor(
         ).flow
 
     companion object {
-        const val PREFETCH_PAGE = 2
-        const val ITEMS_PER_PAGE = 10
+        const val PAGE_SIZE = 10
     }
 }

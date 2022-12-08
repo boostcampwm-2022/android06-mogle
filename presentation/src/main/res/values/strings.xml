@@ -51,6 +51,9 @@
     <string name="globe_detail_menu_update_globe">글로브 이름 수정하기</string>
     <string name="globe_detail_menu_delete_globe">글로브 삭제하기</string>
 
+    <string name="moment_detail_menu_update_moment">모먼트 수정하기</string>
+    <string name="moment_detail_menu_delete_moment">모먼트 삭제하기</string>
+
     <string name="snack_bar_message_add_globe">글로브가 생성되었습니다</string>
     <string name="snack_bar_message_update_globe_name">글로브 이름이 수정되었습니다</string>
 

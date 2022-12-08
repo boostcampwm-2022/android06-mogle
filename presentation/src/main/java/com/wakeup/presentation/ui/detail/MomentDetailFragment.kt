@@ -42,6 +42,25 @@ class MomentDetailFragment : Fragment() {
             titleId = R.string.moment,
             onBackClick = { findNavController().navigateUp() }
         )
+
+        binding.tbDetailMoment.tbDefault.apply {
+            inflateMenu(R.menu.menu_moment_detail_toolbar)
+            setOnMenuItemClickListener { menu ->
+                when (menu.itemId) {
+                    R.id.item_moment_update -> {
+                        // TODO 모먼트 수정하기
+                        true
+                    }
+
+                    R.id.item_moment_delete -> {
+                        // TODO 모먼트 삭제하기
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }
     }
 
     private fun initMoment() {

@@ -112,4 +112,8 @@ abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
     }
+
+    fun dismiss() {
+        dialog.dismiss()
+    }
 }

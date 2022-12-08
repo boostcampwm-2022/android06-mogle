@@ -4,11 +4,16 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.PointF
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraPosition
@@ -31,11 +36,9 @@ import com.wakeup.presentation.extension.dp
 import com.wakeup.presentation.extension.getFadeOutAnimator
 import com.wakeup.presentation.extension.setListener
 import com.wakeup.presentation.model.MomentModel
+import com.wakeup.presentation.model.PictureModel
 
 class MapHelper(private val context: Context) {
-    private val markerBinding =
-        ItemMapMarkerBinding.inflate(LayoutInflater.from(context), null, false)
-
     /**
      * 현재 포커싱 된 마커 객체
      */
@@ -198,28 +201,83 @@ class MapHelper(private val context: Context) {
      * @param _map 지도 객체
      * @param momentModel 모먼트 데이터
      * @param clickListener 마커 클릭 리스너
+     * @param onMarkerAddedCallback 마커 추가 완료시 호출하는 콜백
      */
-    fun setMarker(_map: NaverMap, momentModel: MomentModel, clickListener: OnClickListener) {
-        momentModel.pictures.takeIf { it.isNotEmpty() }?.let {
-            markerBinding.ivThumbnail.setImageURI(("${context.filesDir}/images/${it.first().path}").toUri())
-        } ?: kotlin.run {
-            markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
+    fun setMomentMarker(
+        _map: NaverMap,
+        momentModel: MomentModel,
+        clickListener: OnClickListener,
+        onMarkerAddedCallback: (Marker) -> Unit,
+    ) {
+        val markerBinding =
+            ItemMapMarkerBinding.inflate(LayoutInflater.from(context), null, false)
+
+        val setMarker = { moment: MomentModel, view: View ->
+            val newMarker = Marker().apply {
+                width = MARKER_WIDTH.dp.toInt()
+                height = MARKER_HEIGHT.dp.toInt()
+                anchor = PointF(POINT_X, POINT_Y)
+                position = LatLng(
+                    moment.place.location.latitude,
+                    moment.place.location.longitude
+                )
+                isHideCollidedSymbols = true
+                isIconPerspectiveEnabled = true
+                map = _map
+                icon = OverlayImage.fromView(view)
+                tag = moment
+                onClickListener = clickListener
+            }
+
+            onMarkerAddedCallback(newMarker)
         }
 
-        Marker().apply {
-            width = MARKER_WIDTH.dp.toInt()
-            height = MARKER_HEIGHT.dp.toInt()
-            anchor = PointF(POINT_X, POINT_Y)
-            position = LatLng(
-                momentModel.place.location.latitude,
-                momentModel.place.location.longitude
-            )
-            isHideCollidedSymbols = true
-            isIconPerspectiveEnabled = true
-            map = _map
-            icon = OverlayImage.fromView(markerBinding.root)
-            tag = momentModel
-            onClickListener = clickListener
+
+        // 이미지가 없으면, path를 파일이 없는 경로로 지정하여,
+        // onLoadFailed() 유도 -> 기본 이미지 출력
+        val picture = if (momentModel.pictures.isEmpty()) {
+            PictureModel(NO_IMAGE)
+        } else {
+            momentModel.pictures.first()
+        }
+
+        Glide.with(context)
+            .load("${context.filesDir}/images/${picture.path}")
+            .listener(object : RequestListener<Drawable> {
+                // 이미지가 애초에 없거나, 이미지가 있는데도 로드 실패시 기본 이미지 출력
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean,
+                ): Boolean {
+                    markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
+                    setMarker(momentModel, markerBinding.root)
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean,
+                ): Boolean {
+                    markerBinding.ivThumbnail.setImageDrawable(resource)
+                    setMarker(momentModel, markerBinding.root)
+                    return true
+                }
+            })
+            .into(markerBinding.ivThumbnail)
+    }
+
+    /**
+     * 인자로 넘어온 마커를 지도에서 삭제 시킵니다.
+     * @param markers 마커 객체 리스트
+     */
+    fun resetMarkers(markers: List<Marker>) {
+        markers.forEach { marker ->
+            marker.map = null
         }
     }
 
@@ -242,7 +300,8 @@ class MapHelper(private val context: Context) {
      * @param clickListener 마커 클릭 리스너
      */
     fun setTestMarker(_map: NaverMap, clickListener: OnClickListener) {
-        markerBinding.ivThumbnail.setImageResource(R.drawable.sample_image)
+        val markerBinding =
+            ItemMapMarkerBinding.inflate(LayoutInflater.from(context), null, false)
         repeat(10) {
             Marker().apply {
                 width = MARKER_WIDTH.dp.toInt()
@@ -273,5 +332,7 @@ class MapHelper(private val context: Context) {
         const val Z_INDEX_BACK = 0
         const val POINT_X = 0.5f
         const val POINT_Y = 0.95f
+
+        const val NO_IMAGE = "NULL_PATH"
     }
 }

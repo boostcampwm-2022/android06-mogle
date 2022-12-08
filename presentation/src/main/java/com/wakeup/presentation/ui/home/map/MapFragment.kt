@@ -35,6 +35,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var mapHelper: MapHelper
 
+    private val currentMarkers = mutableListOf<Marker>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -105,12 +107,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         // 전체 모먼트 불러오기
-        // TODO 속도가 엄청 느려진다.
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.allMoments.collectLatest { moments ->
+                    mapHelper.resetMarkers(currentMarkers)
+                    currentMarkers.clear()
                     moments.forEach { momentModel ->
-                        setMarkerClickListener(momentModel)
+                        initMarker(momentModel)
                     }
                 }
             }
@@ -133,7 +136,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
          } */
     }
 
-    private fun setMarkerClickListener(moment: MomentModel) {
+    private fun initMarker(moment: MomentModel) {
         val clickListener = OnClickListener { marker ->
 
             (marker as Marker).apply {
@@ -144,14 +147,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 binding.momentModel = (tag as MomentModel)
             }
 
-            binding.momentPreview.root.let {
-                it.isVisible = true
-                it.getFadeInAnimator(MOMENT_PREVIEW_ANIM_DURATION).start()
+            binding.momentPreview.root.apply {
+                isVisible = true
+                getFadeInAnimator(MOMENT_PREVIEW_ANIM_DURATION).start()
             }
             true
         }
 
-        mapHelper.setMarker(naverMap, moment, clickListener)
+        mapHelper.setMomentMarker(naverMap, moment, clickListener) { marker ->
+            // 현재 지도에 추가된 마커 관리
+            currentMarkers.add(marker)
+        }
     }
 
     // Deprecated 되었지만,

@@ -27,9 +27,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:paddingStart="@dimen/normal_100"
                     android:src="@drawable/ic_arrow_back"
-                    tools:src="@drawable/ic_arrow_back" />
+                    tools:src="@drawable/ic_arrow_back"
+                    tools:tint="@color/black" />
 
                 <TextView
                     android:id="@+id/tv_title"

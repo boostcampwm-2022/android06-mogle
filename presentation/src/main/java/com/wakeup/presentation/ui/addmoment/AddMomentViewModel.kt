@@ -4,8 +4,8 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.wakeup.domain.usecase.GetGlobesUseCase
-import com.wakeup.domain.usecase.SaveMomentUseCase
+import com.wakeup.domain.usecase.globe.GetGlobesUseCase
+import com.wakeup.domain.usecase.moment.SaveMomentUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.GlobeModel
@@ -13,6 +13,7 @@ import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.model.PlaceModel
+import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.util.DateUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +31,9 @@ class AddMomentViewModel @Inject constructor(
     private val saveMomentUseCase: SaveMomentUseCase
 ) : ViewModel() {
 
+    private val _state: MutableStateFlow<UiState<Boolean>> = MutableStateFlow(UiState.Empty)
+    val state = _state.asStateFlow()
+
     private val _pictures = MutableStateFlow<List<PictureModel>>(emptyList())
     val pictures = _pictures.asStateFlow()
 
@@ -39,7 +43,7 @@ class AddMomentViewModel @Inject constructor(
     private val _globes = MutableStateFlow(emptyList<GlobeModel>())
     val globes = _globes.asStateFlow()
 
-    private var _selectedGlobe = MutableStateFlow(GlobeModel(name = ""))
+    private var _selectedGlobe = MutableStateFlow(GlobeModel(name = "", thumbnail = null))
     var selectedGlobe = _selectedGlobe.asStateFlow()
 
     private val _selectedDate = MutableStateFlow(System.currentTimeMillis())
@@ -120,6 +124,7 @@ class AddMomentViewModel @Inject constructor(
     }
 
     suspend fun saveMoment() {
+        _state.value = UiState.Loading
         viewModelScope.launch {
             saveMomentUseCase(
                 moment = MomentModel(
@@ -131,5 +136,6 @@ class AddMomentViewModel @Inject constructor(
                 ).toDomain()
             )
         }.join()
+        _state.value = UiState.Success(true)
     }
 }
