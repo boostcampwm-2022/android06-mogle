@@ -25,7 +25,6 @@ import com.wakeup.presentation.ui.home.HomeFragmentDirections
 import com.wakeup.presentation.ui.home.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -36,7 +35,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var mapHelper: MapHelper
 
-    private val markers = mutableListOf<Marker>()
+    private val currentMarkers = mutableListOf<Marker>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,12 +107,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         // 전체 모먼트 불러오기
-        // TODO 속도가 엄청 느려진다.
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.allMoments.collectLatest { moments ->
-                    mapHelper.resetMarker(markers)
-                    markers.clear()
+                    mapHelper.resetMarkers(currentMarkers)
+                    currentMarkers.clear()
                     moments.forEach { momentModel ->
                         setMarkerClickListener(momentModel)
                     }
@@ -156,8 +154,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             true
         }
 
-        val marker = mapHelper.setMomentMarker(naverMap, moment, clickListener)
-        markers.add(marker)
+        mapHelper.setMomentMarker(naverMap, moment, clickListener) { marker ->
+            // 현재 지도에 추가된 마커 관리
+            currentMarkers.add(marker)
+        }
     }
 
     // Deprecated 되었지만,
