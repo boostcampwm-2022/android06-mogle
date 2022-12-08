@@ -38,8 +38,8 @@ class MomentLocalDataSourceImpl @Inject constructor(
             }
         ).flow
 
-    override fun getAllMoments(): Flow<List<MomentWithGlobesAndPictures>> =
-        momentDao.getAllMoments()
+    override fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>> =
+        momentDao.getAllMoments(query)
 
     override suspend fun getMoment(id: Long): MomentWithGlobesAndPictures {
         return momentDao.getMoment(id)

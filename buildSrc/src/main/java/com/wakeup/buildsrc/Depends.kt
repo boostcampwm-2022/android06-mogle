@@ -38,6 +38,7 @@ object Depends {
         const val firebaseBomVersion = "31.0.3"
         const val sandwichVersion = "1.3.2"
         const val jsoupVersion = "1.14.2"
+        const val splashVersion = "1.0.0"
 
         const val testCoreKtxVersion = "1.5.0"
         const val testJunitKtxVersion = "1.1.4"
@@ -151,6 +152,9 @@ object Depends {
 
         // Jsoup
         const val jsoup = "org.jsoup:jsoup:${Versions.jsoupVersion}"
+
+        // Splash
+        const val splash = "androidx.core:core-splashscreen:${Versions.splashVersion}"
     }
 
     fun generateVersionName(): String {

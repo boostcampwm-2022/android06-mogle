@@ -32,16 +32,14 @@ class HomeViewModel @Inject constructor(
     private val getAllMomentListUseCase: GetAllMomentsUseCase,
     private val getWeatherDataUseCase: GetWeatherDataUseCase,
 ) : ViewModel() {
-    val allMoments: Flow<List<MomentModel>> = getAllMomentListUseCase.invoke().map { moments ->
-        moments.map { moment ->
-            moment.toPresentation()
-        }
-    }
+
+    private val searchQuery = MutableStateFlow("")
+
+    private val _allMoments = MutableStateFlow<List<MomentModel>>(emptyList())
+    val allMoments: Flow<List<MomentModel>> = _allMoments
 
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
     val moments: Flow<PagingData<MomentModel>> = _moments
-
-    private val searchQuery = MutableStateFlow("")
 
     private val _scrollToTop = MutableStateFlow(false)
     val scrollToTop = _scrollToTop.asStateFlow()
@@ -58,6 +56,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         fetchMoments()
+        fetchAllMoments()
     }
 
     fun fetchMoments() {
@@ -77,6 +76,17 @@ class HomeViewModel @Inject constructor(
 
         fetchLocationState.value = false
         location.value = null
+    }
+
+    fun fetchAllMoments() {
+        viewModelScope.launch {
+            _allMoments.value = getAllMomentListUseCase(searchQuery.value).map { moments ->
+                moments.map { moment ->
+                    moment.toPresentation()
+                }
+            }
+                .first()
+        }
     }
 
     fun fetchWeather(location: LocationModel) {

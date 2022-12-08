@@ -13,6 +13,7 @@ import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.model.PlaceModel
+import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.util.DateUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +30,9 @@ class AddMomentViewModel @Inject constructor(
     private val getGlobesUseCase: GetGlobesUseCase,
     private val saveMomentUseCase: SaveMomentUseCase
 ) : ViewModel() {
+
+    private val _state: MutableStateFlow<UiState<Boolean>> = MutableStateFlow(UiState.Empty)
+    val state = _state.asStateFlow()
 
     private val _pictures = MutableStateFlow<List<PictureModel>>(emptyList())
     val pictures = _pictures.asStateFlow()
@@ -120,6 +124,7 @@ class AddMomentViewModel @Inject constructor(
     }
 
     suspend fun saveMoment() {
+        _state.value = UiState.Loading
         viewModelScope.launch {
             saveMomentUseCase(
                 moment = MomentModel(
@@ -131,5 +136,6 @@ class AddMomentViewModel @Inject constructor(
                 ).toDomain()
             )
         }.join()
+        _state.value = UiState.Success(true)
     }
 }

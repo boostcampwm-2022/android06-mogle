@@ -47,13 +47,19 @@ interface MomentDao {
     ): PagingSource<Int, MomentWithGlobesAndPictures>
 
     @Transaction
-    @Query("SELECT * FROM moment")
-    fun getAllMoments(): Flow<List<MomentWithGlobesAndPictures>>
+    @Query(
+        """
+        SELECT * FROM moment
+        WHERE mainAddress LIKE '%' || :query || '%'
+        OR detailAddress LIKE '%' || :query || '%'
+        OR content LIKE '%' || :query || '%'
+        """
+    )
+    fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>>
 
     @Query("SELECT * FROM moment WHERE moment_id = :id")
     suspend fun getMoment(id: Long): MomentWithGlobesAndPictures
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMoment(moment: MomentEntity): Long
-
 }
