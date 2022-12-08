@@ -1,4 +1,4 @@
-package com.wakeup.domain.usecase
+package com.wakeup.domain.usecase.place
 
 import com.wakeup.domain.model.Place
 import com.wakeup.domain.repository.PlaceSearchRepository

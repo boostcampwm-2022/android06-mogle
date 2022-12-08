@@ -1,5 +1,8 @@
 package com.wakeup.data.source.local.globe
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.wakeup.data.database.dao.GlobeDao
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
@@ -22,21 +25,29 @@ class GlobeLocalDataSourceImpl @Inject constructor(
         globeDao.updateGlobe(globe)
     }
 
-    override suspend fun getGlobeIdByName(globeName: String): Long {
-        return globeDao.getGlobeIdByName(globeName)
-    }
-
     override fun getGlobes(): Flow<List<GlobeEntity>> {
         return globeDao.getGlobes()
     }
 
-    override fun getMomentsByGlobe(globeId: Long): Flow<List<MomentWithGlobesAndPictures>> {
-        return globeDao.getMomentsByGlobe(globeId)
+    override fun getMomentsByGlobe(globeId: Long): Flow<PagingData<MomentWithGlobesAndPictures>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = false,
+                initialLoadSize = PAGE_SIZE
+            ),
+            pagingSourceFactory = { globeDao.getMomentsByGlobe(globeId) }
+        ).flow
+
+    override suspend fun getFirstMomentByGlobe(globeId: Long): MomentWithGlobesAndPictures? {
+        return globeDao.getFirstMomentByGlobe(globeId)
     }
 
     override suspend fun getMomentCountByGlobe(globeId: Long): Int {
         return globeDao.getMomentCountByGlobe(globeId)
     }
 
-
+    companion object {
+        const val PAGE_SIZE = 10
+    }
 }

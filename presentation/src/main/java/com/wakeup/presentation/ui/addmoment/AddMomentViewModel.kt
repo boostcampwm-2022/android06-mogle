@@ -4,8 +4,8 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.wakeup.domain.usecase.GetGlobesUseCase
-import com.wakeup.domain.usecase.SaveMomentUseCase
+import com.wakeup.domain.usecase.globe.GetGlobesUseCase
+import com.wakeup.domain.usecase.moment.SaveMomentUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.GlobeModel
@@ -43,7 +43,7 @@ class AddMomentViewModel @Inject constructor(
     private val _globes = MutableStateFlow(emptyList<GlobeModel>())
     val globes = _globes.asStateFlow()
 
-    private var _selectedGlobe = MutableStateFlow(GlobeModel(name = ""))
+    private var _selectedGlobe = MutableStateFlow(GlobeModel(name = "", thumbnail = null))
     var selectedGlobe = _selectedGlobe.asStateFlow()
 
     private val _selectedDate = MutableStateFlow(System.currentTimeMillis())

@@ -1,11 +1,11 @@
-package com.wakeup.domain.usecase
+package com.wakeup.domain.usecase.moment
 
 import androidx.paging.PagingData
 import com.wakeup.domain.model.Location
 import com.wakeup.domain.model.Moment
 import com.wakeup.domain.model.SortType
 import com.wakeup.domain.repository.MomentRepository
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetMomentListUseCase @Inject constructor(

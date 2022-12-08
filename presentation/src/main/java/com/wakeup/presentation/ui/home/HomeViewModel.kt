@@ -7,8 +7,8 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.wakeup.domain.model.SortType
 import com.wakeup.domain.model.WeatherType
-import com.wakeup.domain.usecase.GetAllMomentsUseCase
-import com.wakeup.domain.usecase.GetMomentListUseCase
+import com.wakeup.domain.usecase.moment.GetAllMomentsUseCase
+import com.wakeup.domain.usecase.moment.GetMomentListUseCase
 import com.wakeup.domain.usecase.weather.GetWeatherDataUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation

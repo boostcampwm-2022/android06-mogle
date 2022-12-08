@@ -1,4 +1,4 @@
-package com.wakeup.domain.usecase
+package com.wakeup.domain.usecase.globe
 
 import com.wakeup.domain.model.Globe
 import com.wakeup.domain.repository.GlobeRepository

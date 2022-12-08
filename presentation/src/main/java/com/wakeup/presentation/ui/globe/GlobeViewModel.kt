@@ -2,8 +2,8 @@ package com.wakeup.presentation.ui.globe
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wakeup.domain.usecase.CreateGlobeUseCase
-import com.wakeup.domain.usecase.GetGlobesUseCase
+import com.wakeup.domain.usecase.globe.CreateGlobeUseCase
+import com.wakeup.domain.usecase.globe.GetGlobesUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.GlobeModel
@@ -35,7 +35,7 @@ class GlobeViewModel @Inject constructor(
 
     fun createGlobe(globeName: String) {
         viewModelScope.launch {
-            createGlobesUseCase(GlobeModel(name = globeName).toDomain())
+            createGlobesUseCase(GlobeModel(name = globeName, thumbnail = null).toDomain())
             fetchGlobes()
         }
     }
