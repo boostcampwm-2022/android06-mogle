@@ -16,6 +16,9 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.wakeup.domain.model.SortType
@@ -24,10 +27,13 @@ import com.wakeup.presentation.databinding.FragmentHomeBinding
 import com.wakeup.presentation.extension.hideKeyboard
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
+import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.ui.home.map.MapFragment
 import com.wakeup.presentation.ui.home.sheet.BottomSheetFragment
 import com.wakeup.presentation.util.UPDATE_MOMENTS_KEY
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -35,7 +41,6 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
 
-    lateinit var broadcastReceiver: BroadcastReceiver
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private lateinit var mapFragment: MapFragment
@@ -64,6 +69,7 @@ class HomeFragment : Fragment() {
 
         setSearchBarListener()
         fetchWeather()
+        collectWeather()
     }
 
     private fun initMap() {
@@ -125,6 +131,18 @@ class HomeFragment : Fragment() {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     viewModel.fetchWeather(LocationModel(location.latitude, location.longitude))
+                }
+            }
+        }
+    }
+
+    private fun collectWeather() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    if (state is UiState.Success) {
+                        viewModel.setWeather(state.item)
+                    }
                 }
             }
         }

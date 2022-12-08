@@ -16,6 +16,7 @@ import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.WeatherModel
+import com.wakeup.presentation.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,6 +54,9 @@ class HomeViewModel @Inject constructor(
 
     private val location = MutableStateFlow<LocationModel?>(null)
 
+    private val _state = MutableStateFlow<UiState<WeatherModel>>(UiState.Empty)
+    val state = _state.asStateFlow()
+
     private val _weather = MutableStateFlow(WeatherModel(0, WeatherType.NONE, "", 0.0))
     val weather = _weather.asStateFlow()
 
@@ -89,14 +93,12 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchWeather(location: LocationModel) {
+        _state.value = UiState.Loading
         viewModelScope.launch {
             getWeatherDataUseCase(location.toDomain())
-                .onSuccess {
-                    _weather.value = it.toPresentation()
-                }.onFailure {
-                    // TODO UI State 실패 처리하면 좋겠다.
-                    _weather.value = WeatherModel(0, WeatherType.NONE, "", 0.0)
-                }
+                .mapCatching { it.toPresentation() }
+                .onSuccess { weather -> _state.value = UiState.Success(weather) }
+                .onFailure { _state.value = UiState.Failure }
         }
     }
 
@@ -110,5 +112,9 @@ class HomeViewModel @Inject constructor(
 
     fun setLocation(location: LocationModel) {
         this.location.value = location
+    }
+
+    fun setWeather(weather: WeatherModel) {
+        _weather.value = weather
     }
 }
