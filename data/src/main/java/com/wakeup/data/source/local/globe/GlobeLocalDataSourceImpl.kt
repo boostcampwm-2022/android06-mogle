@@ -47,6 +47,19 @@ class GlobeLocalDataSourceImpl @Inject constructor(
         return globeDao.getMomentCountByGlobe(globeId)
     }
 
+
+    override fun getMomentsNotInGlobe(globeId: Long): Flow<PagingData<MomentWithGlobesAndPictures>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = false,
+                initialLoadSize = PAGE_SIZE,
+            ),
+            pagingSourceFactory = {
+                globeDao.getMomentsNotInGlobe(globeId)
+            }
+        ).flow
+
     companion object {
         const val PAGE_SIZE = 10
     }

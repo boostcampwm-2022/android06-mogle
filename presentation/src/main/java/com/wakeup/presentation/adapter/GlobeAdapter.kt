@@ -10,8 +10,7 @@ import com.wakeup.presentation.databinding.ItemGlobeBinding
 import com.wakeup.presentation.model.GlobeModel
 import com.wakeup.presentation.ui.globe.GlobeFragmentDirections
 
-class GlobeAdapter(
-) : ListAdapter<GlobeModel, GlobeAdapter.GlobeViewHolder>(GlobeDiffUtil) {
+class GlobeAdapter : ListAdapter<GlobeModel, GlobeAdapter.GlobeViewHolder>(GlobeDiffUtil) {
 
     class GlobeViewHolder private constructor(
         private val binding: ItemGlobeBinding,
@@ -24,8 +23,8 @@ class GlobeAdapter(
         }
 
         private fun navigateToGlobeDetail() {
-            val action =
-                GlobeFragmentDirections.actionGlobeFragmentToGlobeDetailFragment(binding.globe)
+            val action = GlobeFragmentDirections
+                .actionGlobeFragmentToGlobeDetailFragment(binding.globe ?: return)
             itemView.findNavController().navigate(action)
         }
 

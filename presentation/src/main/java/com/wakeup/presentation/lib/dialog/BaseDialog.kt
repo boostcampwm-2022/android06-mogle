@@ -8,6 +8,7 @@ import android.graphics.drawable.InsetDrawable
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 
 abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
 
@@ -62,8 +63,12 @@ abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
      * @param onPositive dialog 의 positive 버튼 클릭 이벤트를 지정해준다.
      *
      */
-    fun setOnPositive(resId: Int, onPositive: (dialog: T) -> Unit): T {
-        dialogView.findViewById<View>(resId).setOnClickListener {
+    fun setOnPositive(resId: Int, text: String, onPositive: (dialog: T) -> Unit): T {
+        val positiveView = dialogView.findViewById<View>(resId)
+        if (positiveView is TextView) { // Button is TextView's expand class
+            positiveView.text = text
+        }
+        positiveView.setOnClickListener {
             onPositive(self())
             dialog.dismiss()
         }
@@ -76,14 +81,27 @@ abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
      * @param resId dialog negative button 을 지정한다.
      * @param onNegative dialog 의 negative 버튼 클릭 이벤트를 지정해준다.
      */
-    fun setOnNegative(resId: Int, onNegative: (dialog: T) -> Unit): T {
-        dialogView.findViewById<View>(resId).setOnClickListener {
+    fun setOnNegative(resId: Int, text: String, onNegative: (dialog: T) -> Unit): T {
+        val negativeView = dialogView.findViewById<View>(resId)
+        if (negativeView is TextView) { // Button is TextView's expand class
+            negativeView.text = text
+        }
+        negativeView.setOnClickListener {
             onNegative(self())
             dialog.dismiss()
         }
         return self()
     }
 
+    /**
+     *
+     * @param resId dialog 제목을 지정한다.
+     * @param text dialog 제목의 text를 결정한다.
+     */
+    fun setTitle(resId: Int, text: String): T {
+        dialogView.findViewById<TextView>(resId).text = text
+        return self()
+    }
 
     /**
      * required

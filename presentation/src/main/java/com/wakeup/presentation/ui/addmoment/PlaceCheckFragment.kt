@@ -157,4 +157,9 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
         initCameraUpdate(naverMap)
         initMaker(naverMap)
     }
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
 }

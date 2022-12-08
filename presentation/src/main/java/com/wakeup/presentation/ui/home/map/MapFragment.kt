@@ -188,6 +188,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
+
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1000
         const val MOMENT_PREVIEW_ANIM_DURATION = 300L

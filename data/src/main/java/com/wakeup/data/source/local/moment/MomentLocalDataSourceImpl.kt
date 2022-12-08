@@ -70,6 +70,5 @@ class MomentLocalDataSourceImpl @Inject constructor(
     companion object {
         const val PREFETCH_PAGE = 2
         const val ITEMS_PER_PAGE = 10
-        const val EXIST_INSERT_ERROR_CODE = -1L
     }
 }

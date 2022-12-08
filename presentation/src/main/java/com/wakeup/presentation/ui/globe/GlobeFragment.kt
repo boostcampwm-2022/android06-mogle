@@ -22,7 +22,7 @@ class GlobeFragment : Fragment() {
 
     private val viewModel: GlobeViewModel by viewModels()
     private lateinit var binding: FragmentGlobeBinding
-    private val globeGirdAdapter = GlobeAdapter()
+    private val globeGridAdapter = GlobeAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +53,7 @@ class GlobeFragment : Fragment() {
         val smallSpan = 3
         val criteriaWidthDp = 500
         binding.rvGlobes.apply {
-            adapter = globeGirdAdapter
+            adapter = globeGridAdapter
             layoutManager = GridLayoutManager(
                 requireContext(),
                 if (getWidthDp() > criteriaWidthDp) largeSpan else smallSpan
@@ -69,12 +69,12 @@ class GlobeFragment : Fragment() {
         binding.ivAddGlobeButton.setOnClickListener {
             EditDialog
                 .with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
-                .setOnPositive(R.id.tv_add_globe_add) { dialog ->
-                    Timber.d("OK")
+                .setTitle(R.id.tv_add_globe_title, getString(R.string.add_globe_dialog_title))
+                .setOnPositive(R.id.tv_add_globe_add, getString(R.string.add)) { dialog ->
                     viewModel.createGlobe(dialog.getTextInEditText())
                     it.showSnackbar(getString(R.string.snack_bar_message_add_globe))
                 }
-                .setOnNegative(R.id.tv_add_globe_cancel) {
+                .setOnNegative(R.id.tv_add_globe_cancel, getString(R.string.cancel)) {
                     Timber.d("CANCEL")
                 }
                 .setKeyboardUp(true)
@@ -84,5 +84,10 @@ class GlobeFragment : Fragment() {
 
     private fun initGlobes() {
         viewModel.fetchGlobes()
+    }
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
     }
 }

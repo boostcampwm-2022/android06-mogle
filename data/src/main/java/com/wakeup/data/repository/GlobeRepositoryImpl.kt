@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GlobeRepositoryImpl @Inject constructor(
-    private val globeLocalDataSource: GlobeLocalDataSource
+    private val globeLocalDataSource: GlobeLocalDataSource,
 ) : GlobeRepository {
 
     override suspend fun createGlobe(globe: Globe) {
@@ -45,5 +45,11 @@ class GlobeRepositoryImpl @Inject constructor(
 
     override suspend fun getMomentCountByGlobe(globeId: Long): Int {
         return globeLocalDataSource.getMomentCountByGlobe(globeId)
+    }
+
+    override fun getMomentsNotInGlobe(globeId: Long): Flow<PagingData<Moment>> {
+        return globeLocalDataSource.getMomentsNotInGlobe(globeId).map { pagingData ->
+            pagingData.map { momentXRefs -> momentXRefs.toDomain() }
+        }
     }
 }
