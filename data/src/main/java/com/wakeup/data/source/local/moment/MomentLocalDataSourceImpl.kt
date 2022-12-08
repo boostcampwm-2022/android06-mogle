@@ -64,7 +64,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
         }
         val savedMoment = momentDao.getMoment(momentId).moment
         val globeToSaveMoment = moment.globes.first()
-        saveMomentGlobeXRef(moment, savedMoment, globeToSaveMoment)
+        saveMomentGlobeXRef(moment.pictures, savedMoment, globeToSaveMoment)
 
     }
 
@@ -108,14 +108,14 @@ class MomentLocalDataSourceImpl @Inject constructor(
     }
 
     private suspend fun saveMomentGlobeXRef(
-        superMoment: SuperMomentEntity,
+        pictures: List<PictureEntity>,
         moment: MomentEntity,
         globe: GlobeEntity,
     ) {
         xRefDao.saveMomentGlobeXRef(MomentGlobeXRef(moment.id, globe.id))
 
-        if (globe.thumbnail == null && superMoment.pictures.isNotEmpty()) {
-            globeDao.updateGlobe(globe.copy(thumbnail = superMoment.pictures.first()))
+        if (globe.thumbnail == null && pictures.isNotEmpty()) {
+            globeDao.updateGlobe(globe.copy(thumbnail = pictures.first()))
         }
     }
 
