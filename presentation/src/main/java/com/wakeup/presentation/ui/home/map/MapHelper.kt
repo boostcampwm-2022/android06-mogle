@@ -199,14 +199,14 @@ class MapHelper(private val context: Context) {
      * @param momentModel 모먼트 데이터
      * @param clickListener 마커 클릭 리스너
      */
-    fun setMarker(_map: NaverMap, momentModel: MomentModel, clickListener: OnClickListener) {
+    fun setMarker(_map: NaverMap, momentModel: MomentModel, clickListener: OnClickListener): Marker {
         momentModel.pictures.takeIf { it.isNotEmpty() }?.let {
             markerBinding.ivThumbnail.setImageURI(("${context.filesDir}/images/${it.first().path}").toUri())
         } ?: kotlin.run {
             markerBinding.ivThumbnail.setImageResource(R.drawable.ic_no_image)
         }
 
-        Marker().apply {
+        return Marker().apply {
             width = MARKER_WIDTH.dp.toInt()
             height = MARKER_HEIGHT.dp.toInt()
             anchor = PointF(POINT_X, POINT_Y)
@@ -220,6 +220,12 @@ class MapHelper(private val context: Context) {
             icon = OverlayImage.fromView(markerBinding.root)
             tag = momentModel
             onClickListener = clickListener
+        }
+    }
+
+    fun resetMarker(markers: List<Marker>) {
+        markers.forEach { marker ->
+            marker.map = null
         }
     }
 
