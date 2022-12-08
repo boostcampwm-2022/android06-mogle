@@ -19,9 +19,13 @@ import com.wakeup.presentation.model.WeatherModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,11 +40,8 @@ class HomeViewModel @Inject constructor(
 
     private val searchQuery = MutableStateFlow("")
 
-    private val _allMoments = MutableStateFlow<List<MomentModel>>(emptyList())
-    val allMoments: Flow<List<MomentModel>> = _allMoments
-
-    private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
-    val moments: Flow<PagingData<MomentModel>> = _moments
+    lateinit var allMoments: StateFlow<List<MomentModel>>
+    lateinit var moments: Flow<PagingData<MomentModel>>
 
     private val _scrollToTop = MutableStateFlow(false)
     val scrollToTop = _scrollToTop.asStateFlow()
@@ -61,33 +62,30 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchMoments() {
-        viewModelScope.launch {
-            _moments.value = getMomentListUseCase(
-                sortType = sortType.value,
-                query = searchQuery.value,
-                myLocation = location.value?.toDomain()
-            ).map { pagingMoments ->
-                pagingMoments.map { moment ->
-                    moment.toPresentation()
-                }
+        moments = getMomentListUseCase(
+            sortType = sortType.value,
+            query = searchQuery.value,
+            myLocation = location.value?.toDomain()
+        ).map { pagingMoments ->
+            pagingMoments.map { moment ->
+                moment.toPresentation()
             }
-                .cachedIn(viewModelScope)
-                .first()
-        }
+        }.cachedIn(viewModelScope)
 
         fetchLocationState.value = false
         location.value = null
     }
 
     fun fetchAllMoments() {
-        viewModelScope.launch {
-            _allMoments.value = getAllMomentListUseCase(searchQuery.value).map { moments ->
-                moments.map { moment ->
-                    moment.toPresentation()
-                }
+        allMoments = getAllMomentListUseCase(searchQuery.value).map { moments ->
+            moments.map { moment ->
+                moment.toPresentation()
             }
-                .first()
-        }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
     }
 
     fun fetchWeather(location: LocationModel) {

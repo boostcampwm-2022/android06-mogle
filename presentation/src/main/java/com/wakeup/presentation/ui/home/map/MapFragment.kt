@@ -25,7 +25,6 @@ import com.wakeup.presentation.ui.home.HomeFragmentDirections
 import com.wakeup.presentation.ui.home.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -52,7 +51,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         initMomentPreviewClickListener()
         initMap()
-        collectData()
+        collectLocation()
     }
 
     // 프리뷰 터치시, 상세 페이지 이동
@@ -76,7 +75,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
     }
 
-    private fun collectData() {
+    private fun collectLocation() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.fetchLocationState.collectLatest { state ->
@@ -85,6 +84,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                             val location = LocationModel(latitude, longitude)
                             viewModel.setLocation(location)
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    fun collectMoments() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.allMoments.collectLatest { moments ->
+                    mapHelper.resetMarker(markers)
+                    markers.clear()
+                    moments.forEach { momentModel ->
+                        setMarkerClickListener(momentModel)
                     }
                 }
             }
@@ -107,19 +120,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             setLogoView(naverMap, binding.lvLogo)
         }
 
-        // 전체 모먼트 불러오기
-        // TODO 속도가 엄청 느려진다.
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.allMoments.collectLatest { moments ->
-                    mapHelper.resetMarker(markers)
-                    markers.clear()
-                    moments.forEach { momentModel ->
-                        setMarkerClickListener(momentModel)
-                    }
-                }
-            }
-        }
+        collectMoments()
 
         // Paging 있이, Moment 가져오기
         /*viewLifecycleOwner.lifecycleScope.launch {

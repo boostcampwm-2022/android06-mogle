@@ -38,13 +38,15 @@ class HomeFragment : Fragment() {
     lateinit var broadcastReceiver: BroadcastReceiver
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
+    private lateinit var mapFragment: MapFragment
+    private lateinit var bottomSheetFragment: BottomSheetFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initMap()
         initBottomSheet()
         initLocation()
-        initializeBroadcastReceiver()
     }
 
     override fun onCreateView(
@@ -66,14 +68,14 @@ class HomeFragment : Fragment() {
 
     private fun initMap() {
         if (childFragmentManager.findFragmentById(R.id.map) == null) {
-            val mapFragment = MapFragment()
+            mapFragment = MapFragment()
             childFragmentManager.beginTransaction().add(R.id.map, mapFragment).commit()
         }
     }
 
     private fun initBottomSheet() {
         if (childFragmentManager.findFragmentById(R.id.bottom_sheet) == null) {
-            val bottomSheetFragment = BottomSheetFragment()
+            bottomSheetFragment = BottomSheetFragment()
             childFragmentManager.beginTransaction().add(R.id.bottom_sheet, bottomSheetFragment)
                 .commit()
         }
@@ -107,25 +109,13 @@ class HomeFragment : Fragment() {
                 viewModel.fetchMoments()
                 viewModel.fetchAllMoments()
 
+                mapFragment.collectMoments()
+                bottomSheetFragment.collectMoments()
+
                 hideKeyboard()
             }
             false // true: 계속 search 가능
         }
-    }
-
-    private fun initializeBroadcastReceiver() {
-        broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                viewModel.setScrollToTop(true)
-                viewModel.sortType.value = SortType.MOST_RECENT
-                viewModel.fetchMoments()
-            }
-        }
-
-        requireActivity().registerReceiver(
-            broadcastReceiver,
-            IntentFilter(UPDATE_MOMENTS_KEY)
-        )
     }
 
     // 따로 함수로 빼니까, 권한 확인을 했는지 IDE가 인식을 못합니다.
