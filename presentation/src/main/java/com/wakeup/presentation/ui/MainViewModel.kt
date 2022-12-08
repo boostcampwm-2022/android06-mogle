@@ -9,10 +9,12 @@ import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -26,11 +28,16 @@ class MainViewModel @Inject constructor(
     private val _isReady = MutableStateFlow(false)
     val isReady = _isReady.asStateFlow()
 
-    val allMoments: Flow<List<MomentModel>?> = getAllMomentListUseCase("").map { moments ->
+    var allMoments: StateFlow<List<MomentModel>>? = getAllMomentListUseCase("").map { moments ->
         moments.map { moment ->
             moment.toPresentation()
         }
-    }.apply { _isReady.value = true }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+        .apply { _isReady.value = true }
 
     fun testGetWeather() {
         viewModelScope.launch {

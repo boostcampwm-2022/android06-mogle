@@ -53,7 +53,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         setAdapterListener()
         setCallback()
 
-        collectData()
+        collectMoments()
     }
 
     private fun setMenus() {
@@ -83,6 +83,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
                 }
             }
             viewModel.fetchMoments()
+            collectMoments()
         }
     }
 
@@ -119,7 +120,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun collectData() {
+    fun collectMoments() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.moments.collectLatest {
