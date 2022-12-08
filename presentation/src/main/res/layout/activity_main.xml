@@ -26,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:backgroundTint="?attr/colorSurfaceVariant"
                 android:background="?attr/colorPrimary"
                 app:fabCradleMargin="@dimen/small_100"
                 app:fabCradleRoundedCornerRadius="@dimen/large_150"

@@ -24,7 +24,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="?android:colorBackground">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -47,15 +47,14 @@
 
                 <ImageView
                     android:id="@+id/iv_header"
+                    style="@style/Mogle.MomentDetail.Header.Image"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/bg_sunny_header"
                     app:layout_constraintDimensionRatio="3:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/bg_sunny_header" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_main_address"
@@ -101,10 +100,10 @@
 
                         <androidx.viewpager2.widget.ViewPager2
                             android:id="@+id/vp2_images"
-                            app:submitList="@{momentModel.pictures}"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal" />
+                            android:orientation="horizontal"
+                            app:submitList="@{momentModel.pictures}" />
 
                         <com.wakeup.presentation.customview.textindicator.TextPageIndicator
                             android:id="@+id/tpi_indicator"

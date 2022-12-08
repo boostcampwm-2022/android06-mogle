@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/normal_100"
         android:layout_marginVertical="@dimen/small_100"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Mogle.LargeComponent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,12 +27,12 @@
                 android:id="@+id/iv_moment"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:scaleType="centerCrop"
                 android:contentDescription="@string/moment_picture"
-                app:thumbnailImageFromFilePath="@{moment.pictures[0].path}"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:thumbnailImageFromFilePath="@{moment.pictures[0].path}"
                 tools:background="@color/gray" />
 
             <TextView

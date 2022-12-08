@@ -38,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/normal_150"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="@dimen/small_150"
             app:cardElevation="@dimen/small_100"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -63,7 +64,7 @@
                         android:layout_height="@dimen/large_200"
                         android:scaleType="centerCrop"
                         app:imageFromUrl="@{vm.imageUrl}"
-                        tools:src="@drawable/sample_image" />
+                        tools:src="@drawable/bg_night_header" />
                 </com.google.android.material.card.MaterialCardView>
 
 

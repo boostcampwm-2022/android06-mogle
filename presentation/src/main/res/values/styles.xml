@@ -44,13 +44,20 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="ToolbarPopupAppearance.Mogle.GlobeDetail" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:textAppearance">@style/TextAppearance.Mogle.Title</item>
-    </style>
-
     <style name="TextAppearance.Mogle.Temperature" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="ToolbarPopupAppearance.Mogle.GlobeDetail" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textAppearance">@style/TextAppearance.Mogle.Title</item>
+    </style>
+
+    <style name="Mogle.MomentDetail.Header.Image" parent="">
+        <item name="android:src">@drawable/bg_sunny_header</item>
+    </style>
+
+    <style name="PopUpOverFlowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/bg_toolbar_popup_menu</item>
+    </style>
 </resources>

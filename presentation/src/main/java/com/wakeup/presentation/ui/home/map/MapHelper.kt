@@ -3,6 +3,7 @@ package com.wakeup.presentation.ui.home.map
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.PointF
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
@@ -61,6 +62,16 @@ class MapHelper(private val context: Context) {
             .locationButtonEnabled(false)
             .zoomControlEnabled(false)
             .logoClickEnabled(true)
+
+        // 다크 모드 체크
+        when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                options.apply {
+                    mapType(NaverMap.MapType.Navi)
+                    nightModeEnabled(true)
+                }
+            }
+        }
 
         // 지도 생성
         val mapFragment = fm.findFragmentById(R.id.fl_map) as MapFragment?

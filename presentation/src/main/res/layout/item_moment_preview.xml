@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/small_100"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +35,7 @@
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/sample_image2" />
+                tools:src="@drawable/bg_night_header" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier"
