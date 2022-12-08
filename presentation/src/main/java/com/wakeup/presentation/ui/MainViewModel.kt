@@ -2,6 +2,8 @@ package com.wakeup.presentation.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.wakeup.domain.usecase.GetAllMomentsUseCase
 import com.wakeup.domain.usecase.weather.GetWeatherDataUseCase
 import com.wakeup.presentation.mapper.toDomain
@@ -12,8 +14,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -27,12 +32,16 @@ class MainViewModel @Inject constructor(
     private val _isReady = MutableStateFlow(false)
     val isReady = _isReady.asStateFlow()
 
-    // TODO: HomeViewModel에 활용
-    val allMoments: Flow<List<MomentModel>?> = getAllMomentListUseCase("").map { moments ->
+    var allMoments: StateFlow<List<MomentModel>>? = getAllMomentListUseCase("").map { moments ->
         moments.map { moment ->
             moment.toPresentation()
         }
-    }.apply { _isReady.value = true }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+        .apply { _isReady.value = true }
 
     fun testGetWeather() {
         viewModelScope.launch {

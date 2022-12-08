@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -27,6 +28,7 @@ import com.wakeup.presentation.databinding.FragmentHomeBinding
 import com.wakeup.presentation.extension.hideKeyboard
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
+import com.wakeup.presentation.ui.MainViewModel
 import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.ui.home.map.MapFragment
 import com.wakeup.presentation.ui.home.sheet.BottomSheetFragment
@@ -40,6 +42,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
+    private val activityViewModel: MainViewModel by activityViewModels()
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -52,6 +55,7 @@ class HomeFragment : Fragment() {
         initMap()
         initBottomSheet()
         initLocation()
+        initMoments()
     }
 
     override fun onCreateView(
@@ -70,6 +74,13 @@ class HomeFragment : Fragment() {
         setSearchBarListener()
         fetchWeather()
         collectWeather()
+    }
+
+    private fun initMoments() {
+        activityViewModel.allMoments?.let { moments ->
+            viewModel.initMoments(moments)
+            activityViewModel.allMoments = null
+        }
     }
 
     private fun initMap() {

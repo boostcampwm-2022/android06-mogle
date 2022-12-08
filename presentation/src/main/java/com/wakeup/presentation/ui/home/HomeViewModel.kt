@@ -62,7 +62,10 @@ class HomeViewModel @Inject constructor(
 
     init {
         fetchMoments()
-        fetchAllMoments()
+    }
+
+    fun initMoments(data: StateFlow<List<MomentModel>>) {
+        allMoments = data
     }
 
     fun fetchMoments() {
