@@ -4,16 +4,10 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.PointF
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraPosition
@@ -36,6 +30,12 @@ import com.wakeup.presentation.extension.dp
 import com.wakeup.presentation.extension.getFadeOutAnimator
 import com.wakeup.presentation.extension.setListener
 import com.wakeup.presentation.model.MomentModel
+import android.graphics.drawable.Drawable
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.wakeup.presentation.model.PictureModel
 
 class MapHelper(private val context: Context) {
@@ -202,7 +202,7 @@ class MapHelper(private val context: Context) {
      * @param momentModel 모먼트 데이터
      * @param clickListener 마커 클릭 리스너
      */
-    fun setMomentMarker(_map: NaverMap, momentModel: MomentModel, clickListener: OnClickListener) {
+    fun setMomentMarker(_map: NaverMap, momentModel: MomentModel, clickListener: OnClickListener): Marker {
         val markerBinding =
             ItemMapMarkerBinding.inflate(LayoutInflater.from(context), null, false)
 
@@ -224,6 +224,7 @@ class MapHelper(private val context: Context) {
             }
         }
 
+    
         // 이미지가 없으면, path를 파일이 없는 경로로 지정하여,
         // onLoadFailed() 유도 -> 기본 이미지 출력
         val picture = if (momentModel.pictures.isEmpty()) {
@@ -260,6 +261,12 @@ class MapHelper(private val context: Context) {
                 }
             })
             .into(markerBinding.ivThumbnail)
+    }
+
+    fun resetMarker(markers: List<Marker>) {
+        markers.forEach { marker ->
+            marker.map = null
+        }
     }
 
     /**

@@ -25,6 +25,7 @@ import com.wakeup.presentation.ui.home.HomeFragmentDirections
 import com.wakeup.presentation.ui.home.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -34,6 +35,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
     private lateinit var mapHelper: MapHelper
+
+    private val markers = mutableListOf<Marker>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -109,6 +112,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.allMoments.collectLatest { moments ->
+                    mapHelper.resetMarker(markers)
+                    markers.clear()
                     moments.forEach { momentModel ->
                         setMarkerClickListener(momentModel)
                     }
@@ -151,7 +156,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             true
         }
 
-        mapHelper.setMomentMarker(naverMap, moment, clickListener)
+        val marker = mapHelper.setMomentMarker(naverMap, moment, clickListener)
+        markers.add(marker)
     }
 
     // Deprecated 되었지만,

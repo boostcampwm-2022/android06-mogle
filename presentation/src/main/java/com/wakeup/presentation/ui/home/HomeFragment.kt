@@ -1,5 +1,9 @@
 package com.wakeup.presentation.ui.home
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
@@ -12,18 +16,17 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.wakeup.domain.model.SortType
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentHomeBinding
-import com.wakeup.presentation.extension.getNavigationResultFromTop
 import com.wakeup.presentation.extension.hideKeyboard
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
 import com.wakeup.presentation.ui.home.map.MapFragment
 import com.wakeup.presentation.ui.home.sheet.BottomSheetFragment
+import com.wakeup.presentation.util.UPDATE_MOMENTS_KEY
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,6 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
 
+    lateinit var broadcastReceiver: BroadcastReceiver
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +44,7 @@ class HomeFragment : Fragment() {
         initMap()
         initBottomSheet()
         initLocation()
+        initializeBroadcastReceiver()
     }
 
     override fun onCreateView(
@@ -56,7 +61,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setSearchBarListener()
-        updateMoments()
         fetchWeather()
     }
 
@@ -101,6 +105,7 @@ class HomeFragment : Fragment() {
                 viewModel.setScrollToTop(true)
                 viewModel.setSearchQuery(textView.text.toString())
                 viewModel.fetchMoments()
+                viewModel.fetchAllMoments()
 
                 hideKeyboard()
             }
@@ -108,15 +113,19 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun updateMoments() {
-        findNavController().getNavigationResultFromTop<Boolean>("isUpdated")
-            ?.observe(viewLifecycleOwner) { isUpdated ->
-                viewModel.setScrollToTop(isUpdated)
-                if (isUpdated) {
-                    viewModel.sortType.value = SortType.MOST_RECENT
-                    viewModel.fetchMoments()
-                }
+    private fun initializeBroadcastReceiver() {
+        broadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                viewModel.setScrollToTop(true)
+                viewModel.sortType.value = SortType.MOST_RECENT
+                viewModel.fetchMoments()
             }
+        }
+
+        requireActivity().registerReceiver(
+            broadcastReceiver,
+            IntentFilter(UPDATE_MOMENTS_KEY)
+        )
     }
 
     // 따로 함수로 빼니까, 권한 확인을 했는지 IDE가 인식을 못합니다.
