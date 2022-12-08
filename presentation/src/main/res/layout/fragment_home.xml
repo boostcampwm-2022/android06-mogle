@@ -18,8 +18,9 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_search"
             android:layout_width="0dp"
+            android:layout_marginTop="@dimen/normal_250"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/normal_100"
+            android:layout_marginHorizontal="@dimen/normal_100"
             app:cardCornerRadius="@dimen/small_100"
             app:cardElevation="@dimen/small_100"
             app:layout_constraintEnd_toStartOf="@id/cv_weather"
@@ -74,10 +75,10 @@
 
                 <ImageView
                     android:id="@+id/iv_weather_icon"
-                    app:imageFromUrl="@{viewModel.weather.iconUrl}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-8dp"
+                    app:imageFromUrl="@{viewModel.weather.iconUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
