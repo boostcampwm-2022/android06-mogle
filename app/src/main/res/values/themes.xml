@@ -1,5 +1,4 @@
 <resources>
-
     <style name="Theme.Mogle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/mint</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -17,6 +16,16 @@
         <item name="android:textColorSecondary">@color/light_gray</item>
 
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.Mogle.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_mogle_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.Mogle</item>
+
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:navigationBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

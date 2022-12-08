@@ -1,25 +1,32 @@
 package com.wakeup.presentation.adapter
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.databinding.ItemPlaceBinding
 import com.wakeup.presentation.model.PlaceModel
+import com.wakeup.presentation.ui.addmoment.PlaceSearchFragmentDirections
 
-class PlaceAdapter(private val onClick: (place: PlaceModel) -> Unit) :
-    ListAdapter<PlaceModel, PlaceAdapter.ViewHolder>(diffCallback) {
+class PlaceAdapter : ListAdapter<PlaceModel, PlaceAdapter.PlaceViewHolder>(PlaceDiffUtil) {
 
-    class ViewHolder private constructor(
+    class PlaceViewHolder private constructor(
         private val binding: ItemPlaceBinding,
-        private val onClick: (place: PlaceModel) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
-                binding.place?.let { place ->
-                    onClick(place)
-                }
+                navigateToPlaceCheckFragment()
             }
+        }
+
+        private fun navigateToPlaceCheckFragment() {
+            val action =
+                PlaceSearchFragmentDirections.actionPlaceSearchToPlaceCheck(binding.place ?: return)
+            itemView.findNavController().navigate(action)
         }
 
         fun bind(place: PlaceModel) {
@@ -28,37 +35,29 @@ class PlaceAdapter(private val onClick: (place: PlaceModel) -> Unit) :
         }
 
         companion object {
-            fun from(
-                parent: android.view.ViewGroup,
-                onClick: (place: PlaceModel) -> Unit
-            ) = ViewHolder(
-                ItemPlaceBinding.inflate(
-                    android.view.LayoutInflater.from(
-                        parent.context
-                    ), parent, false
-                ),
-                onClick
-            )
+            fun from(parent: ViewGroup): PlaceViewHolder {
+                return PlaceViewHolder(
+                    ItemPlaceBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                )
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: android.view.ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent, onClick)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
+        return PlaceViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
+    companion object PlaceDiffUtil : DiffUtil.ItemCallback<PlaceModel>() {
+        override fun areItemsTheSame(oldItem: PlaceModel, newItem: PlaceModel): Boolean {
+            return oldItem.detailAddress == newItem.detailAddress
+        }
 
-    companion object {
-        private val diffCallback =
-            object : androidx.recyclerview.widget.DiffUtil.ItemCallback<PlaceModel>() {
-                override fun areItemsTheSame(oldItem: PlaceModel, newItem: PlaceModel) =
-                    oldItem.detailAddress == newItem.detailAddress
-
-                override fun areContentsTheSame(oldItem: PlaceModel, newItem: PlaceModel) =
-                    oldItem == newItem
-            }
+        override fun areContentsTheSame(oldItem: PlaceModel, newItem: PlaceModel): Boolean {
+            return oldItem == newItem
+        }
     }
 }

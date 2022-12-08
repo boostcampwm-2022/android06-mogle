@@ -1,9 +1,10 @@
 package com.wakeup.presentation.model
 
+import android.os.Parcelable
 import com.wakeup.presentation.util.DateUtil
-import java.io.Serializable
+import kotlinx.parcelize.Parcelize
 
-// TODO @Parcelize 변경
+@Parcelize
 data class MomentModel(
     val id: Long = 0,
     val place: PlaceModel,
@@ -11,7 +12,8 @@ data class MomentModel(
     val content: String,
     val globes: List<GlobeModel>,
     val date: Long,
-): Serializable {
+    var isSelected: Boolean = false // 동시 접근할 일 없으므로 var 선언
+) : Parcelable {
 
     fun getFormattedDate(): String = DateUtil.getFormattedDate(date)
 }

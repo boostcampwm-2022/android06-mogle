@@ -2,16 +2,16 @@ package com.wakeup.data.database.dao
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.MomentEntity
-import com.wakeup.data.database.entity.MomentGlobeXRef
-import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
+import com.wakeup.data.database.entity.MomentWithPictures
 import com.wakeup.data.database.entity.PictureEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MomentDao {
@@ -49,24 +49,34 @@ interface MomentDao {
         lng: Double?,
     ): PagingSource<Int, MomentWithGlobesAndPictures>
 
-    @Query("SELECT globe_id FROM globe WHERE name = :globeName")
-    suspend fun getGlobeIdByName(globeName: String): Long
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM moment
+        WHERE mainAddress LIKE '%' || :query || '%'
+        OR detailAddress LIKE '%' || :query || '%'
+        OR content LIKE '%' || :query || '%'
+        """
+    )
+    fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>>
 
-    @Query("SELECT picture_id FROM picture WHERE fileName = :fileName")
-    suspend fun getPictureIdByByteArray(fileName: String): Long
+    @Query("SELECT * FROM moment WHERE moment_id = :id")
+    suspend fun getMoment(id: Long): MomentWithGlobesAndPictures
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMoment(moment: MomentEntity): Long
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun savePictures(pictures: List<PictureEntity>): List<Long>
+    @Query(
+        """
+        SELECT picture.picture_id, picture.path
+        FROM moment_picture 
+        INNER JOIN picture 
+        ON moment_picture.picture_id = picture.picture_id
+        WHERE moment_picture.moment_id = :momentId
+        """
+    )
+    suspend fun getMomentPictures(momentId: Long): List<PictureEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveMomentPictureXRefs(momentPictures: List<MomentPictureXRef>)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun saveGlobes(globes: List<GlobeEntity>): List<Long>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveMomentGlobeXRef(momentGlobe: MomentGlobeXRef)
+    @Query("DELETE FROM moment WHERE moment_id = :momentId")
+    suspend fun deleteMoment(momentId: Long)
 }

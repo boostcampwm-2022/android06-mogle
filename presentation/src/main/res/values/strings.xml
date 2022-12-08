@@ -40,7 +40,31 @@
 
     <string name="network_error">네트워크 연결을 확인해 주세요.</string>
 
+    <string name="add_globe_dialog_title">글로브 만들기</string>
+    <string name="update_globe_name_dialog_title">글로브 이름 수정하기</string>
+    <string name="add_globe_dialog_hint">글로브 이름을 입력하세요</string>
+    <string name="cancel">취소</string>
+    <string name="add">추가</string>
+    <string name="update">수정</string>
+    <string name="globe_detail_menu_add_moment">모먼트 추가하기</string>
+    <string name="globe_detail_menu_delete_moment">모먼트 삭제하기</string>
+    <string name="globe_detail_menu_update_globe">글로브 이름 수정하기</string>
+    <string name="globe_detail_menu_delete_globe">글로브 삭제하기</string>
+
+    <string name="moment_detail_menu_update_moment">모먼트 수정하기</string>
+    <string name="moment_detail_menu_delete_moment">모먼트 삭제하기</string>
+
+    <string name="snack_bar_message_add_globe">글로브가 생성되었습니다</string>
+    <string name="snack_bar_message_update_globe_name">글로브 이름이 수정되었습니다</string>
+
+    <string name="add_moment_in_globe">모먼트 추가하기</string>
+
+    <string name="temperature_celsius">%.1f°C</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_moment_list">지금 이 순간을 기록해보세요.</string>
+    <string name="setting_theme">테마 설정</string>
+    <string name="setting_alarm">알림 설정</string>
 
 </resources>

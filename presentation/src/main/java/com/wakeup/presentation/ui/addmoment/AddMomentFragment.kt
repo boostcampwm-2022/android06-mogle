@@ -1,6 +1,6 @@
 package com.wakeup.presentation.ui.addmoment
 
-import android.graphics.BitmapFactory
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
@@ -18,12 +19,14 @@ import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.PictureAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentBinding
 import com.wakeup.presentation.extension.setNavigationResultToBackStack
+import com.wakeup.presentation.lib.dialog.BaseDialog
+import com.wakeup.presentation.lib.dialog.NormalDialog
 import com.wakeup.presentation.model.PictureModel
-import com.wakeup.presentation.util.BitmapUtil.fixRotation
+import com.wakeup.presentation.ui.UiState
+import com.wakeup.presentation.util.UPDATE_MOMENTS_KEY
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class AddMomentFragment : Fragment() {
@@ -37,16 +40,7 @@ class AddMomentFragment : Fragment() {
     private val getPicture =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val uri = result.data?.data ?: return@registerForActivityResult
-            val contentResolver = requireContext().contentResolver
-            kotlin.runCatching {
-                listOf(contentResolver.openInputStream(uri), contentResolver.openInputStream(uri))
-            }.onSuccess {
-                val bitmap = BitmapFactory.decodeStream(it.first())
-                viewModel.addPicture(PictureModel(bitmap.fixRotation(it.last())))
-                it.forEach { stream -> stream?.close() }
-            }.onFailure {
-                Timber.e(it)
-            }
+            viewModel.addPicture(PictureModel(path = uri.toString()))
         }
 
     private val datePicker = MaterialDatePicker.Builder.datePicker().build().apply {
@@ -56,7 +50,7 @@ class AddMomentFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = FragmentAddMomentBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
@@ -119,14 +113,36 @@ class AddMomentFragment : Fragment() {
     }
 
     private fun initSave() {
-        binding.tvSave.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.saveMoment()
-                Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
-                val navController = findNavController()
-                navController.setNavigationResultToBackStack("isUpdated", true)
-                navController.popBackStack()
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isSaveButtonClicked.collect { isClicked ->
+                    if (isClicked.not()) return@collect
+                    viewModel.saveMoment()
+                }
             }
         }
+
+        val dialog = NormalDialog.with(requireContext(), R.layout.dialog_loading)
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    if (state is UiState.Loading) {
+                        dialog.show()
+                    } else {
+                        dialog.dismiss()
+                    }
+
+                    if (state is UiState.Success) {
+                        Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
+                        findNavController().popBackStack()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
     }
 }

@@ -17,7 +17,10 @@ object FakeMomentFactory {
                 place = createPlace(it),
                 pictures = emptyList(),
                 content = "재민${it}",
-                globes = listOf(GlobeModel("여행"), GlobeModel("default")),
+                globes = listOf(
+                    GlobeModel(id = 0, name = "여행", thumbnail = null),
+                    GlobeModel(id = 0, name = "default", thumbnail = null)
+                ),
                 date = System.currentTimeMillis() + (it * ONE_DAY)
             )
         }
@@ -25,7 +28,8 @@ object FakeMomentFactory {
     private fun createPlace(count: Int): PlaceModel = PlaceModel(
         mainAddress = "메인 장소${count}",
         detailAddress = "상세 주소${count}",
-        location = LocationModel(37.0 + count, 128.0 + count)
+        placeUrl = "",
+        location = LocationModel(37.0 + count, 128.0 + count),
     )
 
     fun createMomentsWithSampleImage(picture: PictureModel, count: Int): List<MomentModel> =
@@ -35,7 +39,10 @@ object FakeMomentFactory {
                 place = createPlace(it),
                 pictures = listOf(picture, picture, picture, picture),
                 content = "재민${it}",
-                globes = listOf(GlobeModel("여행"), GlobeModel("default")),
+                globes = listOf(
+                    GlobeModel(id = 0, name = "여행", thumbnail = null),
+                    GlobeModel(id = 1, name = "default", thumbnail = null)
+                ),
                 date = System.currentTimeMillis() + (it * ONE_DAY)
             )
         }

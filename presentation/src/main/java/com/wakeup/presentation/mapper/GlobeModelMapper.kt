@@ -5,12 +5,18 @@ import com.wakeup.presentation.model.GlobeModel
 
 fun GlobeModel.toDomain(): Globe {
     return Globe(
-        name = name
+        id = id,
+        name = name,
+        momentCount = momentCount,
+        thumbnail = thumbnail?.toDomain(),
     )
 }
 
 fun Globe.toPresentation(): GlobeModel {
     return GlobeModel(
-        name = name
+        id = id,
+        name = name,
+        momentCount = momentCount,
+        thumbnail = thumbnail?.toPresentation(),
     )
 }

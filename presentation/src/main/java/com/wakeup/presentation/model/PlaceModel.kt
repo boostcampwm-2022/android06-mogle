@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class PlaceModel(
     val mainAddress: String,
     val detailAddress: String,
-    val location: LocationModel
+    val placeUrl: String,
+    val location: LocationModel,
 ) : Parcelable

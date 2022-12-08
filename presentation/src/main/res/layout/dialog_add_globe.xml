@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/small_150"
+        app:cardElevation="@dimen/small_100"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/small_100"
+            android:padding="@dimen/small_100">
+
+            <TextView
+                android:id="@+id/tv_add_globe_title"
+                style="@style/TextAppearance.Mogle.Headline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/small_50"
+                android:paddingBottom="@dimen/small_150"
+                android:text="@string/add_globe_dialog_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_add_globe"
+                style="@style/TextAppearance.Mogle.SubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="@string/add_globe_dialog_hint"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_add_globe_title">
+
+                <requestFocus />
+
+            </EditText>
+
+            <TextView
+                android:id="@+id/tv_add_globe_cancel"
+                style="@style/TextAppearance.Mogle.SubTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="@dimen/small_100"
+                android:paddingBottom="@dimen/small_100"
+                android:text="@string/cancel"
+                app:layout_constraintEnd_toStartOf="@id/divider_add_globe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_add_globe" />
+
+
+            <View
+                android:id="@+id/divider_add_globe"
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="@dimen/small_100"
+                android:background="?attr/colorOnBackground"
+                android:paddingTop="@dimen/small_150"
+                app:layout_constraintEnd_toStartOf="@id/tv_add_globe_add"
+                app:layout_constraintStart_toEndOf="@id/tv_add_globe_cancel"
+                app:layout_constraintTop_toBottomOf="@id/et_add_globe" />
+
+            <TextView
+                android:id="@+id/tv_add_globe_add"
+                style="@style/TextAppearance.Mogle.SubTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="@dimen/small_100"
+                android:paddingBottom="@dimen/small_100"
+                android:text="@string/add"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/divider_add_globe"
+                app:layout_constraintTop_toBottomOf="@id/et_add_globe" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

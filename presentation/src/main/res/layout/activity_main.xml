@@ -3,48 +3,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph" />
+            tools:context=".MainActivity">
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottom_app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="?attr/colorPrimary"
-            app:fabCradleMargin="10dp"
-            app:fabCradleRoundedCornerRadius="50dp"
-            app:fabCradleVerticalOffset="10dp">
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_nav"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:background="@{null}"
-                app:labelVisibilityMode="unlabeled"
-                app:menu="@menu/menu_bottom_nav" />
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_graph" />
 
-        </com.google.android.material.bottomappbar.BottomAppBar>
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bottom_app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="?attr/colorPrimary"
+                app:fabCradleMargin="@dimen/small_100"
+                app:fabCradleRoundedCornerRadius="@dimen/large_150"
+                app:fabCradleVerticalOffset="@dimen/small_100">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/add_button"
-            android:src="@drawable/ic_add"
-            app:layout_anchor="@id/bottom_app_bar" />
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottom_nav"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:background="@{null}"
+                    app:labelVisibilityMode="unlabeled"
+                    app:menu="@menu/menu_bottom_nav" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </com.google.android.material.bottomappbar.BottomAppBar>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/add_button"
+                android:src="@drawable/ic_add"
+                app:layout_anchor="@id/bottom_app_bar" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <include android:id="@+id/layout_drawer"
+            layout="@layout/layout_drawer" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

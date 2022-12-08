@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.PlaceAdapter
 import com.wakeup.presentation.databinding.FragmentPlaceSearchBinding
-import com.wakeup.presentation.model.PlaceModel
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,7 +18,7 @@ class PlaceSearchFragment : Fragment() {
 
     private val viewModel: PlaceSearchViewModel by viewModels()
     private lateinit var binding: FragmentPlaceSearchBinding
-    private val adapter = PlaceAdapter { navigateToPlaceCheckFragment(it) }
+    private val adapter = PlaceAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,12 +40,6 @@ class PlaceSearchFragment : Fragment() {
 
     }
 
-    private fun navigateToPlaceCheckFragment(place: PlaceModel) {
-        findNavController().navigate(
-            PlaceSearchFragmentDirections.actionPlaceSearchToPlaceCheck(place)
-        )
-    }
-
     private fun initAdapter() {
         binding.rvSearchResult.adapter = adapter
     }
@@ -57,5 +50,10 @@ class PlaceSearchFragment : Fragment() {
             titleId = R.string.place_search,
             onBackClick = { findNavController().navigateUp() }
         )
+    }
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
     }
 }

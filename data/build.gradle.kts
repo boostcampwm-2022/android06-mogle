@@ -20,11 +20,34 @@ android {
         testInstrumentationRunner = Depends.Versions.testInstrumentationRunner
         consumerProguardFiles("consumer-rules.pro")
 
-
         buildConfigField(
             type = "String",
             name = "KAKAO_REST_API_KEY",
             value = gradleLocalProperties(rootDir).getProperty("KAKAO_REST_API_KEY")
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "WEATHER_API_KEY",
+            value = gradleLocalProperties(rootDir).getProperty("WEATHER_API_KEY")
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "KAKAO_BASE_URL",
+            value ="\"https://dapi.kakao.com/\""
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "WEATHER_BASE_URL",
+            value ="\"https://api.openweathermap.org/\""
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "WEATHER_ICON_BASE_URL",
+            value ="\"https://openweathermap.org/\""
         )
     }
 
@@ -87,6 +110,10 @@ dependencies {
     implementation(Depends.Libraries.paging_runtime_ktx) {
         exclude(group = "androidx.lifecycle", module = "lifecycle-viewmodel-ktx")
     }
+
+    // Glide
+    implementation(Depends.Libraries.glide)
+    implementation(Depends.Libraries.glide_compiler)
 
     // Stetho
     implementation(Depends.Libraries.stetho)

@@ -44,4 +44,20 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
+    <style name="ToolbarPopupAppearance.Mogle.GlobeDetail" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textAppearance">@style/TextAppearance.Mogle.Title</item>
+    </style>
+
+    <style name="TextAppearance.Mogle.Temperature" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="MomentCheckBox" parent="@style/Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_selector</item>
+        <item name="background">@drawable/bg_translucence_gray_corner_16</item>
+    </style>
+
+    <!-- 클릭했을 때 전체적으로 회색 빛 보여주고, 체크박스 추가, 추가 버튼은 툴바 -->
+
 </resources>

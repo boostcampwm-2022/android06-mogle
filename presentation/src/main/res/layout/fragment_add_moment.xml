@@ -132,8 +132,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
-                        android:text="@{vm.defaultGlobe.name}"
-                        app:simpleItems="@{vm.tmpGlobes}" />
+                        android:text="@{vm.selectedGlobe.name}"
+                        app:globeItems="@{vm.globes}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -239,7 +239,7 @@
                     android:elevation="@dimen/small_150"
                     android:enabled="@{vm.isSaveButtonEnabled()}"
                     android:gravity="center"
-                    android:padding="@dimen/normal_100"
+                    android:onClick="@{() -> vm.save()}"
                     android:text="@string/add_moment_save"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="@dimen/normal_100_tv"

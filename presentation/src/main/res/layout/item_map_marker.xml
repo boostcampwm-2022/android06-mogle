@@ -2,17 +2,32 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        
+        <variable
+            name="picture"
+            type="com.wakeup.presentation.model.PictureModel" />
+    </data>
 
     <FrameLayout
-        android:layout_width="52dp"
-        android:layout_height="59dp"
-        android:background="@drawable/bg_marker_pink"
-        android:padding="6dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="52dp"
+            android:layout_height="58dp"
+            android:layout_gravity="center"
+            android:src="@drawable/bg_marker_pink_webp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_thumbnail"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            tools:src="@drawable/bg_sunny" />
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="7.5dp"
+            android:layout_marginTop="4.5dp"
+            android:scaleType="centerCrop"
+            app:thumbnailImageFromFilePath="@{picture.path}"
+            tools:src="@drawable/sample_image2" />
     </FrameLayout>
 </layout>

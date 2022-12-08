@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/map_fragment">
+    app:startDestination="@id/home_fragment">
 
     <fragment
-        android:id="@+id/map_fragment"
-        android:name="com.wakeup.presentation.ui.map.MapFragment"
+        android:id="@+id/home_fragment"
+        android:name="com.wakeup.presentation.ui.home.HomeFragment"
         android:label="지도"
-        tools:layout="@layout/fragment_map" >
-        
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_map_fragment_to_moment_detail_fragment"
             app:destination="@id/moment_detail_fragment"
@@ -24,7 +23,15 @@
         android:id="@+id/globe_fragment"
         android:name="com.wakeup.presentation.ui.globe.GlobeFragment"
         android:label="글로브"
-        tools:layout="@layout/fragment_globe" />
+        tools:layout="@layout/fragment_globe">
+        <action
+            android:id="@+id/action_globe_fragment_to_globeDetailFragment"
+            app:destination="@id/globe_detail_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <navigation
         android:id="@+id/add_moment_navigation"
@@ -88,5 +95,28 @@
         <argument
             android:name="momentModel"
             app:argType="com.wakeup.presentation.model.MomentModel" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/globe_detail_fragment"
+        android:name="com.wakeup.presentation.ui.globe.GlobeDetailFragment"
+        android:label="GlobeDetailFragment">
+        <argument
+            android:name="globe"
+            app:argType="com.wakeup.presentation.model.GlobeModel" />
+        <action
+            android:id="@+id/action_globe_detail_fragment_to_moment_detail_fragment"
+            app:destination="@id/moment_detail_fragment" />
+        <action
+            android:id="@+id/action_globe_detail_fragment_to_addMomentInGlobeFragment"
+            app:destination="@id/add_moment_In_globe_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/add_moment_In_globe_fragment"
+        android:name="com.wakeup.presentation.ui.globe.AddMomentInGlobeFragment"
+        android:label="AddMomentInGlobeFragment">
+        <argument
+            android:name="globe"
+            app:argType="com.wakeup.presentation.model.GlobeModel" />
     </fragment>
 </navigation>
