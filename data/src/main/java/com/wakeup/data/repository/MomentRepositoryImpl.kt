@@ -35,6 +35,10 @@ class MomentRepositoryImpl @Inject constructor(
             }
         }
 
+    override suspend fun getMoment(id: Long): Moment {
+        return momentLocalDataSource.getMoment(id).toDomain()
+    }
+
     override suspend fun saveMoment(moment: Moment): Long {
         return momentLocalDataSource.saveMoment(moment.toEntity())
     }

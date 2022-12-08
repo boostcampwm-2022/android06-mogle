@@ -7,9 +7,8 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.wakeup.domain.model.SortType
 import com.wakeup.domain.model.WeatherType
-import com.wakeup.domain.usecase.DeleteMomentUseCase
-import com.wakeup.domain.usecase.GetAllMomentsUseCase
-import com.wakeup.domain.usecase.GetMomentListUseCase
+import com.wakeup.domain.usecase.moment.GetAllMomentsUseCase
+import com.wakeup.domain.usecase.moment.GetMomentListUseCase
 import com.wakeup.domain.usecase.weather.GetWeatherDataUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation
@@ -23,8 +22,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch

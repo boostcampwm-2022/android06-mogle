@@ -1,5 +1,7 @@
 package com.wakeup.data.repository
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.wakeup.data.database.mapper.toDomain
 import com.wakeup.data.database.mapper.toEntity
 import com.wakeup.data.source.local.globe.GlobeLocalDataSource
@@ -26,20 +28,19 @@ class GlobeRepositoryImpl @Inject constructor(
         globeLocalDataSource.deleteGlobe(globe.toEntity())
     }
 
-    override suspend fun getGlobeId(globeName: String): Long {
-        return globeLocalDataSource.getGlobeIdByName(globeName)
-    }
-
     override fun getGlobes(): Flow<List<Globe>> {
         return globeLocalDataSource.getGlobes().map {
             it.map { globeEntity -> globeEntity.toDomain() }
         }
     }
 
-    override fun getMomentsByGlobe(globeId: Long): Flow<List<Moment>> {
-        return globeLocalDataSource.getMomentsByGlobe(globeId).map { momentXRefs ->
-            momentXRefs.map { momentEntity -> momentEntity.toDomain() }
+    override fun getMomentsByGlobe(globeId: Long): Flow<PagingData<Moment>> =
+        globeLocalDataSource.getMomentsByGlobe(globeId).map { pagingData ->
+            pagingData.map { momentEntity -> momentEntity.toDomain() }
         }
+
+    override suspend fun getFirstMomentByGlobe(globeId: Long): Moment? {
+        return globeLocalDataSource.getFirstMomentByGlobe(globeId)?.toDomain()
     }
 
     override suspend fun getMomentCountByGlobe(globeId: Long): Int {

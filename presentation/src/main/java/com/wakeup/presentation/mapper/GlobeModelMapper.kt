@@ -7,7 +7,8 @@ fun GlobeModel.toDomain(): Globe {
     return Globe(
         id = id,
         name = name,
-        momentCount = momentCount
+        momentCount = momentCount,
+        thumbnail = thumbnail?.toDomain(),
     )
 }
 
@@ -15,6 +16,7 @@ fun Globe.toPresentation(): GlobeModel {
     return GlobeModel(
         id = id,
         name = name,
-        momentCount = momentCount
+        momentCount = momentCount,
+        thumbnail = thumbnail?.toPresentation(),
     )
 }

@@ -2,17 +2,13 @@ package com.wakeup.presentation.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
-import androidx.paging.map
-import com.wakeup.domain.usecase.GetAllMomentsUseCase
+import com.wakeup.domain.usecase.moment.GetAllMomentsUseCase
 import com.wakeup.domain.usecase.weather.GetWeatherDataUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

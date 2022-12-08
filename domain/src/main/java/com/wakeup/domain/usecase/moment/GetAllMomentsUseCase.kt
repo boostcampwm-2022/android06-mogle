@@ -1,4 +1,4 @@
-package com.wakeup.domain.usecase
+package com.wakeup.domain.usecase.moment
 
 import com.wakeup.domain.model.Moment
 import com.wakeup.domain.repository.MomentRepository
