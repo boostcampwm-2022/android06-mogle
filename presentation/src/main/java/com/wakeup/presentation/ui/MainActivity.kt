@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
     private fun setTopLevelDestinations(navController: NavController) {
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.map_fragment,
+                R.id.home_fragment,
                 R.id.globe_fragment
             )
         )
