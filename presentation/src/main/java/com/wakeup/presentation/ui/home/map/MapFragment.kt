@@ -113,7 +113,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     mapHelper.resetMarkers(currentMarkers)
                     currentMarkers.clear()
                     moments.forEach { momentModel ->
-                        setMarkerClickListener(momentModel)
+                        initMarker(momentModel)
                     }
                 }
             }
@@ -136,7 +136,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
          } */
     }
 
-    private fun setMarkerClickListener(moment: MomentModel) {
+    private fun initMarker(moment: MomentModel) {
         val clickListener = OnClickListener { marker ->
 
             (marker as Marker).apply {
