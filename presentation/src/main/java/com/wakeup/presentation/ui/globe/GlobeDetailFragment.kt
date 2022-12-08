@@ -137,4 +137,9 @@ class GlobeDetailFragment : Fragment() {
 
     private fun getWidthDp(): Float =
         resources.displayMetrics.widthPixels / resources.displayMetrics.density
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
 }

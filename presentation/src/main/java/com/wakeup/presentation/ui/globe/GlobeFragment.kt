@@ -86,4 +86,9 @@ class GlobeFragment : Fragment() {
     private fun initGlobes() {
         viewModel.fetchGlobes()
     }
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
 }

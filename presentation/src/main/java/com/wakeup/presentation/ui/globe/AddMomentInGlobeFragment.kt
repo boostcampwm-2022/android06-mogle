@@ -96,4 +96,9 @@ class AddMomentInGlobeFragment : Fragment() {
             }
         }
     }
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
 }
