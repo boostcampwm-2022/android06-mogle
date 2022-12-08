@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.paging.PagingData
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentInGlobeBinding
@@ -27,8 +26,8 @@ class AddMomentInGlobeFragment : Fragment() {
 
     private val viewModel: AddMomentInGlobeViewModel by viewModels()
     private lateinit var binding: FragmentAddMomentInGlobeBinding
-    private val momentPagingAdapter = MomentPagingAdapter(isSelectable = true) { moment ->
-        selectMoment(moment)
+    private val momentPagingAdapter = MomentPagingAdapter(isSelectable = true) { moment, position ->
+        selectMoment(moment, position)
     }
     private val args: AddMomentInGlobeFragmentArgs by navArgs()
 
@@ -81,20 +80,9 @@ class AddMomentInGlobeFragment : Fragment() {
         }
     }
 
-    private fun selectMoment(moment: MomentModel) {
-        val data = momentPagingAdapter.snapshot().items.toMutableList()
-        val changeData = data.map { snapShotMoment ->
-            if (moment.id == snapShotMoment.id) {
-                snapShotMoment.copy(isSelected = snapShotMoment.isSelected.not())
-            } else {
-                snapShotMoment
-            }
-        }.toList()
-        lifecycleScope.launch {
-            viewModel.moments.collectLatest {
-                momentPagingAdapter.submitData(PagingData.from(changeData))
-            }
-        }
+    private fun selectMoment(moment: MomentModel, position: Int) {
+        moment.isSelected = moment.isSelected.not()
+        momentPagingAdapter.notifyItemChanged(position)
     }
 
     override fun onDestroyView() {

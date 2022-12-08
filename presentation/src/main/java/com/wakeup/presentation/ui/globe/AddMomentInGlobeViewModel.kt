@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,12 +30,15 @@ class AddMomentInGlobeViewModel @Inject constructor(
 
     fun fetchMomentsNotInGlobe(globeId: Long) {
         viewModelScope.launch {
-            Timber.d("$globeId")
             _moments.value = getMomentsNotInGlobeUseCase(globeId).map { pagingData ->
                 pagingData.map { moment -> moment.toPresentation() }
             }
                 .cachedIn(viewModelScope)
                 .first()
         }
+    }
+
+    fun setMoments(pagingDataMoment: PagingData<MomentModel>) {
+        _moments.value = pagingDataMoment
     }
 }

@@ -8,32 +8,33 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.databinding.ItemMomentBinding
 import com.wakeup.presentation.model.MomentModel
-import timber.log.Timber
 
 class MomentPagingAdapter(
     private val isSelectable: Boolean,
-    private val itemClickListener: (MomentModel) -> Unit,
+    private val itemClickListener: (MomentModel, Int) -> Unit,
 ) : PagingDataAdapter<MomentModel, MomentPagingAdapter.MomentViewHolder>(MomentDiffCallback) {
 
     class MomentViewHolder(
         private val binding: ItemMomentBinding,
-        itemClickListener: (MomentModel) -> Unit,
+        itemClickListener: (MomentModel, Int) -> Unit,
         isSelectable: Boolean,
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        private var momentPosition: Int = 0
+
         init {
             if (isSelectable) {
                 binding.cbSelectMoment.isVisible = true
-                binding.viewBlockMoment.isVisible = true
             }
             itemView.setOnClickListener {
                 binding.moment?.let { moment ->
-                    itemClickListener(moment)
+                    itemClickListener(moment, momentPosition)
                 }
             }
         }
 
-        fun bind(moment: MomentModel) {
-            Timber.d("$moment")
+        fun bind(moment: MomentModel, position: Int) {
+            momentPosition = position
             binding.moment = moment
             binding.cbSelectMoment.isChecked = moment.isSelected
             binding.viewBlockMoment.isVisible = moment.isSelected.not()
@@ -43,7 +44,7 @@ class MomentPagingAdapter(
         companion object {
             fun from(
                 parent: ViewGroup,
-                itemClickListener: (moment: MomentModel) -> Unit,
+                itemClickListener: (MomentModel, Int) -> Unit,
                 isSelectable: Boolean,
             ): MomentViewHolder {
                 return MomentViewHolder(
@@ -62,7 +63,7 @@ class MomentPagingAdapter(
     override fun onBindViewHolder(holder: MomentViewHolder, position: Int) {
         val moment = getItem(position)
         if (moment != null) {
-            holder.bind(moment)
+            holder.bind(moment, position)
         }
     }
 

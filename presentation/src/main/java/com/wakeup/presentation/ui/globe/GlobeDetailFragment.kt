@@ -27,10 +27,11 @@ class GlobeDetailFragment : Fragment() {
 
     private val viewModel: GlobeDetailViewModel by viewModels()
     private lateinit var binding: FragmentGlobeDetailBinding
-    private val globeDetailGirdAdapter = GlobeDetailAdapter { moment ->
+    private val globeDetailGridAdapter = GlobeDetailAdapter { moment ->
         changeGlobeTitleOfMoment(moment)
     }
     private val args: GlobeDetailFragmentArgs by navArgs()
+    private lateinit var argsGlobeName: String
     private var resultTitle: String? = null
 
     override fun onCreateView(
@@ -47,10 +48,10 @@ class GlobeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initToolbar(resultTitle ?: (args.globe ?: return).name)
+        argsGlobeName = (args.globe ?: GlobeModel(name = getString(R.string.globe))).name
+        initToolbar(resultTitle ?: argsGlobeName)
         initToolbarMenu()
         initAdapter()
-        initMoment()
     }
 
     private fun initToolbar(title: String) {
@@ -68,9 +69,9 @@ class GlobeDetailFragment : Fragment() {
             setOnMenuItemClickListener { menu ->
                 when (menu.itemId) {
                     R.id.item_globe_detail_add_moment -> {
-                        val action = GlobeDetailFragmentDirections
-                            .actionGlobeDetailFragmentToAddMomentInGlobeFragment(globe)
-                        findNavController().navigate(action)
+                        findNavController().navigate(
+                            R.id.action_globe_detail_fragment_to_addMomentInGlobeFragment
+                        )
                         true
                     }
                     R.id.item_globe_detail_delete_moment -> {
@@ -99,10 +100,9 @@ class GlobeDetailFragment : Fragment() {
                 getString(R.string.update_globe_name_dialog_title))
             .setOnPositive(R.id.tv_add_globe_add, getString(R.string.update)) { dialog ->
                 resultTitle = dialog.getTextInEditText()
-                val replaceTitle = (args.globe ?: return@setOnPositive).name
-                viewModel.updateGlobeTitle(globe, resultTitle ?: replaceTitle)
+                viewModel.updateGlobeTitle(globe, resultTitle ?: argsGlobeName)
                 toolbar.showSnackbar(getString(R.string.snack_bar_message_update_globe_name))
-                initToolbar((resultTitle ?: args.globe ?: replaceTitle) as String)
+                initToolbar(resultTitle ?: argsGlobeName)
             }
             .setOnNegative(R.id.tv_add_globe_cancel, getString(R.string.cancel)) {
                 Timber.d("CANCEL")
@@ -122,17 +122,13 @@ class GlobeDetailFragment : Fragment() {
         val smallSpan = 3
         val criteriaWidthDp = 500
         binding.rvGlobeDetail.apply {
-            adapter = globeDetailGirdAdapter
+            adapter = globeDetailGridAdapter
             layoutManager = GridLayoutManager(
                 requireContext(),
                 if (getWidthDp() > criteriaWidthDp) largeSpan else smallSpan
             )
             addItemDecoration(GridSpaceItemDecoration(12.dp))
         }
-    }
-
-    private fun initMoment() {
-        viewModel.fetchMomentsByGlobe(args.globe?.id ?: -1L)
     }
 
     private fun getWidthDp(): Float =

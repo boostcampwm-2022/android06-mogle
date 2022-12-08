@@ -12,9 +12,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
         <View
             android:id="@+id/view_block_moment"
@@ -100,6 +98,7 @@
                 android:layout_width="@dimen/normal_200"
                 android:layout_height="@dimen/normal_200"
                 android:elevation="4dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
