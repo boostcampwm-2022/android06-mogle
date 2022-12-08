@@ -51,7 +51,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         initMomentPreviewClickListener()
         initMap()
-        collectData()
+        collectLocation()
     }
 
     // 프리뷰 터치시, 상세 페이지 이동
@@ -75,7 +75,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
     }
 
-    private fun collectData() {
+    private fun collectLocation() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.fetchLocationState.collectLatest { state ->
@@ -84,6 +84,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                             val location = LocationModel(latitude, longitude)
                             viewModel.setLocation(location)
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    fun collectMoments() {
+        // 전체 모먼트 불러오기
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.allMoments.collectLatest { moments ->
+                    mapHelper.resetMarkers(currentMarkers)
+                    currentMarkers.clear()
+                    moments.forEach { momentModel ->
+                        initMarker(momentModel)
                     }
                 }
             }
@@ -106,18 +121,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             setLogoView(naverMap, binding.lvLogo)
         }
 
-        // 전체 모먼트 불러오기
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.allMoments.collectLatest { moments ->
-                    mapHelper.resetMarkers(currentMarkers)
-                    currentMarkers.clear()
-                    moments.forEach { momentModel ->
-                        initMarker(momentModel)
-                    }
-                }
-            }
-        }
+        collectMoments()
 
         // Paging 있이, Moment 가져오기
         /*viewLifecycleOwner.lifecycleScope.launch {

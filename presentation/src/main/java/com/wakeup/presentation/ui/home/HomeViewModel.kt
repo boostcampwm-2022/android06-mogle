@@ -15,12 +15,15 @@ import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.WeatherModel
+import com.wakeup.presentation.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,11 +38,8 @@ class HomeViewModel @Inject constructor(
 
     private val searchQuery = MutableStateFlow("")
 
-    private val _allMoments = MutableStateFlow<List<MomentModel>>(emptyList())
-    val allMoments: Flow<List<MomentModel>> = _allMoments
-
-    private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
-    val moments: Flow<PagingData<MomentModel>> = _moments
+    lateinit var allMoments: StateFlow<List<MomentModel>>
+    lateinit var moments: Flow<PagingData<MomentModel>>
 
     private val _scrollToTop = MutableStateFlow(false)
     val scrollToTop = _scrollToTop.asStateFlow()
@@ -51,53 +51,54 @@ class HomeViewModel @Inject constructor(
 
     private val location = MutableStateFlow<LocationModel?>(null)
 
+    private val _state = MutableStateFlow<UiState<WeatherModel>>(UiState.Empty)
+    val state = _state.asStateFlow()
+
     private val _weather = MutableStateFlow(WeatherModel(0, WeatherType.NONE, "", 0.0))
     val weather = _weather.asStateFlow()
 
     init {
         fetchMoments()
-        fetchAllMoments()
+    }
+
+    fun initMoments(data: StateFlow<List<MomentModel>>) {
+        allMoments = data
     }
 
     fun fetchMoments() {
-        viewModelScope.launch {
-            _moments.value = getMomentListUseCase(
-                sortType = sortType.value,
-                query = searchQuery.value,
-                myLocation = location.value?.toDomain()
-            ).map { pagingMoments ->
-                pagingMoments.map { moment ->
-                    moment.toPresentation()
-                }
+        moments = getMomentListUseCase(
+            sortType = sortType.value,
+            query = searchQuery.value,
+            myLocation = location.value?.toDomain()
+        ).map { pagingMoments ->
+            pagingMoments.map { moment ->
+                moment.toPresentation()
             }
-                .cachedIn(viewModelScope)
-                .first()
-        }
+        }.cachedIn(viewModelScope)
 
         fetchLocationState.value = false
         location.value = null
     }
 
     fun fetchAllMoments() {
-        viewModelScope.launch {
-            _allMoments.value = getAllMomentListUseCase(searchQuery.value).map { moments ->
-                moments.map { moment ->
-                    moment.toPresentation()
-                }
+        allMoments = getAllMomentListUseCase(searchQuery.value).map { moments ->
+            moments.map { moment ->
+                moment.toPresentation()
             }
-                .first()
-        }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
     }
 
     fun fetchWeather(location: LocationModel) {
+        _state.value = UiState.Loading
         viewModelScope.launch {
             getWeatherDataUseCase(location.toDomain())
-                .onSuccess {
-                    _weather.value = it.toPresentation()
-                }.onFailure {
-                    // TODO UI State 실패 처리하면 좋겠다.
-                    _weather.value = WeatherModel(0, WeatherType.NONE, "", 0.0)
-                }
+                .mapCatching { it.toPresentation() }
+                .onSuccess { weather -> _state.value = UiState.Success(weather) }
+                .onFailure { _state.value = UiState.Failure }
         }
     }
 
@@ -111,5 +112,9 @@ class HomeViewModel @Inject constructor(
 
     fun setLocation(location: LocationModel) {
         this.location.value = location
+    }
+
+    fun setWeather(weather: WeatherModel) {
+        _weather.value = weather
     }
 }

@@ -20,4 +20,6 @@ interface MomentLocalDataSource {
     suspend fun getMoment(id: Long): MomentWithGlobesAndPictures
 
     suspend fun saveMoment(moment: MomentEntity): Long
+
+    suspend fun deleteMoment(momentId: Long)
 }
