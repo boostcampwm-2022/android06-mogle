@@ -108,6 +108,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
 
+        binding.flMapViewContainer.isVisible = true
+
         // 지도 터치시, 정보 창 사라짐 설정
         mapHelper.setViewFadeOutClickListener(naverMap,
             binding.momentPreview.root,
@@ -189,6 +191,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onDestroyView() {
+        binding.flMapViewContainer.isVisible = false
         binding.unbind()
         super.onDestroyView()
     }
