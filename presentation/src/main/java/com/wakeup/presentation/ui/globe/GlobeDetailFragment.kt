@@ -1,6 +1,9 @@
 package com.wakeup.presentation.ui.globe
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +23,7 @@ import com.wakeup.presentation.databinding.FragmentGlobeDetailBinding
 import com.wakeup.presentation.extension.dp
 import com.wakeup.presentation.extension.showSnackbar
 import com.wakeup.presentation.lib.dialog.EditDialog
-import com.wakeup.presentation.model.GlobeModel
+import com.wakeup.presentation.lib.dialog.NormalDialog
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,11 +86,11 @@ class GlobeDetailFragment : Fragment() {
                         true
                     }
                     R.id.item_globe_detail_update_globe -> {
-                        showDialog(args.globe, this)
+                        showUpdateGlobeNameDialog(this)
                         true
                     }
                     R.id.item_globe_detail_delete_globe -> {
-                        // todo 글로브 삭제하기
+                        showDeleteGlobeDialog()
                         true
                     }
                     else -> false
@@ -96,14 +99,36 @@ class GlobeDetailFragment : Fragment() {
         }
     }
 
-    private fun showDialog(globe: GlobeModel, toolbar: Toolbar) {
+    private fun showDeleteGlobeDialog() {
+        val spannableString =
+            SpannableString(getString(R.string.delete_globe_dialog_content_second)).apply {
+                setSpan(ForegroundColorSpan(Color.parseColor("#EA698F")),
+                    0,
+                    2,
+                    SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        NormalDialog
+            .with(requireContext(), R.layout.dialog_delete_globe)
+            .setTitle(R.id.tv_delete_dialog_content_second, spannableString)
+            .setOnPositive(R.id.tv_delete_dialog_positive, getString(R.string.delete)) {
+                viewModel.deleteGlobe()
+                findNavController().navigateUp()
+            }
+            .setOnNegative(R.id.tv_delete_dialog_negative, getString(R.string.cancel)) {
+                Timber.d("CANCEL")
+            }
+            .show()
+    }
+
+    private fun showUpdateGlobeNameDialog(toolbar: Toolbar) {
         EditDialog
             .with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
             .setTitle(R.id.tv_add_globe_title,
                 getString(R.string.update_globe_name_dialog_title))
             .setOnPositive(R.id.tv_add_globe_add, getString(R.string.update)) { dialog ->
                 resultTitle = dialog.getTextInEditText()
-                viewModel.updateGlobeTitle(globe, resultTitle ?: args.globe.name)
+                viewModel.updateGlobeTitle(resultTitle ?: args.globe.name)
                 toolbar.showSnackbar(getString(R.string.snack_bar_message_update_globe_name))
                 initToolbar(resultTitle ?: args.globe.name)
             }

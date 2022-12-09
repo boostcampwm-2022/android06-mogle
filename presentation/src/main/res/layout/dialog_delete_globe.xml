@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -23,10 +24,10 @@
 
             <TextView
                 android:id="@+id/tv_delete_dialog_content_first"
-                style="@style/TextAppearance.Mogle.Headline2"
+                style="@style/TextAppearance.Mogle.Headline1"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="@dimen/large_150"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_150"
                 android:text="@string/delete_globe_dialog_content_first"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +35,7 @@
 
             <TextView
                 android:id="@+id/tv_delete_dialog_content_second"
-                style="@style/TextAppearance.Mogle.Headline2"
+                style="@style/TextAppearance.Mogle.Headline1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/large_200"
@@ -47,7 +48,7 @@
 
             <TextView
                 android:id="@+id/tv_delete_dialog_content_detail"
-                style="@style/TextAppearance.Mogle.SubBody"
+                style="@style/TextAppearance.Mogle.Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/normal_150"
@@ -65,28 +66,30 @@
                 android:backgroundTint="@color/gray"
                 android:gravity="center"
                 android:padding="@dimen/small_150"
-                android:text="@string/cancel"
                 android:textColor="?attr/colorOnPrimary"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@id/tv_delete_dialog_positive"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_content_detail" />
+                app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_content_detail"
+                tools:text="@string/cancel" />
 
             <TextView
                 android:id="@+id/tv_delete_dialog_positive"
                 android:layout_width="96dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/large_200"
                 android:background="@drawable/bg_corner_8"
                 android:backgroundTint="?attr/colorPrimary"
                 android:gravity="center"
                 android:padding="@dimen/small_150"
-                android:text="@string/delete"
-                android:layout_marginBottom="@dimen/large_200"
                 android:textColor="?attr/colorOnPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_delete_dialog_negative"
-                app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_content_detail" />
+                app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_content_detail"
+                tools:text="@string/delete" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

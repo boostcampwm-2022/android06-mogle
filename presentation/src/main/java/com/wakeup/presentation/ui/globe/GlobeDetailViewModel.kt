@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.wakeup.domain.usecase.globe.DeleteGlobeUseCase
 import com.wakeup.domain.usecase.globe.GetMomentsByGlobeUseCase
 import com.wakeup.domain.usecase.globe.UpdateGlobeUseCase
 import com.wakeup.presentation.mapper.toDomain
@@ -24,15 +25,17 @@ import javax.inject.Inject
 class GlobeDetailViewModel @Inject constructor(
     private val getMomentsByGlobeUseCase: GetMomentsByGlobeUseCase,
     private val updateGlobeUseCase: UpdateGlobeUseCase,
-    savedStateHandle: SavedStateHandle
+    private val deleteGlobeUseCase: DeleteGlobeUseCase,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
     val moments = _moments.asStateFlow()
-    private val argsGlobeId = savedStateHandle.get<GlobeModel>(ARGS_GlOBE)?.id
+    private val argsGlobe =
+        savedStateHandle.get<GlobeModel>(ARGS_GlOBE) ?: GlobeModel(name = "", thumbnail = null)
 
     init {
-        fetchMomentsByGlobe(argsGlobeId ?: ERROR_ID)
+        fetchMomentsByGlobe(argsGlobe.id)
     }
 
     private fun fetchMomentsByGlobe(globeId: Long) {
@@ -45,14 +48,19 @@ class GlobeDetailViewModel @Inject constructor(
         }
     }
 
-    fun updateGlobeTitle(originGlobe: GlobeModel, name: String) {
+    fun updateGlobeTitle(name: String) {
         viewModelScope.launch {
-            updateGlobeUseCase(originGlobe.copy(name = name).toDomain())
+            updateGlobeUseCase(argsGlobe.copy(name = name).toDomain())
+        }
+    }
+
+    fun deleteGlobe() {
+        viewModelScope.launch {
+            deleteGlobeUseCase(argsGlobe.toDomain())
         }
     }
 
     companion object {
         const val ARGS_GlOBE = "globe"
-        const val ERROR_ID = -1L
     }
 }
