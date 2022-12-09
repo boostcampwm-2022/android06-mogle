@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_100"
                 android:paddingHorizontal="@dimen/normal_100"
-                app:endIconTint="@color/black"
+                app:endIconTint="?android:attr/textColorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_dragger">
 
@@ -67,8 +67,8 @@
                     android:id="@+id/rv_moments"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="92dp"
                     android:layout_marginTop="@dimen/normal_100"
+                    android:layout_marginBottom="92dp"
                     app:isGone="@{!hasMoments}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_moment" />

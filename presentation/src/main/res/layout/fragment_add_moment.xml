@@ -187,6 +187,7 @@
                     android:hint="@string/add_moment_place_hint"
                     android:padding="@dimen/normal_100"
                     android:text="@{vm.place.mainAddress}"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/tv_place" />
@@ -217,6 +218,7 @@
                     android:minLines="5"
                     android:padding="@dimen/normal_100"
                     android:text="@={vm.content}"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/tv_content" />

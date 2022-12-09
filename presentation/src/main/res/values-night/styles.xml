@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Material Component로 하면 background가 안먹힘 -->
-    <style name="BottomSheetDialog" parent="Widget.Design.BottomSheet.Modal">
-        <item name="background">?attr/colorSurface</item>
+    <style name="BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:backgroundTint">?attr/colorSurface</item>
         <item name="shapeAppearance">@style/ShapeAppearance.Mogle.LargeComponent</item>
     </style>
 
-    <style name="ShapeAppearance.Mogle.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
+    <style name="ShapeAppearance.Mogle.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/normal_100</item>
     </style>
@@ -14,48 +14,59 @@
     <style name="TextAppearance.Mogle.Headline1" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="TextAppearance.Mogle.Headline2" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="TextAppearance.Mogle.Title" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="TextAppearance.Mogle.SubTitle" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.Mogle.Body" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="TextAppearance.Mogle.SubBody" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">10sp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="TextAppearance.Mogle.Temperature" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="ToolbarPopupAppearance.Mogle.GlobeDetail" parent="ThemeOverlay.AppCompat.Light">
+    <!-- 팝업 옵션 메뉴 텍스트 스타일 -->
+    <style name="ToolbarPopupAppearance.Mogle.GlobeDetail" parent="">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:textAppearance">@style/TextAppearance.Mogle.Title</item>
-        <item name="android:textColor">@color/white</item>
     </style>
-    
+
+    <!-- 팝업 옵션 메뉴 배경 스타일 -->
+    <style name="Mogle.PopUpOverFlowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/bg_toolbar_popup_menu</item>
+    </style>
+
+    <!-- 모먼트 상세 헤더 이미지 스타일 -->
     <style name="Mogle.MomentDetail.Header.Image" parent="">
         <item name="android:src">@drawable/bg_night_header</item>
     </style>
 
-    <style name="PopUpOverFlowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="android:popupBackground">@drawable/bg_toolbar_popup_menu</item>
+    <!-- 툴바 색상, 케밥 버튼 스타일 -->
+    <style name="ThemeOverlay.Mogle.Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorSecondary">?android:attr/textColorPrimary</item>
     </style>
 </resources>

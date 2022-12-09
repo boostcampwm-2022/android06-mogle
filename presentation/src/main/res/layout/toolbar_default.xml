@@ -7,19 +7,19 @@
         android:id="@+id/app_bar_layout_default"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="?android:colorBackground"
         app:elevation="@dimen/small_100">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_default"
             android:layout_width="match_parent"
-            app:popupTheme="@style/ToolbarPopupAppearance.Mogle.GlobeDetail"
+            android:background="?android:attr/colorBackground"
+            app:popupTheme="@style/ThemeOverlay.Mogle.Toolbar.PopUp"
+            android:theme="@style/ThemeOverlay.Mogle.Toolbar"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?android:colorBackground"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -37,6 +37,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:layout_marginStart="@dimen/normal_100"
                     android:gravity="center|start"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textAppearance="@style/TextAppearance.Mogle.Headline2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

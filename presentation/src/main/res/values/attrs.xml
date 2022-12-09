@@ -3,4 +3,6 @@
     <declare-styleable name="TextPageIndicator">
         <attr name="defaultIndicatorStyle" format="boolean" />
     </declare-styleable>
+
+    <attr name="hamburgerColor" format="reference" />
 </resources>

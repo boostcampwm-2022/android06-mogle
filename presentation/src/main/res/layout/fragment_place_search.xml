@@ -39,7 +39,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/normal_padding" />
 
-
         <EditText
             android:id="@+id/et_search"
             android:layout_width="0dp"
@@ -56,6 +55,7 @@
             android:maxLines="1"
             android:padding="@dimen/normal_100"
             android:text="@={vm.searchText}"
+            android:textColorHint="?android:attr/textColorSecondary"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"

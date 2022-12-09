@@ -1,24 +1,32 @@
 <resources>
-    <style name="Theme.Mogle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+    <style name="Theme.Mogle.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/mint</item>
         <item name="colorOnPrimary">@color/white</item>
 
         <item name="colorSecondary">@color/pink</item>
         <item name="colorOnSecondary">@color/black</item>
 
-        <item name="colorSurface">@color/light_black</item>
-        <item name="colorSurfaceVariant">@color/midnight_blue</item>
+        <item name="hamburgerColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Theme.Mogle" parent="Theme.Mogle.Base">
+        <item name="colorSurface">@color/night_light_black</item>
+        <item name="colorSurfaceVariant">@color/night_midnight_blue</item>
         <item name="colorSurfaceInverse">@color/white</item>
 
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorOnSurfaceInverse">@color/night_light_black</item>
+
         <item name="android:colorBackground">@color/black</item>
-        <item name="colorOnBackground">@color/gray</item>
+        <item name="colorOnBackground">@color/white</item>
 
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/light_gray</item>
 
         <item name="android:statusBarColor">?android:colorBackground</item>
 
-        <item name="actionOverflowMenuStyle">@style/PopUpOverFlowMenu</item>
+        <item name="actionOverflowMenuStyle">@style/Mogle.PopUpOverFlowMenu</item>
     </style>
 
     <style name="Theme.Mogle.Splash" parent="Theme.SplashScreen">
