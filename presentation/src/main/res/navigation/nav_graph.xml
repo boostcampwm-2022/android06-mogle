@@ -118,5 +118,8 @@
         <argument
             android:name="globe"
             app:argType="com.wakeup.presentation.model.GlobeModel" />
+        <action
+            android:id="@+id/action_add_moment_In_globe_fragment_to_globe_detail_fragment"
+            app:destination="@id/globe_detail_fragment" />
     </fragment>
 </navigation>

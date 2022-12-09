@@ -23,30 +23,59 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/tv_add_moment_in_globe"
+            style="@style/TextAppearance.Mogle.SubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="12dp"
+            android:onClick="@{(view) -> vm.saveMomentsInGlobe(view)}"
+            android:padding="@dimen/normal_100"
+            android:text="@string/add"
+            android:textColor="?attr/colorPrimary"
+            app:isGone="@{vm.isNotExistSaveReadyMoments}"
+            app:layout_constraintBottom_toBottomOf="@id/tb_add_moment_in_globe"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_save_ready_moment_count"
+            style="@style/TextAppearance.Mogle.SubTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/normal_100"
+            android:paddingTop="@dimen/small_100"
+            android:paddingBottom="@dimen/small_100"
+            android:text="@{@string/add_moment_in_globe_count(vm.saveReadyMomentsCount)}"
+            app:isGone="@{vm.isNotExistSaveReadyMoments}"
+            app:layout_constraintBottom_toTopOf="@id/rv_save_moment_in_globe"
+            app:layout_constraintTop_toBottomOf="@id/tb_add_moment_in_globe"
+            tools:text="@string/globe" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_save_moment_in_globe"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/small_100"
+            app:isGone="@{vm.isNotExistSaveReadyMoments}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_save_ready_moment_count"
+            app:submitList="@{vm.saveReadyMoments}"
+            tools:listitem="@layout/item_moment_in_globe" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_add_moment_in_globe"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="@dimen/normal_100"
-            app:layout_constraintBottom_toTopOf="@id/rv_save_moment_in_globe"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tb_add_moment_in_globe"
+            app:layout_constraintTop_toBottomOf="@id/rv_save_moment_in_globe"
             tools:listitem="@layout/item_moment" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_save_moment_in_globe"
-            android:layout_width="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/small_100"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_add_moment_in_globe"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/item_moment_in_globe" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

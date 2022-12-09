@@ -14,7 +14,7 @@ interface XRefDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMomentPictureXRefs(momentPictures: List<MomentPictureXRef>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMomentGlobeXRef(momentGlobe: MomentGlobeXRef)
 
     @Delete

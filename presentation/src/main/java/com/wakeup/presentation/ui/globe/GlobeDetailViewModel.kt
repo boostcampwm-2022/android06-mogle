@@ -24,7 +24,7 @@ import javax.inject.Inject
 class GlobeDetailViewModel @Inject constructor(
     private val getMomentsByGlobeUseCase: GetMomentsByGlobeUseCase,
     private val updateGlobeUseCase: UpdateGlobeUseCase,
-    savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())

@@ -68,7 +68,6 @@ class GlobeDetailFragment : Fragment() {
     }
 
     private fun initToolbarMenu() {
-        val globe = args.globe
         binding.tbGlobeDetail.tbDefault.apply {
             inflateMenu(R.menu.menu_globe_detail_toolbar)
             setOnMenuItemClickListener { menu ->
@@ -84,7 +83,7 @@ class GlobeDetailFragment : Fragment() {
                         true
                     }
                     R.id.item_globe_detail_update_globe -> {
-                        showDialog(globe, this)
+                        showDialog(args.globe, this)
                         true
                     }
                     R.id.item_globe_detail_delete_globe -> {
