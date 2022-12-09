@@ -30,12 +30,12 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/normal_100"
             android:layout_marginVertical="@dimen/small_100"
-            app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Mogle.LargeComponent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/colorSurfaceVariant"
                 android:padding="@dimen/normal_100">
 
                 <ImageView

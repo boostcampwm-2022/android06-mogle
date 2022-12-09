@@ -59,7 +59,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/normal_100"
-            app:cardBackgroundColor="?attr/colorSurfaceVariant"
             app:cardCornerRadius="@dimen/small_100"
             app:cardElevation="@dimen/small_100"
 
@@ -71,6 +70,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="?attr/colorSurfaceVariant"
                 android:orientation="vertical">
 
                 <ImageView
