@@ -58,7 +58,7 @@
                 <TextView
                     android:id="@+id/tv_main_address"
                     style="@style/TextAppearance.Mogle.Headline1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_150"
                     android:text="@{momentModel.place.mainAddress}"
