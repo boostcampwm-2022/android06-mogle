@@ -5,13 +5,10 @@
     android:viewportHeight="4">
 
     <group>
-
         <clip-path android:pathData="M2 0H38C39.1046 0 40 0.895431 40 2C40 3.10457 39.1046 4 38 4H2C0.895431 4 0 3.10457 0 2C0 0.895431 0.895431 0 2 0Z" />
 
         <path
-            android:fillColor="#989898"
+            android:fillColor="?attr/colorOnSurface"
             android:pathData="M0 0V4H40V0" />
-
     </group>
-
 </vector>
