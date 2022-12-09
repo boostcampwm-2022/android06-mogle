@@ -5,4 +5,5 @@
     </declare-styleable>
 
     <attr name="hamburgerColor" format="reference" />
+    <attr name="momentDetailHeader" format="reference" />
 </resources>

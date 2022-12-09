@@ -62,7 +62,7 @@
 
     <!-- 모먼트 상세 헤더 이미지 스타일 -->
     <style name="Mogle.MomentDetail.Header.Image" parent="">
-        <item name="android:src">@drawable/bg_sunny_header</item>
+        <item name="android:src">?attr/momentDetailHeader</item>
     </style>
 
     <!-- 툴바 색상, 케밥 버튼 스타일 -->

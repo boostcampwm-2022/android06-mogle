@@ -31,6 +31,7 @@
         <item name="android:windowLightStatusBar">true</item>
 
         <item name="actionOverflowMenuStyle">@style/Mogle.PopUpOverFlowMenu</item>
+        <item name="momentDetailHeader">@drawable/bg_sunny_header</item>
     </style>
 
     <style name="Theme.Mogle.Cloudy" parent="Theme.Mogle.Base">
@@ -51,6 +52,7 @@
         <item name="android:windowLightStatusBar">true</item>
 
         <item name="actionOverflowMenuStyle">@style/Mogle.PopUpOverFlowMenu</item>
+        <item name="momentDetailHeader">@drawable/bg_cloudy_header</item>
     </style>
 
     <style name="Theme.Mogle.Splash" parent="Theme.SplashScreen">

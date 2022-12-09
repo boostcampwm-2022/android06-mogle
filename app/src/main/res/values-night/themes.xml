@@ -27,6 +27,7 @@
         <item name="android:statusBarColor">?android:colorBackground</item>
 
         <item name="actionOverflowMenuStyle">@style/Mogle.PopUpOverFlowMenu</item>
+        <item name="momentDetailHeader">@drawable/bg_night_header</item>
     </style>
 
     <style name="Theme.Mogle.Splash" parent="Theme.SplashScreen">
