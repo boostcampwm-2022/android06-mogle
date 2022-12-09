@@ -2,8 +2,8 @@ package com.wakeup.data.source.local.moment
 
 import androidx.paging.PagingData
 import com.wakeup.data.database.entity.LocationEntity
-import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
+import com.wakeup.data.database.entity.SuperMomentEntity
 import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
 
@@ -17,9 +17,7 @@ interface MomentLocalDataSource {
 
     fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>>
 
-    suspend fun getMoment(id: Long): MomentWithGlobesAndPictures
-
-    suspend fun saveMoment(moment: MomentEntity): Long
+    suspend fun saveMoment(moment: SuperMomentEntity)
 
     suspend fun deleteMoment(momentId: Long)
 }

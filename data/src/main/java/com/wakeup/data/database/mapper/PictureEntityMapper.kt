@@ -5,7 +5,7 @@ import com.wakeup.domain.model.Picture
 
 fun Picture.toEntity(): PictureEntity {
     return PictureEntity(
-        path = path.substringAfterLast("/"),
+        path = path
     )
 }
 

@@ -1,7 +1,6 @@
 package com.wakeup.data.repository
 
 import com.wakeup.data.database.entity.MomentGlobeXRef
-import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.source.local.xref.XRefLocalDataSource
 import com.wakeup.domain.repository.RelationRepository
 import javax.inject.Inject
@@ -9,17 +8,6 @@ import javax.inject.Inject
 class RelationRepositoryImpl @Inject constructor(
     private val XRefLocalDataSource: XRefLocalDataSource,
 ) : RelationRepository {
-
-    override suspend fun saveMomentPictureXRefs(momentId: Long, pictureIds: List<Long>) {
-        XRefLocalDataSource.saveMomentPictureXRefs(
-            pictureIds.map { pictureId ->
-                MomentPictureXRef(
-                    momentId = momentId,
-                    pictureId = pictureId
-                )
-            }
-        )
-    }
 
     override suspend fun saveMomentGlobeXRef(momentId: Long, globeId: Long) {
         XRefLocalDataSource.saveMomentGlobeXRef(
