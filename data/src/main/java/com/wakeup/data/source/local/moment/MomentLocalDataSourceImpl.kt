@@ -14,8 +14,6 @@ import com.wakeup.data.database.entity.MomentGlobeXRef
 import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
-import com.wakeup.data.database.entity.SuperMomentEntity
-import com.wakeup.data.database.mapper.toMomentEntity
 import com.wakeup.data.util.InternalFileUtil
 import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
@@ -56,24 +54,30 @@ class MomentLocalDataSourceImpl @Inject constructor(
     override fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>> =
         momentDao.getAllMoments(query)
 
-    override suspend fun saveMoment(moment: SuperMomentEntity) {
-        val momentId = momentDao.saveMoment(moment.toMomentEntity())
-        if (moment.pictures.isNotEmpty()) {
-            val pictureIds = savePictures(moment.pictures)
+    override suspend fun saveMoment(
+        moment: MomentEntity,
+        momentPictures: List<PictureEntity>,
+        momentGlobes: List<GlobeEntity>,
+    ) {
+        val momentId = momentDao.saveMoment(moment)
+        println("momentId : $momentId")
+        if (momentPictures.isNotEmpty()) {
+            val pictureIds = savePictures(momentPictures)
+            println("pictureIds: $pictureIds")
             saveMomentPictureXRefs(momentId, pictureIds)
         }
-        val savedMoment = momentDao.getMoment(momentId).moment
-        val globeToSaveMoment = moment.globes.first()
-        saveMomentGlobeXRef(moment.pictures, savedMoment, globeToSaveMoment)
+        val savedMomentId = momentDao.getMoment(momentId).moment.id
+        val globeToSaveMoment = momentGlobes.first()
+        println("globeToSaveMoment: $globeToSaveMoment")
+        saveMomentGlobeXRef(savedMomentId, globeToSaveMoment, momentPictures)
 
     }
 
     private suspend fun savePictures(pictures: List<PictureEntity>): List<Long> {
         savePictureInternalStorage(pictures)
-        val indexResult = pictureDao.savePictures(
-            getPictureEntityAboutLastPathFileNames(pictures)
-        )
-        return getCorrectSavedPictureIds(indexResult, pictures)
+        val pictureLastPathFileName = getPictureEntityAboutLastPathFileNames(pictures)
+        val indexResult = pictureDao.savePictures(pictureLastPathFileName)
+        return getCorrectSavedPictureIds(indexResult, pictureLastPathFileName)
     }
 
     private fun savePictureInternalStorage(pictures: List<PictureEntity>) {
@@ -102,17 +106,18 @@ class MomentLocalDataSourceImpl @Inject constructor(
     }
 
     private suspend fun saveMomentPictureXRefs(momentId: Long, pictureIds: List<Long>) {
-        val momentPictureXRefs =
-            pictureIds.map { pictureId -> MomentPictureXRef(momentId, pictureId) }
+        val momentPictureXRefs = pictureIds.map { pictureId ->
+            MomentPictureXRef(momentId, pictureId)
+        }
         xRefDao.saveMomentPictureXRefs(momentPictureXRefs)
     }
 
     private suspend fun saveMomentGlobeXRef(
-        pictures: List<PictureEntity>,
-        moment: MomentEntity,
+        momentId: Long,
         globe: GlobeEntity,
+        pictures: List<PictureEntity>,
     ) {
-        xRefDao.saveMomentGlobeXRef(MomentGlobeXRef(moment.id, globe.id))
+        xRefDao.saveMomentGlobeXRef(MomentGlobeXRef(momentId, globe.id))
 
         if (globe.thumbnail == null && pictures.isNotEmpty()) {
             globeDao.updateGlobe(globe.copy(thumbnail = pictures.first()))
