@@ -3,7 +3,6 @@ package com.wakeup.presentation.ui.home.map
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.PointF
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
@@ -38,6 +37,7 @@ import com.wakeup.presentation.extension.getFadeOutAnimator
 import com.wakeup.presentation.extension.setListener
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.PictureModel
+import com.wakeup.presentation.util.SharedPreferenceManager
 
 class MapHelper(private val context: Context) {
     /**
@@ -64,8 +64,8 @@ class MapHelper(private val context: Context) {
             .logoClickEnabled(true)
 
         // 다크 모드 체크
-        when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
-            Configuration.UI_MODE_NIGHT_YES -> {
+        when (SharedPreferenceManager.getInt(context, KEY_THEME)) {
+            R.style.Theme_Mogle_Night -> {
                 options.apply {
                     mapType(NaverMap.MapType.Navi)
                     nightModeEnabled(true)
@@ -74,9 +74,8 @@ class MapHelper(private val context: Context) {
         }
 
         // 지도 생성
-        val mapFragment = fm.findFragmentById(R.id.fl_map) as MapFragment?
-            ?: MapFragment.newInstance(options).also {
-                fm.beginTransaction().add(R.id.fl_map, it).commit()
+        val mapFragment = MapFragment.newInstance(options).also {
+                fm.beginTransaction().replace(R.id.fl_map, it).commit()
             }
 
         mapFragment.getMapAsync(callback)
@@ -328,7 +327,7 @@ class MapHelper(private val context: Context) {
         }
     }
 
-    companion object {
+    private companion object {
         const val INITIAL_LAT = 35.95
         const val INITIAL_LONG = 128.25
         const val MIN_ZOOM = 5.0
@@ -345,5 +344,6 @@ class MapHelper(private val context: Context) {
         const val POINT_Y = 0.95f
 
         const val NO_IMAGE = "NULL_PATH"
+        const val KEY_THEME = "theme"
     }
 }

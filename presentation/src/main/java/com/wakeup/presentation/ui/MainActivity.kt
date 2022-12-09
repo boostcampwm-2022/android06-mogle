@@ -1,11 +1,14 @@
 package com.wakeup.presentation.ui
 
 import android.animation.ObjectAnimator
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AnticipateInterpolator
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +22,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ActivityMainBinding
 import com.wakeup.presentation.model.WeatherTheme
+import com.wakeup.presentation.util.SharedPreferenceManager
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -28,9 +32,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
 
+    private var isUserAction = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        initTheme()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -38,8 +46,33 @@ class MainActivity : AppCompatActivity() {
         setBottomNav()
         setSpinner()
         loadData()
+    }
 
-        viewModel.testGetWeather()
+    private fun initTheme() {
+        val theme = SharedPreferenceManager.getInt(this, KEY_THEME)
+        if (theme == NO_THEME) setThemeBySystemSetting()  // 첫 설치에는 시스템 설정에 따른 테마 설정
+
+        when (theme) {
+            R.style.Theme_Mogle_Bright -> setTheme(R.style.Theme_Mogle_Bright)
+            R.style.Theme_Mogle_Night -> setTheme(R.style.Theme_Mogle_Night)
+            R.style.Theme_Mogle_Cloudy -> setTheme(R.style.Theme_Mogle_Cloudy)
+        }
+    }
+
+    private fun setThemeBySystemSetting() {
+        when (resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                SharedPreferenceManager.put(this,
+                    KEY_THEME,
+                    R.style.Theme_Mogle_Night)
+            }
+            else -> {
+                SharedPreferenceManager.put(this, KEY_THEME, R.style.Theme_Mogle_Bright)
+            }
+        }
+
+        // 테마 재설정
+        initTheme()
     }
 
     fun openNavDrawer() {
@@ -47,7 +80,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        binding.root.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener{
+        binding.root.viewTreeObserver.addOnPreDrawListener(object :
+            ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
                 return if (viewModel.isReady.value) {
                     Timber.d("Success load data")
@@ -92,11 +126,62 @@ class MainActivity : AppCompatActivity() {
             this, R.layout.item_menu, listOf(
                 WeatherTheme.AUTO.str,
                 WeatherTheme.BRIGHT.str,
-                WeatherTheme.DARK.str,
+                WeatherTheme.NIGHT.str,
                 WeatherTheme.CLOUDY.str
             )
         )
         binding.layoutDrawer.spinnerTheme.adapter = adapter
+
+        binding.layoutDrawer.spinnerTheme.setOnTouchListener { _, _ ->
+            isUserAction = true
+            false
+        }
+
+        binding.layoutDrawer.spinnerTheme.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long,
+            ) {
+                if (isUserAction) {
+                    when (parent.getItemAtPosition(position)) {
+                        WeatherTheme.AUTO.str -> {
+
+                        }
+
+                        WeatherTheme.BRIGHT.str -> {
+                            SharedPreferenceManager.put(
+                                this@MainActivity,
+                                KEY_THEME,
+                                R.style.Theme_Mogle_Bright
+                            )
+                            recreate()
+                        }
+
+                        WeatherTheme.NIGHT.str -> {
+                            SharedPreferenceManager.put(
+                                this@MainActivity,
+                                KEY_THEME,
+                                R.style.Theme_Mogle_Night
+                            )
+                            recreate()
+                        }
+
+                        WeatherTheme.CLOUDY.str -> {
+                            SharedPreferenceManager.put(
+                                this@MainActivity,
+                                KEY_THEME,
+                                R.style.Theme_Mogle_Cloudy
+                            )
+                            recreate()
+                        }
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
     }
 
     private fun setTopLevelDestinations(navController: NavController) {
@@ -116,5 +201,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val EXIT_ANIM_DURATION = 2000L
+        private const val KEY_THEME = "theme"
+        private const val NO_THEME = -1
     }
 }
