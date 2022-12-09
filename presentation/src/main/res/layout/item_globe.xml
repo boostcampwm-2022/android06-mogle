@@ -25,6 +25,7 @@
             android:layout_marginTop="@dimen/small_100"
             android:layout_marginEnd="@dimen/small_100"
             android:scaleType="centerCrop"
+            app:thumbnailImageFromFilePath="@{globe.thumbnail.path}"
             android:src="@drawable/default_globe_image"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"

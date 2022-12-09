@@ -20,8 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.GlobeDetailPagingAdapter
 import com.wakeup.presentation.databinding.FragmentGlobeDetailBinding
-import com.wakeup.presentation.extension.dp
-import com.wakeup.presentation.extension.showSnackbar
+import com.wakeup.presentation.extension.showSnackBar
 import com.wakeup.presentation.lib.dialog.EditDialog
 import com.wakeup.presentation.lib.dialog.NormalDialog
 import com.wakeup.presentation.model.MomentModel
@@ -102,9 +101,9 @@ class GlobeDetailFragment : Fragment() {
     private fun showDeleteGlobeDialog() {
         val spannableString =
             SpannableString(getString(R.string.delete_globe_dialog_content_second)).apply {
-                setSpan(ForegroundColorSpan(Color.parseColor("#EA698F")),
-                    0,
-                    2,
+                setSpan(ForegroundColorSpan(Color.parseColor(MAIN_PINK_COLOR_HEX)),
+                    DELETE_TITLE_SPANNABLE_STRING_START_INDEX,
+                    DELETE_TITLE_SPANNABLE_STRING_END_INDEX,
                     SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
             }
@@ -112,8 +111,14 @@ class GlobeDetailFragment : Fragment() {
             .with(requireContext(), R.layout.dialog_delete_globe)
             .setTitle(R.id.tv_delete_dialog_content_second, spannableString)
             .setOnPositive(R.id.tv_delete_dialog_positive, getString(R.string.delete)) {
-                viewModel.deleteGlobe()
-                findNavController().navigateUp()
+                if (args.globe.id == DEFAULT_GLOBE_ID) {
+                    (view ?: return@setOnPositive).showSnackBar(
+                        getString(R.string.delete_default_globe_error_msg)
+                    )
+                } else {
+                    viewModel.deleteGlobe()
+                    findNavController().navigateUp()
+                }
             }
             .setOnNegative(R.id.tv_delete_dialog_negative, getString(R.string.cancel)) {
                 Timber.d("CANCEL")
@@ -129,7 +134,7 @@ class GlobeDetailFragment : Fragment() {
             .setOnPositive(R.id.tv_add_globe_add, getString(R.string.update)) { dialog ->
                 resultTitle = dialog.getTextInEditText()
                 viewModel.updateGlobeTitle(resultTitle ?: args.globe.name)
-                toolbar.showSnackbar(getString(R.string.snack_bar_message_update_globe_name))
+                toolbar.showSnackBar(getString(R.string.snack_bar_message_update_globe_name))
                 initToolbar(resultTitle ?: args.globe.name)
             }
             .setOnNegative(R.id.tv_add_globe_cancel, getString(R.string.cancel)) {
@@ -156,16 +161,19 @@ class GlobeDetailFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        val largeSpan = 5
-        val smallSpan = 3
-        val criteriaWidthDp = 500
+        val largeSpan = LARGE_SPAN
+        val smallSpan = SMALL_SPAN
+        val criteriaWidthDp = CRITERIA_WIDTH_DP
         binding.rvGlobeDetail.apply {
-            adapter = globeDetailGridAdapter
+            adapter = globeDetailGridAdapter.apply {
+                addLoadStateListener {
+                    viewModel.setMomentExist(globeDetailGridAdapter.itemCount != 0)
+                }
+            }
             layoutManager = GridLayoutManager(
                 requireContext(),
                 if (getWidthDp() > criteriaWidthDp) largeSpan else smallSpan
             )
-            addItemDecoration(GridSpaceItemDecoration(12.dp))
         }
     }
 
@@ -175,5 +183,18 @@ class GlobeDetailFragment : Fragment() {
     override fun onDestroyView() {
         binding.unbind()
         super.onDestroyView()
+    }
+
+    companion object {
+        const val MAIN_PINK_COLOR_HEX = "#EA698F"
+        const val DELETE_TITLE_SPANNABLE_STRING_START_INDEX = 0
+        const val DELETE_TITLE_SPANNABLE_STRING_END_INDEX = 2
+
+        const val DEFAULT_GLOBE_ID = 1L
+
+        const val CRITERIA_WIDTH_DP = 500
+        const val LARGE_SPAN = 5
+        const val SMALL_SPAN = 3
+        const val GRID_SPACE_PX = 12
     }
 }

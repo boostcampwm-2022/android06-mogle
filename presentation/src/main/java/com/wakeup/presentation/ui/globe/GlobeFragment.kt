@@ -12,7 +12,7 @@ import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.GlobeAdapter
 import com.wakeup.presentation.databinding.FragmentGlobeBinding
 import com.wakeup.presentation.extension.dp
-import com.wakeup.presentation.extension.showSnackbar
+import com.wakeup.presentation.extension.showSnackBar
 import com.wakeup.presentation.lib.dialog.EditDialog
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -49,16 +49,16 @@ class GlobeFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        val largeSpan = 5
-        val smallSpan = 3
-        val criteriaWidthDp = 500
+        val largeSpan = LARGE_SPAN
+        val smallSpan = SMALL_SPAN
+        val criteriaWidthDp = CRITERIA_WIDTH_DP
         binding.rvGlobes.apply {
             adapter = globeGridAdapter
             layoutManager = GridLayoutManager(
                 requireContext(),
                 if (getWidthDp() > criteriaWidthDp) largeSpan else smallSpan
             )
-            addItemDecoration(GridSpaceItemDecoration(12.dp))
+            addItemDecoration(GridSpaceItemDecoration(GRID_SPACE_PX.dp))
         }
     }
 
@@ -72,7 +72,7 @@ class GlobeFragment : Fragment() {
                 .setTitle(R.id.tv_add_globe_title, getString(R.string.add_globe_dialog_title))
                 .setOnPositive(R.id.tv_add_globe_add, getString(R.string.add)) { dialog ->
                     viewModel.createGlobe(dialog.getTextInEditText())
-                    it.showSnackbar(getString(R.string.snack_bar_message_add_globe))
+                    it.showSnackBar(getString(R.string.snack_bar_message_add_globe))
                 }
                 .setOnNegative(R.id.tv_add_globe_cancel, getString(R.string.cancel)) {
                     Timber.d("CANCEL")
@@ -89,5 +89,12 @@ class GlobeFragment : Fragment() {
     override fun onDestroyView() {
         binding.unbind()
         super.onDestroyView()
+    }
+
+    companion object {
+        const val CRITERIA_WIDTH_DP = 500
+        const val LARGE_SPAN = 5
+        const val SMALL_SPAN = 3
+        const val GRID_SPACE_PX = 12
     }
 }

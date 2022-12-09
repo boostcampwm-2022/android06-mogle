@@ -81,6 +81,6 @@ fun getBitMapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
     return bitmap
 }
 
-fun View.showSnackbar(text: String) {
+fun View.showSnackBar(text: String) {
     Snackbar.make(this, text, Snackbar.LENGTH_SHORT).show()
 }

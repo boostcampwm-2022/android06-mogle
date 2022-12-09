@@ -31,8 +31,12 @@ class GlobeDetailViewModel @Inject constructor(
 
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
     val moments = _moments.asStateFlow()
-    private val argsGlobe =
-        savedStateHandle.get<GlobeModel>(ARGS_GlOBE) ?: GlobeModel(name = "", thumbnail = null)
+
+    private val argsGlobe = savedStateHandle
+        .get<GlobeModel>(ARGS_GlOBE) ?: GlobeModel(name = "", thumbnail = null)
+
+    private val _isExistMoment = MutableStateFlow(false)
+    val isExistMoment = _isExistMoment.asStateFlow()
 
     init {
         fetchMomentsByGlobe(argsGlobe.id)
@@ -46,6 +50,10 @@ class GlobeDetailViewModel @Inject constructor(
                 .cachedIn(viewModelScope)
                 .first()
         }
+    }
+
+    fun setMomentExist(isExist: Boolean) {
+        _isExistMoment.value = isExist
     }
 
     fun updateGlobeTitle(name: String) {
