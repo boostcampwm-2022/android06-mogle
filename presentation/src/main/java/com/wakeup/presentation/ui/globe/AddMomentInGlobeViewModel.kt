@@ -73,15 +73,17 @@ class AddMomentInGlobeViewModel @Inject constructor(
 
     fun saveMomentsInGlobe(view: View) {
         viewModelScope.launch {
-            saveReadyMoments.value.forEach { moment ->
-                insertMomentInGlobeUseCase(moment.toDomain(), argsGlobe.toDomain())
-            }
+            launch {
+                saveReadyMoments.value.forEach { moment ->
+                    println(moment)
+                    insertMomentInGlobeUseCase(moment.toDomain(), argsGlobe.toDomain())
+                }
+            }.join()
+            view.findNavController().navigateUp()
         }
-        view.findNavController().navigateUp()
     }
 
     companion object {
         const val ARGS_GlOBE = "globe"
-        const val ERROR_ID = -1
     }
 }

@@ -42,7 +42,7 @@ class GlobeDetailViewModel @Inject constructor(
         fetchMomentsByGlobe(argsGlobe.id)
     }
 
-    private fun fetchMomentsByGlobe(globeId: Long) {
+    fun fetchMomentsByGlobe(globeId: Long) {
         viewModelScope.launch {
             _moments.value = getMomentsByGlobeUseCase(globeId).map { pagingData ->
                 pagingData.map { moment -> moment.toPresentation() }
