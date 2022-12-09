@@ -39,4 +39,9 @@ class GlobeViewModel @Inject constructor(
             fetchGlobes()
         }
     }
+
+    // caution: fetchGlobes 를 한 상태에서 바로 써야지 확인이 가능합니다.
+    fun isExistGlobe(globeName: String): Boolean {
+        return globeName in globes.value.map { globe -> globe.name }
+    }
 }

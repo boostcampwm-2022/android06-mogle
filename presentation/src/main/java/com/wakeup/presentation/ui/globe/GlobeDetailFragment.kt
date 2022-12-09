@@ -89,7 +89,7 @@ class GlobeDetailFragment : Fragment() {
                         true
                     }
                     R.id.item_globe_detail_delete_globe -> {
-                        showDeleteGlobeDialog()
+                        showDeleteGlobeDialog(this)
                         true
                     }
                     else -> false
@@ -98,7 +98,7 @@ class GlobeDetailFragment : Fragment() {
         }
     }
 
-    private fun showDeleteGlobeDialog() {
+    private fun showDeleteGlobeDialog(toolbar: Toolbar) {
         val spannableString =
             SpannableString(getString(R.string.delete_globe_dialog_content_second)).apply {
                 setSpan(ForegroundColorSpan(Color.parseColor(MAIN_PINK_COLOR_HEX)),
@@ -112,8 +112,9 @@ class GlobeDetailFragment : Fragment() {
             .setTitle(R.id.tv_delete_dialog_content_second, spannableString)
             .setOnPositive(R.id.tv_delete_dialog_positive, getString(R.string.delete)) {
                 if (args.globe.id == DEFAULT_GLOBE_ID) {
-                    (view ?: return@setOnPositive).showSnackBar(
-                        getString(R.string.delete_default_globe_error_msg)
+                    toolbar.showSnackBar(
+                        getString(R.string.delete_default_globe_error_msg),
+                        R.id.tb_globe_detail
                     )
                 } else {
                     viewModel.deleteGlobe()
@@ -134,7 +135,10 @@ class GlobeDetailFragment : Fragment() {
             .setOnPositive(R.id.tv_add_globe_add, getString(R.string.update)) { dialog ->
                 resultTitle = dialog.getTextInEditText()
                 viewModel.updateGlobeTitle(resultTitle ?: args.globe.name)
-                toolbar.showSnackBar(getString(R.string.snack_bar_message_update_globe_name))
+                toolbar.showSnackBar(
+                    getString(R.string.snack_bar_message_update_globe_name),
+                    R.id.tb_globe_detail
+                )
                 initToolbar(resultTitle ?: args.globe.name)
             }
             .setOnNegative(R.id.tv_add_globe_cancel, getString(R.string.cancel)) {
@@ -195,6 +199,5 @@ class GlobeDetailFragment : Fragment() {
         const val CRITERIA_WIDTH_DP = 500
         const val LARGE_SPAN = 5
         const val SMALL_SPAN = 3
-        const val GRID_SPACE_PX = 12
     }
 }

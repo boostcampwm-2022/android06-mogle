@@ -71,8 +71,18 @@ class GlobeFragment : Fragment() {
                 .with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
                 .setTitle(R.id.tv_add_globe_title, getString(R.string.add_globe_dialog_title))
                 .setOnPositive(R.id.tv_add_globe_add, getString(R.string.add)) { dialog ->
-                    viewModel.createGlobe(dialog.getTextInEditText())
-                    it.showSnackBar(getString(R.string.snack_bar_message_add_globe))
+                    if (viewModel.isExistGlobe(dialog.getTextInEditText())) {
+                        binding.tbGlobe.showSnackBar(
+                            getString(R.string.snack_bar_error_message_add_globe),
+                            R.id.tb_globe
+                        )
+                    } else {
+                        viewModel.createGlobe(dialog.getTextInEditText())
+                        binding.tbGlobe.showSnackBar(
+                            getString(R.string.snack_bar_message_add_globe),
+                            R.id.tb_globe
+                        )
+                    }
                 }
                 .setOnNegative(R.id.tv_add_globe_cancel, getString(R.string.cancel)) {
                     Timber.d("CANCEL")
