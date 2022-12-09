@@ -1,5 +1,6 @@
 <resources>
 
+    <!-- 밤 테마 -->
     <style name="Theme.Mogle.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/mint</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -11,11 +12,12 @@
         <item name="actionOverflowMenuStyle">@style/Mogle.PopUpOverFlowMenu</item>
     </style>
 
+    <!-- 낮 테마 -->
     <style name="Theme.Mogle.Bright" parent="Theme.Mogle.Base">
-        <!-- Bottom Sheet -->
+        <!-- Bottom Sheet 등등 -->
         <item name="colorSurface">@color/white</item>
 
-        <!-- Moment Preview -->
+        <!-- Moment Preview 등등 -->
         <item name="colorSurfaceVariant">@color/white</item>
         <item name="colorSurfaceInverse">@color/black</item>
 
@@ -31,10 +33,12 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
 
+        <item name="bottomAppBarColor">@color/white</item>
+
         <item name="momentDetailHeader">@drawable/bg_sunny_header</item>
     </style>
 
-
+    <!-- 밤 테마 -->
     <style name="Theme.Mogle.Night" parent="Theme.Mogle.Base">
         <item name="colorSurface">@color/night_light_black</item>
         <item name="colorSurfaceVariant">@color/night_midnight_blue</item>
@@ -51,9 +55,12 @@
 
         <item name="android:statusBarColor">?android:colorBackground</item>
 
+        <item name="bottomAppBarColor">@color/night_midnight_blue</item>
+
         <item name="momentDetailHeader">@drawable/bg_night_header</item>
     </style>
 
+    <!-- 흐림 테마 -->
     <style name="Theme.Mogle.Cloudy" parent="Theme.Mogle.Base">
         <item name="colorSurface">@color/cloudy_dark_gray</item>
         <item name="colorSurfaceVariant">@color/cloudy_gray</item>
@@ -70,6 +77,8 @@
 
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+
+        <item name="bottomAppBarColor">@color/cloudy_gray</item>
 
         <item name="momentDetailHeader">@drawable/bg_cloudy_header</item>
     </style>

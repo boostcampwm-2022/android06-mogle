@@ -23,11 +23,10 @@
 
             <com.google.android.material.bottomappbar.BottomAppBar
                 android:id="@+id/bottom_app_bar"
+                style="@style/Widget.Mogle.BottomAppbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:backgroundTint="?attr/colorSurfaceVariant"
-                android:background="?attr/colorPrimary"
                 app:fabCradleMargin="@dimen/small_100"
                 app:fabCradleRoundedCornerRadius="@dimen/large_150"
                 app:fabCradleVerticalOffset="@dimen/small_100">
@@ -53,7 +52,8 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <include android:id="@+id/layout_drawer"
+        <include
+            android:id="@+id/layout_drawer"
             layout="@layout/layout_drawer" />
 
     </androidx.drawerlayout.widget.DrawerLayout>

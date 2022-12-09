@@ -75,4 +75,8 @@
         <item name="android:button">@drawable/checkbox_selector</item>
         <item name="background">@drawable/bg_translucence_gray_corner_16</item>
     </style>
+
+    <style name="Widget.Mogle.BottomAppbar" parent="Widget.MaterialComponents.BottomAppBar.Colored">
+        <item name="backgroundTint">?attr/bottomAppBarColor</item>
+    </style>
 </resources>
