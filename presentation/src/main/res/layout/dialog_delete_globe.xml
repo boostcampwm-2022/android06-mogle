@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/small_150"
+        app:cardElevation="@dimen/small_100"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/small_100"
+            android:padding="@dimen/small_100">
+
+            <TextView
+                android:id="@+id/tv_delete_dialog_content_first"
+                style="@style/TextAppearance.Mogle.Headline2"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/large_150"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_globe_dialog_content_first"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_delete_dialog_content_second"
+                style="@style/TextAppearance.Mogle.Headline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large_200"
+                android:layout_marginEnd="@dimen/large_200"
+                android:paddingBottom="@dimen/small_150"
+                android:text="@string/delete_globe_dialog_content_second"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_content_first" />
+
+            <TextView
+                android:id="@+id/tv_delete_dialog_content_detail"
+                style="@style/TextAppearance.Mogle.SubBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/normal_150"
+                android:text="@string/delete_globe_dialog_content_detail"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_content_second" />
+
+            <TextView
+                android:id="@+id/tv_delete_dialog_negative"
+                android:layout_width="96dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_corner_8"
+                android:backgroundTint="@color/gray"
+                android:gravity="center"
+                android:padding="@dimen/small_150"
+                android:text="@string/cancel"
+                android:textColor="?attr/colorOnPrimary"
+                app:layout_constraintEnd_toStartOf="@id/tv_delete_dialog_positive"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_content_detail" />
+
+            <TextView
+                android:id="@+id/tv_delete_dialog_positive"
+                android:layout_width="96dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_corner_8"
+                android:backgroundTint="?attr/colorPrimary"
+                android:gravity="center"
+                android:padding="@dimen/small_150"
+                android:text="@string/delete"
+                android:layout_marginBottom="@dimen/large_200"
+                android:textColor="?attr/colorOnPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_delete_dialog_negative"
+                app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_content_detail" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
