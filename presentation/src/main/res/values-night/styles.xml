@@ -69,4 +69,10 @@
     <style name="ThemeOverlay.Mogle.Toolbar" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorSecondary">?android:attr/textColorPrimary</item>
     </style>
+
+    <style name="MomentCheckBox" parent="@style/Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_selector</item>
+        <item name="background">@drawable/bg_translucence_gray_corner_16</item>
+    </style>
+
 </resources>

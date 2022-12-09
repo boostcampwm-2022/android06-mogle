@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
+import com.wakeup.data.database.entity.PictureEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -62,4 +63,18 @@ interface MomentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMoment(moment: MomentEntity): Long
+
+    @Query(
+        """
+        SELECT picture.picture_id, picture.path
+        FROM moment_picture 
+        INNER JOIN picture 
+        ON moment_picture.picture_id = picture.picture_id
+        WHERE moment_picture.moment_id = :momentId
+        """
+    )
+    suspend fun getMomentPictures(momentId: Long): List<PictureEntity>
+
+    @Query("DELETE FROM moment WHERE moment_id = :momentId")
+    suspend fun deleteMoment(momentId: Long)
 }

@@ -10,76 +10,101 @@
             type="com.wakeup.presentation.model.MomentModel" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/normal_100"
-        android:layout_marginVertical="@dimen/small_100"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Mogle.LargeComponent">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <View
+            android:id="@+id/view_block_moment"
+            android:layout_width="match_parent"
+            android:layout_height="132dp"
+            android:layout_marginHorizontal="@dimen/normal_100"
+            android:layout_marginVertical="@dimen/small_100"
+            android:background="@drawable/bg_translucence_gray_corner_16"
+            android:elevation="2dp"
+            app:isGone="@{!moment.isSelected}"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Mogle.LargeComponent" />
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/normal_100">
+            android:layout_marginHorizontal="@dimen/normal_100"
+            android:layout_marginVertical="@dimen/small_100"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Mogle.LargeComponent">
 
-            <ImageView
-                android:id="@+id/iv_moment"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:contentDescription="@string/moment_picture"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:thumbnailImageFromFilePath="@{moment.pictures[0].path}"
-                tools:background="@color/gray" />
-
-            <TextView
-                android:id="@+id/tv_main_address"
-                style="@style/TextAppearance.Mogle.Title"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_150"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@{moment.place.mainAddress}"
-                app:layout_constraintBottom_toTopOf="@id/tv_content"
+                android:padding="@dimen/normal_100">
+
+                <ImageView
+                    android:id="@+id/iv_moment"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:contentDescription="@string/moment_picture"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbnailImageFromFilePath="@{moment.pictures[0].path}"
+                    tools:background="@color/gray" />
+
+                <TextView
+                    android:id="@+id/tv_main_address"
+                    style="@style/TextAppearance.Mogle.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_150"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{moment.place.mainAddress}"
+                    app:layout_constraintBottom_toTopOf="@id/tv_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_moment"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="서울역전 터미널 서울역전 터미널 서울역전 터미널 서울역전 터미널" />
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    style="@style/TextAppearance.Mogle.Body"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_150"
+                    android:layout_marginBottom="@dimen/small_150"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{moment.content}"
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:layout_constraintBottom_toTopOf="@id/tv_date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_moment"
+                    app:layout_constraintTop_toBottomOf="@id/tv_main_address"
+                    tools:text="지하철 노선도 보면 이렇게 왔다 갔어요! ㅎㅎ 정말 재밌었는거 있죠. 제가 또 어디 갔다왔는지 알려줄까요? 비밀이에요! ㅎㅎ" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/TextAppearance.Mogle.Body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{moment.formattedDate}"
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="2022-11-16" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <CheckBox
+                android:id="@+id/cb_select_moment"
+                style="@style/MomentCheckBox"
+                android:layout_width="@dimen/normal_200"
+                android:layout_height="@dimen/normal_200"
+                android:elevation="4dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_moment"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="서울역전 터미널 서울역전 터미널 서울역전 터미널 서울역전 터미널" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_content"
-                style="@style/TextAppearance.Mogle.Body"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_150"
-                android:layout_marginBottom="@dimen/small_150"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@{moment.content}"
-                android:textColor="?android:attr/textColorSecondary"
-                app:layout_constraintBottom_toTopOf="@id/tv_date"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_moment"
-                app:layout_constraintTop_toBottomOf="@id/tv_main_address"
-                tools:text="지하철 노선도 보면 이렇게 왔다 갔어요! ㅎㅎ 정말 재밌었는거 있죠. 제가 또 어디 갔다왔는지 알려줄까요? 비밀이에요! ㅎㅎ" />
-
-            <TextView
-                android:id="@+id/tv_date"
-                style="@style/TextAppearance.Mogle.Body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorSecondary"
-                android:text="@{moment.formattedDate}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="2022-11-16" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 </layout>
