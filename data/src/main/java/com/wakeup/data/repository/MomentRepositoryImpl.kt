@@ -34,11 +34,7 @@ class MomentRepositoryImpl @Inject constructor(
         }
 
     override suspend fun saveMoment(moment: Moment) {
-        return momentLocalDataSource.saveMoment(
-            moment.toEntity(),
-            moment.pictures.map { picture -> picture.toEntity() },
-            moment.globes.map { globe -> globe.toEntity() }
-        )
+        return momentLocalDataSource.saveMoment(moment.toEntity())
     }
 
     override suspend fun deleteMoment(momentId: Long) {

@@ -2,6 +2,7 @@ package com.wakeup.data.database.mapper
 
 import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
+import com.wakeup.data.database.entity.SuperMomentEntity
 import com.wakeup.domain.model.Moment
 
 fun MomentWithGlobesAndPictures.toDomain(): Moment {
@@ -15,9 +16,20 @@ fun MomentWithGlobesAndPictures.toDomain(): Moment {
     )
 }
 
-fun Moment.toEntity() : MomentEntity {
-    return MomentEntity(
+fun Moment.toEntity(): SuperMomentEntity {
+    return SuperMomentEntity(
+        id = id,
         place = place.toEntity(),
+        pictures = pictures.map { picture -> picture.toEntity() },
+        content = content,
+        globes = globes.map { globe -> globe.toEntity() },
+        date = date
+    )
+}
+
+fun SuperMomentEntity.toMomentEntity() : MomentEntity {
+    return MomentEntity(
+        place = place,
         content = content,
         date = date,
     )

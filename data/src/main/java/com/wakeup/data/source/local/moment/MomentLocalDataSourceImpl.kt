@@ -9,11 +9,12 @@ import com.wakeup.data.database.dao.PictureDao
 import com.wakeup.data.database.dao.XRefDao
 import com.wakeup.data.database.entity.GlobeEntity
 import com.wakeup.data.database.entity.LocationEntity
-import com.wakeup.data.database.entity.MomentEntity
 import com.wakeup.data.database.entity.MomentGlobeXRef
 import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
+import com.wakeup.data.database.entity.SuperMomentEntity
+import com.wakeup.data.database.mapper.toMomentEntity
 import com.wakeup.data.util.InternalFileUtil
 import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
@@ -54,31 +55,25 @@ class MomentLocalDataSourceImpl @Inject constructor(
     override fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>> =
         momentDao.getAllMoments(query)
 
-    override suspend fun saveMoment(
-        moment: MomentEntity,
-        momentPictures: List<PictureEntity>,
-        momentGlobes: List<GlobeEntity>,
-    ) {
-        val momentId = momentDao.saveMoment(moment)
-        println("momentId : $momentId")
-        if (momentPictures.isNotEmpty()) {
-            val pictureIds = savePictures(momentPictures)
-            println("pictureIds: $pictureIds")
-            saveMomentPictureXRefs(momentId, pictureIds)
+    override suspend fun saveMoment(moment: SuperMomentEntity) {
+        val momentId = momentDao.saveMoment(moment.toMomentEntity())
+        var savedPictures: List<PictureEntity> = listOf()
+        if (moment.pictures.isNotEmpty()) {
+            savedPictures = savePictures(moment.pictures)
+            saveMomentPictureXRefs(momentId, savedPictures.map { savedPicture -> savedPicture.id })
         }
-        val savedMomentId = momentDao.getMoment(momentId).moment.id
-        val globeToSaveMoment = momentGlobes.first()
-        println("globeToSaveMoment: $globeToSaveMoment")
-        saveMomentGlobeXRef(savedMomentId, globeToSaveMoment, momentPictures)
-
+        val globeToSaveMoment = moment.globes.first()
+        saveMomentGlobeXRef(momentId, globeToSaveMoment, savedPictures)
     }
 
-    private suspend fun savePictures(pictures: List<PictureEntity>): List<Long> {
+    private suspend fun savePictures(pictures: List<PictureEntity>): List<PictureEntity> {
         savePictureInternalStorage(pictures)
         val pictureLastPathFileName = getPictureEntityAboutLastPathFileNames(pictures)
         val indexResult = pictureDao.savePictures(pictureLastPathFileName)
-        return getCorrectSavedPictureIds(indexResult, pictureLastPathFileName)
+        return getCorrectSavedPictures(indexResult, pictureLastPathFileName)
     }
+
+    // 이 로직 수정 / 수퍼 모먼트 엔티티로 받는 걸로 수정
 
     private fun savePictureInternalStorage(pictures: List<PictureEntity>) {
         Timber.d("$pictures")
@@ -91,18 +86,24 @@ class MomentLocalDataSourceImpl @Inject constructor(
         return pictures.map { picture -> picture.copy(path = picture.path.substringAfterLast("/")) }
     }
 
-    private suspend fun getCorrectSavedPictureIds(
+    private suspend fun getCorrectSavedPictures(
         pictureIds: List<Long>,
         pictures: List<PictureEntity>,
-    ): List<Long> {
-        val changeablePictureIds = pictureIds.toMutableList()
-        changeablePictureIds.forEachIndexed { pictureIndex, id ->
+    ): List<PictureEntity> {
+        val tempPictures = mutableListOf<PictureEntity>()
+        pictureIds.forEachIndexed { idx, id ->
+            val path = pictures[idx].path
             if (id == EXIST_INSERT_ERROR_CODE) {
-                changeablePictureIds[pictureIndex] =
-                    pictureDao.getPictureIdByByteArray(pictures[pictureIndex].path)
+                tempPictures.add(
+                    PictureEntity(id = pictureDao.getPictureIdByByteArray(path), path = path)
+                )
+            } else {
+                tempPictures.add(
+                    PictureEntity(id = id, path = path)
+                )
             }
         }
-        return changeablePictureIds.toList()
+        return tempPictures.toList()
     }
 
     private suspend fun saveMomentPictureXRefs(momentId: Long, pictureIds: List<Long>) {
