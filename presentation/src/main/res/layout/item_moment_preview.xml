@@ -48,9 +48,11 @@
             <TextView
                 android:id="@+id/tv_main_address"
                 style="@style/TextAppearance.Mogle.SubTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/small_150"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{momentModel.place.mainAddress}"
                 app:layout_constraintBottom_toTopOf="@id/tv_description"
                 app:layout_constraintEnd_toEndOf="parent"
