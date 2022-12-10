@@ -20,6 +20,6 @@ object SharedPrefManager {
 
     fun getTheme(context: Context, key: String): String? {
         val sharedPref = context.getSharedPreferences(STORE_KEY, Context.MODE_PRIVATE)
-        return sharedPref.getString(key, DEFAULT)
+        return sharedPref.getString(key, NO_THEME)
     }
 }
