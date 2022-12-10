@@ -38,7 +38,7 @@ import com.wakeup.presentation.extension.setListener
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.model.WeatherTheme
-import com.wakeup.presentation.util.SharedPrefManager
+import com.wakeup.presentation.util.theme.ThemeHelper
 
 class MapHelper(private val context: Context) {
     /**
@@ -65,7 +65,7 @@ class MapHelper(private val context: Context) {
             .logoClickEnabled(true)
 
         // 다크 모드 체크
-        when (SharedPrefManager.getTheme(context, KEY_THEME)) {
+        when (ThemeHelper(context).getCurrentTheme()) {
             WeatherTheme.NIGHT.str -> {
                 options.apply {
                     mapType(NaverMap.MapType.Navi)
