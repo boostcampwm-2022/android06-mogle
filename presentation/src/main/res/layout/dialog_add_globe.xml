@@ -5,9 +5,7 @@
 
     <data>
 
-        <variable
-            name="hasMoments"
-            type="boolean" />
+
     </data>
 
     <com.google.android.material.card.MaterialCardView

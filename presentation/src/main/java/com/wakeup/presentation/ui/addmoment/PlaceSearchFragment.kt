@@ -51,4 +51,9 @@ class PlaceSearchFragment : Fragment() {
             onBackClick = { findNavController().navigateUp() }
         )
     }
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
 }

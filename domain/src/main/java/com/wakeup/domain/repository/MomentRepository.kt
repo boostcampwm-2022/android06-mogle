@@ -18,4 +18,6 @@ interface MomentRepository {
     suspend fun getMoment(id: Long): Moment
 
     suspend fun saveMoment(moment: Moment): Long
+
+    suspend fun deleteMoment(momentId: Long)
 }

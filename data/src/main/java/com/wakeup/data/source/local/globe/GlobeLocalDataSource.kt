@@ -20,4 +20,6 @@ interface GlobeLocalDataSource {
     suspend fun getFirstMomentByGlobe(globeId: Long): MomentWithGlobesAndPictures?
 
     suspend fun getMomentCountByGlobe(globeId: Long): Int
+
+    fun getMomentsNotInGlobe(globeId: Long): Flow<PagingData<MomentWithGlobesAndPictures>>
 }

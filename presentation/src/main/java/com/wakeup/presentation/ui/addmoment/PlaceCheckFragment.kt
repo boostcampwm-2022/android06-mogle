@@ -109,4 +109,9 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
             onBackClick = { findNavController().navigateUp() }
         )
     }
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
 }

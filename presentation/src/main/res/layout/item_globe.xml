@@ -34,11 +34,12 @@
 
         <TextView
             android:id="@+id/tv_globe_item_title"
-            style="@style/TextAppearance.Mogle.Title"
+            style="@style/TextAppearance.Mogle.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{globe.name}"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/globe_item_title_top_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/civ_globe_item"
             tools:text="맛집" />
@@ -48,6 +49,7 @@
             style="@style/TextAppearance.Mogle.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/moment_count_in_globe_top_margin"
             android:text="@{String.valueOf(globe.momentCount)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

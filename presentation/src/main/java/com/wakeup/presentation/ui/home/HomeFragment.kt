@@ -15,7 +15,11 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.wakeup.domain.model.SortType
@@ -26,19 +30,26 @@ import com.wakeup.presentation.extension.resetStatusBarTransparent
 import com.wakeup.presentation.extension.setStatusBarTransparent
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
+import com.wakeup.presentation.ui.MainViewModel
+import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.ui.home.map.MapFragment
 import com.wakeup.presentation.ui.home.sheet.BottomSheetFragment
 import com.wakeup.presentation.util.UPDATE_MOMENTS_KEY
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModels()
+    private val activityViewModel: MainViewModel by activityViewModels()
 
-    lateinit var broadcastReceiver: BroadcastReceiver
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
+    private lateinit var mapFragment: MapFragment
+    private lateinit var bottomSheetFragment: BottomSheetFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +57,7 @@ class HomeFragment : Fragment() {
         initMap()
         initBottomSheet()
         initLocation()
-        initializeBroadcastReceiver()
+        initMoments()
     }
 
     override fun onCreateView(
@@ -66,18 +77,26 @@ class HomeFragment : Fragment() {
 
         setSearchBarListener()
         fetchWeather()
+        collectWeather()
+    }
+
+    private fun initMoments() {
+        activityViewModel.allMoments?.let { moments ->
+            viewModel.initMoments(moments)
+            activityViewModel.allMoments = null
+        }
     }
 
     private fun initMap() {
         if (childFragmentManager.findFragmentById(R.id.map) == null) {
-            val mapFragment = MapFragment()
+            mapFragment = MapFragment()
             childFragmentManager.beginTransaction().add(R.id.map, mapFragment).commit()
         }
     }
 
     private fun initBottomSheet() {
         if (childFragmentManager.findFragmentById(R.id.bottom_sheet) == null) {
-            val bottomSheetFragment = BottomSheetFragment()
+            bottomSheetFragment = BottomSheetFragment()
             childFragmentManager.beginTransaction().add(R.id.bottom_sheet, bottomSheetFragment)
                 .commit()
         }
@@ -111,25 +130,13 @@ class HomeFragment : Fragment() {
                 viewModel.fetchMoments()
                 viewModel.fetchAllMoments()
 
+                mapFragment.collectMoments()
+                bottomSheetFragment.collectMoments()
+
                 hideKeyboard()
             }
             false // true: 계속 search 가능
         }
-    }
-
-    private fun initializeBroadcastReceiver() {
-        broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                viewModel.setScrollToTop(true)
-                viewModel.sortType.value = SortType.MOST_RECENT
-                viewModel.fetchMoments()
-            }
-        }
-
-        requireActivity().registerReceiver(
-            broadcastReceiver,
-            IntentFilter(UPDATE_MOMENTS_KEY)
-        )
     }
 
     // 따로 함수로 빼니까, 권한 확인을 했는지 IDE가 인식을 못합니다.
@@ -139,6 +146,18 @@ class HomeFragment : Fragment() {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     viewModel.fetchWeather(LocationModel(location.latitude, location.longitude))
+                }
+            }
+        }
+    }
+
+    private fun collectWeather() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    if (state is UiState.Success) {
+                        viewModel.setWeather(state.item)
+                    }
                 }
             }
         }

@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -19,6 +20,8 @@ import com.wakeup.domain.model.SortType
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
 import com.wakeup.presentation.databinding.FragmentBottomSheetBinding
+import com.wakeup.presentation.model.MomentModel
+import com.wakeup.presentation.ui.home.HomeFragmentDirections
 import com.wakeup.presentation.ui.home.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -27,12 +30,14 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     lateinit var binding: FragmentBottomSheetBinding
     private val viewModel: HomeViewModel by viewModels({ requireParentFragment() })
-    private val momentAdapter = MomentPagingAdapter()
+    private val momentAdapter = MomentPagingAdapter(isSelectable = false) { moment, _ ->
+        navigateToMoment(moment)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentBottomSheetBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -48,20 +53,22 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         setAdapterListener()
         setCallback()
 
-        collectData()
+        collectMoments()
     }
 
     private fun setMenus() {
         val items = SortType.values().map { it.str }
         val menuAdapter = ArrayAdapter(requireContext(), R.layout.item_menu, items)
-        binding.textField.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        binding.textField.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (viewModel.bottomSheetState.value == BottomSheetBehavior.STATE_EXPANDED) {
                     changeVisibleMenu(true)
                 }
 
                 binding.sortMenu.setText(viewModel.sortType.value.str)
-                (binding.textField.editText as? MaterialAutoCompleteTextView)?.setAdapter(menuAdapter)
+                (binding.textField.editText as? MaterialAutoCompleteTextView)?.setAdapter(
+                    menuAdapter)
                 binding.textField.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
@@ -76,6 +83,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
                 }
             }
             viewModel.fetchMoments()
+            collectMoments()
         }
     }
 
@@ -112,7 +120,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun collectData() {
+    fun collectMoments() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.moments.collectLatest {
@@ -157,6 +165,12 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             visibility = View.INVISIBLE
             animation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
         }
+    }
+
+    private fun navigateToMoment(moment: MomentModel) {
+        val action = HomeFragmentDirections
+            .actionMapFragmentToMomentDetailFragment(moment)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {
