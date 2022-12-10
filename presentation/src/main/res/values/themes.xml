@@ -40,6 +40,8 @@
 
     <!-- 밤 테마 -->
     <style name="Theme.Mogle.Night" parent="Theme.Mogle.Base">
+        <item name="colorOnPrimary">@color/black</item>
+
         <item name="colorSurface">@color/night_light_black</item>
         <item name="colorSurfaceVariant">@color/night_midnight_blue</item>
         <item name="colorSurfaceInverse">@color/white</item>

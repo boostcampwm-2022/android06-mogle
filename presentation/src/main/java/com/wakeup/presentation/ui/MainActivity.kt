@@ -22,7 +22,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ActivityMainBinding
 import com.wakeup.presentation.model.WeatherTheme
-import com.wakeup.presentation.util.SharedPreferenceManager
+import com.wakeup.presentation.util.SharedPrefManager
+import com.wakeup.presentation.util.SharedPrefManager.KEY_THEME
+import com.wakeup.presentation.util.SharedPrefManager.NO_THEME
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     private var isUserAction = false
+    private var currentTheme: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -49,25 +52,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initTheme() {
-        val theme = SharedPreferenceManager.getInt(this, KEY_THEME)
-        if (theme == NO_THEME) setThemeBySystemSetting()  // 첫 설치에는 시스템 설정에 따른 테마 설정
+        currentTheme = SharedPrefManager.getTheme(this, KEY_THEME)
+        if (currentTheme == NO_THEME) setThemeBySystemSetting()  // 첫 설치에는 시스템 설정에 따른 테마 설정
 
-        when (theme) {
-            R.style.Theme_Mogle_Bright -> setTheme(R.style.Theme_Mogle_Bright)
-            R.style.Theme_Mogle_Night -> setTheme(R.style.Theme_Mogle_Night)
-            R.style.Theme_Mogle_Cloudy -> setTheme(R.style.Theme_Mogle_Cloudy)
+        when (currentTheme) {
+            WeatherTheme.BRIGHT.str -> setTheme(R.style.Theme_Mogle_Bright)
+            WeatherTheme.NIGHT.str -> setTheme(R.style.Theme_Mogle_Night)
+            WeatherTheme.CLOUDY.str -> setTheme(R.style.Theme_Mogle_Cloudy)
         }
     }
 
     private fun setThemeBySystemSetting() {
         when (resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
             Configuration.UI_MODE_NIGHT_YES -> {
-                SharedPreferenceManager.put(this,
+                SharedPrefManager.saveTheme(this,
                     KEY_THEME,
-                    R.style.Theme_Mogle_Night)
+                    WeatherTheme.NIGHT.str)
             }
             else -> {
-                SharedPreferenceManager.put(this, KEY_THEME, R.style.Theme_Mogle_Bright)
+                SharedPrefManager.saveTheme(this, KEY_THEME, WeatherTheme.BRIGHT.str)
             }
         }
 
@@ -132,6 +135,8 @@ class MainActivity : AppCompatActivity() {
         )
         binding.layoutDrawer.spinnerTheme.adapter = adapter
 
+        binding.layoutDrawer.spinnerTheme.setSelection(adapter.getPosition(currentTheme)) // 설정 값 복원
+
         binding.layoutDrawer.spinnerTheme.setOnTouchListener { _, _ ->
             isUserAction = true
             false
@@ -151,28 +156,28 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         WeatherTheme.BRIGHT.str -> {
-                            SharedPreferenceManager.put(
+                            SharedPrefManager.saveTheme(
                                 this@MainActivity,
                                 KEY_THEME,
-                                R.style.Theme_Mogle_Bright
+                                WeatherTheme.BRIGHT.str
                             )
                             recreate()
                         }
 
                         WeatherTheme.NIGHT.str -> {
-                            SharedPreferenceManager.put(
+                            SharedPrefManager.saveTheme(
                                 this@MainActivity,
                                 KEY_THEME,
-                                R.style.Theme_Mogle_Night
+                                WeatherTheme.NIGHT.str
                             )
                             recreate()
                         }
 
                         WeatherTheme.CLOUDY.str -> {
-                            SharedPreferenceManager.put(
+                            SharedPrefManager.saveTheme(
                                 this@MainActivity,
                                 KEY_THEME,
-                                R.style.Theme_Mogle_Cloudy
+                                WeatherTheme.CLOUDY.str
                             )
                             recreate()
                         }
@@ -201,7 +206,5 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val EXIT_ANIM_DURATION = 2000L
-        private const val KEY_THEME = "theme"
-        private const val NO_THEME = -1
     }
 }

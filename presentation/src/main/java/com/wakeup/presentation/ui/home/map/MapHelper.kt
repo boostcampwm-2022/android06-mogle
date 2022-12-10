@@ -37,7 +37,8 @@ import com.wakeup.presentation.extension.getFadeOutAnimator
 import com.wakeup.presentation.extension.setListener
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.PictureModel
-import com.wakeup.presentation.util.SharedPreferenceManager
+import com.wakeup.presentation.model.WeatherTheme
+import com.wakeup.presentation.util.SharedPrefManager
 
 class MapHelper(private val context: Context) {
     /**
@@ -64,8 +65,8 @@ class MapHelper(private val context: Context) {
             .logoClickEnabled(true)
 
         // 다크 모드 체크
-        when (SharedPreferenceManager.getInt(context, KEY_THEME)) {
-            R.style.Theme_Mogle_Night -> {
+        when (SharedPrefManager.getTheme(context, KEY_THEME)) {
+            WeatherTheme.NIGHT.str -> {
                 options.apply {
                     mapType(NaverMap.MapType.Navi)
                     nightModeEnabled(true)
@@ -75,8 +76,8 @@ class MapHelper(private val context: Context) {
 
         // 지도 생성
         val mapFragment = MapFragment.newInstance(options).also {
-                fm.beginTransaction().replace(R.id.fl_map, it).commit()
-            }
+            fm.beginTransaction().replace(R.id.fl_map, it).commit()
+        }
 
         mapFragment.getMapAsync(callback)
     }
