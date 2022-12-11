@@ -10,7 +10,7 @@ import com.wakeup.presentation.databinding.ListItemDetailPictureEmptyBinding
 import com.wakeup.presentation.model.PictureModel
 
 class DetailPictureAdapter(
-    private val onClickImageItem: (PictureModel) -> Unit
+    private val onClickImageItem: (PictureModel) -> Unit,
 ) : ListAdapter<PictureModel, RecyclerView.ViewHolder>(DetailPictureDiffUtil) {
 
     private val pictureType = 0
@@ -42,7 +42,7 @@ class DetailPictureAdapter(
 
     class DetailPictureViewHolder private constructor(
         private val binding: ListItemDetailPictureBinding,
-        showDetailPicture: (PictureModel) -> Unit
+        showDetailPicture: (PictureModel) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -59,7 +59,10 @@ class DetailPictureAdapter(
         }
 
         companion object {
-            fun from(parent: ViewGroup, onClickImageItem: (PictureModel) -> Unit): DetailPictureViewHolder {
+            fun from(
+                parent: ViewGroup,
+                onClickImageItem: (PictureModel) -> Unit,
+            ): DetailPictureViewHolder {
                 return DetailPictureViewHolder(
                     ListItemDetailPictureBinding
                         .inflate(LayoutInflater.from(parent.context), parent, false),

@@ -34,7 +34,12 @@ class PictureDialog private constructor(context: Context) :
         }
     }
 
-    fun setImageFilePath(filePath: String, errorImageDrawableId: Int, width: Int, height: Int) : PictureDialog {
+    fun setImageFilePath(
+        filePath: String,
+        errorImageDrawableId: Int,
+        width: Int,
+        height: Int,
+    ): PictureDialog {
         Glide.with(imageView.context)
             .load(File(filePath))
             .placeholder(errorImageDrawableId)
