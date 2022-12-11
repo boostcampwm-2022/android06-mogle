@@ -105,6 +105,7 @@ class AddMomentFragment : Fragment() {
 
     private fun initDate() {
         binding.tvDateValue.setOnClickListener {
+            if (datePicker.isAdded) return@setOnClickListener
             datePicker.show(childFragmentManager, "datePicker")
         }
     }
