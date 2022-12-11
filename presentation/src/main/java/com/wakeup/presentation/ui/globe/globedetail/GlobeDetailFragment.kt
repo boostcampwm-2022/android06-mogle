@@ -1,4 +1,4 @@
-package com.wakeup.presentation.ui.globe
+package com.wakeup.presentation.ui.globe.globedetail
 
 import android.graphics.Color
 import android.os.Bundle
@@ -81,7 +81,16 @@ class GlobeDetailFragment : Fragment() {
                         true
                     }
                     R.id.item_globe_detail_delete_moment -> {
-                        // todo 모먼트 삭제하기
+                        if (viewModel.isExistMoment.value) {
+                            val action = GlobeDetailFragmentDirections
+                                .actionGlobeDetailFragmentToDeleteMomentInGlobeFragment(args.globe)
+                            findNavController().navigate(action)
+                        } else {
+                            showSnackBar(
+                                getString(R.string.delete_moment_error_in_globe_msg),
+                                R.id.tb_globe_detail
+                            )
+                        }
                         true
                     }
                     R.id.item_globe_detail_update_globe -> {
@@ -110,7 +119,7 @@ class GlobeDetailFragment : Fragment() {
         NormalDialog
             .with(requireContext(), R.layout.dialog_delete_globe)
             .setTitle(R.id.tv_delete_dialog_content_second, spannableString)
-            .setOnPositive(R.id.tv_delete_dialog_positive, getString(R.string.delete)) {
+            .setOnPositive(R.id.tv_delete_dialog_positive, getString(R.string.do_delete)) {
                 if (args.globe.id == DEFAULT_GLOBE_ID) {
                     toolbar.showSnackBar(
                         getString(R.string.delete_default_globe_error_msg),

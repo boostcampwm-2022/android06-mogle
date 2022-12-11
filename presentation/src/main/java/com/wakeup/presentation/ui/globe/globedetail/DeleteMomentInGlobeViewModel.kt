@@ -1,17 +1,15 @@
-package com.wakeup.presentation.ui.globe
+package com.wakeup.presentation.ui.globe.globedetail
 
 import android.view.View
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.wakeup.domain.usecase.GetMomentsNotInGlobeUseCase
 import com.wakeup.domain.usecase.globe.DeleteMomentInGlobeUseCase
-import com.wakeup.domain.usecase.globe.InsertMomentInGlobeUseCase
+import com.wakeup.domain.usecase.globe.GetMomentsByGlobeUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.GlobeModel
@@ -25,9 +23,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddMomentInGlobeViewModel @Inject constructor(
-    private val getMomentsNotInGlobeUseCase: GetMomentsNotInGlobeUseCase,
-    private val insertMomentInGlobeUseCase: InsertMomentInGlobeUseCase,
+class DeleteMomentInGlobeViewModel @Inject constructor(
+    private val getMomentsInGlobeUseCase: GetMomentsByGlobeUseCase,
     private val deleteMomentInGlobeUseCase: DeleteMomentInGlobeUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -35,49 +32,43 @@ class AddMomentInGlobeViewModel @Inject constructor(
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
     val moments = _moments.asStateFlow()
 
-    private val _saveReadyMoments = MutableStateFlow<List<MomentModel>>(emptyList())
-    val saveReadyMoments = _saveReadyMoments.asStateFlow()
-
-    val isNotExistSaveReadyMoments = saveReadyMoments.map { moments ->
-        moments.isEmpty()
-    }.asLiveData()
-
-
-    val saveReadyMomentsCount = saveReadyMoments.map { moments ->
-        moments.count()
-    }.asLiveData()
+    private val _deletedMoments = MutableStateFlow<List<MomentModel>>(emptyList())
+    private val deletedMoments = _deletedMoments.asStateFlow()
 
     private val argsGlobe = savedStateHandle.get<GlobeModel>(ARGS_GlOBE)
-        ?: GlobeModel(name = ARGS_GlOBE, thumbnail = null)
+        ?: GlobeModel(name = AddMomentInGlobeViewModel.ARGS_GlOBE, thumbnail = null)
 
-    fun fetchMomentsNotInGlobe(globeId: Long) {
+    init {
+        fetchMomentsInGlobe()
+    }
+
+    private fun fetchMomentsInGlobe() {
         viewModelScope.launch {
-            _moments.value = getMomentsNotInGlobeUseCase(globeId).map { pagingData ->
-                pagingData.map { moment -> moment.toPresentation() }
+            _moments.value = getMomentsInGlobeUseCase(argsGlobe.id).map { pagingDataMoments ->
+                pagingDataMoments.map { moment -> moment.toPresentation() }
             }
                 .cachedIn(viewModelScope)
                 .first()
         }
     }
 
-    fun setSaveReadyMoments(moment: MomentModel) {
+    fun setDeleteReadyMoments(moment: MomentModel) {
         if (moment.isSelected.not()) {
-            _saveReadyMoments.value = saveReadyMoments.value
-                .filter { savedMoment -> savedMoment.id != moment.id }
+            _deletedMoments.value = deletedMoments.value
+                .filter { deletedMoment -> deletedMoment.id != moment.id }
         } else {
-            _saveReadyMoments.value = _saveReadyMoments.value
+            _deletedMoments.value = deletedMoments.value
                 .toMutableList()
                 .apply { add(moment) }
                 .toList()
         }
     }
 
-    fun saveMomentsInGlobe(view: View) {
+    fun deleteMoments(view: View) {
         viewModelScope.launch {
             launch {
-                saveReadyMoments.value.forEach { moment ->
-                    println(moment)
-                    insertMomentInGlobeUseCase(moment.toDomain(), argsGlobe.toDomain())
+                deletedMoments.value.forEach { moment ->
+                    deleteMomentInGlobeUseCase(moment.toDomain(), argsGlobe.toDomain())
                 }
             }.join()
             view.findNavController().navigateUp()

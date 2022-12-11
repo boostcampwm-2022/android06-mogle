@@ -25,7 +25,6 @@ class GlobeViewModel @Inject constructor(
     val globes = _globes.asStateFlow()
 
     fun fetchGlobes() {
-        println("good")
         viewModelScope.launch {
             _globes.value = getGlobesUseCase().map { globes ->
                 globes.map { globe -> globe.toPresentation() }

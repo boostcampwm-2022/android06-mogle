@@ -8,7 +8,7 @@
 
         <variable
             name="vm"
-            type="com.wakeup.presentation.ui.globe.GlobeDetailViewModel" />
+            type="com.wakeup.presentation.ui.globe.globedetail.GlobeDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

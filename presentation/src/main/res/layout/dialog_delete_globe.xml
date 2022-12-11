@@ -89,7 +89,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_delete_dialog_negative"
                 app:layout_constraintTop_toBottomOf="@id/tv_delete_dialog_content_detail"
-                tools:text="@string/delete" />
+                tools:text="@string/do_delete" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

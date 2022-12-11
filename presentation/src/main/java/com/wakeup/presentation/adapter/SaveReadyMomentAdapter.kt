@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.databinding.ItemMomentInGlobeBinding
 import com.wakeup.presentation.model.MomentModel
 
-class SavedMomentInGlobeAdapter
-    : ListAdapter<MomentModel, SavedMomentInGlobeAdapter.ReadyMomentViewHolder>(ReadyMomentDiffUtil) {
+class SaveReadyMomentAdapter
+    : ListAdapter<MomentModel, SaveReadyMomentAdapter.ReadyMomentViewHolder>(ReadyMomentDiffUtil) {
 
     class ReadyMomentViewHolder private constructor(
         private val binding: ItemMomentInGlobeBinding,

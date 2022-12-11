@@ -1,4 +1,4 @@
-package com.wakeup.presentation.ui.globe
+package com.wakeup.presentation.ui.globe.globedetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.wakeup.presentation.ui.globe.AddMomentInGlobeViewModel" />
+            type="com.wakeup.presentation.ui.globe.globedetail.AddMomentInGlobeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,7 +45,7 @@
             android:paddingStart="@dimen/normal_100"
             android:paddingTop="@dimen/small_100"
             android:paddingBottom="@dimen/small_100"
-            android:text="@{@string/add_moment_in_globe_count(vm.saveReadyMomentsCount)}"
+            android:text="@{@string/moment_in_globe_count(vm.saveReadyMomentsCount)}"
             app:isGone="@{vm.isNotExistSaveReadyMoments}"
             app:layout_constraintBottom_toTopOf="@id/rv_save_moment_in_globe"
             app:layout_constraintTop_toBottomOf="@id/tb_add_moment_in_globe"
