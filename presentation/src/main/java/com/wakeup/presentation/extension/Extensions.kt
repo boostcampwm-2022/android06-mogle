@@ -2,7 +2,6 @@ package com.wakeup.presentation.extension
 
 import android.animation.Animator.AnimatorListener
 import android.animation.ObjectAnimator
-import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -87,13 +86,15 @@ fun View.showSnackbar(text: String) {
     Snackbar.make(this, text, Snackbar.LENGTH_SHORT).show()
 }
 
-fun Activity.setStatusBarTransparent() {
-    window.setFlags(
+fun Fragment.setStatusBarTransparent() {
+    this.requireActivity().window.setFlags(
         WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
         WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
     )
 }
 
-fun Activity.resetStatusBarTransparent() {
-    window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+fun Fragment.resetStatusBarTransparent() {
+    this.requireActivity().window.clearFlags(
+        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+    )
 }
