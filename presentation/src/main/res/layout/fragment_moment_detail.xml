@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/colorBackground"
+        android:background="?android:colorBackground"
         android:orientation="vertical">
 
         <include
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_50"
                     android:text="@{momentModel.place.detailAddress}"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="?android:textColorSecondary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/normal_100"
                     android:text="@{momentModel.content}"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColor="?android:textColorPrimary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/cv_image_container"
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/large_100"
                     android:layout_marginBottom="@dimen/large_200"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="?android:textColorSecondary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_date"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -154,7 +154,7 @@
                     android:layout_marginTop="@dimen/large_100"
                     android:layout_marginBottom="@dimen/large_200"
                     android:text="@{momentModel.formattedDate}"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="?android:textColorSecondary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toEndOf="@id/tv_globe"
