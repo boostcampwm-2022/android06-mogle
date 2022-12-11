@@ -82,8 +82,15 @@ fun getBitMapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
     return bitmap
 }
 
-fun View.showSnackbar(text: String) {
-    Snackbar.make(this, text, Snackbar.LENGTH_SHORT).show()
+/**
+ * @param anchorViewResId caution: 이 SnackBar 가 띄워질 View 에 resId로 anchorView 를 달아야합니다.
+ */
+fun View.showSnackBar(text: String, anchorViewResId: Int? = null) {
+    Snackbar.make(this, text, Snackbar.LENGTH_SHORT).apply {
+        if (anchorViewResId != null) {
+            anchorView = findViewById(anchorViewResId)
+        }
+    }.show()
 }
 
 fun Fragment.setStatusBarTransparent() {
