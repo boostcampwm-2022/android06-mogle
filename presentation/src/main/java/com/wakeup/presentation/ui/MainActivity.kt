@@ -47,7 +47,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        binding.root.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener{
+        binding.root.viewTreeObserver.addOnPreDrawListener(object :
+            ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
                 return if (viewModel.isReady.value) {
                     Timber.d("Success load data")
@@ -110,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val isTopDest = appBarConfiguration.topLevelDestinations.contains(destination.id)
             binding.bottomAppBar.isVisible = isTopDest
-            binding.fab.isVisible = isTopDest
+            if (isTopDest) binding.fab.show() else binding.fab.hide()
         }
     }
 
