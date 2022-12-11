@@ -35,6 +35,7 @@ import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.WeatherTheme
 import com.wakeup.presentation.util.theme.ThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -49,15 +50,20 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private fun beforeSetContentView() {
         installSplashScreen()
+        initLocation()
+        fetchWeatherDataPeriodically()
         themeHelper.initTheme()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        beforeSetContentView()
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initLocation()
         setSplashScreenAnimation()
         setBottomNav()
         setSpinner()
@@ -88,6 +94,22 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun fetchWeatherDataPeriodically() {
+        lifecycleScope.launch {
+            while(true) {
+                fusedLocationProviderClient.lastLocation.addOnSuccessListener { result: Location? ->
+                    if (result == null) return@addOnSuccessListener
+
+                    launch {
+                        viewModel.fetchWeather(LocationModel(result.latitude, result.longitude))
+                    }
+                }
+                delay(FIVE_MINUTE)
+            }
+        }
     }
 
     private fun setSplashScreenAnimation() {
@@ -199,7 +221,7 @@ class MainActivity : AppCompatActivity() {
     private fun changeAutoTheme() {
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
             if (location != null) {
-                viewModel.fetchWeather(LocationModel(location.latitude, location.longitude))
+                //viewModel.fetchWeather(LocationModel(location.latitude, location.longitude))
             }
         }
 
@@ -215,7 +237,7 @@ class MainActivity : AppCompatActivity() {
                         is UiState.Failure -> {
                             binding.root.showSnackbar("날씨를 불러오지 못했습니다.")
                         }
-                        else -> { }
+                        else -> {}
                     }
                 }
             }
@@ -234,7 +256,9 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    companion object {
-        private const val EXIT_ANIM_DURATION = 2000L
+    private companion object {
+        const val EXIT_ANIM_DURATION = 2000L
+        const val ONE_MINUTE = 60000L
+        const val FIVE_MINUTE = ONE_MINUTE * 5
     }
 }

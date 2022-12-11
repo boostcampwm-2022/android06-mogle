@@ -36,6 +36,7 @@
         <item name="bottomAppBarColor">@color/white</item>
 
         <item name="momentDetailHeader">@drawable/bg_sunny_header</item>
+        <item name="circleLoadingIcon">@raw/ic_circle_loading_black</item>
     </style>
 
     <!-- 밤 테마 -->
@@ -60,6 +61,7 @@
         <item name="bottomAppBarColor">@color/night_midnight_blue</item>
 
         <item name="momentDetailHeader">@drawable/bg_night_header</item>
+        <item name="circleLoadingIcon">@raw/ic_circle_loading_white</item>
     </style>
 
     <!-- 흐림 테마 -->
@@ -83,6 +85,7 @@
         <item name="bottomAppBarColor">@color/cloudy_gray</item>
 
         <item name="momentDetailHeader">@drawable/bg_cloudy_header</item>
+        <item name="circleLoadingIcon">@raw/ic_circle_loading_white</item>
     </style>
 
     <style name="Theme.Mogle.Splash" parent="Theme.SplashScreen">

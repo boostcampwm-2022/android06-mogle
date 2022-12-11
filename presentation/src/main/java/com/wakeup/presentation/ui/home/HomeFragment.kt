@@ -1,9 +1,7 @@
 package com.wakeup.presentation.ui.home
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,22 +11,16 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentHomeBinding
 import com.wakeup.presentation.extension.hideKeyboard
-import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
 import com.wakeup.presentation.ui.MainViewModel
-import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.ui.home.map.MapFragment
 import com.wakeup.presentation.ui.home.sheet.BottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -49,6 +41,7 @@ class HomeFragment : Fragment() {
         initBottomSheet()
         initLocation()
         initMoments()
+        initWeather()
     }
 
     override fun onCreateView(
@@ -65,8 +58,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setSearchBarListener()
-        fetchWeather()
-        collectWeather()
     }
 
     private fun initMoments() {
@@ -74,6 +65,10 @@ class HomeFragment : Fragment() {
             viewModel.initMoments(moments)
             activityViewModel.allMoments = null
         }
+    }
+
+    private fun initWeather() {
+        viewModel.initWeatherFlow(activityViewModel.weatherState)
     }
 
     private fun initMap() {
@@ -125,30 +120,6 @@ class HomeFragment : Fragment() {
                 hideKeyboard()
             }
             false // true: 계속 search 가능
-        }
-    }
-
-    // 따로 함수로 빼니까, 권한 확인을 했는지 IDE가 인식을 못합니다.
-    @SuppressLint("MissingPermission")
-    private fun fetchWeather() {
-        if (hasLocationPermissions()) {
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    viewModel.fetchWeather(LocationModel(location.latitude, location.longitude))
-                }
-            }
-        }
-    }
-
-    private fun collectWeather() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state ->
-                    if (state is UiState.Success) {
-                        viewModel.setWeather(state.item)
-                    }
-                }
-            }
         }
     }
 
