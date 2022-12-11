@@ -1,6 +1,5 @@
 package com.wakeup.presentation.ui.addmoment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,16 +13,15 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.PictureAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentBinding
-import com.wakeup.presentation.extension.setNavigationResultToBackStack
-import com.wakeup.presentation.lib.dialog.BaseDialog
 import com.wakeup.presentation.lib.dialog.NormalDialog
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.ui.UiState
-import com.wakeup.presentation.util.UPDATE_MOMENTS_KEY
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,11 +41,19 @@ class AddMomentFragment : Fragment() {
             viewModel.addPicture(PictureModel(path = uri.toString()))
         }
 
-    private val datePicker = MaterialDatePicker.Builder.datePicker().build().apply {
-        addOnPositiveButtonClickListener { date ->
-            viewModel.setSelectedDate(date)
+    private val constraintsBuilder =
+        CalendarConstraints.Builder().setValidator(DateValidatorPointBackward.now())
+
+    private val datePicker = MaterialDatePicker
+        .Builder
+        .datePicker()
+        .setCalendarConstraints(constraintsBuilder.build())
+        .build()
+        .apply {
+            addOnPositiveButtonClickListener { date ->
+                viewModel.setSelectedDate(date)
+            }
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
