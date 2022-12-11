@@ -9,15 +9,16 @@ import com.wakeup.presentation.databinding.ListItemDetailPictureBinding
 import com.wakeup.presentation.databinding.ListItemDetailPictureEmptyBinding
 import com.wakeup.presentation.model.PictureModel
 
-class DetailPictureAdapter :
-    ListAdapter<PictureModel, RecyclerView.ViewHolder>(DetailPictureDiffUtil) {
+class DetailPictureAdapter(
+    private val onClickImageItem: (PictureModel) -> Unit
+) : ListAdapter<PictureModel, RecyclerView.ViewHolder>(DetailPictureDiffUtil) {
 
     private val pictureType = 0
     private val emptyType = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == pictureType) {
-            DetailPictureViewHolder.from(parent)
+            DetailPictureViewHolder.from(parent, onClickImageItem)
         } else {
             EmptyViewHolder.from(parent)
         }
@@ -39,8 +40,18 @@ class DetailPictureAdapter :
         return if (currentList.isEmpty()) 1 else currentList.size
     }
 
-    class DetailPictureViewHolder private constructor(private val binding: ListItemDetailPictureBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class DetailPictureViewHolder private constructor(
+        private val binding: ListItemDetailPictureBinding,
+        showDetailPicture: (PictureModel) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            itemView.setOnClickListener {
+                binding.pictureModel?.let { picture ->
+                    showDetailPicture(picture)
+                }
+            }
+        }
 
         fun bind(pictureModel: PictureModel) {
             binding.pictureModel = pictureModel
@@ -48,17 +59,19 @@ class DetailPictureAdapter :
         }
 
         companion object {
-            fun from(parent: ViewGroup): DetailPictureViewHolder {
+            fun from(parent: ViewGroup, onClickImageItem: (PictureModel) -> Unit): DetailPictureViewHolder {
                 return DetailPictureViewHolder(
                     ListItemDetailPictureBinding
-                        .inflate(LayoutInflater.from(parent.context), parent, false)
+                        .inflate(LayoutInflater.from(parent.context), parent, false),
+                    onClickImageItem
                 )
             }
         }
     }
 
-    class EmptyViewHolder private constructor(binding: ListItemDetailPictureEmptyBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class EmptyViewHolder private constructor(
+        binding: ListItemDetailPictureEmptyBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
         companion object {
             fun from(parent: ViewGroup): EmptyViewHolder {
                 return EmptyViewHolder(
