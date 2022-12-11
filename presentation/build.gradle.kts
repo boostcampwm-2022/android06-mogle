@@ -95,4 +95,7 @@ dependencies {
 
     // Splash
     implementation(Depends.Libraries.splash)
+
+    // Lottie
+    implementation(Depends.Libraries.lottie)
 }
