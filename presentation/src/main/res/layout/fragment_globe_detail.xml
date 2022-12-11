@@ -53,6 +53,7 @@
                 android:layout_marginBottom="@dimen/map_moment_preview_margin"
                 android:text="@string/globe_detail_empty_content"
                 android:textSize="80sp"
+                android:textColor="?android:textColorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:isGone="@{vm.isExistMoment}"

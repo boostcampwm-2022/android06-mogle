@@ -5,7 +5,6 @@
 
     <data>
 
-
         <variable
             name="vm"
             type="com.wakeup.presentation.ui.globe.AddMomentInGlobeViewModel" />
@@ -57,7 +56,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/small_100"
+            android:paddingStart="@dimen/small_100"
+            android:paddingEnd="@dimen/small_100"
             app:isGone="@{vm.isNotExistSaveReadyMoments}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +69,9 @@
             android:id="@+id/rv_add_moment_in_globe"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="@dimen/normal_100"
+            android:paddingStart="@dimen/small_100"
+            android:paddingEnd="@dimen/small_100"
+            android:paddingBottom="@dimen/small_100"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

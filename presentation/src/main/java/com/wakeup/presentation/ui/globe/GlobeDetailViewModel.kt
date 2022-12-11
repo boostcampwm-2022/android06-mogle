@@ -14,9 +14,9 @@ import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.GlobeModel
 import com.wakeup.presentation.model.MomentModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,8 +29,7 @@ class GlobeDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
-    val moments = _moments.asStateFlow()
+    lateinit var moments: Flow<PagingData<MomentModel>>
 
     private val argsGlobe = savedStateHandle
         .get<GlobeModel>(ARGS_GlOBE) ?: GlobeModel(name = "", thumbnail = null)
@@ -43,13 +42,11 @@ class GlobeDetailViewModel @Inject constructor(
     }
 
     private fun fetchMomentsByGlobe(globeId: Long) {
-        viewModelScope.launch {
-            _moments.value = getMomentsByGlobeUseCase(globeId).map { pagingData ->
-                pagingData.map { moment -> moment.toPresentation() }
+        moments = getMomentsByGlobeUseCase(globeId).map { pagingData ->
+            pagingData.map { moment ->
+                moment.toPresentation()
             }
-                .cachedIn(viewModelScope)
-                .first()
-        }
+        }.cachedIn(viewModelScope)
     }
 
     fun setMomentExist(isExist: Boolean) {
