@@ -141,6 +141,11 @@ class AddMomentFragment : Fragment() {
 
                     if (state is UiState.Success) {
                         Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
+
+                        findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                            "location",
+                            viewModel.place.value.location
+                        )
                         findNavController().popBackStack()
                     }
                 }
