@@ -25,22 +25,22 @@
             android:layout_marginTop="@dimen/small_100"
             android:layout_marginEnd="@dimen/small_100"
             android:scaleType="centerCrop"
-            app:thumbnailImageFromFilePath="@{globe.thumbnail.path}"
             android:src="@drawable/default_globe_image"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_globe" />
+            app:srcCompat="@drawable/ic_globe"
+            app:thumbnailImageFromFilePath="@{globe.thumbnail.path}" />
 
         <TextView
             android:id="@+id/tv_globe_item_title"
             style="@style/TextAppearance.Mogle.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/globe_item_title_top_margin"
             android:text="@{globe.name}"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/globe_item_title_top_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/civ_globe_item"
             tools:text="맛집" />

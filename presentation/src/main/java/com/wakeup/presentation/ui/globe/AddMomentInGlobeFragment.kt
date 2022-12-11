@@ -12,8 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.wakeup.presentation.R
-import com.wakeup.presentation.adapter.MomentInGlobeAdapter
 import com.wakeup.presentation.adapter.MomentPagingAdapter
+import com.wakeup.presentation.adapter.SavedMomentInGlobeAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentInGlobeBinding
 import com.wakeup.presentation.extension.dp
 import com.wakeup.presentation.model.MomentModel
@@ -30,7 +30,7 @@ class AddMomentInGlobeFragment : Fragment() {
     private val momentPagingAdapter = MomentPagingAdapter(isSelectable = true) { moment, position ->
         selectMoment(moment, position)
     }
-    private val readySaveMomentPagingAdapter = MomentInGlobeAdapter()
+    private val saveReadyMomentAdapter = SavedMomentInGlobeAdapter()
     private val args: AddMomentInGlobeFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -66,7 +66,7 @@ class AddMomentInGlobeFragment : Fragment() {
             adapter = momentPagingAdapter
             addItemDecoration(GridSpaceItemDecoration(12.dp))
         }
-        binding.rvSaveMomentInGlobe.adapter = readySaveMomentPagingAdapter
+        binding.rvSaveMomentInGlobe.adapter = saveReadyMomentAdapter
     }
 
     private fun initMoment() {
@@ -85,7 +85,7 @@ class AddMomentInGlobeFragment : Fragment() {
 
     private fun selectMoment(moment: MomentModel, position: Int) {
         moment.isSelected = moment.isSelected.not()
-        viewModel.saveSaveReadyMoments(moment)
+        viewModel.setSaveReadyMoments(moment)
         momentPagingAdapter.notifyItemChanged(position)
     }
 

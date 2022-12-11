@@ -42,6 +42,7 @@ class AddMomentInGlobeViewModel @Inject constructor(
         moments.isEmpty()
     }.asLiveData()
 
+
     val saveReadyMomentsCount = saveReadyMoments.map { moments ->
         moments.count()
     }.asLiveData()
@@ -59,7 +60,7 @@ class AddMomentInGlobeViewModel @Inject constructor(
         }
     }
 
-    fun saveSaveReadyMoments(moment: MomentModel) {
+    fun setSaveReadyMoments(moment: MomentModel) {
         if (moment.isSelected.not()) {
             _saveReadyMoments.value = saveReadyMoments.value
                 .filter { savedMoment -> savedMoment.id != moment.id }
