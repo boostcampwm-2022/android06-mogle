@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
     private val getWeatherDataUseCase: GetWeatherDataUseCase,
 ) : ViewModel() {
 
-    private val searchQuery = MutableStateFlow("")
+    val searchQuery = MutableStateFlow("")
 
     lateinit var allMoments: StateFlow<List<MomentModel>>
     lateinit var moments: Flow<PagingData<MomentModel>>
@@ -102,9 +102,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun setSearchQuery(query: String) {
-        searchQuery.value = query
-    }
 
     fun setScrollToTop(state: Boolean) {
         _scrollToTop.value = state

@@ -18,9 +18,9 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_search"
             android:layout_width="0dp"
-            android:layout_marginTop="@dimen/normal_250"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/normal_100"
+            android:layout_marginTop="@dimen/normal_250"
             app:cardCornerRadius="@dimen/small_100"
             app:cardElevation="@dimen/small_100"
             app:layout_constraintEnd_toStartOf="@id/cv_weather"
@@ -46,9 +46,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:padding="@dimen/normal_100"
+                    android:text="@={viewModel.searchQuery}"
                     android:textSize="@dimen/normal_100_tv" />
 
             </LinearLayout>
@@ -62,7 +62,6 @@
             android:layout_marginEnd="@dimen/normal_100"
             app:cardCornerRadius="@dimen/small_100"
             app:cardElevation="@dimen/small_100"
-
             app:layout_constraintBottom_toBottomOf="@id/cv_search"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
