@@ -30,7 +30,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ActivityMainBinding
-import com.wakeup.presentation.extension.showSnackbar
+import com.wakeup.presentation.extension.showSnackBar
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.WeatherTheme
 import com.wakeup.presentation.util.theme.ThemeHelper
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     private var isUserAction = false
-    private val themeHelper = ThemeHelper(this)
+    private lateinit var themeHelper: ThemeHelper
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         initLocation()
         fetchWeatherDataPeriodically()
+        themeHelper = ThemeHelper(this)
         themeHelper.initTheme()
     }
 
@@ -149,7 +150,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val isTopDest = appBarConfiguration.topLevelDestinations.contains(destination.id)
             binding.bottomAppBar.isVisible = isTopDest
-            binding.fab.isVisible = isTopDest
+            if (isTopDest) binding.fab.show() else binding.fab.hide()
         }
     }
 
@@ -185,7 +186,7 @@ class MainActivity : AppCompatActivity() {
                     when (parent.getItemAtPosition(position)) {
                         WeatherTheme.AUTO.str -> {
                             if (hasLocationPermissions().not()) {
-                                binding.root.showSnackbar("위치 권한을 설정해주세요.")
+                                binding.root.showSnackBar("위치 권한을 설정해주세요.")
                                 return
                             }
                             changeAutoTheme()
@@ -235,9 +236,9 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         is UiState.Failure -> {
-                            binding.root.showSnackbar("날씨를 불러오지 못했습니다.")
+                            binding.root.showSnackBar("날씨를 불러오지 못했습니다.")
                         }
-                        else -> {}
+                        else -> { }
                     }
                 }
             }

@@ -7,7 +7,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/colorSurfaceVariant"
-        android:padding="@dimen/large_125">
+        android:paddingTop="@dimen/large_200"
+        android:paddingHorizontal="@dimen/large_125">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -37,9 +38,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/small_50"
-                app:layout_constraintTop_toTopOf="@id/tv_alarm"
                 app:layout_constraintBottom_toBottomOf="@id/tv_alarm"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_alarm" />
 
             <TextView
                 android:id="@+id/tv_theme"
@@ -57,9 +58,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                app:layout_constraintTop_toTopOf="@id/tv_theme"
                 app:layout_constraintBottom_toBottomOf="@id/tv_theme"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_theme" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

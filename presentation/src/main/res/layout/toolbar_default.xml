@@ -12,7 +12,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_default"
             android:layout_width="match_parent"
-            android:background="?android:attr/colorBackground"
+            android:background="?android:colorBackground"
             app:popupTheme="@style/ThemeOverlay.Mogle.Toolbar.PopUp"
             android:theme="@style/ThemeOverlay.Mogle.Toolbar"
             android:layout_height="wrap_content">
@@ -37,7 +37,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:layout_marginStart="@dimen/normal_100"
                     android:gravity="center|start"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColor="?android:textColorPrimary"
                     android:textAppearance="@style/TextAppearance.Mogle.Headline2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

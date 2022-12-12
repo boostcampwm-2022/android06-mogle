@@ -30,7 +30,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_globe" />
+            app:srcCompat="@drawable/ic_globe"
+            app:thumbnailImageFromFilePath="@{globe.thumbnail.path}" />
 
         <TextView
             android:id="@+id/tv_globe_item_title"

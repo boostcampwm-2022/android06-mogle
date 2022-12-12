@@ -8,30 +8,82 @@
 
         <variable
             name="vm"
-            type="com.wakeup.presentation.ui.globe.GlobeDetailViewModel" />
+            type="com.wakeup.presentation.ui.globe.globedetail.GlobeDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/colorBackground">
+        android:background="?android:colorBackground">
 
         <include
             android:id="@+id/tb_globe_detail"
             layout="@layout/toolbar_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/rv_globe_detail"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/rv_globe_detail"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?attr/colorOnPrimary"
+            app:isGone="@{vm.isExistMoment}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_globe_detail">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:paddingTop="@dimen/small_150"
+                android:paddingEnd="@dimen/normal_100"
+                android:text="@string/globe_detail_empty_msg"
+                app:isGone="@{vm.isExistMoment}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_nothing_content"
+                style="@style/TextAppearance.Mogle.Headline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/small_150"
+                android:layout_marginBottom="@dimen/map_moment_preview_margin"
+                android:text="@string/globe_detail_empty_content"
+                android:textSize="80sp"
+                android:textColor="?android:textColorSecondary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:isGone="@{vm.isExistMoment}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                style="@style/TextAppearance.Mogle.SubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_150"
+                android:paddingTop="@dimen/small_150"
+                android:paddingEnd="@dimen/small_150"
+                android:text="@string/globe_detail_empty_content_detail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_nothing_content" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_globe_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/normal_100"
-            app:layout_constraintStart_toStartOf="parent"
+            app:isGone="@{!vm.isExistMoment}"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tb_globe_detail"
             tools:listitem="@layout/item_moment_in_globe" />
 

@@ -13,6 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
+        android:padding="@dimen/small_100"
         android:layout_height="wrap_content">
 
         <ImageView

@@ -75,7 +75,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="@{moment.content}"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="?android:textColorSecondary"
                     app:layout_constraintBottom_toTopOf="@id/tv_date"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_moment"
@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{moment.formattedDate}"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="?android:textColorSecondary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:text="2022-11-16" />

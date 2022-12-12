@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/normal_100"
                 android:paddingHorizontal="@dimen/normal_100"
-                app:endIconTint="?android:attr/textColorPrimary"
+                app:endIconTint="?android:textColorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_dragger">
 

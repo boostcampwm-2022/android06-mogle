@@ -7,17 +7,35 @@ import com.wakeup.presentation.R
 import com.wakeup.presentation.model.WeatherModel
 import com.wakeup.presentation.model.WeatherTheme
 import com.wakeup.presentation.util.SharedPrefManager
-import com.wakeup.presentation.util.SharedPrefManager.KEY_THEME
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import java.util.*
+import javax.inject.Inject
 
-class ThemeHelper(private val context: Context) {
+class ThemeHelper @Inject constructor(
+    private val context: Context,
+) {
+
+    // SharedPrefManager를 필드 주입 받기 위해 필요한 엔트리 포인트.
+    // 생성자 주입을 못하는건 아니지만, 엑티비티에서 사용 편의를 위해 필드 주입함.
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface SharedPrefEntryPoint {
+        fun getSharedPrefEntryPoint(): SharedPrefManager
+    }
+
+    // Field Injection from Singleton Component
+    private val sharedPrefManager = EntryPointAccessors.fromApplication(context.applicationContext,
+        SharedPrefEntryPoint::class.java).getSharedPrefEntryPoint()
 
     /**
      * 현재 테마 설정 값에 따라, 테마를 직접 초기화하는 함수입니다.
      */
     fun initTheme() {
-        val currentTheme = SharedPrefManager.getTheme(context, KEY_THEME)
-        if (currentTheme == SharedPrefManager.NO_THEME) setThemeBySystemSetting()  // 첫 설치에는 시스템 설정에 따른 테마 설정
+        val currentTheme = sharedPrefManager.getTheme()
+        if (currentTheme == sharedPrefManager.NO_THEME) setThemeBySystemSetting()  // 첫 설치에는 시스템 설정에 따른 테마 설정
 
         when (currentTheme) {
             WeatherTheme.AUTO.str -> {
@@ -33,12 +51,10 @@ class ThemeHelper(private val context: Context) {
     private fun setThemeBySystemSetting() {
         when (context.resources.configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK)) {
             Configuration.UI_MODE_NIGHT_YES -> {
-                SharedPrefManager.saveTheme(context,
-                    KEY_THEME,
-                    WeatherTheme.NIGHT.str)
+                sharedPrefManager.saveTheme(WeatherTheme.NIGHT.str)
             }
             else -> {
-                SharedPrefManager.saveTheme(context, KEY_THEME, WeatherTheme.BRIGHT.str)
+                sharedPrefManager.saveTheme(WeatherTheme.BRIGHT.str)
             }
         }
 
@@ -71,10 +87,10 @@ class ThemeHelper(private val context: Context) {
      * 테마 설정 값만 변경 후, 콜백을 호출합니다.
      */
     fun changeThemeSetting(theme: WeatherTheme, onThemeChanged: (String) -> Unit) {
-        SharedPrefManager.saveTheme(context, KEY_THEME, theme.str)
+        sharedPrefManager.saveTheme(theme.str)
 
         onThemeChanged(theme.str)
     }
 
-    fun getCurrentTheme(): String? = SharedPrefManager.getTheme(context, KEY_THEME)
+    fun getCurrentTheme(): String? = sharedPrefManager.getTheme()
 }
