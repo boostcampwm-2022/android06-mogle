@@ -26,7 +26,6 @@
                 style="@style/TextAppearance.Mogle.Headline2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/small_50"
                 android:paddingBottom="@dimen/small_150"
                 android:text="@string/add_globe_dialog_title"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +33,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_globe_name"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/small_100"
                 app:boxStrokeColor="?attr/colorPrimary"
@@ -42,6 +41,7 @@
                 app:counterMaxLength="8"
                 app:helperTextEnabled="true"
                 app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_add_globe_title">
 
@@ -50,13 +50,12 @@
                     style="@style/TextAppearance.Mogle.SubTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/colorOnPrimary"
+                    android:background="?attr/colorSurface"
                     android:focusable="true"
                     android:hint="@string/add_globe_dialog_hint"
                     android:maxLength="8"
-                    android:paddingTop="@dimen/small_100"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_add_globe_title">
+                    android:paddingTop="@dimen/small_150"
+                    android:textColorHint="?attr/colorOnSurface">
 
                     <requestFocus />
 
