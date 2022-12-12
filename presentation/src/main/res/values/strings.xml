@@ -70,10 +70,12 @@
 
     <string name="add_moment_in_globe">모먼트 추가하기</string>
     <string name="add_moment_default_error_in_globe_msg">\'기본\' 글로브에서는 모먼트를 추가할 수 없습니다.</string>
+    <string name="add_moment_empty_error_in_globe_msg">해당 글러브에 추가할 모먼트가 없습니다.</string>
     <string name="moment_in_globe_count">%d개 선택되었습니다.</string>
 
     <string name="delete_moment_in_globe">모먼트 삭제하기</string>
     <string name="delete_moment_error_in_globe_msg">삭제할 모먼트가 존재하지 않습니다.</string>
+    <string name="delete_moment_empty_error_in_globe_msg">해당 글러브에 삭제할 모먼트가 없습니다.</string>
     <string name="delete_moment_default_error_in_globe_msg">\'기본\' 글로브에서는 모먼트를 삭제할 수 없습니다.</string>
 
     <string name="temperature_celsius">%.1f°C</string>

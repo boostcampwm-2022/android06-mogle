@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface">
 
         <include
             android:id="@+id/tb_delete_moment_in_globe"
@@ -31,6 +32,7 @@
             android:onClick="@{(view) -> vm.deleteMoments(view)}"
             android:padding="@dimen/normal_100"
             android:text="@string/delete"
+            app:isGone="@{vm.isNotExistDeleteReadyMoments}"
             android:textColor="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@id/tb_delete_moment_in_globe"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +42,7 @@
             android:id="@+id/rv_delete_moment_in_globe"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="?attr/colorSurface"
             android:paddingStart="@dimen/small_100"
             android:paddingEnd="@dimen/small_100"
             android:paddingBottom="@dimen/small_100"
