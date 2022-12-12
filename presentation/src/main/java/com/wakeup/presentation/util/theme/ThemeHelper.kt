@@ -1,16 +1,23 @@
 package com.wakeup.presentation.util.theme
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.wakeup.domain.model.WeatherType
 import com.wakeup.presentation.R
 import com.wakeup.presentation.model.WeatherModel
 import com.wakeup.presentation.model.WeatherTheme
+import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.util.SharedPrefManager
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -33,15 +40,51 @@ class ThemeHelper @Inject constructor(
     /**
      * 현재 테마 설정 값에 따라, 테마를 직접 초기화하는 함수입니다.
      */
-    fun initTheme() {
+    fun initTheme(
+        weather: StateFlow<UiState<WeatherModel>>? = null,
+        lifecycle: LifecycleCoroutineScope? = null,
+    ) {
+        Timber.d("ThemeHelper")
         val currentTheme = sharedPrefManager.getTheme()
-        if (currentTheme == sharedPrefManager.NO_THEME) setThemeBySystemSetting()  // 첫 설치에는 시스템 설정에 따른 테마 설정
+        val currentAutoTheme = sharedPrefManager.getThemeByAuto()
+
+        if (currentTheme == sharedPrefManager.NO_THEME) setThemeBySystemSetting()  // 테마 설정 값 없다면, 시스템 설정에 따른 테마 설정
 
         when (currentTheme) {
+            // 테마 설정이 [자동]일 때
             WeatherTheme.AUTO.str -> {
-                // TODO 날씨와 시간에 따라 변경 추가
+                if (currentAutoTheme != null) {
+                    setTheme(currentAutoTheme)  // 자동으로 바뀐 테마 값으로 테마 변경
+                }
+
+                // 날씨 정보 옵저빙
+                lifecycle?.launch {
+                    weather?.collectLatest { state ->
+                        when (state) {
+                            is UiState.Success -> {
+                                Timber.d("Theme ${state.item}")
+                                changeThemeByWeatherAndTime(state.item) {
+                                    (context as? Activity)?.recreate()
+                                }
+                            }
+                            else -> {}
+                        }
+                    }
+                }
             }
 
+            // [자동] 이외 테마
+            else -> setTheme(currentTheme)
+        }
+    }
+
+    /**
+     * 테마 설정
+     *
+     * @param themeStr
+     */
+    private fun setTheme(themeStr: String?) {
+        when (themeStr) {
             WeatherTheme.BRIGHT.str -> context.setTheme(R.style.Theme_Mogle_Bright)
             WeatherTheme.NIGHT.str -> context.setTheme(R.style.Theme_Mogle_Night)
             WeatherTheme.CLOUDY.str -> context.setTheme(R.style.Theme_Mogle_Cloudy)
@@ -62,25 +105,55 @@ class ThemeHelper @Inject constructor(
         initTheme()
     }
 
-    // TODO 현재는 테마 설정 값 자체를 바꾸고 있어서, 앱 재시작시 해당 테마로 스피너가 설정되어 있음
-    // TODO 이후, 로직 변경 예정
-    fun changeAutoTheme(weather: WeatherModel, onThemeChanged: (String) -> Unit) {
+    /**
+     * 날씨와 시간에 따라, 즉시 테마를 변경합니다.
+     *
+     * [테마 변경 조건]
+     * 1. 시스템 설정 시간을 기준으로 오전 6시 - 오후 5시 59분까지는 낮입니다. 이외는 밤입니다.
+     * 2. 비나 눈이 올 때만, 흐림입니다.
+     *
+     * @param weather 날씨 정보
+     * @param onThemeChanged 테마 변경 후, 호출되는 콜백 - 변경된 테마 이름을 넘길 수 있습니다.
+     */
+    fun changeThemeByWeatherAndTime(weather: WeatherModel, onThemeChanged: (String) -> Unit) {
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
-        val isNight = currentHour < 6 || currentHour > 18
-        val isCloudy = weather.type == WeatherType.RAIN || weather.type == WeatherType.CLOUDS
+        val isNight = currentHour < 6 || currentHour > 17
+        val isCloudy = weather.type == WeatherType.RAIN || weather.type == WeatherType.SNOW
+
+        Timber.d("Theme ${sharedPrefManager.getThemeByAuto()}")
 
         if (isCloudy) {
-            changeThemeSetting(WeatherTheme.CLOUDY, onThemeChanged)
+            if (sharedPrefManager.getThemeByAuto() == WeatherTheme.CLOUDY.str) return
+
+            context.setTheme(R.style.Theme_Mogle_Cloudy)
+            changeAutoThemeSetting(WeatherTheme.CLOUDY)
+            onThemeChanged(WeatherTheme.CLOUDY.str)
             return
         }
 
         if (isNight) {
-            changeThemeSetting(WeatherTheme.NIGHT, onThemeChanged)
+            if (sharedPrefManager.getThemeByAuto() == WeatherTheme.NIGHT.str) return
+
+            context.setTheme(R.style.Theme_Mogle_Night)
+            changeAutoThemeSetting(WeatherTheme.NIGHT)
+            onThemeChanged(WeatherTheme.NIGHT.str)
             return
         }
 
-        changeThemeSetting(WeatherTheme.BRIGHT, onThemeChanged)
+        if (sharedPrefManager.getThemeByAuto() == WeatherTheme.BRIGHT.str) return
+        context.setTheme(R.style.Theme_Mogle_Bright)
+        changeAutoThemeSetting(WeatherTheme.BRIGHT)
+        onThemeChanged(WeatherTheme.BRIGHT.str)
+    }
+
+    /**
+     * 자동으로 변경된 테마를 저장하고 있는 값을 변경
+     *
+     * @param theme
+     */
+    private fun changeAutoThemeSetting(theme: WeatherTheme) {
+        sharedPrefManager.saveThemeByAuto(theme.str)
     }
 
     /**

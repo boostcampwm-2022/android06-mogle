@@ -24,11 +24,13 @@ class MainViewModel @Inject constructor(
     getAllMomentListUseCase: GetAllMomentsUseCase,
 ) : ViewModel() {
 
+    val permissionState = MutableStateFlow(false)
+
     private val _weatherState = MutableStateFlow<UiState<WeatherModel>>(UiState.Empty)
     val weatherState = _weatherState.asStateFlow()
 
-    private val _isReady = MutableStateFlow(false)
-    val isReady = _isReady.asStateFlow()
+    private val _isMomentReady = MutableStateFlow(false)
+    val isMomentReady = _isMomentReady.asStateFlow()
 
     var allMoments: StateFlow<List<MomentModel>>? = getAllMomentListUseCase("").map { moments ->
         moments.map { moment ->
@@ -38,7 +40,7 @@ class MainViewModel @Inject constructor(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
-    ).apply { _isReady.value = true }
+    ).apply { _isMomentReady.value = true }
 
     suspend fun fetchWeather(locationModel: LocationModel) {
         _weatherState.value = UiState.Loading
