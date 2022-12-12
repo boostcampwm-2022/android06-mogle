@@ -1,24 +1,34 @@
 package com.wakeup.presentation.ui.detail
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.navigateUp
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.DetailPictureAdapter
 import com.wakeup.presentation.databinding.FragmentMomentDetailBinding
+import com.wakeup.presentation.extension.showSnackBar
+import com.wakeup.presentation.lib.dialog.NormalDialog
 import com.wakeup.presentation.lib.dialog.PictureDialog
 import com.wakeup.presentation.model.PictureModel
+import com.wakeup.presentation.ui.globe.globedetail.GlobeDetailFragment
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MomentDetailFragment : Fragment() {
     private lateinit var binding: FragmentMomentDetailBinding
+    private val viewModel: MomentDetailViewModel by viewModels()
     private val args: MomentDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -55,7 +65,7 @@ class MomentDetailFragment : Fragment() {
                     }
 
                     R.id.item_moment_delete -> {
-                        // TODO 모먼트 삭제하기
+                        showDeleteMomentDialog()
                         true
                     }
 
@@ -85,6 +95,29 @@ class MomentDetailFragment : Fragment() {
                 1000,
                 1000
             )
+            .show()
+    }
+
+    private fun showDeleteMomentDialog() {
+        val spannableString =
+            SpannableString(getString(R.string.delete_globe_dialog_content_second)).apply {
+                setSpan(
+                    ForegroundColorSpan(Color.parseColor(GlobeDetailFragment.MAIN_PINK_COLOR_HEX)),
+                    GlobeDetailFragment.DELETE_TITLE_SPANNABLE_STRING_START_INDEX,
+                    GlobeDetailFragment.DELETE_TITLE_SPANNABLE_STRING_END_INDEX,
+                    SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        NormalDialog
+            .with(requireContext(), R.layout.dialog_delete_moment)
+            .setTitle(R.id.tv_delete_dialog_content_second, spannableString)
+            .setOnPositive(R.id.tv_delete_dialog_positive, getString(R.string.do_delete)) {
+                viewModel.deleteMoment(args.momentModel.id)
+                findNavController().popBackStack()
+            }
+            .setOnNegative(R.id.tv_delete_dialog_negative, getString(R.string.cancel)) {
+                Timber.d("CANCEL")
+            }
             .show()
     }
 

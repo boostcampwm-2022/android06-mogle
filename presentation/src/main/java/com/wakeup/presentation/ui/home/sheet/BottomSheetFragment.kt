@@ -165,6 +165,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             visibility = View.INVISIBLE
             animation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
         }
+        isEnabled = isVisible
     }
 
     private fun navigateToMoment(moment: MomentModel) {
