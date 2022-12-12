@@ -150,7 +150,7 @@ class MapHelper(private val context: Context) {
     fun setCurrentLocation(map: NaverMap, _locationSource: FusedLocationSource) {
         map.apply {
             locationSource = _locationSource
-            locationTrackingMode = LocationTrackingMode.Follow
+            locationTrackingMode = LocationTrackingMode.NoFollow
         }
     }
 
