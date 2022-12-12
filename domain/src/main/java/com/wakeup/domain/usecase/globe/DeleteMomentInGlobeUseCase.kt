@@ -15,7 +15,7 @@ class DeleteMomentInGlobeUseCase @Inject constructor(
 
         val firstMoment = globeRepository.getFirstMomentByGlobe(globe.id)
 
-        if (firstMoment == null) {
+        if (firstMoment == null || firstMoment.pictures.isEmpty()) {
             globeRepository.updateGlobe(globe.copy(thumbnail = null))
         } else {
             globeRepository.updateGlobe(globe.copy(thumbnail = firstMoment.pictures.first()))
