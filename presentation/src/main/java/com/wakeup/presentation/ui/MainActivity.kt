@@ -45,12 +45,13 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     private var isUserAction = false
-    private val themeHelper = ThemeHelper(this)
+    private lateinit var themeHelper: ThemeHelper
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
+        themeHelper = ThemeHelper(this)
         themeHelper.initTheme()
         super.onCreate(savedInstanceState)
 

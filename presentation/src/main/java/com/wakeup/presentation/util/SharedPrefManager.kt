@@ -2,24 +2,27 @@ package com.wakeup.presentation.util
 
 import android.content.Context
 import com.wakeup.presentation.model.WeatherTheme
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object SharedPrefManager {
+@Singleton
+class SharedPrefManager @Inject constructor(@ApplicationContext private val context: Context) {
     private val DEFAULT = WeatherTheme.AUTO.str
-    private const val STORE_KEY = "SharedPreference"
-    const val KEY_THEME = "THEME"
-    const val NO_THEME = "NO_THEME"
+    private val STORE_KEY = "SharedPreference"
+    val THEME_KEY = "THEME"
+    val NO_THEME = "NO_THEME"
 
-    fun saveTheme(context: Context, key: String, value: String) {
-        val sharedPref = context.getSharedPreferences(STORE_KEY, Context.MODE_PRIVATE)
+    val sharedPref = context.getSharedPreferences(STORE_KEY, Context.MODE_PRIVATE)
 
+    fun saveTheme(value: String) {
         with(sharedPref.edit()) {
-            putString(key, value)
+            putString(THEME_KEY, value)
             apply()
         }
     }
 
-    fun getTheme(context: Context, key: String): String? {
-        val sharedPref = context.getSharedPreferences(STORE_KEY, Context.MODE_PRIVATE)
-        return sharedPref.getString(key, NO_THEME)
+    fun getTheme(): String? {
+        return sharedPref.getString(THEME_KEY, NO_THEME)
     }
 }
