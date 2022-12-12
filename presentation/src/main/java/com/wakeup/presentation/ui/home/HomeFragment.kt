@@ -19,6 +19,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentHomeBinding
+import com.wakeup.presentation.extension.hideKeyboard
 import com.wakeup.presentation.extension.resetStatusBarTransparent
 import com.wakeup.presentation.extension.setStatusBarTransparent
 import com.wakeup.presentation.model.LocationModel
@@ -115,6 +116,12 @@ class HomeFragment : Fragment() {
     private fun setSearchBarListener() {
         binding.ivMenu.setOnClickListener {
             (activity as MainActivity).openNavDrawer()
+        }
+
+        binding.etSearch.setOnEditorActionListener { v, _, _ ->
+            v.clearFocus()
+            hideKeyboard()
+            false
         }
 
         viewLifecycleOwner.lifecycleScope.launch {

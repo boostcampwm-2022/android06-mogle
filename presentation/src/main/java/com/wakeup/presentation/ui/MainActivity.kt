@@ -4,15 +4,18 @@ import android.Manifest
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AnticipateInterpolator
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
@@ -23,6 +26,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -30,6 +34,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ActivityMainBinding
+import com.wakeup.presentation.extension.hideKeyboard
 import com.wakeup.presentation.extension.showSnackBar
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.WeatherTheme
@@ -233,6 +238,23 @@ class MainActivity : AppCompatActivity() {
             return false
         }
         return true
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.home_fragment) {
+            if (ev?.action == MotionEvent.ACTION_DOWN) {
+                val v = currentFocus
+                if (v is EditText) {
+                    val outRect = Rect()
+                    v.getGlobalVisibleRect(outRect)
+                    if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                        v.clearFocus()
+                        hideKeyboard(v)
+                    }
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     companion object {
