@@ -3,4 +3,8 @@
     <declare-styleable name="TextPageIndicator">
         <attr name="defaultIndicatorStyle" format="boolean" />
     </declare-styleable>
+
+    <attr name="bottomAppBarColor" format="reference" />
+    <attr name="hamburgerColor" format="reference" />
+    <attr name="momentDetailHeader" format="reference" />
 </resources>

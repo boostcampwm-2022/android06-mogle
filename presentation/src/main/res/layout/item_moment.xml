@@ -35,6 +35,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/colorSurfaceVariant"
                 android:padding="@dimen/normal_100">
 
                 <ImageView
@@ -74,6 +75,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="@{moment.content}"
+                    android:textColor="?android:textColorSecondary"
                     app:layout_constraintBottom_toTopOf="@id/tv_date"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_moment"
@@ -82,10 +84,11 @@
 
                 <TextView
                     android:id="@+id/tv_date"
-                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    style="@style/TextAppearance.Mogle.Body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{moment.formattedDate}"
+                    android:textColor="?android:textColorSecondary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:text="2022-11-16" />

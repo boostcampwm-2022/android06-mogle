@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blue">#007AFF</color>
-    <color name="white">#FFFFFF</color>
-    <color name="dark_gray">#2f2f2f</color>
-    <color name="light_gray">#A9A9A9</color>
-    <color name="sky">#ACCAEB</color>
-    <color name="black">#000000</color>
-    <color name="light_black">#0F1315</color>
 
-    <color name="mint">#52D3D3</color>
-    <color name="pink">#EA698F</color>
 </resources>

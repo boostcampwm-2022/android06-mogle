@@ -28,6 +28,6 @@
             android:layout_marginTop="4.5dp"
             android:scaleType="centerCrop"
             app:thumbnailImageFromFilePath="@{picture.path}"
-            tools:src="@drawable/sample_image2" />
+            tools:src="@drawable/bg_night_header" />
     </FrameLayout>
 </layout>

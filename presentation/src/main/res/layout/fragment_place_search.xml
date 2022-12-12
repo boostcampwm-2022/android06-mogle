@@ -13,6 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?android:colorBackground"
         tools:context=".ui.addmoment.PlaceSearchFragment">
 
         <include
@@ -39,16 +40,16 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/normal_padding" />
 
-
         <EditText
             android:id="@+id/et_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/normal_175"
             android:background="@drawable/bg_corner_8"
+            android:backgroundTint="?attr/colorSurfaceVariant"
             android:drawableStart="@drawable/ic_search_24"
             android:drawablePadding="@dimen/small_100"
-            android:drawableTint="@android:color/darker_gray"
+            android:drawableTint="?android:textColorPrimary"
             android:elevation="@dimen/small_150"
             android:hint="@string/place_search_hint"
             android:importantForAutofill="no"
@@ -56,6 +57,7 @@
             android:maxLines="1"
             android:padding="@dimen/normal_100"
             android:text="@={vm.searchText}"
+            android:textColorHint="?android:textColorSecondary"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
