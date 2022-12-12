@@ -42,7 +42,7 @@
 
     <string name="add_globe_dialog_title">글로브 만들기</string>
     <string name="update_globe_name_dialog_title">글로브 이름 수정하기</string>
-    <string name="add_globe_dialog_hint">글로브 이름을 입력하세요(8자 제한)</string>
+    <string name="add_globe_dialog_hint">글로브 이름을 입력하세요.</string>
     <string name="delete_globe_dialog_content_first">정말로 글로브를</string>
     <string name="delete_globe_dialog_content_second">삭제하시겠습니까?</string>
     <string name="delete_globe_dialog_content_detail">모먼트는 남아있지만, 글로브에서 삭제됩니다.</string>

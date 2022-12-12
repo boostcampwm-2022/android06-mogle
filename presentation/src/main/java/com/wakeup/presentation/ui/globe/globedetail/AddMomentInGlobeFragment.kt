@@ -61,7 +61,11 @@ class AddMomentInGlobeFragment : Fragment() {
 
     private fun initAdapter() {
         binding.rvAddMomentInGlobe.apply {
-            adapter = momentPagingAdapter
+            adapter = momentPagingAdapter.apply {
+                addLoadStateListener {
+                    viewModel.setMomentExist(momentPagingAdapter.itemCount != 0)
+                }
+            }
             addItemDecoration(GridSpaceItemDecoration(12.dp))
         }
         binding.rvSaveMomentInGlobe.adapter = saveReadyMomentAdapter
