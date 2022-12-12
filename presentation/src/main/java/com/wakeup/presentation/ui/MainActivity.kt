@@ -30,7 +30,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ActivityMainBinding
-import com.wakeup.presentation.extension.showSnackbar
+import com.wakeup.presentation.extension.showSnackBar
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.WeatherTheme
 import com.wakeup.presentation.util.theme.ThemeHelper
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                     when (parent.getItemAtPosition(position)) {
                         WeatherTheme.AUTO.str -> {
                             if (hasLocationPermissions().not()) {
-                                binding.root.showSnackbar("위치 권한을 설정해주세요.")
+                                binding.root.showSnackBar("위치 권한을 설정해주세요.")
                                 return
                             }
                             changeAutoTheme()
@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         is UiState.Failure -> {
-                            binding.root.showSnackbar("날씨를 불러오지 못했습니다.")
+                            binding.root.showSnackBar("날씨를 불러오지 못했습니다.")
                         }
                         else -> { }
                     }
