@@ -32,8 +32,8 @@
             android:onClick="@{(view) -> vm.deleteMoments(view)}"
             android:padding="@dimen/normal_100"
             android:text="@string/delete"
-            app:isGone="@{vm.isNotExistDeleteReadyMoments}"
             android:textColor="?attr/colorPrimary"
+            app:isGone="@{vm.isNotExistDeleteReadyMoments}"
             app:layout_constraintBottom_toBottomOf="@id/tb_delete_moment_in_globe"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

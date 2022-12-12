@@ -72,9 +72,10 @@ class DeleteMomentInGlobeViewModel @Inject constructor(
     fun deleteMoments(view: View) {
         viewModelScope.launch {
             launch {
-                deleteReadyMoments.value.forEach { moment ->
-                    deleteMomentInGlobeUseCase(moment.toDomain(), argsGlobe.toDomain())
-                }
+                deleteMomentInGlobeUseCase(
+                    deleteReadyMoments.value.map { moment -> moment.toDomain() },
+                    argsGlobe.toDomain()
+                )
             }.join()
             view.findNavController().navigateUp()
         }

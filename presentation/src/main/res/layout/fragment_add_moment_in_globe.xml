@@ -70,7 +70,6 @@
             style="@style/TextAppearance.Mogle.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/colorSurface"
             android:elevation="12dp"
             android:onClick="@{(view) -> vm.saveMomentsInGlobe(view)}"
             android:padding="@dimen/normal_100"

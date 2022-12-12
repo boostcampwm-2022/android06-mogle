@@ -27,4 +27,11 @@ interface XRefDao {
         """
     )
     suspend fun isOnlyOnePicture(pictureId: Long): Boolean
+
+    // only use test
+    @Query("""SELECT * FROM moment_picture""")
+    suspend fun getAllMomentPictureXRef(): List<MomentPictureXRef>
+
+    @Query("""SELECT picture_id FROM moment_picture WHERE moment_id=:momentId""")
+    suspend fun getPictureIdsByMomentId(momentId: Long): List<Long>
 }

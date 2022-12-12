@@ -54,7 +54,7 @@ class AddMomentInGlobeViewModel @Inject constructor(
         fetchMomentsNotInGlobe()
     }
 
-    fun fetchMomentsNotInGlobe() {
+    private fun fetchMomentsNotInGlobe() {
         viewModelScope.launch {
             _moments.value = getMomentsNotInGlobeUseCase(argsGlobe.id).map { pagingDataMoments ->
                 pagingDataMoments.map { moment -> moment.toPresentation() }
@@ -79,9 +79,10 @@ class AddMomentInGlobeViewModel @Inject constructor(
     fun saveMomentsInGlobe(view: View) {
         viewModelScope.launch {
             launch {
-                saveReadyMoments.value.forEach { moment ->
-                    insertMomentInGlobeUseCase(moment.toDomain(), argsGlobe.toDomain())
-                }
+                insertMomentInGlobeUseCase(
+                    saveReadyMoments.value.map { moment -> moment.toDomain() },
+                    argsGlobe.toDomain()
+                )
             }.join()
             view.findNavController().navigateUp()
         }

@@ -18,7 +18,6 @@ import com.wakeup.data.database.mapper.toMomentEntity
 import com.wakeup.data.util.InternalFileUtil
 import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
-import timber.log.Timber
 import javax.inject.Inject
 
 class MomentLocalDataSourceImpl @Inject constructor(
@@ -28,6 +27,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
     private val xRefDao: XRefDao,
     private val util: InternalFileUtil,
 ) : MomentLocalDataSource {
+
     override fun getMoments(
         sortType: SortType,
         query: String,
@@ -52,6 +52,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
             }
         ).flow
 
+
     override fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>> =
         momentDao.getAllMoments(query)
 
@@ -73,10 +74,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
         return getCorrectSavedPictures(indexResult, pictureLastPathFileName)
     }
 
-    // 이 로직 수정 / 수퍼 모먼트 엔티티로 받는 걸로 수정
-
     private fun savePictureInternalStorage(pictures: List<PictureEntity>) {
-        Timber.d("$pictures")
         pictures.forEach { picture ->
             util.savePictureInInternalStorage(picture)
         }
@@ -108,7 +106,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
 
     private suspend fun saveMomentPictureXRefs(momentId: Long, pictureIds: List<Long>) {
         val momentPictureXRefs = pictureIds.map { pictureId ->
-            MomentPictureXRef(momentId, pictureId)
+            MomentPictureXRef(momentId = momentId, pictureId = pictureId)
         }
         xRefDao.saveMomentPictureXRefs(momentPictureXRefs)
     }
@@ -118,7 +116,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
         globe: GlobeEntity,
         pictures: List<PictureEntity>,
     ) {
-        xRefDao.saveMomentGlobeXRef(MomentGlobeXRef(momentId, globe.id))
+        xRefDao.saveMomentGlobeXRef(MomentGlobeXRef(momentId = momentId, globeId = globe.id))
 
         if (globe.thumbnail == null && pictures.isNotEmpty()) {
             globeDao.updateGlobe(globe.copy(thumbnail = pictures.first()))
