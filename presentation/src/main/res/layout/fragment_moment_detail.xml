@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?android:colorBackground"
         android:orientation="vertical">
 
         <include
@@ -23,8 +24,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -47,20 +47,19 @@
 
                 <ImageView
                     android:id="@+id/iv_header"
+                    style="@style/Mogle.MomentDetail.Header.Image"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/bg_sunny_header"
                     app:layout_constraintDimensionRatio="3:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/bg_sunny_header" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_main_address"
                     style="@style/TextAppearance.Mogle.Headline1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_150"
                     android:text="@{momentModel.place.mainAddress}"
@@ -77,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_50"
                     android:text="@{momentModel.place.detailAddress}"
+                    android:textColor="?android:textColorSecondary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -101,10 +101,10 @@
 
                         <androidx.viewpager2.widget.ViewPager2
                             android:id="@+id/vp2_images"
-                            app:submitList="@{momentModel.pictures}"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal" />
+                            android:orientation="horizontal"
+                            app:submitList="@{momentModel.pictures}" />
 
                         <com.wakeup.presentation.customview.textindicator.TextPageIndicator
                             android:id="@+id/tpi_indicator"
@@ -124,6 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/normal_100"
                     android:text="@{momentModel.content}"
+                    android:textColor="?android:textColorPrimary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/cv_image_container"
@@ -139,6 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/large_100"
                     android:layout_marginBottom="@dimen/large_200"
+                    android:textColor="?android:textColorSecondary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_date"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -152,6 +154,7 @@
                     android:layout_marginTop="@dimen/large_100"
                     android:layout_marginBottom="@dimen/large_200"
                     android:text="@{momentModel.formattedDate}"
+                    android:textColor="?android:textColorSecondary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toEndOf="@id/tv_globe"

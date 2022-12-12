@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
+import android.text.SpannableString
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -99,6 +100,16 @@ abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
      * @param text dialog 제목의 text를 결정한다.
      */
     fun setTitle(resId: Int, text: String): T {
+        dialogView.findViewById<TextView>(resId).text = text
+        return self()
+    }
+
+    /**
+     *
+     * @param resId dialog 제목을 지정한다.
+     * @param text dialog 제목의 text를 결정한다. (SpannableString 적용한 Text 전용)
+     */
+    fun setTitle(resId: Int, text: SpannableString): T {
         dialogView.findViewById<TextView>(resId).text = text
         return self()
     }

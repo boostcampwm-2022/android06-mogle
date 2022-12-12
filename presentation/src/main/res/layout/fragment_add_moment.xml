@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?android:colorBackground"
         android:orientation="vertical">
 
         <include
@@ -64,11 +65,15 @@
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/tv_picture" />
 
-                <com.google.android.material.card.MaterialCardView
+                <!-- TODO style Overlay가 왜 오류가 날까...? -->
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cv_add_picture"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_marginTop="@dimen/small_150"
+                    android:clickable="true"
+                    android:foreground="?android:selectableItemBackground"
+                    app:cardBackgroundColor="?attr/colorSurfaceVariant"
                     app:cardCornerRadius="@dimen/small_100"
                     app:cardElevation="@dimen/small_100"
                     app:isGone="@{vm.isPictureMax()}"
@@ -85,7 +90,7 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_add" />
 
-                </com.google.android.material.card.MaterialCardView>
+                </androidx.cardview.widget.CardView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_picture"
@@ -119,6 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_100"
                     android:background="@drawable/bg_corner_8"
+                    android:backgroundTint="?attr/colorSurfaceVariant"
                     android:elevation="@dimen/small_100"
                     app:boxStrokeWidth="0dp"
                     app:hintEnabled="false"
@@ -154,6 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_100"
                     android:background="@drawable/bg_corner_8"
+                    android:backgroundTint="?attr/colorSurfaceVariant"
                     android:elevation="@dimen/small_150"
                     android:padding="@dimen/normal_100"
                     android:text="@{vm.selectedDateByTime}"
@@ -179,10 +186,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_100"
                     android:background="@drawable/bg_corner_8"
+                    android:backgroundTint="?attr/colorSurfaceVariant"
                     android:elevation="@dimen/small_150"
                     android:hint="@string/add_moment_place_hint"
                     android:padding="@dimen/normal_100"
                     android:text="@{vm.place.mainAddress}"
+                    android:textColorHint="?android:textColorSecondary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/tv_place" />
@@ -204,6 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_100"
                     android:background="@drawable/bg_corner_8"
+                    android:backgroundTint="?attr/colorSurfaceVariant"
                     android:elevation="@dimen/small_150"
                     android:gravity="start|top"
                     android:hint="@string/add_moment_content_hint"
@@ -213,6 +223,7 @@
                     android:minLines="5"
                     android:padding="@dimen/normal_100"
                     android:text="@={vm.content}"
+                    android:textColorHint="?android:textColorSecondary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/tv_content" />

@@ -13,6 +13,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
         app:cardCornerRadius="@dimen/small_100"
         app:cardUseCompatPadding="true">
 
@@ -24,7 +25,6 @@
 
             <ImageView
                 android:id="@+id/iv_thumbnail"
-                app:thumbnailImageFromFilePath="@{momentModel.pictures[0].path}"
                 android:layout_width="76dp"
                 android:layout_height="76dp"
                 android:scaleType="centerCrop"
@@ -34,7 +34,8 @@
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/sample_image2" />
+                app:thumbnailImageFromFilePath="@{momentModel.pictures[0].path}"
+                tools:src="@drawable/bg_night_header" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier"
@@ -47,9 +48,11 @@
             <TextView
                 android:id="@+id/tv_main_address"
                 style="@style/TextAppearance.Mogle.SubTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/small_150"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{momentModel.place.mainAddress}"
                 app:layout_constraintBottom_toTopOf="@id/tv_description"
                 app:layout_constraintEnd_toEndOf="parent"

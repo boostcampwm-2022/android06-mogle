@@ -8,14 +8,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.databinding.ItemMomentInGlobeBinding
 import com.wakeup.presentation.model.MomentModel
-import com.wakeup.presentation.ui.globe.GlobeDetailFragmentDirections
+import com.wakeup.presentation.ui.globe.globedetail.GlobeDetailFragmentDirections
 
-class GlobeDetailPagingAdapter(private val changeGlobeTitleOfMoment: (MomentModel) -> MomentModel) :
-    PagingDataAdapter<MomentModel, GlobeDetailPagingAdapter.GlobeMomentViewHolder>(GlobeDetailDiffUtil) {
+class GlobeDetailPagingAdapter(
+    private val changeGlobeTitleOfMoment: (MomentModel) -> MomentModel,
+) : PagingDataAdapter<MomentModel, GlobeDetailPagingAdapter.GlobeMomentViewHolder>(GlobeDetailDiffUtil) {
 
     class GlobeMomentViewHolder private constructor(
         private val binding: ItemMomentInGlobeBinding,
-        private val changeGlobeTitleOfMoment: (MomentModel) -> MomentModel
+        private val changeGlobeTitleOfMoment: (MomentModel) -> MomentModel,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -37,7 +38,10 @@ class GlobeDetailPagingAdapter(private val changeGlobeTitleOfMoment: (MomentMode
         }
 
         companion object {
-            fun from(parent: ViewGroup, changeGlobeTitleOfMoment: (MomentModel) -> MomentModel): GlobeMomentViewHolder {
+            fun from(
+                parent: ViewGroup,
+                changeGlobeTitleOfMoment: (MomentModel) -> MomentModel,
+            ): GlobeMomentViewHolder {
                 return GlobeMomentViewHolder(
                     ItemMomentInGlobeBinding.inflate(
                         LayoutInflater.from(parent.context),

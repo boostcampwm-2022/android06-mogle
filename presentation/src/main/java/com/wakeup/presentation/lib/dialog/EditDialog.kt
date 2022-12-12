@@ -35,6 +35,7 @@ class EditDialog private constructor(context: Context) :
                 dialogView = LayoutInflater.from(context).inflate(layoutId, null)
                 dialog = builder.setView(dialogView).create()
                 editText = dialogView.findViewById(editTextId)
+                editText.setSingleLine()
             }
         }
     }

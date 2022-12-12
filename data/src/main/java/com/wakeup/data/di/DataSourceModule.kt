@@ -4,8 +4,6 @@ import com.wakeup.data.source.local.globe.GlobeLocalDataSource
 import com.wakeup.data.source.local.globe.GlobeLocalDataSourceImpl
 import com.wakeup.data.source.local.moment.MomentLocalDataSource
 import com.wakeup.data.source.local.moment.MomentLocalDataSourceImpl
-import com.wakeup.data.source.local.picture.PictureLocalDataSource
-import com.wakeup.data.source.local.picture.PictureLocalDataSourceImpl
 import com.wakeup.data.source.local.xref.XRefLocalDataSource
 import com.wakeup.data.source.local.xref.XRefLocalDataSourceImpl
 import com.wakeup.data.source.remote.imageSearch.ImageSearchRemoteDataSource
@@ -28,10 +26,6 @@ interface DataSourceModule {
         momentLocalDataSourceImpl: MomentLocalDataSourceImpl,
     ): MomentLocalDataSource
 
-    @Binds
-    fun bindPictureLocalDataSource(
-        pictureLocalDataSourceImpl: PictureLocalDataSourceImpl,
-    ): PictureLocalDataSource
 
     @Binds
     fun bindPlaceSearchRemoteDataSource(

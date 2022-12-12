@@ -8,7 +8,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.wakeup.domain.model.Picture
+import com.wakeup.data.database.entity.PictureEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +23,8 @@ class InternalFileUtil @Inject constructor(
     private val context: Context,
 ) {
 
-    fun savePictureInInternalStorage(picture: Picture) {
+    fun savePictureInInternalStorage(picture: PictureEntity) {
+        Timber.d("${picture.path.toUri()}")
         Glide.with(context)
             .asBitmap()
             .load(picture.path.toUri())
@@ -45,7 +46,7 @@ class InternalFileUtil @Inject constructor(
     }
 
     class PictureSaveRequestListener(
-        private val picture: Picture,
+        private val picture: PictureEntity,
         private val context: Context,
         private val catchException: (Throwable) -> Unit
     ) : RequestListener<Bitmap> {
@@ -70,7 +71,6 @@ class InternalFileUtil @Inject constructor(
                 runCatching {
                     val dirPath = File(context.filesDir, DIR_NAME).apply { mkdirs() }
                     val filePath = File("${dirPath}/${picture.path.substringAfterLast("/")}")
-                    Timber.d("${dirPath}/${picture.path.substringAfterLast("/")}")
                     FileOutputStream(filePath).use { out ->
                         resource?.compress(Bitmap.CompressFormat.JPEG, 100, out)
                     }
@@ -95,4 +95,3 @@ class InternalFileUtil @Inject constructor(
         private const val DIR_NAME = "images"
     }
 }
-

@@ -30,7 +30,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="?attr/colorPrimary"
+                android:background="?attr/colorSurfaceVariant"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -71,6 +71,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="?attr/colorSurfaceVariant"
                 android:orientation="vertical">
 
                 <ImageView

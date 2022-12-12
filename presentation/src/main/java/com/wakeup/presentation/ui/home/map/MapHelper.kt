@@ -37,6 +37,8 @@ import com.wakeup.presentation.extension.getFadeOutAnimator
 import com.wakeup.presentation.extension.setListener
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.model.PictureModel
+import com.wakeup.presentation.model.WeatherTheme
+import com.wakeup.presentation.util.theme.ThemeHelper
 
 class MapHelper(private val context: Context) {
     /**
@@ -62,11 +64,20 @@ class MapHelper(private val context: Context) {
             .zoomControlEnabled(false)
             .logoClickEnabled(true)
 
-        // 지도 생성
-        val mapFragment = fm.findFragmentById(R.id.fl_map) as MapFragment?
-            ?: MapFragment.newInstance(options).also {
-                fm.beginTransaction().add(R.id.fl_map, it).commit()
+        // 다크 모드 체크
+        when (ThemeHelper(context).getCurrentTheme()) {
+            WeatherTheme.NIGHT.str -> {
+                options.apply {
+                    mapType(NaverMap.MapType.Navi)
+                    nightModeEnabled(true)
+                }
             }
+        }
+
+        // 지도 생성
+        val mapFragment = MapFragment.newInstance(options).also {
+            fm.beginTransaction().replace(R.id.fl_map, it).commit()
+        }
 
         mapFragment.getMapAsync(callback)
     }
@@ -317,7 +328,7 @@ class MapHelper(private val context: Context) {
         }
     }
 
-    companion object {
+    private companion object {
         const val INITIAL_LAT = 35.95
         const val INITIAL_LONG = 128.25
         const val MIN_ZOOM = 5.0
@@ -334,5 +345,6 @@ class MapHelper(private val context: Context) {
         const val POINT_Y = 0.95f
 
         const val NO_IMAGE = "NULL_PATH"
+        const val KEY_THEME = "theme"
     }
 }

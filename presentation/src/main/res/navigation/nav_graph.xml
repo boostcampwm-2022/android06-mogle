@@ -99,7 +99,7 @@
 
     <fragment
         android:id="@+id/globe_detail_fragment"
-        android:name="com.wakeup.presentation.ui.globe.GlobeDetailFragment"
+        android:name="com.wakeup.presentation.ui.globe.globedetail.GlobeDetailFragment"
         android:label="GlobeDetailFragment">
         <argument
             android:name="globe"
@@ -110,13 +110,26 @@
         <action
             android:id="@+id/action_globe_detail_fragment_to_addMomentInGlobeFragment"
             app:destination="@id/add_moment_In_globe_fragment" />
+        <action
+            android:id="@+id/action_globe_detail_fragment_to_deleteMomentInGlobeFragment"
+            app:destination="@id/delete_moment_In_globe_fragment" />
     </fragment>
+
     <fragment
         android:id="@+id/add_moment_In_globe_fragment"
-        android:name="com.wakeup.presentation.ui.globe.AddMomentInGlobeFragment"
+        android:name="com.wakeup.presentation.ui.globe.globedetail.AddMomentInGlobeFragment"
         android:label="AddMomentInGlobeFragment">
         <argument
             android:name="globe"
             app:argType="com.wakeup.presentation.model.GlobeModel" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/delete_moment_In_globe_fragment"
+        android:name="com.wakeup.presentation.ui.globe.globedetail.DeleteMomentInGlobeFragment"
+        android:label="DeleteMomentInGlobeFragment">
+        <argument
+            android:name="globe"
+            app:argType="com.wakeup.presentation.model.GlobeModel"/>
     </fragment>
 </navigation>

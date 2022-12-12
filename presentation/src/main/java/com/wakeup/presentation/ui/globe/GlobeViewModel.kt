@@ -25,7 +25,6 @@ class GlobeViewModel @Inject constructor(
     val globes = _globes.asStateFlow()
 
     fun fetchGlobes() {
-        println("good")
         viewModelScope.launch {
             _globes.value = getGlobesUseCase().map { globes ->
                 globes.map { globe -> globe.toPresentation() }
@@ -38,5 +37,10 @@ class GlobeViewModel @Inject constructor(
             createGlobesUseCase(GlobeModel(name = globeName, thumbnail = null).toDomain())
             fetchGlobes()
         }
+    }
+
+    // caution: fetchGlobes 를 한 상태에서 바로 써야지 확인이 가능합니다.
+    fun isExistGlobe(globeName: String): Boolean {
+        return globeName in globes.value.map { globe -> globe.name }
     }
 }

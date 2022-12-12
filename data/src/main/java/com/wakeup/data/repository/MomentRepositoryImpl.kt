@@ -33,11 +33,7 @@ class MomentRepositoryImpl @Inject constructor(
             momentInfoList.map { momentXRefs -> momentXRefs.toDomain() }
         }
 
-    override suspend fun getMoment(id: Long): Moment {
-        return momentLocalDataSource.getMoment(id).toDomain()
-    }
-
-    override suspend fun saveMoment(moment: Moment): Long {
+    override suspend fun saveMoment(moment: Moment) {
         return momentLocalDataSource.saveMoment(moment.toEntity())
     }
 

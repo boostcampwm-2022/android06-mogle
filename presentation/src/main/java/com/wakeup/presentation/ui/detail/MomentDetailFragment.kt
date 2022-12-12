@@ -11,6 +11,8 @@ import androidx.navigation.fragment.navArgs
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.DetailPictureAdapter
 import com.wakeup.presentation.databinding.FragmentMomentDetailBinding
+import com.wakeup.presentation.lib.dialog.PictureDialog
+import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -68,8 +70,22 @@ class MomentDetailFragment : Fragment() {
     }
 
     private fun initViewPagerAdapter() {
-        binding.vp2Images.adapter = DetailPictureAdapter()
+        binding.vp2Images.adapter = DetailPictureAdapter { picture ->
+            showDetailPicture(picture)
+        }
         binding.tpiIndicator.attachTo(binding.vp2Images, viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun showDetailPicture(picture: PictureModel) {
+        val filePath = "${requireContext().filesDir}/" + "images/" + picture.path
+        PictureDialog.with(requireContext(), R.layout.dialog_image, R.id.iv_detail_image)
+            .setImageFilePath(
+                filePath = filePath,
+                errorImageDrawableId = R.drawable.ic_no_image,
+                1000,
+                1000
+            )
+            .show()
     }
 
     override fun onDestroyView() {

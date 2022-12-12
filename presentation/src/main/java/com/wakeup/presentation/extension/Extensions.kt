@@ -2,7 +2,6 @@ package com.wakeup.presentation.extension
 
 import android.animation.Animator.AnimatorListener
 import android.animation.ObjectAnimator
-import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -83,17 +82,26 @@ fun getBitMapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
     return bitmap
 }
 
-fun View.showSnackbar(text: String) {
-    Snackbar.make(this, text, Snackbar.LENGTH_SHORT).show()
+/**
+ * @param anchorViewResId caution: 이 SnackBar 가 띄워질 View 에 resId로 anchorView 를 달아야합니다.
+ */
+fun View.showSnackBar(text: String, anchorViewResId: Int? = null) {
+    Snackbar.make(this, text, Snackbar.LENGTH_SHORT).apply {
+        if (anchorViewResId != null) {
+            anchorView = findViewById(anchorViewResId)
+        }
+    }.show()
 }
 
-fun Activity.setStatusBarTransparent() {
-    window.setFlags(
+fun Fragment.setStatusBarTransparent() {
+    this.requireActivity().window.setFlags(
         WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
         WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
     )
 }
 
-fun Activity.resetStatusBarTransparent() {
-    window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+fun Fragment.resetStatusBarTransparent() {
+    this.requireActivity().window.clearFlags(
+        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+    )
 }

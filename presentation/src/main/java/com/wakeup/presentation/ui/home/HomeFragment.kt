@@ -2,10 +2,6 @@ package com.wakeup.presentation.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -22,7 +18,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.wakeup.domain.model.SortType
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentHomeBinding
 import com.wakeup.presentation.extension.hideKeyboard
@@ -34,9 +29,7 @@ import com.wakeup.presentation.ui.MainViewModel
 import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.ui.home.map.MapFragment
 import com.wakeup.presentation.ui.home.sheet.BottomSheetFragment
-import com.wakeup.presentation.util.UPDATE_MOMENTS_KEY
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -68,7 +61,7 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        requireActivity().setStatusBarTransparent()
+        setStatusBarTransparent()
         return binding.root
     }
 
@@ -164,8 +157,8 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        resetStatusBarTransparent()
         binding.unbind()
-        requireActivity().resetStatusBarTransparent()
         super.onDestroyView()
     }
 }
