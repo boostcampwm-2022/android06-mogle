@@ -1,4 +1,4 @@
-package com.wakeup.presentation.ui.globe
+package com.wakeup.presentation.ui.globe.globedetail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,12 +10,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.MomentPagingAdapter
+import com.wakeup.presentation.adapter.SaveReadyMomentAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentInGlobeBinding
 import com.wakeup.presentation.extension.dp
 import com.wakeup.presentation.model.MomentModel
+import com.wakeup.presentation.ui.globe.GridSpaceItemDecoration
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -29,7 +30,7 @@ class AddMomentInGlobeFragment : Fragment() {
     private val momentPagingAdapter = MomentPagingAdapter(isSelectable = true) { moment, position ->
         selectMoment(moment, position)
     }
-    private val args: AddMomentInGlobeFragmentArgs by navArgs()
+    private val saveReadyMomentAdapter = SaveReadyMomentAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +48,6 @@ class AddMomentInGlobeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initToolbar()
         initAdapter()
-        initMoment()
         collectData()
     }
 
@@ -64,10 +64,7 @@ class AddMomentInGlobeFragment : Fragment() {
             adapter = momentPagingAdapter
             addItemDecoration(GridSpaceItemDecoration(12.dp))
         }
-    }
-
-    private fun initMoment() {
-        viewModel.fetchMomentsNotInGlobe(args.globe.id)
+        binding.rvSaveMomentInGlobe.adapter = saveReadyMomentAdapter
     }
 
     private fun collectData() {
@@ -82,6 +79,7 @@ class AddMomentInGlobeFragment : Fragment() {
 
     private fun selectMoment(moment: MomentModel, position: Int) {
         moment.isSelected = moment.isSelected.not()
+        viewModel.setSaveReadyMoments(moment)
         momentPagingAdapter.notifyItemChanged(position)
     }
 

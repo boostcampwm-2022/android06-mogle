@@ -10,11 +10,6 @@
         android:title="@string/globe_detail_menu_delete_moment" />
 
     <item
-        android:icon="@drawable/ic_add"
-        android:enabled="false"
-        android:title="" />
-
-    <item
         android:id="@+id/item_globe_detail_update_globe"
         android:title="@string/globe_detail_menu_update_globe" />
 

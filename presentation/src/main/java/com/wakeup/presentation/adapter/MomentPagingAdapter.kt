@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.wakeup.presentation.databinding.ItemMomentBinding
 import com.wakeup.presentation.model.MomentModel
+import timber.log.Timber
 
 class MomentPagingAdapter(
     private val isSelectable: Boolean,

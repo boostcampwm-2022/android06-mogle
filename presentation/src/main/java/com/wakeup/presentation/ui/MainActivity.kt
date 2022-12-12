@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val isTopDest = appBarConfiguration.topLevelDestinations.contains(destination.id)
             binding.bottomAppBar.isVisible = isTopDest
-            binding.fab.isVisible = isTopDest
+            if (isTopDest) binding.fab.show() else binding.fab.hide()
         }
     }
 

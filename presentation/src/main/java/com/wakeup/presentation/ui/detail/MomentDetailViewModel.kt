@@ -6,6 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MomentDetailViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
+class MomentDetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
     // TODO State 저장할 필요 고민
 }

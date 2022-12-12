@@ -5,6 +5,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.wakeup.data.BuildConfig
 import com.wakeup.data.network.response.WeatherContainerResponse
 import com.wakeup.data.network.response.WeatherResponse
+import com.wakeup.data.network.service.ImageSearchService
 import com.wakeup.data.network.service.PlaceSearchService
 import com.wakeup.data.network.service.WeatherService
 import com.wakeup.domain.model.WeatherType
@@ -94,21 +95,23 @@ object NetworkModule {
             val request = chain.request()
             val response = chain.proceed(request)
             val jsonString = response.body?.string() ?: ""
-            val json = Json{ ignoreUnknownKeys = true }
+            val json = Json { ignoreUnknownKeys = true }
             val result = json.decodeFromString<WeatherContainerResponse>(jsonString)
             val weather = result.weathers.first()
             val type = getWeatherTypeById(weather.id)
             val main = result.main
             response.newBuilder()
                 .message(response.message)
-                .body(Json.encodeToString(
-                    WeatherResponse(
-                        weather.id,
-                        type,
-                        weather.icon,
-                        main.temperature
-                    )
-                ).toResponseBody())
+                .body(
+                    Json.encodeToString(
+                        WeatherResponse(
+                            weather.id,
+                            type,
+                            weather.icon,
+                            main.temperature
+                        )
+                    ).toResponseBody()
+                )
                 .build()
         }
     }
@@ -187,5 +190,11 @@ object NetworkModule {
     @Singleton
     fun provideWeatherService(@Named("Weather") retrofit: Retrofit): WeatherService {
         return retrofit.create(WeatherService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideImageSearchService(@Named("Kakao") retrofit: Retrofit): ImageSearchService {
+        return retrofit.create(ImageSearchService::class.java)
     }
 }
