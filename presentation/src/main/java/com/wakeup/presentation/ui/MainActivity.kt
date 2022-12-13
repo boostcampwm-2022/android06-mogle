@@ -19,51 +19,56 @@ import androidx.core.animation.doOnEnd
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnSuccessListener
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ActivityMainBinding
 import com.wakeup.presentation.extension.showSnackBar
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.WeatherTheme
+import com.wakeup.presentation.util.SharedPrefManager
 import com.wakeup.presentation.util.theme.ThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
 
     private var isUserAction = false
     private lateinit var themeHelper: ThemeHelper
 
+    private lateinit var sharedPrefManager: SharedPrefManager
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
-        themeHelper = ThemeHelper(this)
-        themeHelper.initTheme()
         super.onCreate(savedInstanceState)
+
+        sharedPrefManager = SharedPrefManager(this)
+        initLocationPermission()
+        initLocation()
+        fetchWeatherDataPeriodically()
+
+        initTheme()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initLocation()
+        waitMomentDataLoaded()
         setSplashScreenAnimation()
         setBottomNav()
         setSpinner()
-
-        loadData()
     }
 
     private fun initLocation() {
@@ -71,15 +76,21 @@ class MainActivity : AppCompatActivity() {
             LocationServices.getFusedLocationProviderClient(this)
     }
 
+    private fun initTheme() {
+        Timber.d("initTheme")
+        themeHelper = ThemeHelper(this)
+        themeHelper.initTheme(viewModel.weatherState, lifecycleScope)
+    }
+
     fun openNavDrawer() {
         binding.drawerLayout.open()
     }
 
-    private fun loadData() {
+    private fun waitMomentDataLoaded() {
         binding.root.viewTreeObserver.addOnPreDrawListener(object :
             ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
-                return if (viewModel.isReady.value) {
+                return if (viewModel.isMomentReady.value) {
                     Timber.d("Success load data")
                     binding.root.viewTreeObserver.removeOnPreDrawListener(this)
                     true
@@ -89,6 +100,31 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun fetchWeatherDataPeriodically() {
+        lifecycleScope.launch {
+            viewModel.permissionState.collectLatest { hasPermission ->
+                Timber.d("permission $hasPermission")
+                while (hasPermission) {
+                    getLastLocation { result ->
+                        if (result == null) return@getLastLocation
+
+                        launch {
+                            viewModel.fetchWeather(LocationModel(result.latitude,
+                                result.longitude))
+                        }
+                    }
+
+                    delay(TEN_MINUTE)
+                }
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation(onSuccessCallback: OnSuccessListener<Location>) {
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener(onSuccessCallback)
     }
 
     private fun setSplashScreenAnimation() {
@@ -167,7 +203,9 @@ class MainActivity : AppCompatActivity() {
                                 binding.root.showSnackBar("위치 권한을 설정해주세요.")
                                 return
                             }
-                            changeAutoTheme()
+                            themeHelper.changeThemeSetting(WeatherTheme.AUTO) {
+                                recreate()
+                            }
                         }
 
                         WeatherTheme.BRIGHT.str -> {
@@ -195,35 +233,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // TODO WorkManager를 통해, 지속적인 날씨 데이터 가져오기 구현
-    @SuppressLint("MissingPermission")
-    private fun changeAutoTheme() {
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if (location != null) {
-                viewModel.fetchWeather(LocationModel(location.latitude, location.longitude))
-            }
+    private fun initLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {
+            viewModel.permissionState.value = false
+            return
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.weatherState.collect { state ->
-                    when (state) {
-                        is UiState.Success -> {
-                            themeHelper.changeAutoTheme(state.item) {
-                                recreate()
-                            }
-                        }
-                        is UiState.Failure -> {
-                            binding.root.showSnackBar("날씨를 불러오지 못했습니다.")
-                        }
-                        else -> { }
-                    }
-                }
-            }
-        }
+        viewModel.permissionState.value = true
     }
 
-    // TODO 리펙토링
     private fun hasLocationPermissions(): Boolean {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -235,7 +257,9 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    companion object {
-        private const val EXIT_ANIM_DURATION = 2000L
+    private companion object {
+        const val EXIT_ANIM_DURATION = 2000L
+        const val ONE_MINUTE = 60000L
+        const val TEN_MINUTE = ONE_MINUTE * 10
     }
 }

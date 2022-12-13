@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,8 @@ import com.bumptech.glide.request.target.Target
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.wakeup.presentation.R
 import com.wakeup.presentation.model.GlobeModel
+import com.wakeup.presentation.model.WeatherModel
+import com.wakeup.presentation.ui.UiState
 import timber.log.Timber
 import java.io.File
 
@@ -136,4 +139,34 @@ fun bindGlobeNames(view: TextView, globes: List<GlobeModel>) {
 @BindingAdapter("globeItems")
 fun bindGlobeItems(view: MaterialAutoCompleteTextView, items: List<GlobeModel>) {
     view.setSimpleItems(items.map { it.name }.toTypedArray())
+}
+
+@BindingAdapter("weatherImage")
+fun bindWeatherImage(view: ImageView, uiState: UiState<WeatherModel>) {
+    if (uiState is UiState.Success) {
+        bindImageFromUrl(view, uiState.item.iconUrl)
+    }
+}
+
+@BindingAdapter("temperatureText")
+fun bindTemperatureText(view: TextView, uiState: UiState<WeatherModel>) {
+    if (uiState is UiState.Success) {
+        view.text = view.resources.getString(R.string.temperature_celsius, uiState.item.temperature)
+    }
+}
+
+@BindingAdapter("showOnLoading")
+fun bindShowingOnLoading(view: View, uiState: UiState<Any>) {
+    view.isVisible = uiState is UiState.Loading
+}
+
+@BindingAdapter("hideOnLoading")
+fun bindHidingOnLoading(view: View, uiState: UiState<Any>) {
+    view.isVisible =
+        !(uiState is UiState.Loading || uiState is UiState.Failure || uiState is UiState.Empty)
+}
+
+@BindingAdapter("showOnFailure")
+fun bindShowingOnFailure(view: View, uiState: UiState<Any>) {
+    view.isVisible = uiState is UiState.Failure
 }
