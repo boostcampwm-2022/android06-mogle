@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
 
-                        delay(5000L)
+                        delay(TEN_MINUTE)
                     }
                 }
             }
@@ -263,6 +263,6 @@ class MainActivity : AppCompatActivity() {
     private companion object {
         const val EXIT_ANIM_DURATION = 2000L
         const val ONE_MINUTE = 60000L
-        const val FIVE_MINUTE = ONE_MINUTE * 5
+        const val TEN_MINUTE = ONE_MINUTE * 10
     }
 }
