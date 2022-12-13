@@ -166,4 +166,6 @@ class ThemeHelper @Inject constructor(
     }
 
     fun getCurrentTheme(): String? = sharedPrefManager.getTheme()
+
+    fun getCurrentThemeByAuto(): String? = sharedPrefManager.getThemeByAuto()
 }

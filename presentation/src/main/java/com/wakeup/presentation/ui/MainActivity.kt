@@ -17,7 +17,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.app.ActivityCompat
-import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -36,7 +35,6 @@ import com.wakeup.presentation.model.WeatherTheme
 import com.wakeup.presentation.util.SharedPrefManager
 import com.wakeup.presentation.util.theme.ThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -44,7 +42,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var screen: SplashScreen
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
 
@@ -52,11 +49,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var themeHelper: ThemeHelper
 
     private lateinit var sharedPrefManager: SharedPrefManager
-    private lateinit var weatherJob: Job
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        screen = installSplashScreen()
+        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         sharedPrefManager = SharedPrefManager(this)
@@ -107,22 +103,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchWeatherDataPeriodically() {
-        weatherJob = lifecycleScope.launch {
+        lifecycleScope.launch {
             viewModel.permissionState.collectLatest { hasPermission ->
                 Timber.d("permission $hasPermission")
-                if (hasPermission) {
-                    while (true) {
-                        getLastLocation { result ->
-                            if (result == null) return@getLastLocation
+                while (hasPermission) {
+                    getLastLocation { result ->
+                        if (result == null) return@getLastLocation
 
-                            launch {
-                                viewModel.fetchWeather(LocationModel(result.latitude,
-                                    result.longitude))
-                            }
+                        launch {
+                            viewModel.fetchWeather(LocationModel(result.latitude,
+                                result.longitude))
                         }
-
-                        delay(TEN_MINUTE)
                     }
+
+                    delay(TEN_MINUTE)
                 }
             }
         }
