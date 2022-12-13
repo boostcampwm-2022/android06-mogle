@@ -7,4 +7,5 @@
     <attr name="bottomAppBarColor" format="reference" />
     <attr name="hamburgerColor" format="reference" />
     <attr name="momentDetailHeader" format="reference" />
+    <attr name="circleLoadingIcon" format="reference" />
 </resources>

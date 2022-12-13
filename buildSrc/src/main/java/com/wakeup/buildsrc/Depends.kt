@@ -50,6 +50,8 @@ object Depends {
         const val circleImageViewVersion = "3.1.0"
 
         const val stethoVersion = "1.6.0"
+
+        const val lottieVersion = "5.2.0"
     }
 
     object ClassPaths {
@@ -155,6 +157,9 @@ object Depends {
 
         // Splash
         const val splash = "androidx.core:core-splashscreen:${Versions.splashVersion}"
+
+        // Lottie
+        const val lottie = "com.airbnb.android:lottie:${Versions.lottieVersion}"
     }
 
     fun generateVersionName(): String {

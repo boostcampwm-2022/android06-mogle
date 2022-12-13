@@ -73,15 +73,41 @@
                 android:background="?attr/colorSurfaceVariant"
                 android:orientation="vertical">
 
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/cpi_weather_loading"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="?attr/circleLoadingIcon"
+                    app:showOnLoading="@{viewModel.weatherState}" />
+
+                <ImageView
+                    android:id="@+id/iv_weather_fail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_no_weather"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:showOnFailure="@{viewModel.weatherState}" />
+
                 <ImageView
                     android:id="@+id/iv_weather_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-8dp"
-                    app:imageFromUrl="@{viewModel.weather.iconUrl}"
+                    app:hideOnLoading="@{viewModel.weatherState}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:weatherImage="@{viewModel.weatherState}"
+                    tools:src="@drawable/ic_sunny" />
 
                 <TextView
                     android:id="@+id/tv_temperature"
@@ -89,10 +115,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="@{@string/temperature_celsius(viewModel.weather.temperature)}"
+                    app:hideOnLoading="@{viewModel.weatherState}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:temperatureText="@{viewModel.weatherState}"
+                    tools:text="21°C" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 

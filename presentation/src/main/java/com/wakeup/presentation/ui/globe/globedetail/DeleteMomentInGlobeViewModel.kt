@@ -3,6 +3,7 @@ package com.wakeup.presentation.ui.globe.globedetail
 import android.view.View
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.paging.PagingData
@@ -32,8 +33,12 @@ class DeleteMomentInGlobeViewModel @Inject constructor(
     private val _moments = MutableStateFlow<PagingData<MomentModel>>(PagingData.empty())
     val moments = _moments.asStateFlow()
 
-    private val _deletedMoments = MutableStateFlow<List<MomentModel>>(emptyList())
-    private val deletedMoments = _deletedMoments.asStateFlow()
+    private val _deleteReadyMoments = MutableStateFlow<List<MomentModel>>(emptyList())
+    private val deleteReadyMoments = _deleteReadyMoments.asStateFlow()
+
+    val isNotExistDeleteReadyMoments = deleteReadyMoments.map { moments ->
+        moments.isEmpty()
+    }.asLiveData()
 
     private val argsGlobe = savedStateHandle.get<GlobeModel>(ARGS_GlOBE)
         ?: GlobeModel(name = AddMomentInGlobeViewModel.ARGS_GlOBE, thumbnail = null)
@@ -54,10 +59,10 @@ class DeleteMomentInGlobeViewModel @Inject constructor(
 
     fun setDeleteReadyMoments(moment: MomentModel) {
         if (moment.isSelected.not()) {
-            _deletedMoments.value = deletedMoments.value
+            _deleteReadyMoments.value = deleteReadyMoments.value
                 .filter { deletedMoment -> deletedMoment.id != moment.id }
         } else {
-            _deletedMoments.value = deletedMoments.value
+            _deleteReadyMoments.value = deleteReadyMoments.value
                 .toMutableList()
                 .apply { add(moment) }
                 .toList()
@@ -67,9 +72,10 @@ class DeleteMomentInGlobeViewModel @Inject constructor(
     fun deleteMoments(view: View) {
         viewModelScope.launch {
             launch {
-                deletedMoments.value.forEach { moment ->
-                    deleteMomentInGlobeUseCase(moment.toDomain(), argsGlobe.toDomain())
-                }
+                deleteMomentInGlobeUseCase(
+                    deleteReadyMoments.value.map { moment -> moment.toDomain() },
+                    argsGlobe.toDomain()
+                )
             }.join()
             view.findNavController().navigateUp()
         }

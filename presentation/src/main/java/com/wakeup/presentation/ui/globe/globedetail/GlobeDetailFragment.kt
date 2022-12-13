@@ -75,21 +75,37 @@ class GlobeDetailFragment : Fragment() {
             setOnMenuItemClickListener { menu ->
                 when (menu.itemId) {
                     R.id.item_globe_detail_add_moment -> {
-                        val action = GlobeDetailFragmentDirections
-                            .actionGlobeDetailFragmentToAddMomentInGlobeFragment(args.globe)
-                        findNavController().navigate(action)
+                        if (args.globe.id == DEFAULT_GLOBE_ID) {
+                            showSnackBar(
+                                getString(R.string.add_moment_default_error_in_globe_msg),
+                                R.id.tb_globe_detail
+                            )
+                        } else {
+                            val action = GlobeDetailFragmentDirections
+                                .actionGlobeDetailFragmentToAddMomentInGlobeFragment(args.globe)
+                            findNavController().navigate(action)
+                        }
                         true
                     }
                     R.id.item_globe_detail_delete_moment -> {
-                        if (viewModel.isExistMoment.value) {
-                            val action = GlobeDetailFragmentDirections
-                                .actionGlobeDetailFragmentToDeleteMomentInGlobeFragment(args.globe)
-                            findNavController().navigate(action)
-                        } else {
-                            showSnackBar(
-                                getString(R.string.delete_moment_error_in_globe_msg),
-                                R.id.tb_globe_detail
-                            )
+                        when {
+                            args.globe.id == DEFAULT_GLOBE_ID -> {
+                                showSnackBar(
+                                    getString(R.string.delete_moment_default_error_in_globe_msg),
+                                    R.id.tb_globe_detail
+                                )
+                            }
+                            viewModel.isExistMoment.value -> {
+                                val action = GlobeDetailFragmentDirections
+                                    .actionGlobeDetailFragmentToDeleteMomentInGlobeFragment(args.globe)
+                                findNavController().navigate(action)
+                            }
+                            else -> {
+                                showSnackBar(
+                                    getString(R.string.delete_moment_error_in_globe_msg),
+                                    R.id.tb_globe_detail
+                                )
+                            }
                         }
                         true
                     }

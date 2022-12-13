@@ -64,13 +64,25 @@ class MapHelper(private val context: Context) {
             .zoomControlEnabled(false)
             .logoClickEnabled(true)
 
+        val setDark = {
+            options.apply {
+                mapType(NaverMap.MapType.Navi)
+                nightModeEnabled(true)
+            }
+        }
+
         // 다크 모드 체크
-        when (ThemeHelper(context).getCurrentTheme()) {
-            WeatherTheme.NIGHT.str -> {
-                options.apply {
-                    mapType(NaverMap.MapType.Navi)
-                    nightModeEnabled(true)
+        val themeHelper = ThemeHelper(context)
+        when (themeHelper.getCurrentTheme()) {
+            WeatherTheme.AUTO.str -> {
+                when (themeHelper.getCurrentThemeByAuto()) {
+                    WeatherTheme.NIGHT.str -> {
+                        setDark()
+                    }
                 }
+            }
+            WeatherTheme.NIGHT.str -> {
+                setDark()
             }
         }
 
@@ -340,11 +352,9 @@ class MapHelper(private val context: Context) {
         const val MARKER_HEIGHT = 58
         const val MARKER_SCALE_UP_SIZE = 0.2
         const val Z_INDEX_FRONT = 10
-        const val Z_INDEX_BACK = 0
         const val POINT_X = 0.5f
         const val POINT_Y = 0.95f
 
         const val NO_IMAGE = "NULL_PATH"
-        const val KEY_THEME = "theme"
     }
 }

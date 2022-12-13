@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +23,7 @@ import com.wakeup.presentation.databinding.FragmentMapBinding
 import com.wakeup.presentation.extension.getFadeInAnimator
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
+import com.wakeup.presentation.ui.MainViewModel
 import com.wakeup.presentation.ui.home.HomeFragmentDirections
 import com.wakeup.presentation.ui.home.HomeViewModel
 import com.wakeup.presentation.util.MOVE_CAMERA_KEY
@@ -31,6 +33,8 @@ import kotlinx.coroutines.launch
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding: FragmentMapBinding
+
+    private val activityViewModel: MainViewModel by activityViewModels()
     private val viewModel: HomeViewModel by viewModels({ requireParentFragment() })
 
     private lateinit var naverMap: NaverMap
@@ -198,6 +202,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             if (!locationSource.isActivated) { // 권한 거부됨
                 naverMap.locationTrackingMode = LocationTrackingMode.None
             }
+
+            // permission 변경 이벤트 전파
+            activityViewModel.permissionState.value = true // 허용
 
             naverMap.locationTrackingMode = LocationTrackingMode.Follow
 
