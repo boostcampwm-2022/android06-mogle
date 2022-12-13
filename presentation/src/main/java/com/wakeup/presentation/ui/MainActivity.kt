@@ -4,15 +4,18 @@ import android.Manifest
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AnticipateInterpolator
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
@@ -21,6 +24,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -29,6 +33,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.OnSuccessListener
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.ActivityMainBinding
+import com.wakeup.presentation.extension.hideKeyboard
 import com.wakeup.presentation.extension.showSnackBar
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.WeatherTheme
@@ -111,8 +116,12 @@ class MainActivity : AppCompatActivity() {
                         if (result == null) return@getLastLocation
 
                         launch {
-                            viewModel.fetchWeather(LocationModel(result.latitude,
-                                result.longitude))
+                            viewModel.fetchWeather(
+                                LocationModel(
+                                    result.latitude,
+                                    result.longitude
+                                )
+                            )
                         }
                     }
 
@@ -234,10 +243,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             viewModel.permissionState.value = false
             return
@@ -247,14 +260,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hasLocationPermissions(): Boolean {
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             return false
         }
         return true
+    }
+
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.home_fragment) {
+            if (ev?.action == MotionEvent.ACTION_DOWN) {
+                val v = currentFocus
+                if (v is EditText) {
+                    val outRect = Rect()
+                    v.getGlobalVisibleRect(outRect)
+                    if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                        v.clearFocus()
+                        hideKeyboard(v)
+                    }
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     private companion object {

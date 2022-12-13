@@ -54,6 +54,7 @@
                     android:focusable="true"
                     android:hint="@string/add_globe_dialog_hint"
                     android:maxLength="8"
+                    android:maxLines="1"
                     android:paddingTop="@dimen/small_150"
                     android:textColorHint="?attr/colorOnSurface">
 

@@ -23,6 +23,7 @@ class EditDialog private constructor(context: Context) :
     private lateinit var editText: EditText
 
     companion object {
+        private var INSTANCE: EditDialog? = null
 
         /**
          * @param context 화면에 띄울 컨텍스트를 지정
@@ -30,13 +31,18 @@ class EditDialog private constructor(context: Context) :
          * @param editTextId dialog 레이아웃 내부의 editText Id를 넣어준다.
          */
         fun with(context: Context, layoutId: Int, editTextId: Int): EditDialog {
-            return EditDialog(context).apply {
+            val instance = INSTANCE
+            if (instance?.baseLayoutId == layoutId) return instance
+
+            INSTANCE = EditDialog(context).apply {
                 builder = AlertDialog.Builder(context)
                 dialogView = LayoutInflater.from(context).inflate(layoutId, null)
                 dialog = builder.setView(dialogView).create()
                 editText = dialogView.findViewById(editTextId)
-                editText.setSingleLine()
+                baseLayoutId = layoutId
             }
+
+            return INSTANCE ?: throw IllegalStateException("Instance is null.")
         }
     }
 

@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -25,6 +26,7 @@ import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.ui.MainViewModel
 import com.wakeup.presentation.ui.home.HomeFragmentDirections
 import com.wakeup.presentation.ui.home.HomeViewModel
+import com.wakeup.presentation.util.MOVE_CAMERA_KEY
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -109,15 +111,25 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    private fun moveCameraToAddedLocation() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<LocationModel>(
+            MOVE_CAMERA_KEY
+        )?.observe(viewLifecycleOwner) { location ->
+            mapHelper.moveCamera(naverMap, LatLng(location.latitude, location.longitude))
+        }
+    }
+
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
 
         binding.flMapViewContainer.isVisible = true
 
         // 지도 터치시, 정보 창 사라짐 설정
-        mapHelper.setViewFadeOutClickListener(naverMap,
+        mapHelper.setViewFadeOutClickListener(
+            naverMap,
             binding.momentPreview.root,
-            MOMENT_PREVIEW_ANIM_DURATION)
+            MOMENT_PREVIEW_ANIM_DURATION
+        )
 
         // 위치 관련 설정
         mapHelper.apply {
@@ -126,6 +138,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             setScaleBarView(naverMap, binding.sbvScale)
             setLogoView(naverMap, binding.lvLogo)
         }
+
+
+        // 모먼트가 추가되면 해당 장소로 이동
+        moveCameraToAddedLocation()
 
         collectMoments()
 

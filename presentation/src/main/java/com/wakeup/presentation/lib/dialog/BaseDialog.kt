@@ -5,17 +5,18 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
-import android.text.SpannableString
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import kotlin.properties.Delegates
 
 abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
 
     protected lateinit var builder: AlertDialog.Builder
     protected lateinit var dialog: AlertDialog
     protected lateinit var dialogView: View
+    protected var baseLayoutId by Delegates.notNull<Int>()
 
 
     @Suppress("UNCHECKED_CAST")
@@ -64,14 +65,13 @@ abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
      * @param onPositive dialog 의 positive 버튼 클릭 이벤트를 지정해준다.
      *
      */
-    fun setOnPositive(resId: Int, text: String, onPositive: (dialog: T) -> Unit): T {
-        val positiveView = dialogView.findViewById<View>(resId)
-        if (positiveView is TextView) { // Button is TextView's expand class
-            positiveView.text = text
-        }
-        positiveView.setOnClickListener {
-            onPositive(self())
-            dialog.dismiss()
+    fun setOnPositive(resId: Int, text: CharSequence? = null, onPositive: (dialog: T) -> Unit): T {
+        dialogView.findViewById<TextView>(resId).apply {
+            this.text = text ?: this.text
+            setOnClickListener {
+                onPositive(self())
+                dialog.dismiss()
+            }
         }
         return self()
     }
@@ -82,14 +82,13 @@ abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
      * @param resId dialog negative button 을 지정한다.
      * @param onNegative dialog 의 negative 버튼 클릭 이벤트를 지정해준다.
      */
-    fun setOnNegative(resId: Int, text: String, onNegative: (dialog: T) -> Unit): T {
-        val negativeView = dialogView.findViewById<View>(resId)
-        if (negativeView is TextView) { // Button is TextView's expand class
-            negativeView.text = text
-        }
-        negativeView.setOnClickListener {
-            onNegative(self())
-            dialog.dismiss()
+    fun setOnNegative(resId: Int, text: CharSequence? = null, onNegative: (dialog: T) -> Unit): T {
+        dialogView.findViewById<TextView>(resId).apply {
+            this.text = text ?: this.text
+            setOnClickListener {
+                onNegative(self())
+                dialog.dismiss()
+            }
         }
         return self()
     }
@@ -97,19 +96,9 @@ abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
     /**
      *
      * @param resId dialog 제목을 지정한다.
-     * @param text dialog 제목의 text를 결정한다.
+     * @param text dialog 제목의 text 를 결정한다.
      */
-    fun setTitle(resId: Int, text: String): T {
-        dialogView.findViewById<TextView>(resId).text = text
-        return self()
-    }
-
-    /**
-     *
-     * @param resId dialog 제목을 지정한다.
-     * @param text dialog 제목의 text를 결정한다. (SpannableString 적용한 Text 전용)
-     */
-    fun setTitle(resId: Int, text: SpannableString): T {
+    fun setTitle(resId: Int, text: CharSequence): T {
         dialogView.findViewById<TextView>(resId).text = text
         return self()
     }
@@ -124,6 +113,10 @@ abstract class BaseDialog<T : BaseDialog<T>>(protected val context: Context) {
         dialog.show()
     }
 
+    /**
+     *
+     * dialog 를 화면에서 없앤다.
+     */
     fun dismiss() {
         dialog.dismiss()
     }

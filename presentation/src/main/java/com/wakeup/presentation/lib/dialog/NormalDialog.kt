@@ -17,17 +17,24 @@ class NormalDialog private constructor(context: Context) :
     BaseDialog<NormalDialog>(context) {
 
     companion object {
+        private var INSTANCE: NormalDialog? = null
 
         /**
          * @param context 화면에 띄울 컨텍스트를 지정
          * @param layoutId 원하는 dialog 레이아웃을 넣어준다.
          */
         fun with(context: Context, layoutId: Int): NormalDialog {
-            return NormalDialog(context).apply {
+            val instance = INSTANCE
+            if (instance?.baseLayoutId == layoutId) return instance
+
+            INSTANCE = NormalDialog(context).apply {
                 builder = AlertDialog.Builder(context)
                 dialogView = LayoutInflater.from(context).inflate(layoutId, null)
                 dialog = builder.setView(dialogView).create()
+                baseLayoutId = layoutId
             }
+
+            return INSTANCE ?: throw IllegalStateException("Instance is null.")
         }
     }
 }

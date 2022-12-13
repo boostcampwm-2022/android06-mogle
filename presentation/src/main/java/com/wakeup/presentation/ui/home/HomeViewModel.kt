@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
     private val getAllMomentListUseCase: GetAllMomentsUseCase,
 ) : ViewModel() {
 
-    private val searchQuery = MutableStateFlow("")
+    val searchQuery = MutableStateFlow("")
 
     lateinit var allMoments: StateFlow<List<MomentModel>>
     lateinit var moments: Flow<PagingData<MomentModel>>
