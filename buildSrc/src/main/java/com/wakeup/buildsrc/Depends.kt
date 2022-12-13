@@ -5,7 +5,7 @@ import com.wakeup.buildsrc.Depends.Versions.appVersionCode
 object Depends {
 
     object Versions {
-        const val appVersionCode = 1_000_000
+        const val appVersionCode = 1_002_000
         const val gradleVersion = "7.3.1"
         const val androidCompileSdkVersion = 32
         const val targetSdkVersion = 32
