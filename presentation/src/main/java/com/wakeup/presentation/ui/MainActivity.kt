@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity() {
     private fun fetchWeatherDataPeriodically() {
         weatherJob = lifecycleScope.launch {
             viewModel.permissionState.collectLatest { hasPermission ->
+                Timber.d("permission $hasPermission")
                 if (hasPermission) {
                     while (true) {
                         getLastLocation { result ->
@@ -245,7 +246,9 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
         ) {
             viewModel.permissionState.value = false
+            return
         }
+
         viewModel.permissionState.value = true
     }
 
