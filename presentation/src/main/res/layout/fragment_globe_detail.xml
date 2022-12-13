@@ -28,16 +28,18 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="?attr/colorOnPrimary"
+            android:background="?attr/colorSurface"
             app:isGone="@{vm.isExistMoment}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tb_globe_detail">
+            app:layout_constraintTop_toBottomOf="@id/tb_globe_detail"
+            tools:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:background="?attr/colorSurface"
                 android:paddingTop="@dimen/small_150"
                 android:paddingEnd="@dimen/normal_100"
                 android:text="@string/globe_detail_empty_msg"
@@ -50,14 +52,14 @@
                 style="@style/TextAppearance.Mogle.Headline1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/small_150"
                 android:layout_marginBottom="@dimen/map_moment_preview_margin"
+                android:paddingEnd="@dimen/small_150"
                 android:text="@string/globe_detail_empty_content"
-                android:textSize="80sp"
                 android:textColor="?android:textColorSecondary"
+                android:textSize="80sp"
+                app:isGone="@{vm.isExistMoment}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:isGone="@{vm.isExistMoment}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -80,6 +82,7 @@
             android:id="@+id/rv_globe_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
             android:padding="@dimen/normal_100"
             app:isGone="@{!vm.isExistMoment}"
             app:layout_constraintEnd_toEndOf="parent"

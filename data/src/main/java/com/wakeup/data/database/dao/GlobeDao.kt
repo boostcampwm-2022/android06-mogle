@@ -27,11 +27,17 @@ interface GlobeDao {
     fun getGlobes(): Flow<List<GlobeEntity>>
 
     @Transaction
-    @Query("SELECT * FROM moment WHERE moment_id IN (SELECT moment_id FROM moment_globe WHERE globe_id = :globeId)")
+    @Query("""
+        SELECT m.moment_id, m.content, m.date, m.mainAddress, m.detailAddress, m.latitude, m.longitude 
+        FROM moment_globe AS mg JOIN moment AS m ON mg.moment_id = m.moment_id WHERE mg.globe_id = :globeId
+    """)
     fun getMomentsByGlobe(globeId: Long): PagingSource<Int, MomentWithGlobesAndPictures>
 
     @Transaction
-    @Query("SELECT * FROM moment WHERE moment_id IN (SELECT moment_id FROM moment_globe WHERE globe_id = :globeId) LIMIT 1")
+    @Query("""
+        SELECT m.moment_id, m.content, m.date, m.mainAddress, m.detailAddress, m.latitude, m.longitude 
+        FROM moment_globe AS mg JOIN moment AS m ON mg.moment_id = m.moment_id WHERE mg.globe_id = :globeId LIMIT 1
+    """)
     suspend fun getFirstMomentByGlobe(globeId: Long): MomentWithGlobesAndPictures?
 
     @Query("SELECT COUNT(moment_id) FROM moment_globe WHERE globe_id = :globeId")

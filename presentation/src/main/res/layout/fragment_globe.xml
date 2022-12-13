@@ -84,8 +84,10 @@
             android:layout_height="match_parent"
             android:background="?android:colorBackground"
             android:orientation="vertical"
-            android:padding="@dimen/small_100"
-            android:layout_marginBottom="@dimen/globe_item_bottom_margin"
+            android:paddingStart="@dimen/small_100"
+            android:paddingTop="@dimen/small_100"
+            android:paddingEnd="@dimen/small_100"
+            android:paddingBottom="@dimen/globe_item_bottom_margin"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:submitList="@{vm.globes}"
             tools:listitem="@layout/item_globe" />

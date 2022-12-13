@@ -44,6 +44,9 @@ class AddMomentInGlobeViewModel @Inject constructor(
         moments.count()
     }.asLiveData()
 
+    private val _isExistMoment = MutableStateFlow(false)
+    val isExistMoment = _isExistMoment.asStateFlow()
+
     private val argsGlobe = savedStateHandle.get<GlobeModel>(ARGS_GlOBE)
         ?: GlobeModel(name = ARGS_GlOBE, thumbnail = null)
 
@@ -51,7 +54,7 @@ class AddMomentInGlobeViewModel @Inject constructor(
         fetchMomentsNotInGlobe()
     }
 
-    fun fetchMomentsNotInGlobe() {
+    private fun fetchMomentsNotInGlobe() {
         viewModelScope.launch {
             _moments.value = getMomentsNotInGlobeUseCase(argsGlobe.id).map { pagingDataMoments ->
                 pagingDataMoments.map { moment -> moment.toPresentation() }
@@ -76,12 +79,17 @@ class AddMomentInGlobeViewModel @Inject constructor(
     fun saveMomentsInGlobe(view: View) {
         viewModelScope.launch {
             launch {
-                saveReadyMoments.value.forEach { moment ->
-                    insertMomentInGlobeUseCase(moment.toDomain(), argsGlobe.toDomain())
-                }
+                insertMomentInGlobeUseCase(
+                    saveReadyMoments.value.map { moment -> moment.toDomain() },
+                    argsGlobe.toDomain()
+                )
             }.join()
             view.findNavController().navigateUp()
         }
+    }
+
+    fun setMomentExist(isExist: Boolean) {
+        _isExistMoment.value = isExist
     }
 
     companion object {

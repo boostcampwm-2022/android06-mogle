@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface">
 
         <include
             android:id="@+id/tb_add_moment_in_globe"
@@ -21,6 +22,48 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?attr/colorSurface"
+            android:elevation="2dp"
+            app:isGone="@{vm.isExistMoment}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_add_moment_in_globe"
+            tools:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_nothing_content"
+                style="@style/TextAppearance.Mogle.Headline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/map_moment_preview_margin"
+                android:paddingEnd="@dimen/small_150"
+                android:text="@string/globe_detail_empty_content"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="80sp"
+                app:isGone="@{vm.isExistMoment}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                style="@style/TextAppearance.Mogle.SubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_150"
+                android:paddingTop="@dimen/small_150"
+                android:paddingEnd="@dimen/small_150"
+                android:text="@string/add_moment_empty_error_in_globe_msg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_nothing_content" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tv_add_moment_in_globe"
@@ -42,6 +85,7 @@
             style="@style/TextAppearance.Mogle.SubTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
             android:paddingStart="@dimen/normal_100"
             android:paddingTop="@dimen/small_100"
             android:paddingBottom="@dimen/small_100"
@@ -55,6 +99,7 @@
             android:id="@+id/rv_save_moment_in_globe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
             android:orientation="horizontal"
             android:paddingStart="@dimen/small_100"
             android:paddingEnd="@dimen/small_100"
@@ -69,6 +114,7 @@
             android:id="@+id/rv_add_moment_in_globe"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="?attr/colorSurface"
             android:paddingStart="@dimen/small_100"
             android:paddingEnd="@dimen/small_100"
             android:paddingBottom="@dimen/small_100"

@@ -2,7 +2,7 @@
 <resources>
 
     <!-- standard by 100 % -->
-
+    <dimen name="small_25">2dp</dimen>
     <dimen name="small_50">4dp</dimen>
     <dimen name="small_100">8dp</dimen>
     <dimen name="small_150">12dp</dimen>

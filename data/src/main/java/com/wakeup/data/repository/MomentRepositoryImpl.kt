@@ -23,8 +23,8 @@ class MomentRepositoryImpl @Inject constructor(
         myLocation: Location?,
     ): Flow<PagingData<Moment>> =
         momentLocalDataSource.getMoments(sort, query, myLocation?.toEntity()).map { pagingData ->
-            pagingData.map { momentInfo ->
-                momentInfo.toDomain()
+            pagingData.map { momentXRefs ->
+                momentXRefs.toDomain()
             }
         }
 
