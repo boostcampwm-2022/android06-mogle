@@ -10,11 +10,12 @@ class InsertMomentInGlobeUseCase @Inject constructor(
     private val relationRepository: RelationRepository,
     private val globeRepository: GlobeRepository,
 ) {
-    suspend operator fun invoke(moment: Moment, globe: Globe) {
-        relationRepository.saveMomentGlobeXRef(moment.id, globe.id)
-
-        if (globe.thumbnail == null && moment.pictures.isNotEmpty()) {
-            globeRepository.updateGlobe(globe.copy(thumbnail = moment.pictures.first()))
+    suspend operator fun invoke(moments: List<Moment>, globe: Globe) {
+        moments.forEach { moment ->
+            relationRepository.saveMomentGlobeXRef(moment.id, globe.id)
+        }
+        if (globe.thumbnail == null && moments.first().pictures.isNotEmpty()) {
+            globeRepository.updateGlobe(globe.copy(thumbnail = moments.first().pictures.first()))
         }
     }
 }

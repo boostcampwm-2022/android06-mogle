@@ -37,7 +37,7 @@ abstract class MogleDatabase : RoomDatabase() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 Executors.newSingleThreadScheduledExecutor().execute {
-                    db.execSQL("INSERT INTO globe (name) VALUES ('Default')")
+                    db.execSQL("INSERT INTO globe (name) VALUES ('기본')")
                 }
             }
         }

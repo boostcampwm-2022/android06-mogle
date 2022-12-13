@@ -26,26 +26,42 @@
                 style="@style/TextAppearance.Mogle.Headline2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/small_50"
                 android:paddingBottom="@dimen/small_150"
                 android:text="@string/add_globe_dialog_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/et_add_globe"
-                style="@style/TextAppearance.Mogle.SubTitle"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_globe_name"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:focusable="true"
-                android:maxLength="8"
-                android:hint="@string/add_globe_dialog_hint"
+                android:paddingBottom="@dimen/small_100"
+                app:boxStrokeColor="?attr/colorPrimary"
+                app:counterEnabled="true"
+                app:counterMaxLength="8"
+                app:helperTextEnabled="true"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_add_globe_title">
 
-                <requestFocus />
+                <EditText
+                    android:id="@+id/et_add_globe"
+                    style="@style/TextAppearance.Mogle.SubTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorSurface"
+                    android:focusable="true"
+                    android:hint="@string/add_globe_dialog_hint"
+                    android:maxLength="8"
+                    android:paddingTop="@dimen/small_150"
+                    android:textColorHint="?attr/colorOnSurface">
 
-            </EditText>
+                    <requestFocus />
+
+                </EditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tv_add_globe_cancel"
@@ -58,7 +74,7 @@
                 android:text="@string/cancel"
                 app:layout_constraintEnd_toStartOf="@id/divider_add_globe"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_add_globe" />
+                app:layout_constraintTop_toBottomOf="@id/til_globe_name" />
 
 
             <View
@@ -70,7 +86,7 @@
                 android:paddingTop="@dimen/small_150"
                 app:layout_constraintEnd_toStartOf="@id/tv_add_globe_add"
                 app:layout_constraintStart_toEndOf="@id/tv_add_globe_cancel"
-                app:layout_constraintTop_toBottomOf="@id/et_add_globe" />
+                app:layout_constraintTop_toBottomOf="@id/til_globe_name" />
 
             <TextView
                 android:id="@+id/tv_add_globe_add"
@@ -83,7 +99,7 @@
                 android:text="@string/add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/divider_add_globe"
-                app:layout_constraintTop_toBottomOf="@id/et_add_globe" />
+                app:layout_constraintTop_toBottomOf="@id/til_globe_name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
