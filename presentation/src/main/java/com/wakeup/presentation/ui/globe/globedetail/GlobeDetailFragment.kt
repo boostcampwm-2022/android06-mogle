@@ -108,9 +108,26 @@ class GlobeDetailFragment : Fragment() {
     }
 
     private fun showDeleteGlobeDialog(toolbar: Toolbar) {
+        fun onPositive() {
+            if (args.globe.id == DEFAULT_GLOBE_ID) {
+                toolbar.showSnackBar(
+                    getString(R.string.delete_default_globe_error_msg),
+                    R.id.tb_globe_detail
+                )
+            } else {
+                viewModel.deleteGlobe()
+                findNavController().navigateUp()
+            }
+        }
+
+        fun onNegative() {
+            Timber.d("CANCEL")
+        }
+
         val spannableString =
             SpannableString(getString(R.string.delete_globe_dialog_content_second)).apply {
-                setSpan(ForegroundColorSpan(Color.parseColor(MAIN_PINK_COLOR_HEX)),
+                setSpan(
+                    ForegroundColorSpan(Color.parseColor(MAIN_PINK_COLOR_HEX)),
                     DELETE_TITLE_SPANNABLE_STRING_START_INDEX,
                     DELETE_TITLE_SPANNABLE_STRING_END_INDEX,
                     SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -120,38 +137,37 @@ class GlobeDetailFragment : Fragment() {
             .with(requireContext(), R.layout.dialog_delete_globe)
             .setTitle(R.id.tv_delete_dialog_content_second, spannableString)
             .setOnPositive(R.id.tv_delete_dialog_positive, getString(R.string.do_delete)) {
-                if (args.globe.id == DEFAULT_GLOBE_ID) {
-                    toolbar.showSnackBar(
-                        getString(R.string.delete_default_globe_error_msg),
-                        R.id.tb_globe_detail
-                    )
-                } else {
-                    viewModel.deleteGlobe()
-                    findNavController().navigateUp()
-                }
+                onPositive()
             }
-            .setOnNegative(R.id.tv_delete_dialog_negative, getString(R.string.cancel)) {
-                Timber.d("CANCEL")
+            .setOnNegative(R.id.tv_delete_dialog_negative) {
+                onNegative()
             }
             .show()
     }
 
     private fun showUpdateGlobeNameDialog(toolbar: Toolbar) {
+        fun onPositive(dialog: EditDialog) {
+            resultTitle = dialog.getTextInEditText()
+            viewModel.updateGlobeTitle(resultTitle ?: args.globe.name)
+            toolbar.showSnackBar(
+                getString(R.string.snack_bar_message_update_globe_name),
+                R.id.tb_globe_detail
+            )
+            initToolbar(resultTitle ?: args.globe.name)
+        }
+
+        fun onNegative() {
+            Timber.d("CANCEL")
+        }
+
         EditDialog
             .with(requireContext(), R.layout.dialog_add_globe, R.id.et_add_globe)
-            .setTitle(R.id.tv_add_globe_title,
-                getString(R.string.update_globe_name_dialog_title))
+            .setTitle(R.id.tv_add_globe_title, getString(R.string.update_globe_name_dialog_title))
             .setOnPositive(R.id.tv_add_globe_add, getString(R.string.update)) { dialog ->
-                resultTitle = dialog.getTextInEditText()
-                viewModel.updateGlobeTitle(resultTitle ?: args.globe.name)
-                toolbar.showSnackBar(
-                    getString(R.string.snack_bar_message_update_globe_name),
-                    R.id.tb_globe_detail
-                )
-                initToolbar(resultTitle ?: args.globe.name)
+                onPositive(dialog)
             }
-            .setOnNegative(R.id.tv_add_globe_cancel, getString(R.string.cancel)) {
-                Timber.d("CANCEL")
+            .setOnNegative(R.id.tv_add_globe_cancel) {
+                onNegative()
             }
             .setKeyboardUp(true)
             .show()
