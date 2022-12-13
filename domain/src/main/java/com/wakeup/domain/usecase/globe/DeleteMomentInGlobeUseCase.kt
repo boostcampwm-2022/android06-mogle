@@ -15,6 +15,7 @@ class DeleteMomentInGlobeUseCase @Inject constructor(
             relationRepository.deleteMomentGlobeXRef(moment.id, globe.id)
         }
         val firstMoment = globeRepository.getFirstMomentByGlobe(globe.id)
+        println("$firstMoment")
 
         if (firstMoment == null || firstMoment.pictures.isEmpty()) {
             globeRepository.updateGlobe(globe.copy(thumbnail = null))
