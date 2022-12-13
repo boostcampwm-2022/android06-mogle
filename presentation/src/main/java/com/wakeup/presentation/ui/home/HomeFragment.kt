@@ -20,8 +20,6 @@ import com.google.android.gms.location.LocationServices
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentHomeBinding
 import com.wakeup.presentation.extension.hideKeyboard
-import com.wakeup.presentation.extension.resetStatusBarTransparent
-import com.wakeup.presentation.extension.setStatusBarTransparent
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
 import com.wakeup.presentation.ui.MainViewModel
@@ -62,7 +60,6 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        setStatusBarTransparent()
         return binding.root
     }
 
@@ -164,7 +161,6 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        resetStatusBarTransparent()
         binding.unbind()
         super.onDestroyView()
     }
