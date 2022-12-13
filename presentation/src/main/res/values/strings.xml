@@ -81,5 +81,6 @@
     <string name="empty_moment_list">지금 이 순간을 기록해보세요.</string>
     <string name="setting_theme">테마 설정</string>
     <string name="setting_alarm">알림 설정</string>
+    <string name="save_moment_complete">모먼트를 기록하였습니다.</string>
 
 </resources>

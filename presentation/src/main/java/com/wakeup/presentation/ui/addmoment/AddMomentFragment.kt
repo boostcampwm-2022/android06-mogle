@@ -22,6 +22,7 @@ import com.wakeup.presentation.databinding.FragmentAddMomentBinding
 import com.wakeup.presentation.lib.dialog.NormalDialog
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.ui.UiState
+import com.wakeup.presentation.util.MOVE_CAMERA_KEY
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -140,10 +141,14 @@ class AddMomentFragment : Fragment() {
                     }
 
                     if (state is UiState.Success) {
-                        Toast.makeText(context, "모먼트를 기록하였습니다.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            getString(R.string.save_moment_complete),
+                            Toast.LENGTH_LONG
+                        ).show()
 
                         findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                            "location",
+                            MOVE_CAMERA_KEY,
                             viewModel.place.value.location
                         )
                         findNavController().popBackStack()

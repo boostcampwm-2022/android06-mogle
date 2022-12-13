@@ -24,6 +24,7 @@ import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
 import com.wakeup.presentation.ui.home.HomeFragmentDirections
 import com.wakeup.presentation.ui.home.HomeViewModel
+import com.wakeup.presentation.util.MOVE_CAMERA_KEY
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -108,7 +109,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun moveCameraToAddedLocation() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<LocationModel>(
-            "location"
+            MOVE_CAMERA_KEY
         )?.observe(viewLifecycleOwner) { location ->
             mapHelper.moveCamera(naverMap, LatLng(location.latitude, location.longitude))
         }
