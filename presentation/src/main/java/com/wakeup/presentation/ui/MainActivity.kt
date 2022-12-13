@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initTheme() {
         Timber.d("initTheme")
-        themeHelper = ThemeHelper(this)
+        themeHelper = ThemeHelper(this, window)
         themeHelper.initTheme(viewModel.weatherState, lifecycleScope)
     }
 
