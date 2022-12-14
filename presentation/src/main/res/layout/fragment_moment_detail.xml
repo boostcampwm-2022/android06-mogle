@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="vm"
-            type="com.wakeup.presentation.ui.detail.MomentDetailViewModel" />
+            name="moment"
+            type="com.wakeup.presentation.model.MomentModel" />
 
         <variable
             name="hasPictures"
@@ -66,7 +66,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_150"
-                    android:text="@{vm.moment.place.mainAddress}"
+                    android:text="@{moment.place.mainAddress}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_50"
-                    android:text="@{vm.moment.place.detailAddress}"
+                    android:text="@{moment.place.detailAddress}"
                     android:textColor="?android:textColorSecondary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintHorizontal_bias="0"
@@ -109,7 +109,7 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             app:isGone="@{!hasPictures}"
-                            app:submitList="@{vm.moment.pictures}" />
+                            app:submitList="@{moment.pictures}" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -136,7 +136,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/normal_100"
-                    android:text="@{vm.moment.content}"
+                    android:text="@{moment.content}"
                     android:textColor="?android:textColorPrimary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -148,7 +148,7 @@
 
                 <TextView
                     android:id="@+id/tv_globe"
-                    globeNames="@{vm.moment.globes}"
+                    globeNames="@{moment.globes}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/large_100"
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/large_100"
                     android:layout_marginBottom="@dimen/large_200"
-                    android:text="@{vm.moment.formattedDate}"
+                    android:text="@{moment.formattedDate}"
                     android:textColor="?android:textColorSecondary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"

@@ -14,12 +14,10 @@ import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.data.database.entity.SuperMomentEntity
-import com.wakeup.data.database.mapper.toEntity
 import com.wakeup.data.database.mapper.toMomentEntity
 import com.wakeup.data.util.InternalFileUtil
 import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
-import timber.log.Timber
 import javax.inject.Inject
 
 class MomentLocalDataSourceImpl @Inject constructor(
@@ -73,8 +71,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
         saveMomentGlobeXRef(momentId, globeToSaveMoment, savedPictures)
     }
 
-    override fun getMoment(momentId: Long): Flow<MomentWithGlobesAndPictures> =
-        momentDao.getMoment(momentId)
+    override fun getMoment(momentId: Long): Flow<MomentWithGlobesAndPictures> = momentDao.getMoment(momentId)
 
     private suspend fun savePictures(pictures: List<PictureEntity>): List<PictureEntity> {
         savePictureInternalStorage(pictures)

@@ -8,6 +8,7 @@ import com.wakeup.domain.usecase.DeleteMomentUseCase
 import com.wakeup.domain.usecase.moment.GetMomentUseCase
 import com.wakeup.presentation.mapper.toPresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -25,9 +26,9 @@ class MomentDetailViewModel @Inject constructor(
 
     val moment = getMomentUseCase(momentId).map { moment ->
         moment.toPresentation()
-    }.asLiveData()
+    }
 
-    fun deleteMoment(momentId: Long) {
+    fun deleteMoment() {
         viewModelScope.launch {
             deleteMomentUseCase(momentId)
         }
