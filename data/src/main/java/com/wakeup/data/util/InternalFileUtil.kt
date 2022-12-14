@@ -8,6 +8,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.wakeup.data.BuildConfig
 import com.wakeup.data.database.entity.PictureEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +25,8 @@ class InternalFileUtil @Inject constructor(
 ) {
 
     fun savePictureInInternalStorage(picture: PictureEntity) {
-        Timber.d("${picture.path.toUri()}")
+        Timber.d("picture uri: ${picture.path.toUri()}")
+        if (picture.path.startsWith(context.filesDir.path)) return
         Glide.with(context)
             .asBitmap()
             .load(picture.path.toUri())

@@ -110,6 +110,14 @@ fun bindImageFromBitmap(view: ImageView, bitmap: Bitmap?) {
 
 @BindingAdapter("imageFromUrl")
 fun bindImageFromUrl(view: ImageView, url: String?) {
+    Timber.d("jaemin: $url")
+    url?.let { s ->
+        if (s.startsWith("content://").not()) {
+            bindThumbnailImageFromFile(view, s)
+            return
+        }
+    }
+
     Glide.with(view.context)
         .load(url)
         .fallback(R.drawable.ic_no_image)

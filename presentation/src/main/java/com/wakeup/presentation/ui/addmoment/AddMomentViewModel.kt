@@ -130,7 +130,7 @@ class AddMomentViewModel @Inject constructor(
         with(moment) {
             // TODO: 글로브, 사진 처리 필요
             _selectedGlobe.value = globes.first()
-            // pictures.forEach { addPicture(it.copy(path = "/data/user/0/com.wakeup.mogle/files/images/${it.path}")) }
+            pictures.forEach { addPicture(it) }
             _selectedDate.value = date
             _place.value = place
         }
