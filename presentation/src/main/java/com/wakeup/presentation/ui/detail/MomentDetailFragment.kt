@@ -29,7 +29,6 @@ import timber.log.Timber
 class MomentDetailFragment : Fragment() {
     private lateinit var binding: FragmentMomentDetailBinding
     private val viewModel: MomentDetailViewModel by viewModels()
-    private val args: MomentDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +36,7 @@ class MomentDetailFragment : Fragment() {
     ): View {
         binding = FragmentMomentDetailBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.vm = viewModel
         return binding.root
     }
 
@@ -44,7 +44,7 @@ class MomentDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initToolbar()
-        initMoment()
+        observeMoment()
         initViewPagerAdapter()
     }
 
@@ -75,8 +75,10 @@ class MomentDetailFragment : Fragment() {
         }
     }
 
-    private fun initMoment() {
-        binding.momentModel = args.momentModel
+    private fun observeMoment() {
+        viewModel.moment.observe(viewLifecycleOwner) { result ->
+            binding.hasPictures = result.pictures.isNotEmpty()
+        }
     }
 
     private fun initViewPagerAdapter() {
@@ -110,7 +112,7 @@ class MomentDetailFragment : Fragment() {
             .with(requireContext(), R.layout.dialog_delete_moment)
             .setTitle(R.id.tv_delete_dialog_content_second, spannableString)
             .setOnPositive(R.id.tv_delete_dialog_positive, getString(R.string.do_delete)) {
-                viewModel.deleteMoment(args.momentModel.id)
+                viewModel.deleteMoment(viewModel.moment.value?.id ?: -1)
                 findNavController().popBackStack()
             }
             .setOnNegative(R.id.tv_delete_dialog_negative, getString(R.string.cancel)) {

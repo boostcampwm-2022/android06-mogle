@@ -17,6 +17,8 @@ interface MomentLocalDataSource {
 
     fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>>
 
+    fun getMoment(momentId: Long): Flow<MomentWithGlobesAndPictures>
+
     suspend fun saveMoment(moment: SuperMomentEntity)
 
     suspend fun deleteMoment(momentId: Long)

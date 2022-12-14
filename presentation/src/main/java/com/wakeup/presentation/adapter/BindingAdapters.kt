@@ -120,7 +120,8 @@ fun bindImageFromUrl(view: ImageView, url: String?) {
 }
 
 @BindingAdapter("globeNames")
-fun bindGlobeNames(view: TextView, globes: List<GlobeModel>) {
+fun bindGlobeNames(view: TextView, globes: List<GlobeModel>?) {
+    globes ?: return
     val res = view.resources
 
     view.text = if (globes.isEmpty()) {

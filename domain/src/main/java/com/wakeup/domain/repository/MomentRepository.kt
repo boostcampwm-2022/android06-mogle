@@ -15,6 +15,8 @@ interface MomentRepository {
 
     fun getAllMoments(query: String): Flow<List<Moment>>
 
+    fun getMoment(momentId: Long): Flow<Moment>
+
     suspend fun saveMoment(moment: Moment)
 
     suspend fun deleteMoment(momentId: Long)

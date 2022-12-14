@@ -6,8 +6,12 @@
     <data>
 
         <variable
-            name="momentModel"
-            type="com.wakeup.presentation.model.MomentModel" />
+            name="vm"
+            type="com.wakeup.presentation.ui.detail.MomentDetailViewModel" />
+
+        <variable
+            name="hasPictures"
+            type="boolean" />
     </data>
 
     <LinearLayout
@@ -62,7 +66,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_150"
-                    android:text="@{momentModel.place.mainAddress}"
+                    android:text="@{vm.moment.place.mainAddress}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -75,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/small_50"
-                    android:text="@{momentModel.place.detailAddress}"
+                    android:text="@{vm.moment.place.detailAddress}"
                     android:textColor="?android:textColorSecondary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintHorizontal_bias="0"
@@ -104,7 +108,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
-                            app:submitList="@{momentModel.pictures}" />
+                            app:isGone="@{!hasPictures}"
+                            app:submitList="@{vm.moment.pictures}" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_no_image"
+                            app:isGone="@{hasPictures}" />
 
                         <com.wakeup.presentation.customview.textindicator.TextPageIndicator
                             android:id="@+id/tpi_indicator"
@@ -114,6 +126,7 @@
                             android:layout_marginTop="@dimen/small_100"
                             android:layout_marginRight="@dimen/small_100"
                             app:defaultIndicatorStyle="true"
+                            app:isGone="@{!hasPictures}"
                             tools:text="1/5" />
                     </FrameLayout>
                 </androidx.cardview.widget.CardView>
@@ -123,7 +136,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/normal_100"
-                    android:text="@{momentModel.content}"
+                    android:text="@{vm.moment.content}"
                     android:textColor="?android:textColorPrimary"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -135,7 +148,7 @@
 
                 <TextView
                     android:id="@+id/tv_globe"
-                    globeNames="@{momentModel.globes}"
+                    globeNames="@{vm.moment.globes}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/large_100"
@@ -153,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/large_100"
                     android:layout_marginBottom="@dimen/large_200"
-                    android:text="@{momentModel.formattedDate}"
+                    android:text="@{vm.moment.formattedDate}"
                     android:textColor="?android:textColorSecondary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"

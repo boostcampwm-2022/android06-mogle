@@ -173,7 +173,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun navigateToMoment(moment: MomentModel) {
         val action = HomeFragmentDirections
-            .actionMapFragmentToMomentDetailFragment(moment)
+            .actionMapFragmentToMomentDetailFragment(moment.id)
         findNavController().navigate(action)
     }
 

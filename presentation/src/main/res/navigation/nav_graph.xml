@@ -93,8 +93,8 @@
         android:label="MomentDetailFragment"
         tools:layout="@layout/fragment_moment_detail">
         <argument
-            android:name="momentModel"
-            app:argType="com.wakeup.presentation.model.MomentModel" />
+            android:name="momentId"
+            app:argType="long" />
     </fragment>
 
     <fragment

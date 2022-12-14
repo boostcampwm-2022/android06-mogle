@@ -67,6 +67,9 @@ class MomentLocalDataSourceImpl @Inject constructor(
         saveMomentGlobeXRef(momentId, globeToSaveMoment, savedPictures)
     }
 
+    override fun getMoment(momentId: Long): Flow<MomentWithGlobesAndPictures> =
+        momentDao.getMoment(momentId)
+
     private suspend fun savePictures(pictures: List<PictureEntity>): List<PictureEntity> {
         savePictureInternalStorage(pictures)
         val pictureLastPathFileName = getPictureEntityAboutLastPathFileNames(pictures)

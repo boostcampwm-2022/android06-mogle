@@ -28,7 +28,7 @@ class GlobeDetailPagingAdapter(
         private fun navigateToMomentDetail() {
             val argMoment = changeGlobeTitleOfMoment(binding.moment ?: return)
             val action = GlobeDetailFragmentDirections
-                .actionGlobeDetailFragmentToMomentDetailFragment(argMoment)
+                .actionGlobeDetailFragmentToMomentDetailFragment(argMoment.id)
             itemView.findNavController().navigate(action)
         }
 
