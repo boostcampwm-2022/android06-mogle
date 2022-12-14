@@ -14,10 +14,12 @@ import com.wakeup.data.database.entity.MomentPictureXRef
 import com.wakeup.data.database.entity.MomentWithGlobesAndPictures
 import com.wakeup.data.database.entity.PictureEntity
 import com.wakeup.data.database.entity.SuperMomentEntity
+import com.wakeup.data.database.mapper.toEntity
 import com.wakeup.data.database.mapper.toMomentEntity
 import com.wakeup.data.util.InternalFileUtil
 import com.wakeup.domain.model.SortType
 import kotlinx.coroutines.flow.Flow
+import timber.log.Timber
 import javax.inject.Inject
 
 class MomentLocalDataSourceImpl @Inject constructor(
@@ -56,8 +58,12 @@ class MomentLocalDataSourceImpl @Inject constructor(
     override fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>> =
         momentDao.getAllMoments(query)
 
-    override suspend fun saveMoment(moment: SuperMomentEntity) {
-        val momentId = momentDao.saveMoment(moment.toMomentEntity())
+    override suspend fun saveMoment(moment: SuperMomentEntity, id: Long?) {
+        val momentId = if (id == null) {
+            momentDao.saveMoment(moment.toMomentEntity())
+        } else {
+            momentDao.saveMoment(moment.toMomentEntity(id))
+        }
         var savedPictures: List<PictureEntity> = listOf()
         if (moment.pictures.isNotEmpty()) {
             savedPictures = savePictures(moment.pictures)
@@ -140,7 +146,7 @@ class MomentLocalDataSourceImpl @Inject constructor(
 
     override suspend fun updateMoment(moment: SuperMomentEntity) {
         deleteMoment(moment.id)
-        saveMoment(moment)
+        saveMoment(moment, moment.id)
     }
 
     companion object {

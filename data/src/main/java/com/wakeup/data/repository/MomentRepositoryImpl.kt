@@ -11,6 +11,7 @@ import com.wakeup.domain.model.SortType
 import com.wakeup.domain.repository.MomentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 class MomentRepositoryImpl @Inject constructor(

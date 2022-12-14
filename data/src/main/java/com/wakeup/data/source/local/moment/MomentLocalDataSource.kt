@@ -19,7 +19,7 @@ interface MomentLocalDataSource {
 
     fun getMoment(momentId: Long): Flow<MomentWithGlobesAndPictures>
 
-    suspend fun saveMoment(moment: SuperMomentEntity)
+    suspend fun saveMoment(moment: SuperMomentEntity, id: Long? = null)
 
     suspend fun deleteMoment(momentId: Long)
 

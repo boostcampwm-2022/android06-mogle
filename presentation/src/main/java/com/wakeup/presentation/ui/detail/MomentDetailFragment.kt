@@ -60,7 +60,9 @@ class MomentDetailFragment : Fragment() {
             setOnMenuItemClickListener { menu ->
                 when (menu.itemId) {
                     R.id.item_moment_update -> {
-                        // TODO 모먼트 수정하기
+                        val directions =
+                            MomentDetailFragmentDirections.actionMomentDetailFragmentToAddMomentNavigation(viewModel.moment.value)
+                        findNavController().navigate(directions)
                         true
                     }
 

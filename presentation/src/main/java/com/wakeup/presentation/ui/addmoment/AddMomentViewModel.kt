@@ -1,11 +1,13 @@
 package com.wakeup.presentation.ui.addmoment
 
 import android.content.Intent
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.wakeup.domain.usecase.globe.GetGlobesUseCase
 import com.wakeup.domain.usecase.moment.SaveMomentUseCase
+import com.wakeup.domain.usecase.moment.UpdateMomentUseCase
 import com.wakeup.presentation.mapper.toDomain
 import com.wakeup.presentation.mapper.toPresentation
 import com.wakeup.presentation.model.GlobeModel
@@ -22,14 +24,18 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
 @HiltViewModel
 class AddMomentViewModel @Inject constructor(
     private val getGlobesUseCase: GetGlobesUseCase,
-    private val saveMomentUseCase: SaveMomentUseCase
+    private val saveMomentUseCase: SaveMomentUseCase,
+    private val updateMomentUseCase: UpdateMomentUseCase,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    val argMoment = savedStateHandle.get<MomentModel?>("moment")
 
     private val _state: MutableStateFlow<UiState<Boolean>> = MutableStateFlow(UiState.Empty)
     val state = _state.asStateFlow()
@@ -88,6 +94,8 @@ class AddMomentViewModel @Inject constructor(
                 _isSaveButtonEnabled.value = it
             }
         }
+
+        argMoment?.let { setMoment(it) }
     }
 
     fun getPictureIntent(): Intent {
@@ -118,6 +126,17 @@ class AddMomentViewModel @Inject constructor(
         _place.value = place
     }
 
+    private fun setMoment(moment: MomentModel) {
+        with(moment) {
+            // TODO: 글로브, 사진 처리 필요
+            _selectedGlobe.value = globes.first()
+            // pictures.forEach { addPicture(it.copy(path = "/data/user/0/com.wakeup.mogle/files/images/${it.path}")) }
+            _selectedDate.value = date
+            _place.value = place
+        }
+        content.value = moment.content
+    }
+
     fun save() {
         if (isSaveButtonClicked.value) return
         _isSaveButtonClicked.value = true
@@ -128,6 +147,23 @@ class AddMomentViewModel @Inject constructor(
         viewModelScope.launch {
             saveMomentUseCase(
                 moment = MomentModel(
+                    place = place.value,
+                    pictures = pictures.value,
+                    content = content.value,
+                    globes = listOf(selectedGlobe.value),
+                    date = _selectedDate.value
+                ).toDomain()
+            )
+        }.join()
+        _state.value = UiState.Success(true)
+    }
+
+    suspend fun updateMoment() {
+        _state.value = UiState.Loading
+        viewModelScope.launch {
+            updateMomentUseCase(
+                MomentModel(
+                    id = argMoment?.id ?: -1,
                     place = place.value,
                     pictures = pictures.value,
                     content = content.value,
