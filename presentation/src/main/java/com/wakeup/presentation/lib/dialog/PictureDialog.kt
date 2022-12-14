@@ -51,7 +51,7 @@ class PictureDialog private constructor(context: Context) :
         }
     }
 
-    fun setSize(width: Int, height: Int): PictureDialog {
+    fun setImageSize(width: Int, height: Int): PictureDialog {
         size = Size(width, height)
         return this
     }

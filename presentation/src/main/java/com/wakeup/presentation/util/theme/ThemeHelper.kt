@@ -3,6 +3,9 @@ package com.wakeup.presentation.util.theme
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
+import android.view.Window
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.wakeup.domain.model.WeatherType
 import com.wakeup.presentation.R
@@ -23,6 +26,7 @@ import javax.inject.Inject
 
 class ThemeHelper @Inject constructor(
     private val context: Context,
+    private val window: Window? = null
 ) {
 
     // SharedPrefManager를 필드 주입 받기 위해 필요한 엔트리 포인트.
@@ -67,7 +71,7 @@ class ThemeHelper @Inject constructor(
                                     (context as? Activity)?.recreate()
                                 }
                             }
-                            else -> {}
+                            else -> Unit
                         }
                     }
                 }
@@ -85,9 +89,27 @@ class ThemeHelper @Inject constructor(
      */
     private fun setTheme(themeStr: String?) {
         when (themeStr) {
-            WeatherTheme.BRIGHT.str -> context.setTheme(R.style.Theme_Mogle_Bright)
-            WeatherTheme.NIGHT.str -> context.setTheme(R.style.Theme_Mogle_Night)
-            WeatherTheme.CLOUDY.str -> context.setTheme(R.style.Theme_Mogle_Cloudy)
+            WeatherTheme.BRIGHT.str -> {
+                context.setTheme(R.style.Theme_Mogle_Bright)
+                if (window == null) return
+                window.statusBarColor = ContextCompat.getColor(context, R.color.white)
+                WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars =
+                    true
+            }
+            WeatherTheme.NIGHT.str -> {
+                context.setTheme(R.style.Theme_Mogle_Night)
+                if (window == null) return
+                window.statusBarColor = ContextCompat.getColor(context, R.color.black)
+                WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars =
+                    false
+            }
+            WeatherTheme.CLOUDY.str -> {
+                context.setTheme(R.style.Theme_Mogle_Cloudy)
+                if (window == null) return
+                window.statusBarColor = ContextCompat.getColor(context, R.color.cloudy_dark_gray)
+                WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars =
+                    false
+            }
         }
     }
 
@@ -126,7 +148,7 @@ class ThemeHelper @Inject constructor(
         if (isCloudy) {
             if (sharedPrefManager.getThemeByAuto() == WeatherTheme.CLOUDY.str) return
 
-            context.setTheme(R.style.Theme_Mogle_Cloudy)
+            setTheme(WeatherTheme.CLOUDY.str)
             changeAutoThemeSetting(WeatherTheme.CLOUDY)
             onThemeChanged(WeatherTheme.CLOUDY.str)
             return
@@ -135,14 +157,15 @@ class ThemeHelper @Inject constructor(
         if (isNight) {
             if (sharedPrefManager.getThemeByAuto() == WeatherTheme.NIGHT.str) return
 
-            context.setTheme(R.style.Theme_Mogle_Night)
+            setTheme(WeatherTheme.NIGHT.str)
             changeAutoThemeSetting(WeatherTheme.NIGHT)
             onThemeChanged(WeatherTheme.NIGHT.str)
             return
         }
 
         if (sharedPrefManager.getThemeByAuto() == WeatherTheme.BRIGHT.str) return
-        context.setTheme(R.style.Theme_Mogle_Bright)
+
+        setTheme(WeatherTheme.BRIGHT.str)
         changeAutoThemeSetting(WeatherTheme.BRIGHT)
         onThemeChanged(WeatherTheme.BRIGHT.str)
     }
