@@ -80,7 +80,7 @@ class MomentDetailFragment : Fragment() {
         val filePath = "${requireContext().filesDir}/" + "images/" + picture.path
 
         PictureDialog.with(requireContext(), R.layout.dialog_image, R.id.iv_detail_image)
-            .setSize(width = 1000, height = 1000)
+            .setImageSize(width = 1000, height = 1000)
             .setErrorImage(id = R.drawable.ic_no_image)
             .setImagePath(filePath = filePath)
             .show()
