@@ -65,8 +65,9 @@
     <string name="moment_detail_menu_delete_moment">모먼트 삭제하기</string>
 
     <string name="snack_bar_message_add_globe">글로브가 생성되었습니다.</string>
-    <string name="snack_bar_error_message_add_globe">해당 글러브의 이름 이미 존재합니다. 글러브가 만들어지지 않았습니다.</string>
+    <string name="snack_bar_error_message_add_globe">해당 글로브의 이름 이미 존재합니다. 글로브가 만들어지지 않았습니다.</string>
     <string name="snack_bar_message_update_globe_name">글로브 이름이 수정되었습니다.</string>
+    <string name="snack_bar_message_error_update_globe_name">해당 글로브의 이름 이미 존재합니다. 글로브의 이름이 변경되지 않았습니다.</string>
 
     <string name="add_moment_in_globe">모먼트 추가하기</string>
     <string name="add_moment_default_error_in_globe_msg">\'기본\' 글로브에서는 모먼트를 추가할 수 없습니다.</string>

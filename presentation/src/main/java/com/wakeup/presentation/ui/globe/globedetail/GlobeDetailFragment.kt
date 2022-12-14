@@ -164,12 +164,20 @@ class GlobeDetailFragment : Fragment() {
     private fun showUpdateGlobeNameDialog(toolbar: Toolbar) {
         fun onPositive(dialog: EditDialog) {
             resultTitle = dialog.getTextInEditText()
-            viewModel.updateGlobeTitle(resultTitle ?: args.globe.name)
-            toolbar.showSnackBar(
-                getString(R.string.snack_bar_message_update_globe_name),
-                R.id.tb_globe_detail
-            )
-            initToolbar(resultTitle ?: args.globe.name)
+            val updateReadyName = resultTitle ?: args.globe.name
+            if (viewModel.isExistGlobe(updateReadyName)) {
+                toolbar.showSnackBar(
+                    getString(R.string.snack_bar_message_error_update_globe_name),
+                    R.id.tb_globe_detail
+                )
+            } else {
+                viewModel.updateGlobeTitle(updateReadyName)
+                toolbar.showSnackBar(
+                    getString(R.string.snack_bar_message_update_globe_name),
+                    R.id.tb_globe_detail
+                )
+            }
+            initToolbar(updateReadyName)
         }
 
         fun onNegative() {

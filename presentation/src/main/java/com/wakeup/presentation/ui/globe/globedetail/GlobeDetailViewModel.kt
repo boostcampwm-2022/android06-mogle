@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.wakeup.domain.usecase.globe.DeleteGlobeUseCase
+import com.wakeup.domain.usecase.globe.GetGlobesUseCase
 import com.wakeup.domain.usecase.globe.GetMomentsByGlobeUseCase
 import com.wakeup.domain.usecase.globe.UpdateGlobeUseCase
 import com.wakeup.presentation.mapper.toDomain
@@ -17,6 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,10 +26,14 @@ import javax.inject.Inject
 @HiltViewModel
 class GlobeDetailViewModel @Inject constructor(
     private val getMomentsByGlobeUseCase: GetMomentsByGlobeUseCase,
+    private val getGlobesUseCase: GetGlobesUseCase,
     private val updateGlobeUseCase: UpdateGlobeUseCase,
     private val deleteGlobeUseCase: DeleteGlobeUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    private val _globes = MutableStateFlow<List<GlobeModel>>(emptyList())
+    val globes = _globes.asStateFlow()
 
     lateinit var moments: Flow<PagingData<MomentModel>>
 
@@ -38,6 +44,7 @@ class GlobeDetailViewModel @Inject constructor(
     val isExistMoment = _isExistMoment.asStateFlow()
 
     init {
+        fetchGlobes()
         fetchMomentsByGlobe(argsGlobe.id)
     }
 
@@ -47,6 +54,14 @@ class GlobeDetailViewModel @Inject constructor(
                 moment.toPresentation()
             }
         }.cachedIn(viewModelScope)
+    }
+
+    private fun fetchGlobes() {
+        viewModelScope.launch {
+            _globes.value = getGlobesUseCase().map { globes ->
+                globes.map { globe -> globe.toPresentation() }
+            }.first()
+        }
     }
 
     fun setMomentExist(isExist: Boolean) {
@@ -63,6 +78,11 @@ class GlobeDetailViewModel @Inject constructor(
         viewModelScope.launch {
             deleteGlobeUseCase(argsGlobe.toDomain())
         }
+    }
+
+    // caution: fetchGlobes 를 한 상태에서 바로 써야지 확인이 가능합니다.
+    fun isExistGlobe(globeName: String): Boolean {
+        return globeName in globes.value.map { globe -> globe.name }
     }
 
     companion object {
