@@ -22,4 +22,6 @@ interface MomentLocalDataSource {
     suspend fun saveMoment(moment: SuperMomentEntity)
 
     suspend fun deleteMoment(momentId: Long)
+
+    suspend fun updateMoment(moment: SuperMomentEntity)
 }

@@ -8,6 +8,6 @@ class UpdateMomentUseCase @Inject constructor(
     private val momentRepository: MomentRepository
 ) {
     suspend operator fun invoke(moment: Moment) {
-        // return momentRepository.updateMoment(moment)
+        return momentRepository.updateMoment(moment)
     }
 }

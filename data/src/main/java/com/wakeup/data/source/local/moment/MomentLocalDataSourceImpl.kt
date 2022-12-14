@@ -138,6 +138,11 @@ class MomentLocalDataSourceImpl @Inject constructor(
         momentDao.deleteMoment(momentId)
     }
 
+    override suspend fun updateMoment(moment: SuperMomentEntity) {
+        deleteMoment(moment.id)
+        saveMoment(moment)
+    }
+
     companion object {
         const val EXIST_INSERT_ERROR_CODE = -1L
         const val PREFETCH_PAGE = 2
