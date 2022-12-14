@@ -8,6 +8,10 @@ import javax.inject.Singleton
 
 @Singleton
 class SharedPrefManager @Inject constructor(@ApplicationContext private val context: Context) {
+    private val RECREATING_KEY = "ACTIVITY_RECREATE"
+
+    private val AUTO_THEME_KEY = "THEME_SET_BY_AUTOMATICALLY_KEY"
+
     private val DEFAULT = WeatherTheme.AUTO.str
     private val STORE_KEY = "SharedPreference"
     val THEME_KEY = "THEME"
@@ -23,6 +27,17 @@ class SharedPrefManager @Inject constructor(@ApplicationContext private val cont
     }
 
     fun getTheme(): String? {
-        return sharedPref.getString(THEME_KEY, NO_THEME)
+        return sharedPref.getString(THEME_KEY, DEFAULT)
+    }
+
+    fun getThemeByAuto(): String? {
+        return sharedPref.getString(AUTO_THEME_KEY, null)
+    }
+
+    fun saveThemeByAuto(value: String) {
+        with(sharedPref.edit()) {
+            putString(AUTO_THEME_KEY, value)
+            apply()
+        }
     }
 }

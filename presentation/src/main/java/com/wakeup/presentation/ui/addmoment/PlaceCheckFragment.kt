@@ -15,9 +15,13 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.NaverMapOptions
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.overlay.OverlayImage
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentPlaceCheckBinding
+import com.wakeup.presentation.databinding.ItemMapMarkerBinding
+import com.wakeup.presentation.model.WeatherTheme
 import com.wakeup.presentation.util.setToolbar
+import com.wakeup.presentation.util.theme.ThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -66,6 +70,28 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
                 fm.beginTransaction().add(R.id.fl_map, it).commit()
             }
 
+        val setDark = {
+            options.apply {
+                mapType(NaverMap.MapType.Navi)
+                nightModeEnabled(true)
+            }
+        }
+
+        // 다크 모드 체크
+        val themeHelper = ThemeHelper(requireContext())
+        when (themeHelper.getCurrentTheme()) {
+            WeatherTheme.AUTO.str -> {
+                when (themeHelper.getCurrentThemeByAuto()) {
+                    WeatherTheme.NIGHT.str -> {
+                        setDark()
+                    }
+                }
+            }
+            WeatherTheme.NIGHT.str -> {
+                setDark()
+            }
+        }
+
         mapFragment.getMapAsync(this)
     }
 
@@ -75,11 +101,20 @@ class PlaceCheckFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initMaker(naverMap: NaverMap) {
+
+        val markerBinding =
+            ItemMapMarkerBinding.inflate(LayoutInflater.from(context), null, false).apply {
+                ivThumbnail.setImageResource(R.drawable.ic_launcher_mogle_foreground)
+            }
+
         Marker().apply {
             position = LatLng(args.place.location.latitude, args.place.location.longitude)
             isHideCollidedSymbols = true
             isIconPerspectiveEnabled = true
             map = naverMap
+            icon = OverlayImage.fromView(
+                markerBinding.root
+            )
         }
     }
 

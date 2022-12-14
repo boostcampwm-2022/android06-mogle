@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -51,7 +52,8 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         setBottomSheetState()
         setAdapter()
         setAdapterListener()
-        setCallback()
+        setBottomSheetCallback()
+        setBackPressCallback()
 
         collectMoments()
     }
@@ -68,7 +70,8 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
                 binding.sortMenu.setText(viewModel.sortType.value.str)
                 (binding.textField.editText as? MaterialAutoCompleteTextView)?.setAdapter(
-                    menuAdapter)
+                    menuAdapter
+                )
                 binding.textField.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
@@ -130,7 +133,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setCallback() {
+    private fun setBottomSheetCallback() {
         val behavior = BottomSheetBehavior.from(binding.bottomSheet)
         if (behavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
             binding.textField.visibility = View.INVISIBLE
@@ -172,6 +175,21 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         val action = HomeFragmentDirections
             .actionMapFragmentToMomentDetailFragment(moment)
         findNavController().navigate(action)
+    }
+
+    private fun setBackPressCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val behavior = BottomSheetBehavior.from(binding.bottomSheet)
+                if (behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                } else {
+                    this.isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     override fun onDestroyView() {

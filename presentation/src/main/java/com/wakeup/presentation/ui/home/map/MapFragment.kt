@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -21,14 +23,18 @@ import com.wakeup.presentation.databinding.FragmentMapBinding
 import com.wakeup.presentation.extension.getFadeInAnimator
 import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.model.MomentModel
+import com.wakeup.presentation.ui.MainViewModel
 import com.wakeup.presentation.ui.home.HomeFragmentDirections
 import com.wakeup.presentation.ui.home.HomeViewModel
+import com.wakeup.presentation.util.MOVE_CAMERA_KEY
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding: FragmentMapBinding
+
+    private val activityViewModel: MainViewModel by activityViewModels()
     private val viewModel: HomeViewModel by viewModels({ requireParentFragment() })
 
     private lateinit var naverMap: NaverMap
@@ -105,15 +111,25 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    private fun moveCameraToAddedLocation() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<LocationModel>(
+            MOVE_CAMERA_KEY
+        )?.observe(viewLifecycleOwner) { location ->
+            mapHelper.moveCamera(naverMap, LatLng(location.latitude, location.longitude))
+        }
+    }
+
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
 
         binding.flMapViewContainer.isVisible = true
 
         // 지도 터치시, 정보 창 사라짐 설정
-        mapHelper.setViewFadeOutClickListener(naverMap,
+        mapHelper.setViewFadeOutClickListener(
+            naverMap,
             binding.momentPreview.root,
-            MOMENT_PREVIEW_ANIM_DURATION)
+            MOMENT_PREVIEW_ANIM_DURATION
+        )
 
         // 위치 관련 설정
         mapHelper.apply {
@@ -122,6 +138,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             setScaleBarView(naverMap, binding.sbvScale)
             setLogoView(naverMap, binding.lvLogo)
         }
+
+
+        // 모먼트가 추가되면 해당 장소로 이동
+        moveCameraToAddedLocation()
 
         collectMoments()
 
@@ -182,6 +202,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             if (!locationSource.isActivated) { // 권한 거부됨
                 naverMap.locationTrackingMode = LocationTrackingMode.None
             }
+
+            // permission 변경 이벤트 전파
+            activityViewModel.permissionState.value = true // 허용
 
             naverMap.locationTrackingMode = LocationTrackingMode.Follow
 

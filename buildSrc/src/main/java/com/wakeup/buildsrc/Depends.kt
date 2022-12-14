@@ -5,7 +5,7 @@ import com.wakeup.buildsrc.Depends.Versions.appVersionCode
 object Depends {
 
     object Versions {
-        const val appVersionCode = 1_000_000
+        const val appVersionCode = 1_002_000
         const val gradleVersion = "7.3.1"
         const val androidCompileSdkVersion = 32
         const val targetSdkVersion = 32
@@ -50,6 +50,8 @@ object Depends {
         const val circleImageViewVersion = "3.1.0"
 
         const val stethoVersion = "1.6.0"
+
+        const val lottieVersion = "5.2.0"
     }
 
     object ClassPaths {
@@ -155,6 +157,9 @@ object Depends {
 
         // Splash
         const val splash = "androidx.core:core-splashscreen:${Versions.splashVersion}"
+
+        // Lottie
+        const val lottie = "com.airbnb.android:lottie:${Versions.lottieVersion}"
     }
 
     fun generateVersionName(): String {

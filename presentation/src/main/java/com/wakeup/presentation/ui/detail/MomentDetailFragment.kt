@@ -88,13 +88,11 @@ class MomentDetailFragment : Fragment() {
 
     private fun showDetailPicture(picture: PictureModel) {
         val filePath = "${requireContext().filesDir}/" + "images/" + picture.path
+
         PictureDialog.with(requireContext(), R.layout.dialog_image, R.id.iv_detail_image)
-            .setImageFilePath(
-                filePath = filePath,
-                errorImageDrawableId = R.drawable.ic_no_image,
-                1000,
-                1000
-            )
+            .setImageSize(width = 1000, height = 1000)
+            .setErrorImage(id = R.drawable.ic_no_image)
+            .setImagePath(filePath = filePath)
             .show()
     }
 

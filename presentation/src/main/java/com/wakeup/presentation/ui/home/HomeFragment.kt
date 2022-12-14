@@ -1,14 +1,11 @@
 package com.wakeup.presentation.ui.home
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,15 +18,13 @@ import com.google.android.gms.location.LocationServices
 import com.wakeup.presentation.R
 import com.wakeup.presentation.databinding.FragmentHomeBinding
 import com.wakeup.presentation.extension.hideKeyboard
-import com.wakeup.presentation.extension.resetStatusBarTransparent
-import com.wakeup.presentation.extension.setStatusBarTransparent
-import com.wakeup.presentation.model.LocationModel
 import com.wakeup.presentation.ui.MainActivity
 import com.wakeup.presentation.ui.MainViewModel
-import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.ui.home.map.MapFragment
 import com.wakeup.presentation.ui.home.sheet.BottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -51,6 +46,7 @@ class HomeFragment : Fragment() {
         initBottomSheet()
         initLocation()
         initMoments()
+        initWeather()
     }
 
     override fun onCreateView(
@@ -61,7 +57,6 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        setStatusBarTransparent()
         return binding.root
     }
 
@@ -69,8 +64,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setSearchBarListener()
-        fetchWeather()
-        collectWeather()
     }
 
     private fun initMoments() {
@@ -78,6 +71,10 @@ class HomeFragment : Fragment() {
             viewModel.initMoments(moments)
             activityViewModel.allMoments = null
         }
+    }
+
+    private fun initWeather() {
+        viewModel.initWeatherFlow(activityViewModel.weatherState)
     }
 
     private fun initMap() {
@@ -101,63 +98,48 @@ class HomeFragment : Fragment() {
     }
 
     private fun hasLocationPermissions(): Boolean {
-        if (ActivityCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             return false
         }
         return true
     }
 
+    @OptIn(FlowPreview::class)
     private fun setSearchBarListener() {
         binding.ivMenu.setOnClickListener {
             (activity as MainActivity).openNavDrawer()
         }
 
-        binding.etSearch.setOnEditorActionListener { textView, i, _ ->
-            if (i == EditorInfo.IME_ACTION_SEARCH) {
-                viewModel.setScrollToTop(true)
-                viewModel.setSearchQuery(textView.text.toString())
-                viewModel.fetchMoments()
-                viewModel.fetchAllMoments()
-
-                mapFragment.collectMoments()
-                bottomSheetFragment.collectMoments()
-
-                hideKeyboard()
-            }
-            false // true: 계속 search 가능
+        binding.etSearch.setOnEditorActionListener { v, _, _ ->
+            v.clearFocus()
+            hideKeyboard()
+            false
         }
-    }
 
-    // 따로 함수로 빼니까, 권한 확인을 했는지 IDE가 인식을 못합니다.
-    @SuppressLint("MissingPermission")
-    private fun fetchWeather() {
-        if (hasLocationPermissions()) {
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    viewModel.fetchWeather(LocationModel(location.latitude, location.longitude))
-                }
-            }
-        }
-    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchQuery.debounce(750).collect {
+                    if (::mapFragment.isInitialized.not()) return@collect
+                    viewModel.setScrollToTop(true)
+                    viewModel.fetchMoments()
+                    viewModel.fetchAllMoments()
 
-    private fun collectWeather() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { state ->
-                    if (state is UiState.Success) {
-                        viewModel.setWeather(state.item)
-                    }
+                    mapFragment.collectMoments()
+                    bottomSheetFragment.collectMoments()
                 }
             }
         }
     }
 
     override fun onDestroyView() {
-        resetStatusBarTransparent()
         binding.unbind()
         super.onDestroyView()
     }

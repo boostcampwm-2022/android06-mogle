@@ -1,3 +1,3 @@
 package com.wakeup.presentation.util
 
-const val UPDATE_MOMENTS_KEY = "isUpdated"
+const val MOVE_CAMERA_KEY = "location"
