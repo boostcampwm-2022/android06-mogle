@@ -37,7 +37,7 @@ class PictureDialog private constructor(context: Context) :
          */
         fun with(context: Context, layoutId: Int, imageViewId: Int): PictureDialog {
             val instance = INSTANCE
-            if (instance?.baseLayoutId == layoutId) return instance
+            if (instance?.context == context && instance.baseLayoutId == layoutId) return instance
 
             INSTANCE = PictureDialog(context).apply {
                 builder = AlertDialog.Builder(context)

@@ -25,7 +25,7 @@ class NormalDialog private constructor(context: Context) :
          */
         fun with(context: Context, layoutId: Int): NormalDialog {
             val instance = INSTANCE
-            if (instance?.baseLayoutId == layoutId) return instance
+            if (instance?.context == context && instance.baseLayoutId == layoutId) return instance
 
             INSTANCE = NormalDialog(context).apply {
                 builder = AlertDialog.Builder(context)
