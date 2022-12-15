@@ -32,7 +32,10 @@ class EditDialog private constructor(context: Context) :
          */
         fun with(context: Context, layoutId: Int, editTextId: Int): EditDialog {
             val instance = INSTANCE
-            if (instance?.baseLayoutId == layoutId) return instance
+            if (instance?.context == context && instance.baseLayoutId == layoutId) {
+                instance.editText.text.clear()
+                return instance
+            }
 
             INSTANCE = EditDialog(context).apply {
                 builder = AlertDialog.Builder(context)
