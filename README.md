@@ -46,6 +46,8 @@
 
 ## 기술 스택
 
+<img src="docs/img/architecture.png">
+
 ### Architecture
 - Clean Architecture
 - Single Activity Architecture
