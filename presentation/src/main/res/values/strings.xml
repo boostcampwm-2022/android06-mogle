@@ -88,5 +88,7 @@
     <string name="setting_theme">테마 설정</string>
     <string name="setting_alarm">알림 설정</string>
     <string name="save_moment_complete">모먼트를 기록하였습니다.</string>
+    <string name="write_moment">모먼트를 기록하였습니다.</string>
+    <string name="update_moment">모먼트를 수정하였습니다.</string>
 
 </resources>

@@ -163,7 +163,7 @@ class AddMomentViewModel @Inject constructor(
         viewModelScope.launch {
             updateMomentUseCase(
                 MomentModel(
-                    id = argMoment?.id ?: -1,
+                    id = argMoment?.id ?: ERROR_ID,
                     place = place.value,
                     pictures = pictures.value,
                     content = content.value,
@@ -173,5 +173,9 @@ class AddMomentViewModel @Inject constructor(
             )
         }.join()
         _state.value = UiState.Success(true)
+    }
+
+    private companion object {
+        const val ERROR_ID = -1L
     }
 }

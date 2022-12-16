@@ -20,7 +20,6 @@ class MomentDetailViewModel @Inject constructor(
     private val deleteMomentUseCase: DeleteMomentUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    // TODO State 저장할 필요 고민
 
     private val momentId = savedStateHandle.get<Long>("momentId") ?: -1
 

@@ -151,9 +151,9 @@ class AddMomentFragment : Fragment() {
 
                     if (state is UiState.Success) {
                         val msg = if (viewModel.argMoment == null) {
-                            "모먼트를 기록하였습니다."
+                            getString(R.string.write_moment)
                         } else {
-                            "모먼트를 수정하였습니다."
+                            getString(R.string.update_moment)
                         }
 
                         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
