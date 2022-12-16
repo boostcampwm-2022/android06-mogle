@@ -56,8 +56,12 @@ class MomentLocalDataSourceImpl @Inject constructor(
     override fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>> =
         momentDao.getAllMoments(query)
 
-    override suspend fun saveMoment(moment: SuperMomentEntity) {
-        val momentId = momentDao.saveMoment(moment.toMomentEntity())
+    override suspend fun saveMoment(moment: SuperMomentEntity, id: Long?) {
+        val momentId = if (id == null) {
+            momentDao.saveMoment(moment.toMomentEntity())
+        } else {
+            momentDao.saveMoment(moment.toMomentEntity(id))
+        }
         var savedPictures: List<PictureEntity> = listOf()
         if (moment.pictures.isNotEmpty()) {
             savedPictures = savePictures(moment.pictures)
@@ -66,6 +70,8 @@ class MomentLocalDataSourceImpl @Inject constructor(
         val globeToSaveMoment = moment.globes.first()
         saveMomentGlobeXRef(momentId, globeToSaveMoment, savedPictures)
     }
+
+    override fun getMoment(momentId: Long): Flow<MomentWithGlobesAndPictures> = momentDao.getMoment(momentId)
 
     private suspend fun savePictures(pictures: List<PictureEntity>): List<PictureEntity> {
         savePictureInternalStorage(pictures)
@@ -133,6 +139,11 @@ class MomentLocalDataSourceImpl @Inject constructor(
             }
         }
         momentDao.deleteMoment(momentId)
+    }
+
+    override suspend fun updateMoment(moment: SuperMomentEntity) {
+        deleteMoment(moment.id)
+        saveMoment(moment, moment.id)
     }
 
     companion object {

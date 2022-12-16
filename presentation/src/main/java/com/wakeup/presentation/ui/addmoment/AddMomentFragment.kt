@@ -1,5 +1,6 @@
 package com.wakeup.presentation.ui.addmoment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,13 +20,16 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.wakeup.presentation.R
 import com.wakeup.presentation.adapter.PictureAdapter
 import com.wakeup.presentation.databinding.FragmentAddMomentBinding
+import com.wakeup.presentation.extension.setNavigationResultToBackStack
 import com.wakeup.presentation.lib.dialog.NormalDialog
 import com.wakeup.presentation.model.PictureModel
 import com.wakeup.presentation.ui.UiState
 import com.wakeup.presentation.util.MOVE_CAMERA_KEY
 import com.wakeup.presentation.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AddMomentFragment : Fragment() {
@@ -125,7 +129,12 @@ class AddMomentFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isSaveButtonClicked.collect { isClicked ->
                     if (isClicked.not()) return@collect
-                    viewModel.saveMoment()
+
+                    if (viewModel.argMoment == null) {
+                        viewModel.saveMoment()
+                    } else {
+                        viewModel.updateMoment()
+                    }
                 }
             }
         }
@@ -141,16 +150,14 @@ class AddMomentFragment : Fragment() {
                     }
 
                     if (state is UiState.Success) {
-                        Toast.makeText(
-                            context,
-                            getString(R.string.save_moment_complete),
-                            Toast.LENGTH_LONG
-                        ).show()
+                        val msg = if (viewModel.argMoment == null) {
+                            getString(R.string.write_moment)
+                        } else {
+                            getString(R.string.update_moment)
+                        }
 
-                        findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                            MOVE_CAMERA_KEY,
-                            viewModel.place.value.location
-                        )
+                        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                        findNavController().setNavigationResultToBackStack(MOVE_CAMERA_KEY, viewModel.place.value.location)
                         findNavController().popBackStack()
                     }
                 }

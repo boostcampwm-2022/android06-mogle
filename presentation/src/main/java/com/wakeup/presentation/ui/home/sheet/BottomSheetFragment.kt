@@ -168,11 +168,12 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             visibility = View.INVISIBLE
             animation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
         }
+        isEnabled = isVisible
     }
 
     private fun navigateToMoment(moment: MomentModel) {
         val action = HomeFragmentDirections
-            .actionMapFragmentToMomentDetailFragment(moment)
+            .actionMapFragmentToMomentDetailFragment(moment.id)
         findNavController().navigate(action)
     }
 

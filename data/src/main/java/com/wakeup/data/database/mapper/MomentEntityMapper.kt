@@ -34,3 +34,12 @@ fun SuperMomentEntity.toMomentEntity() : MomentEntity {
         date = date,
     )
 }
+
+fun SuperMomentEntity.toMomentEntity(id: Long) : MomentEntity {
+    return MomentEntity(
+        id = id,
+        place = place,
+        content = content,
+        date = date,
+    )
+}

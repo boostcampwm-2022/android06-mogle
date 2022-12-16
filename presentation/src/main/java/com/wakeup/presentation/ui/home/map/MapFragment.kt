@@ -63,9 +63,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     // 프리뷰 터치시, 상세 페이지 이동
     private fun initMomentPreviewClickListener() {
         binding.momentPreview.root.setOnClickListener {
-            binding.momentPreview.momentModel?.let {
+            binding.momentPreview.momentModel?.let { moment ->
                 val action =
-                    HomeFragmentDirections.actionMapFragmentToMomentDetailFragment(it)
+                    HomeFragmentDirections.actionMapFragmentToMomentDetailFragment(moment.id)
                 findNavController().navigate(action)
             }
         }

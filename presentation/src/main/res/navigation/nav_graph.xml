@@ -37,6 +37,12 @@
         android:id="@+id/add_moment_navigation"
         app:startDestination="@id/add_moment_fragment">
 
+        <argument
+            android:name="moment"
+            android:defaultValue="@null"
+            app:argType="com.wakeup.presentation.model.MomentModel"
+            app:nullable="true" />
+
         <fragment
             android:id="@+id/add_moment_fragment"
             android:name="com.wakeup.presentation.ui.addmoment.AddMomentFragment"
@@ -93,8 +99,11 @@
         android:label="MomentDetailFragment"
         tools:layout="@layout/fragment_moment_detail">
         <argument
-            android:name="momentModel"
-            app:argType="com.wakeup.presentation.model.MomentModel" />
+            android:name="momentId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_moment_detail_fragment_to_add_moment_navigation"
+            app:destination="@id/add_moment_navigation" />
     </fragment>
 
     <fragment

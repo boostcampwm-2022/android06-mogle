@@ -59,7 +59,7 @@ interface MomentDao {
     fun getAllMoments(query: String): Flow<List<MomentWithGlobesAndPictures>>
 
     @Query("SELECT * FROM moment WHERE moment_id = :id")
-    suspend fun getMoment(id: Long): MomentWithGlobesAndPictures
+    fun getMoment(id: Long): Flow<MomentWithGlobesAndPictures>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMoment(moment: MomentEntity): Long
