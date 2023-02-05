@@ -6,7 +6,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="?attr/colorSurfaceVariant"
         android:padding="@dimen/large_125">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,6 +30,16 @@
                 app:layout_constraintEnd_toEndOf="@id/iv_mogle"
                 app:layout_constraintStart_toStartOf="@id/iv_mogle"
                 app:layout_constraintTop_toBottomOf="@id/iv_mogle" />
+
+            <TextView
+                android:id="@+id/tv_personal_information_processing_policy"
+                style="@style/TextAppearance.Mogle.Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_150"
+                android:text="@string/tv_personal_information_processing_policy"
+                app:layout_constraintStart_toStartOf="@id/tv_theme"
+                app:layout_constraintTop_toBottomOf="@id/tv_theme" />
 
             <Spinner
                 android:id="@+id/spinner_theme"

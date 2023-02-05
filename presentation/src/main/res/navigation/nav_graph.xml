@@ -141,4 +141,8 @@
             android:name="globe"
             app:argType="com.wakeup.presentation.model.GlobeModel"/>
     </fragment>
+    <fragment
+        android:id="@+id/policyFragment"
+        android:name="com.wakeup.presentation.ui.home.PolicyFragment"
+        android:label="PolicyFragment" />
 </navigation>
