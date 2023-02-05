@@ -23,7 +23,8 @@
                 android:id="@+id/tv_policy"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/small_50" />
+                android:layout_margin="@dimen/small_50"
+                android:autoLink="web" />
 
         </ScrollView>
 
