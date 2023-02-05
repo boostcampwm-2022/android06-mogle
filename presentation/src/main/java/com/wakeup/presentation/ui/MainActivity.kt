@@ -91,6 +91,10 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.open()
     }
 
+    private fun closeNavDrawer() {
+        binding.drawerLayout.closeDrawers()
+    }
+
     private fun waitMomentDataLoaded() {
         binding.root.viewTreeObserver.addOnPreDrawListener(object :
             ViewTreeObserver.OnPreDrawListener {
@@ -191,6 +195,15 @@ class MainActivity : AppCompatActivity() {
         binding.layoutDrawer.spinnerTheme.setSelection(
             adapter.getPosition(themeHelper.getCurrentTheme())
         ) // 스피너 설정 값 복원
+
+        // 개인 정보 처리 방침으로 이동
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.layoutDrawer.tvPersonalInformationProcessingPolicy.setOnClickListener {
+            closeNavDrawer()
+            navController.navigate(R.id.policyFragment)
+        }
 
         // recreate() 후에, 무한 루프 방지
         binding.layoutDrawer.spinnerTheme.setOnTouchListener { _, _ ->
